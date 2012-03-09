@@ -10494,11 +10494,11 @@ INSERT INTO Settings VALUES (122,120,'contactId',NULL);
 INSERT INTO Settings VALUES (131,120,'metadataPublic','false');
 INSERT INTO Settings VALUES (170,1,'shib',NULL);
 INSERT INTO Settings VALUES (171,170,'use','false');
-INSERT INTO Settings VALUES (172,170,'path','/geonetwork/srv/en/shib.user.login');
+INSERT INTO Settings VALUES (172,170,'path','/geonetwork/srv/it/shib.user.login');
 INSERT INTO Settings VALUES (173,170,'attrib',NULL);
-INSERT INTO Settings VALUES (174,173,'username','REMOTE_USER');
-INSERT INTO Settings VALUES (175,173,'surname','Shib-Person-surname');
-INSERT INTO Settings VALUES (176,173,'firstname','Shib-InetOrgPerson-givenName');
+INSERT INTO Settings VALUES (174,173,'username','Shib-Iride-IdentitaDigitale');
+INSERT INTO Settings VALUES (175,173,'surname','Shib-Identita-Cognome');
+INSERT INTO Settings VALUES (176,173,'firstname','Shib-Identita-Nome');
 INSERT INTO Settings VALUES (177,173,'profile','Shib-EP-Entitlement');
 INSERT INTO Settings VALUES (178,173,'group',NULL);
 INSERT INTO Settings VALUES (179,170,'defaultGroup', NULL);
@@ -10531,15 +10531,15 @@ INSERT INTO Settings VALUES (701,700,'mdmode','1');
 INSERT INTO Settings VALUES (702,700,'tokentimeout','3600');
 INSERT INTO Settings VALUES (703,700,'cachesize','60');
 INSERT INTO Settings VALUES (720,1,'inspire',NULL);
-INSERT INTO Settings VALUES (721,720,'enable','false');
-INSERT INTO Settings VALUES (722,720,'enableSearchPanel','false');
+INSERT INTO Settings VALUES (721,720,'enable','true');
+INSERT INTO Settings VALUES (722,720,'enableSearchPanel','true');
 
 INSERT INTO Settings VALUES (910,1,'metadata',NULL);
 INSERT INTO Settings VALUES (911,910,'enableSimpleView','true');
 INSERT INTO Settings VALUES (912,910,'enableIsoView','true');
-INSERT INTO Settings VALUES (913,910,'enableInspireView','false');
+INSERT INTO Settings VALUES (913,910,'enableInspireView','true');
 INSERT INTO Settings VALUES (914,910,'enableXmlView','true');
-INSERT INTO Settings VALUES (915,910,'defaultView','simple');
+INSERT INTO Settings VALUES (915,910,'defaultView','inspire');
 
 
 -- ======================================================================
