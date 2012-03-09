@@ -242,7 +242,7 @@
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
       <version>1.2-SNAPSHOT</version>
-      <classifier>1.5</classifier> <!-- customizzazione per compat jdk15 -->
+      <classifier>jdk1.5</classifier> <!-- customizzazione per compat jdk15 -->
     </dependency>
   
 	  <dependency>
