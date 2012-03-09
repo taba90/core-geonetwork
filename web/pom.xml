@@ -26,6 +26,14 @@
     </license>
   </licenses>
 
+  <!-- modifica per CSI-piemonte per compatibilita di print-lib verso jdk15 -->
+  <repositories>
+     <repository>
+     <id>geosolutions</id>
+     <name>GeoSolutions Repository</name>
+     <url>http://maven.geo-solutions.it</url>
+     </repository>
+  </repositories>
 
   <!-- FIXME set common dependencies to the root pom.xml  -->
   <dependencies>
@@ -166,10 +174,11 @@
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
-    <dependency>
+    <!-- rimozione jdbc mysql: customizzazione per compat jdk15 -->
+<!--    <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>ojdbc</groupId>
       <artifactId>ojdbc</artifactId>
@@ -233,6 +242,7 @@
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
       <version>1.2-SNAPSHOT</version>
+      <classifier>1.5</classifier> <!-- customizzazione per compat jdk15 -->
     </dependency>
   
 	  <dependency>
