@@ -3146,7 +3146,7 @@
                 <xsl:with-param name="schema" select="$schema"/>
             </xsl:apply-templates>
 
-            <xsl:if test="/root/gui/env/metadata/enableIsoView = 'true'">
+            <xsl:if test="/root/gui/env/metadata/enableIsoView = 'true' and string(/root/gui/session/profile)='Administrator'">
                 <xsl:call-template name="displayTab">
                     <xsl:with-param name="tab"     select="'groups'"/> <!-- just a non-existing tab -->
                     <xsl:with-param name="text"    select="/root/gui/strings/byGroup"/>
@@ -3175,8 +3175,8 @@
                 </xsl:call-template>
             </xsl:if>
 
-            <xsl:if test="/root/gui/config/metadata-tab/advanced">
-                <xsl:call-template name="displayTab">
+            <xsl:if test="/root/gui/config/metadata-tab/advanced and (string(/root/gui/session/profile)='Administrator' or string(/root/gui/session/profile)='UserAdmin')">
+                <xsl:call-template name="displayTab"> 
                     <xsl:with-param name="tab"     select="'packages'"/> <!-- just a non-existing tab -->
                     <xsl:with-param name="text"    select="/root/gui/strings/byPackage"/>
                     <xsl:with-param name="tabLink" select="''"/>

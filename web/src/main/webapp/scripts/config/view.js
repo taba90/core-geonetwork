@@ -214,14 +214,28 @@ ConfigView.prototype.setData = function(data)
 
 	$('localrating.enable').checked = data['LOCAL_RATING'] == 'true';
 	$('autofixing.enable').checked = data['AUTO_FIXING'] == 'true';
-    $('inspire.enable').checked = data['INSPIRE'] == 'true';
+    /*$('inspire.enable').checked = data['INSPIRE'] == 'true';
     $('inspire.enableSearchPanel').checked = data['INSPIRE_SEARCH_PANEL'] == 'true';
+    $('inspire.enableSearchPanel').disabled = true;
 
     $('metadata.enableSimpleView').checked = data['METADATA_SIMPLE_VIEW'] == 'true';
     $('metadata.enableIsoView').checked = data['METADATA_ISO_VIEW'] == 'true';
     $('metadata.enableInspireView').checked = data['METADATA_INSPIRE_VIEW'] == 'true';
     $('metadata.enableXmlView').checked = data['METADATA_XML_VIEW'] == 'true';
-    $('metadata.defaultView').value = data['METADATA_DEFAULT_VIEW'];
+    $('metadata.defaultView').value = data['METADATA_DEFAULT_VIEW'];*/
+    
+    /**/
+    $('inspire.enable').checked = 'true';
+    $('inspire.enable').disabled = true;
+    $('inspire.enableSearchPanel').checked = 'true';
+    $('inspire.enableSearchPanel').disabled = true;
+    $('metadata.enableSimpleView').checked = data['METADATA_SIMPLE_VIEW'] == 'true';
+    $('metadata.enableIsoView').checked = data['METADATA_ISO_VIEW'] == 'true';
+    $('metadata.enableInspireView').checked = 'true';
+    $('metadata.enableInspireView').disabled = true;
+    $('metadata.enableXmlView').checked = data['METADATA_XML_VIEW'] == 'true';
+    $('metadata.defaultView').value = 'inspire';
+    $('metadata.defaultView').disabled = true;
 
 	$('proxy.use') .checked   = data['PROXY_USE'] == 'true';
 	$('proxy.host').value     = data['PROXY_HOST'];

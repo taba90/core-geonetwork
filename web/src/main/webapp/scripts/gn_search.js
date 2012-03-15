@@ -86,7 +86,10 @@ function runSimpleSearch(type)
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
 	pars += fetchParam('hitsPerPage');
-	pars += fetchParam('output');
+	
+	// CSI
+	//pars += fetchParam('output');
+  pars += '&output=full';
 
 	if (type == "pdf")
        gn_searchpdf(pars);
@@ -120,8 +123,8 @@ function resetSimpleSearch()
     setParam('sortOrder',   '');
     setParam('hitsPerPage', '10');
     setParam('hitsPerPage_simple', '10');
-    setParam('output',      'full');
-    setParam('output_simple',      'full');
+    //setParam('output',      'full');
+    //setParam('output_simple',      'full');
 
 }
 
@@ -238,8 +241,11 @@ function runAdvancedSearch(type)
 	pars += fetchParam('title');
 	pars += fetchParam('abstract');
 	pars += fetchParam('themekey');
-	pars += fetchRadioParam('similarity');
-
+	
+	// CSI
+	//pars += fetchRadioParam('similarity');
+  pars += '&similarity=.8';
+	
 	var region = $('region').value;
 	if(region!="")
   {
@@ -277,7 +283,10 @@ function runAdvancedSearch(type)
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
 	pars += fetchParam('hitsPerPage');
-	pars += fetchParam('output');
+	
+	// CSI
+	//pars += fetchParam('output');
+  pars += '&output=full';
 
      //Inspire
     pars += fetchParam('inspireannex');
@@ -309,8 +318,11 @@ function resetAdvancedSearch()
 	setParam('title','');
 	setParam('abstract','');
 	setParam('themekey','');
-	var radioSimil = document.getElementsByName('similarity');
-	radioSimil[1].checked=true;
+	
+	// CSI
+	//var radioSimil = document.getElementsByName('similarity');
+	//radioSimil[1].checked=true;
+	
 	setParam('relation','overlaps');
 
     setParam('region',null);
@@ -345,8 +357,8 @@ function resetAdvancedSearch()
     setParam('sortOrder',   '');
     setParam('hitsPerPage', '10');
     setParam('hitsPerPage_simple', '10');
-    setParam('output',      'full');
-    setParam('output_simple',      'full');
+    //setParam('output',      'full');
+    //setParam('output_simple',      'full');
 
 
     // reset INSPIRE options
@@ -658,11 +670,21 @@ function gn_present(frompage, topage)
 	);
 }
 
-function gn_search_complete(req) {
+/*function gn_search_complete(req) {
     var rlist = $('resultList');
 
     rlist.innerHTML = req.responseText;
 
+    $('loadingMD').hide();
+}*/
+
+function gn_search_complete(req) {
+    var rlist = $('resultList');
+    
+    if(req.status==200 && req.readyState==4){
+      rlist.innerHTML = req.responseText;
+    }
+    
     $('loadingMD').hide();
 }
 
@@ -673,7 +695,8 @@ function gn_search_complete(req) {
 ********************************************************************/
 function gn_showSingleMetadataUUID(uuid)
 {
-   var pars = 'uuid=' + uuid + '&control&currTab=simple';
+   //var pars = 'uuid=' + uuid + '&control&currTab=simple';
+   var pars = 'uuid=' + uuid + '&control&currTab=inspire';
    gn_showSingleMet(pars);
 }
 

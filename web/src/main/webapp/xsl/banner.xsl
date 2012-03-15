@@ -9,13 +9,19 @@
 		<table width="100%">
 
 			<!-- title -->
-			<tr class="banner">
-				<td class="banner">
+			<tr>
+				<td>
+					<img src="{/root/gui/url}/images/csi/Banner_prova_GN.jpeg" alt="CSI Piemonte logo" />
+				</td>
+				<td align="right" style="vertical-align: bottom">
+					<img src="{/root/gui/url}/images/csi/regione_piemonte.jpg" alt="Regione Piemonte logo" align="middle"/>
+				</td>
+				<!--td class="banner">
 					<img src="{/root/gui/url}/images/header-left.jpg" alt="World picture" align="top" />
 				</td>
 				<td align="right" class="banner">
 					<img src="{/root/gui/url}/images/header-right.gif" alt="GeoNetwork opensource logo" align="top" />
-				</td>
+				</td-->
 			</tr>
 
 			<!-- buttons -->

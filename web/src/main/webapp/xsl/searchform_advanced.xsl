@@ -108,7 +108,7 @@
 					</select>
 				</div>
 				
-				<!-- output - - - - - - - - - - - - - - - - - - - - - - -->
+				<!-- output - - - - - - - - - - - - - - - - - - - - - - 
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/output"/></span>
 
@@ -122,7 +122,7 @@
 							</option>
 						</xsl:for-each>
 					</select>
-				</div>
+				</div> -->
 			</div>
 			
 			<!-- Restrictions -->
@@ -184,7 +184,7 @@
 				</xsl:if>
 					
 				<!-- Template -->
-				<xsl:if test="string(/root/gui/session/userId)!='' and /root/gui/services/service[@name='metadata.edit']">
+				<xsl:if test="string(/root/gui/session/userId)!='' and (string(/root/gui/session/profile)='Administrator' or string(/root/gui/session/profile)='Reviewer' or string(/root/gui/session/profile)='Editor') and /root/gui/services/service[@name='metadata.edit']">
 					<div class="row">
 						<span class="labelField"><xsl:value-of select="/root/gui/strings/kind"/></span>
 						
@@ -252,9 +252,9 @@
     <!-- INSPIRE search elements -->
     <div id="inspiresearchfields" style="display:none">
         <div> <!-- style="float:left;"-->
-            <div style="margin-bottom: 10px">  <!-- div row-->
-                <input type="checkbox" id="inspire" name="inspire"/><!--Alleen INSPIRE metadata--><xsl:value-of select="/root/gui/strings/inspire/what/l3"/>
-            </div>
+            <!--<div style="margin-bottom: 10px">   div row
+                <input type="checkbox" id="inspire" name="inspire"/><xsl:value-of select="/root/gui/strings/inspire/what/l3"/>
+            </div>-->
 
             <!-- div row-->
             <!--div class="row">
@@ -262,7 +262,7 @@
                 <input type="text" class="content" style="width:200px; !important" id="title" name="title" value=""/>
             </div-->
 
-            <div class="row">  <!-- div row-->
+            <!--<div class="row">   div row
                 <span class="labelField"><xsl:value-of select="/root/gui/strings/inspire/what/l6"/></span>
                 <select id="inspireannex" name="inspireannex" class="content" style="width:200px; !important" onchange="inspireAnnexChanged(this.value)">
                     <option value="" selected="selected"/>
@@ -270,7 +270,7 @@
                     <option value="ii"><xsl:value-of select="/root/gui/strings/inspire/what/l6"/> II</option>
                     <option value="iii"><xsl:value-of select="/root/gui/strings/inspire/what/l6"/> III</option>
                 </select>
-            </div>
+            </div>-->
 
             <div class="row">  <!-- div row-->
                 <span class="labelField"><!--Brontype--><xsl:value-of select="/root/gui/strings/inspire/what/l7"/></span>
@@ -672,7 +672,7 @@
 		</table>
 	</div>
 
-	<!-- Fuzzy search -->	
+	<!-- Fuzzy search 	
 	<div class="row">
 		<a onclick="showFields('fuzzy.img','fuzzy.td')" style="cursor:pointer;cursor:hand;">
 			<img id="fuzzy.img" src="{/root/gui/url}/images/plus.gif" alt="" />
@@ -712,7 +712,7 @@
 			</tr>
 		</table>	
 	
-	</div>
+	</div> -->
 </xsl:template>
 	
 	

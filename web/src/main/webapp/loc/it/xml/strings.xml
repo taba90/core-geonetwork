@@ -637,9 +637,9 @@
 	<siteId>ID del sito</siteId>
 	<sizeBytes>Dimensione (bytes)</sizeBytes>
 	<sortBy>Ordina per</sortBy>
-	<sortByType id="changeDate">Data di modifica</sortByType>
+	<sortByType id="changeDate">Data ultima modifica</sortByType>
 	<sortByType id="popularity">Popolarità</sortByType>
-	<sortByType id="rating">Valutazione</sortByType>
+	<sortByType id="rating">Voto</sortByType>
 	<sortByType id="relevance">Rilevanza</sortByType>
 	<sortByType id="title">Titolo</sortByType>
 	<southbc>Coordinata limite verso sud</southbc>
@@ -976,7 +976,7 @@ Questo elemento fornisce anche informazioni su eventuali tariffe richieste per a
             <l4>Nascondi opzioni INSPIRE</l4>
             <l5>Mostra opzioni INSPIRE</l5>
             <l6>Appendice</l6>
-            <l7>Tipologia della fonte</l7>
+            <l7>Tipo di risorsa</l7>
             <l8>Tutto</l8>
             <l9>Dataset e serie di dataset</l9>
             <l10>Servizi</l10>

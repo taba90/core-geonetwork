@@ -143,7 +143,7 @@
 				</div>
 				
 				<!-- output - - - - - - - - - - - - - - - - - - - - - - -->
-				<div class="row">  <!-- div row-->
+				 <!--<div class="row">  div row
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/output"/></span>
 					<select id="output_simple" size="1" class="content" onchange="$('output').value = this.options[this.selectedIndex].value">
 						<xsl:for-each select="/root/gui/strings/outputType">
@@ -155,7 +155,7 @@
 							</option>
 						</xsl:for-each>
 					</select>
-				</div>			
+				</div>		-->	
 			</div>
 		
 		</div>
