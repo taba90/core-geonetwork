@@ -108,7 +108,8 @@ td.banner {
 td.banner-menu {
 	font-size: 8pt;
 	color: #ffffff;
-	background: #064377;
+	/*background: #064377;*/
+	background:  #3D863F;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -121,7 +122,8 @@ td.banner-login {
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
-	background: #266397;
+	/*background: #266397;*/
+	background:  #82AB7F;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -228,7 +230,8 @@ td.green-content {
 
 td.blue-content {
 	color: #ffffff;
-	background: #266397;
+	/*background: #266397;*/
+	background: #3D863F;
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
