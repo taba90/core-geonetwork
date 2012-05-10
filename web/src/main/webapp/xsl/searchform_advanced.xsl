@@ -247,7 +247,7 @@
         INSPIRE
     ======================================= ===================== -->
 <xsl:template name="adv_inspire">
-    <h1 style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleInspire()" style="margin-right:2px"><img id="i_inspire" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a><xsl:value-of select="/root/gui/strings/inspire/what/l1"/></h1>
+    <h1 class="labelFieldSmall" style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleInspire()" style="margin-right:2px"><img id="i_inspire" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a><xsl:value-of select="/root/gui/strings/inspire/what/l1"/></h1>
 
     <!-- INSPIRE search elements -->
     <div id="inspiresearchfields" style="display:none">
@@ -541,7 +541,7 @@
 	======================================= ===================== -->
 	
 <xsl:template name="adv_what">
-	<h1 style="margin-bottom:5px"><xsl:value-of select="/root/gui/strings/what"/></h1>
+	<h1 class="labelFieldSmall" style="margin-bottom:5px"><xsl:value-of select="/root/gui/strings/what"/></h1>
 	
 	<!-- Either Of The Words -->	
 	<div class="row">  <!-- div row-->
@@ -722,7 +722,7 @@
 	
 <xsl:template name="adv_where">
 
-	<h1 style="margin-bottom:5px"><xsl:value-of select="/root/gui/strings/where"/></h1>
+	<h1 class="labelFieldSmall" style="margin-bottom:5px"><xsl:value-of select="/root/gui/strings/where"/></h1>
 	
 	<xsl:comment>MINIMAP</xsl:comment>
 	
@@ -829,7 +829,7 @@
 	============================================================= -->
 
 <xsl:template name="adv_when">
-	<h1 style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleWhen()" style="margin-right:2px"><img id="i_when" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt=""/></a><xsl:value-of select="/root/gui/strings//when"/></h1>
+	<h1 class="labelFieldSmall" style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleWhen()" style="margin-right:2px"><img id="i_when" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt=""/></a><xsl:value-of select="/root/gui/strings//when"/></h1>
 	
 	<div id="whensearchfields" style="display:none">
 		<div class="row">

@@ -3,6 +3,8 @@
 
 	<xsl:import href="main.xsl"/>
 
+	<xsl:include href="metadata-edit-banner.xsl"/>
+	
 	<!--
 	main page
 	-->
@@ -26,6 +28,7 @@
 					
 					<!-- content -->
 					<tr><td>
+					    <xsl:call-template name="metadatabanner"/>
 						<xsl:call-template name="content"/>
 					</td></tr>
 				</table>

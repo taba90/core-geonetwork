@@ -29,7 +29,7 @@
               <script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.libs.js"></script>      
             </xsl:otherwise>
         </xsl:choose>
-    
+
 		<xsl:call-template name="geoHeader"/>
 		
 		<!-- Required by keyword selection panel -->
@@ -140,6 +140,8 @@
 		<xsl:variable name="id"><xsl:copy-of select="/root/request/id"/></xsl:variable>
 		<xsl:variable name="urlWMS"><xsl:copy-of select="/root/request/url"/></xsl:variable>
 		<xsl:variable name="typeWMS"><xsl:copy-of select="/root/request/type"/></xsl:variable>
+		
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
 		
 		<script type="text/javascript" language="JavaScript1.2">
 
@@ -375,6 +377,7 @@
             
 			function collapseMap(pnl) {
 				Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.innerHTML = '<xsl:value-of select="/root/gui/strings/showMap"/>';
+				Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.style.color = '#1E800C';
 			}
 			
 			function expandMap(pnl) {

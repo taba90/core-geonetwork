@@ -224,26 +224,28 @@
 					
 					
 					<!-- personal info services -->
-					<xsl:variable name="persInfoServices">
-						<xsl:if test="/root/gui/services/service/@name='user.pwupdate'">
+					<xsl:if test="string(/root/gui/session/profile)='Administrator'">
+						<xsl:variable name="persInfoServices">
+							<xsl:if test="/root/gui/services/service/@name='user.pwupdate'">
+								<tr>
+									<td class="padded"><a href="{/root/gui/locService}/user.pwedit?id={/root/gui/session/userId}"><xsl:value-of select="/root/gui/strings/userPw"/></a></td>
+									<td class="padded"><xsl:value-of select="/root/gui/strings/userPwDes"/></td>
+								</tr>
+							</xsl:if>
+							<!--xsl:if test="/root/gui/services/service/@name='user.infoupdate'">
+								<tr>
+									<td class="padded"><a href="{/root/gui/locService}/user.infoedit?id={/root/gui/session/userId}"><xsl:value-of select="/root/gui/strings/userInfo"/></a></td>
+									<td class="padded"><xsl:value-of select="/root/gui/strings/userInfoDes"/></td>
+								</tr>
+							</xsl:if-->
+						</xsl:variable>
+						<xsl:if test="normalize-space($persInfoServices)">
 							<tr>
-								<td class="padded"><a href="{/root/gui/locService}/user.pwedit?id={/root/gui/session/userId}"><xsl:value-of select="/root/gui/strings/userPw"/></a></td>
-								<td class="padded"><xsl:value-of select="/root/gui/strings/userPwDes"/></td>
+								<td colspan="2"><b><xsl:value-of select="/root/gui/strings/persInfo"/></b></td>
 							</tr>
+							<xsl:copy-of select="$persInfoServices"/>
+							<tr><td class="spacer"/></tr>
 						</xsl:if>
-						<xsl:if test="/root/gui/services/service/@name='user.infoupdate'">
-							<tr>
-								<td class="padded"><a href="{/root/gui/locService}/user.infoedit?id={/root/gui/session/userId}"><xsl:value-of select="/root/gui/strings/userInfo"/></a></td>
-								<td class="padded"><xsl:value-of select="/root/gui/strings/userInfoDes"/></td>
-							</tr>
-						</xsl:if>
-					</xsl:variable>
-					<xsl:if test="normalize-space($persInfoServices)">
-						<tr>
-							<td colspan="2"><b><xsl:value-of select="/root/gui/strings/persInfo"/></b></td>
-						</tr>
-						<xsl:copy-of select="$persInfoServices"/>
-						<tr><td class="spacer"/></tr>
 					</xsl:if>
 					
 					<!-- administration services -->
@@ -342,10 +344,12 @@
                         </xsl:if>
 					</xsl:if>
 					
-					<tr>
-						<td class="padded"><a href="{/root/gui/locService}/test.csw"><xsl:value-of select="/root/gui/strings/cswTest"/></a></td>
-						<td class="padded"><xsl:value-of select="/root/gui/strings/cswTestDesc"/></td>
-					</tr>
+					<xsl:if test="string(/root/gui/session/profile)='Administrator'">
+						<tr>
+							<td class="padded"><a href="{/root/gui/locService}/test.csw"><xsl:value-of select="/root/gui/strings/cswTest"/></a></td>
+							<td class="padded"><xsl:value-of select="/root/gui/strings/cswTestDesc"/></td>
+						</tr>
+					</xsl:if>
 	
                     <!-- Sample metadata -->
                     <xsl:if test="/root/gui/services/service/@name='metadata.samples.add'">

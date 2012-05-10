@@ -55,7 +55,7 @@
 			<body onload="init();">
 				<div class="test-head">
 					<div class="test-head-logo">
-						<img src="../../images/header-right.gif"/>
+						<img src="{/root/gui/url}/images/csi/regione_piemonte.jpg"/>
 					</div>
 					<div class="test-head-text">
 						<h1>

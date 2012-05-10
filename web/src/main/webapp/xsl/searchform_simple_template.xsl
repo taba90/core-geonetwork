@@ -16,7 +16,7 @@
 		
 			<!-- Where --> 
 			<div class="row" style="margin-top:10px">
-				<h1 class="labelField"><xsl:value-of select="/root/gui/strings/where"/></h1>
+				<h1 class="labelFieldSmall"><xsl:value-of select="/root/gui/strings/where"/></h1>
 			
 				<!-- Search map container -->
 				<div id="ol_minimap1" style="margin-left: 60px; margin-top:5px"></div>
@@ -34,7 +34,7 @@
 				<input type="hidden" class="content" id="relation" name="relation" size="7"
 					value="overlaps"/-->
 							
-				<div style="margin-left: 60px; margin-top:5px">
+				<div style="margin-top:5px">
 					<!-- Region -->
 					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearchSimple();">
 							<option value="">
