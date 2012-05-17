@@ -16,10 +16,10 @@
 				<table width="100%" height="100%">
 					<tr>
             <td>
-              <img src="{/root/gui/url}/images/csi/Banner_prova_GN.jpeg" alt="CSI Piemonte logo" />
+              <img src="{/root/gui/url}/images/csi/banner1.jpg" alt="CSI Piemonte logo" />
             </td>
             <td align="right" style="vertical-align: bottom">
-              <img src="{/root/gui/url}/images/csi/regione_piemonte.jpg" alt="Regione Piemonte logo" align="middle"/>
+              <img src="{/root/gui/url}/images/csi/banner2.jpg" alt="Regione Piemonte logo" align="middle"/>
             </td>
 						<!--td class="banner">
 							<img src="{/root/gui/url}/images/header-left.jpg" alt="GeoNetwork opensource" align="top" />

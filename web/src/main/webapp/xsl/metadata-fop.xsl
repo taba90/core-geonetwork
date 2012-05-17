@@ -358,7 +358,7 @@
 							<fo:external-graphic>
 								<xsl:attribute name="src">
                                 url('<xsl:value-of
-										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/Banner_prova_GN.jpeg')" />')"
+										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/banner1.jpg')" />')"
                                     </xsl:attribute>
 							</fo:external-graphic>
 					   </fo:block>
@@ -368,7 +368,7 @@
                     		<fo:external-graphic>
 								<xsl:attribute name="src">
                                 url('<xsl:value-of
-										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/regione_piemonte.jpg')" />')"
+										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/banner2.jpg')" />')"
                                     </xsl:attribute>
 
 							</fo:external-graphic>

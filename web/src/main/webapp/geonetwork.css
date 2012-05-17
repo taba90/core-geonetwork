@@ -1,3 +1,9 @@
+/*
+Used to set color for the panels header inside the viewer
+*/
+.x-panel-header-text {
+	color:#1E800C;
+}
 
 /*******************************************************************************
 general
@@ -139,6 +145,7 @@ a.banner {
 	/*color: #ffffff;*/
 	color: #000000;
 	text-decoration: none;
+	font-weight: bold;
 }
 
 span.banner {

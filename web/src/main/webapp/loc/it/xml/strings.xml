@@ -566,12 +566,12 @@
 	<protocolChoice show="-" value="UKST">Tipo di servizio sconosciuto</protocolChoice>
 	
 	<!-- INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service type -->
-	<protocolChoice show="y" value="discovery">INSPIRE Servizio di ricerca (discovery)</protocolChoice>
-	<protocolChoice show="y" value="view">INSPIRE Servizio di consultazione (view)</protocolChoice>
-	<protocolChoice show="y" value="download">INSPIRE Servizio di scaricamento (download)</protocolChoice>
-	<protocolChoice show="y" value="transformation">INSPIRE Servizio di conversione (transformation)</protocolChoice>
-	<protocolChoice show="y" value="invoke">INSPIRE Servizio di richiesta dei servizi di dati territoriali (invoke)</protocolChoice>
-	<protocolChoice show="y" value="other">INSPIRE Altri servizi (other)</protocolChoice>
+	<protocolChoice show="y" value="discovery">Servizio di ricerca (discovery)</protocolChoice>
+	<protocolChoice show="y" value="view">Servizio di consultazione (view)</protocolChoice>
+	<protocolChoice show="y" value="download">Servizio di scaricamento (download)</protocolChoice>
+	<protocolChoice show="y" value="transformation">Servizio di conversione (transformation)</protocolChoice>
+	<protocolChoice show="y" value="invoke">Servizio di richiesta dei servizi di dati territoriali (invoke)</protocolChoice>
+	<protocolChoice show="y" value="other">Altri servizi (other)</protocolChoice>
 
 	<pubdate>Data di pubblicazione</pubdate>
 	<publicationDate>Data di pubblicazione</publicationDate>
