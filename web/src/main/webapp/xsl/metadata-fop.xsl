@@ -352,27 +352,16 @@
 				column-width="proportional-column-width(1)" />
 			<fo:table-body>
 				<fo:table-row>
-					<fo:table-cell display-align="left" background-color="#064377">
+					<fo:table-cell display-align="left" background-color="#FFFFFF">
 						<fo:block text-align="left">
 							<!-- FIXME -->
 							<fo:external-graphic>
 								<xsl:attribute name="src">
                                 url('<xsl:value-of
-										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/banner1.jpg')" />')"
+										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/banner_a4_stampa_ricerca.jpg')" />')"
                                     </xsl:attribute>
 							</fo:external-graphic>
 					   </fo:block>
-					</fo:table-cell>
-					<fo:table-cell display-align="right" background-color="#064377">
-					   <fo:block text-align="right">
-                    		<fo:external-graphic>
-								<xsl:attribute name="src">
-                                url('<xsl:value-of
-										select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url,'/images/csi/fop/banner2.jpg')" />')"
-                                    </xsl:attribute>
-
-							</fo:external-graphic>
-						</fo:block>
 					</fo:table-cell>
 				</fo:table-row>
 			</fo:table-body>

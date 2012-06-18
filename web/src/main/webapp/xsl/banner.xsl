@@ -100,17 +100,17 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					
-<!--					<xsl:choose>
+					<xsl:choose>
 						<xsl:when test="/root/gui/reqService='help'">
 							<font class="banner-active"><xsl:value-of select="/root/gui/strings/help"/></font>
 						</xsl:when>
 						<xsl:otherwise>
 							<a class="banner" href="{/root/gui/locService}/help"><xsl:value-of select="/root/gui/strings/help"/></a>
 						</xsl:otherwise>
-					</xsl:choose> -->
+					</xsl:choose> 
 
 					<!-- Help section to be displayed according to GUI language -->
-					<xsl:choose>
+					<!--<xsl:choose>
 						<xsl:when test="/root/gui/language='fr'">
 							<a class="banner" href="{/root/gui/url}/docs/fra/users" target="_blank"><xsl:value-of select="/root/gui/strings/help"/></a>
 							<span class="banner">|</span>
@@ -119,7 +119,7 @@
 							<a class="banner" href="{/root/gui/url}/docs/eng/users" target="_blank"><xsl:value-of select="/root/gui/strings/help"/></a>
 							<span class="banner">|</span>
 						</xsl:otherwise>
-					</xsl:choose>
+					</xsl:choose>-->
 					
 				</td>
 				<td align="right" class="banner-menu" width="610px">
