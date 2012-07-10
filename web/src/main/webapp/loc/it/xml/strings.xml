@@ -723,6 +723,7 @@
 	<inspireSection>
 		<identification>
 			<title>Identificazione</title>
+			<responsible>Responsabile dei dati</responsible>
 			<help>
 				<div>
 				Saranno forniti i seguenti elementi di metadato:
@@ -746,7 +747,8 @@
 			</help>
 		</identification>
 		<classification>
-			<title>Classificazione di dati geografici e servizi</title>
+			<!--title>Classificazione di dati geografici e servizi</title-->
+			<title>Classificazione di dati geografici</title>
 			<help>
 				<div>
 					<ul>
@@ -773,6 +775,7 @@
 			</help>
 		</keywords>
 		<geoloc>
+		    <geogroup>Estenzione dei dati</geogroup>
 			<title>Localizzazione geografica</title>
 			<help>
 				<div>
@@ -870,8 +873,14 @@ Questo elemento fornisce anche informazioni su eventuali tariffe richieste per a
 		</org>
 		<metadata>
 			<title>Metadati</title>
+			<contact>Contatto</contact>
 			<help>Agli effetti dell'articolo 5(1) della Direttiva 2007/2/EC.</help>
 		</metadata>
+		<distribution>
+			<title>Informazioni sulla distribuzione</title>
+			<distributor>Distributore</distributor>
+			<help>Informazioni sul distributore e su come ottenere la risorsa</help>
+		</distribution>
 	</inspireSection>
 	<inspireAddConformity>Aggiungi la sezione di conformità ad INSPIRE</inspireAddConformity>
 	<xsdError>Errore di validazione XSD</xsdError>
