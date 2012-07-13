@@ -672,13 +672,21 @@
 		<!--                   Login services                              -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+		<!-- page with login controls  - - - - - - - - - - - - - - - - - - -->
+
+		<service name="main.login">
+			<output sheet="login.xsl"/>
+		</service>
+
+		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 		<service name="user.login">
 			<class name=".services.login.Login" />
 
 			<output forward="main.home" />
 
-			<error id="user-login" sheet="error.xsl" statusCode="401">
-				<xml name="error" file="xml/login-error.xml" />
+			<error id="user-login" statusCode="401" sheet="login.xsl">
+                <xml name="error" file="xml/login-error.xml" />
 			</error>
 		</service>
 

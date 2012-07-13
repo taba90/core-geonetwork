@@ -53,6 +53,7 @@
 						</xsl:choose>
 						
 					</xsl:if>
+<!--
 					<xsl:choose>
 						<xsl:when test="/root/gui/reqService='feedback'">
 							<font class="banner-active"><xsl:value-of select="/root/gui/strings/contactUs"/></font>
@@ -74,6 +75,7 @@
 							<span class="banner">|</span>
 						</xsl:otherwise>
 					</xsl:choose>
+-->
 					<xsl:if test="string(/root/gui/session/userId)='' and
 								     string(/root/gui/env/userSelfRegistration/enable)='true'">
 					
@@ -181,14 +183,15 @@
 									<a class="banner" href="{/root/gui/env/shib/path}">
 										<xsl:value-of select="/root/gui/strings/shibLogin"/>
 									</a>
-									|
+<!--									|-->
 								</xsl:if>
-								<input type="submit" style="display: none;" />
+<!--								<input type="submit" style="display: none;" />
 								<xsl:value-of select="/root/gui/strings/username"/>
 								<input class="banner" type="text" id="username" name="username" size="10" onkeypress="return entSub('login')"/>
 								<xsl:value-of select="/root/gui/strings/password"/>
 								<input class="banner" type="password" id="password" name="password" size="10" onkeypress="return entSub('login')"/>
 								<button class="banner" onclick="goSubmit('login')"><xsl:value-of select="/root/gui/strings/login"/></button>
+-->
 							</form>
 						</td>
 					</xsl:otherwise>
