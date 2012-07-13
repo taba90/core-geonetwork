@@ -13,7 +13,7 @@
 	<xsl:include href="metadata-controls.xsl"/>
 	
 	<xsl:variable name="flat" select="/root/gui/config/metadata-tab/*[name(.)=$currTab]/@flat"/>
-	 
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- main schema switch -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -361,16 +361,17 @@
 				<xsl:with-param name="schema" select="$schema"/>
 			</xsl:call-template>
 		</xsl:param>
-		<xsl:param name="content">
-			<xsl:call-template name="getContent">
-				<xsl:with-param name="schema" select="$schema"/>
-				<xsl:with-param name="edit"   select="$edit"/>
-			</xsl:call-template>
-		</xsl:param>
 		<xsl:param name="helpLink">
 			<xsl:call-template name="getHelpLink">
 				<xsl:with-param name="name"   select="name(.)"/>
 				<xsl:with-param name="schema" select="$schema"/>
+			</xsl:call-template>
+		</xsl:param>
+		<xsl:param name="content">
+			<xsl:call-template name="getContent">
+				<xsl:with-param name="schema" select="$schema"/>
+				<xsl:with-param name="edit"   select="$edit"/>
+				<xsl:with-param name="hLink"   select="$helpLink"/>
 			</xsl:call-template>
 		</xsl:param>
 		
@@ -465,21 +466,92 @@
 
 		<xsl:variable name="id" select="geonet:element/@uuid"/>
 		<xsl:variable name="addLink">
-			<xsl:call-template name="addLink">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))">
+				<xsl:call-template name="addLink">
+					<xsl:with-param name="id" select="$id"/>
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="addXMLFragment">
 			<xsl:call-template name="addXMLFragment">
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
+
 		<xsl:variable name="removeLink">
-			<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			<!-- This test to visualize or not the remove button for the form fields -->
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:hierarchyLevel|')) 
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification|')) 
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:presentationForm|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails|')) 
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:description|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:parentIdentifier|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))">
+				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="upLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.up',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@up='true')">
@@ -492,7 +564,8 @@
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-<!-- xsd and schematron validation info -->
+		
+        <!-- xsd and schematron validation info -->
 		<xsl:variable name="validationLink">
 			<xsl:variable name="ref" select="concat('#_',geonet:element/@ref)"/>
 			<xsl:call-template name="validationLink">
@@ -674,18 +747,46 @@
 		<xsl:param name="helpLink"/>
 		
 		<xsl:variable name="id" select="geonet:element/@uuid"/>
+		
 		<xsl:variable name="addLink">
-			<xsl:call-template name="addLink">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact|'))
+						  and  
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))">		
+				<xsl:call-template name="addLink">
+					<xsl:with-param name="id" select="$id"/>
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="addXMLFragment">
 			<xsl:call-template name="addXMLFragment">
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="removeLink">
-			<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|'))
+			              and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|'))
+						  and  
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|'))
+						  and  
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))">
+				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
@@ -702,7 +803,8 @@
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-<!-- xsd and schematron validation info -->
+        
+		<!-- xsd and schematron validation info -->
 		<xsl:variable name="validationLink">
 			<xsl:variable name="ref" select="concat('#_',geonet:element/@ref)"/>
 			<xsl:call-template name="validationLink">
@@ -1425,9 +1527,11 @@
 	<xsl:template name="getContent">
 		<xsl:param name="schema"/>
 		<xsl:param name="edit"   select="false()"/>
+		<xsl:param name="hLink"/>		
 		
 		<xsl:choose>
-			<xsl:when test="$edit=true()">
+			<!-- MODIFIED for CSI in order to disable the thesaurus editing (added a specific condition) -->
+			<xsl:when test="$edit=true() and not(contains($hLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))">
 				<xsl:apply-templates mode="elementEP" select="@*">
 					<xsl:with-param name="schema" select="$schema"/>
 					<xsl:with-param name="edit"   select="true()"/>

@@ -1176,7 +1176,8 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
             available</description>
     </element>
     <element name="gmd:level" id="139.0">
-        <label>Livello</label>
+        <!--label>Livello</label-->
+		<label>Livello di qualità</label>
         <description>Livello gerarchico dei dati</description>
         <condition>obbligatorio</condition>
     </element>
@@ -1434,7 +1435,8 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
         <description>Identificatore univoco del file di metadati di rango superiore (se esistente)</description>
     </element>
     <element name="gmd:pass" id="132.0">
-        <label>Pass</label>
+        <!--label>Pass</label-->
+		<label>Grado</label>
         <description>Indicazione del risultato della conformità dove 0 = fail and 1 = pass</description>
         <condition>obbligatorio</condition>
     </element>
@@ -1880,7 +1882,8 @@ e di trasformazione.</label>
         <condition>obbligatorio</condition>
     </element>
     <element name="gmd:verticalElement" id="338.0">
-        <label>Elemento verticale</label>
+        <!--label>Elemento verticale</label-->
+		<label>Estensione verticale</label>
         <description>Componenti verticali dell’estensione dei dati</description>
         <condition>conditional</condition>
     </element>
