@@ -681,7 +681,10 @@
 			</xsl:apply-templates>
 			
 			<!-- Metadata  (ADDED for CSI ) -->
-			<!-- ../../gmd:characterSet|
+			<!-- 
+				 ../../gmd:language|
+				 ../../geonet:child[string(@name)='language']|  REMOVED
+				 ../../gmd:characterSet|
 				 ../../geonet:child[string(@name)='characterSet']| REMOVED
 				 ../../gmd:parentIdentifier|
 				 ../../geonet:child[string(@name)='parentIdentifier']| ADDED -->
@@ -689,13 +692,12 @@
 				<xsl:with-param name="title"
 					select="string(/root/gui/*[name(.)=$schema]/element[@name='gmd:MD_Metadata']/label)" />
 				<xsl:with-param name="content">
+					
 					<xsl:apply-templates mode="elementEP"
 						select="
 						../../gmd:fileIdentifier|
-						../../gmd:language|
 						../../gmd:metadataStandardName|
 						../../gmd:metadataStandardVersion|
-						../../geonet:child[string(@name)='language']|
 						../../gmd:parentIdentifier|
 						../../geonet:child[string(@name)='parentIdentifier']|
 						../../gmd:dateStamp|
@@ -712,6 +714,14 @@
 						<xsl:with-param name="schema" select="$schema" />
 						<xsl:with-param name="edit" select="$edit" />
 					</xsl:apply-templates> -->
+					
+					<!-- Posizionato qui per problemi di rimozione campo TODO: FIX ME!-->
+					<xsl:apply-templates mode="elementEP"
+						select="
+						../../gmd:language">
+						<xsl:with-param name="schema" select="$schema" />
+						<xsl:with-param name="edit" select="$edit" />
+					</xsl:apply-templates>
 					
 					<!-- Contant info (MODIFIED for CSI) -->
 					<xsl:call-template name="complexElementGuiWrapper">

@@ -149,9 +149,15 @@ function doResetCommonsAction(action, name, licenseurl, type, id, ref)
 }
 
 function getControlsFromElement(el) {
-    var id = el.getAttribute('id');
-	elButtons = $('buttons_'+id);
-	return elButtons.immediateDescendants();
+    elButtons = null;
+	
+    if(el){
+	    var id = el.getAttribute('id');
+		elButtons = $('buttons_'+id);
+		elButtons = elButtons.immediateDescendants();
+	}
+
+	return elButtons;
 }
 
 function topElement(el) 

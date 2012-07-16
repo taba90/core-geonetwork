@@ -108,8 +108,10 @@
 
 		<service name="metadata.elem.delete">
 			<class name=".services.metadata.DeleteElement"/>
-
-			<output sheet="metadata-edit-embedded.xsl">
+			
+			<!-- MODIFIED for CSI -->
+			<!--output sheet="metadata-edit-embedded.xsl"-->
+			<output sheet="metadata-edit-embedded-delete.xsl">
 				<call name="currTab"       class =".guiservices.util.GetCurrentMDTab"/>
 				<call name="position" 		 class =".guiservices.util.GetPositionMD"/>
 				<call name="groups"        class =".guiservices.groups.GetMine"/>
