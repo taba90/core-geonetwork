@@ -2364,11 +2364,11 @@ e di trasformazione.</label>
     <element name="gmd:verticalCRS">
         <label>CRS verticale</label>
         <description>Fornisce informazioni sull'origine da cui vengono misurati i valori delle quote massime e minime</description>
-		<helper>
+		<!--helper>
 			<option value="EPSG:4326">EPSG::4326</option>
 			<option value="EPSG:3003">EPSG::3003</option>
 			<option value="EPSG:3003">EPSG::4979</option>
-		</helper>
+		</helper-->
     </element>
     <element name="gmx:FileName">
         <label>Nome del file</label>

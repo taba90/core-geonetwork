@@ -984,7 +984,7 @@
 						</xsl:if>
 						<xsl:choose>
 							<xsl:when test="$helpLink!=''">
-								<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;"><xsl:value-of select="$title"/>
+								<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="font-weight: bold; color: #000000; font-size: 12px; cursor:help;"><xsl:value-of select="$title"/>
 								</span>
 								<!-- Only show asterisks on simpleElements - user has to know
 									which ones to fill out 

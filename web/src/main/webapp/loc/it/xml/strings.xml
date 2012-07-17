@@ -635,7 +635,8 @@
 	<server>Server</server>
 	<setAll>Imposta tutto</setAll>
 	<setOnSave>Il valore verrà impostato quando il record verrà salvato</setOnSave>
-	<shibLogin>Login Shibboleth</shibLogin>
+	<shibLogin>Accesso Riservato</shibLogin>
+	<!--shibLogin>Login Shibboleth</shibLogin-->
 	<show>Metadati</show>
 	<showFileDownloadSummary>Mostra il selezionatore di file da scaricare</showFileDownloadSummary>
 	<simple>Ricerca semplice</simple>

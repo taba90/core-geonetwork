@@ -141,6 +141,12 @@ td.banner-login {
 	vertical-align: middle
 }
 
+td.banner-login a{
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: bold;
+}
+
 a.banner {
 	/*color: #ffffff;*/
 	color: #000000;
@@ -152,6 +158,7 @@ span.banner {
 	color: #000000;
 	text-decoration: none;
 }
+
 
 a.banner:hover
 {
@@ -345,11 +352,11 @@ legend.block-legend {
 fieldset.metadata-block {
 	padding: 5px;
     /*border: 1px #266397 solid;*/
-	border: 1px #000000 solid;
+	border: 2px #1E800C solid;
 }
 
 fieldset.metadata-block * fieldset {
-    border: 1px #000000 solid;
+    border: 2px #000000 solid;
 }
 
 /*******************************************************************************

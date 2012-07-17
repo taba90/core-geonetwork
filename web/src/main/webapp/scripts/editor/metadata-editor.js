@@ -162,8 +162,10 @@ function getControlsFromElement(el) {
 
 function topElement(el) 
 {
-	if (el.previous() == undefined) return true;
-	else return (!isSameElement(el.previous(),el));
+    if (el != null){
+		if (el.previous() == undefined) return true;
+		else return (!isSameElement(el.previous(),el));
+    }else return false
 }
 
 function bottomElement(el) 
@@ -278,12 +280,23 @@ function swapControls(el1,el2)
     var el1Descs = getControlsFromElement(el1);
 	var el2Descs = getControlsFromElement(el2);
 	for (var index = 0; index < el1Descs.length; ++index) {
-	 var visible1 = el1Descs[index].visible();
-	 var visible2 = el2Descs[index].visible();
-	 if (visible1) el2Descs[index].show();
-	 else el2Descs[index].hide();
-	 if (visible2) el1Descs[index].show();
-	 else el1Descs[index].hide();
+	 var visible1 = null;
+	 if(el1Descs != null)
+		visible1 = el1Descs[index].visible();
+		
+	var visible2 = null;	
+	 if(el2Descs != null)
+		visible2 = el2Descs[index].visible();
+	
+     if(el2Descs != null){
+	 	 if (visible1) el2Descs[index].show();
+		else el2Descs[index].hide();
+	 }	
+
+	 if(el1Descs != null){
+		if (visible2) el1Descs[index].show();
+		else el1Descs[index].hide();
+	 }
 	}
 }
 

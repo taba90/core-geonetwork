@@ -17,11 +17,15 @@
 			
 			<!-- MODIFIED for CSI in order to enable de possibility to choice the type of the added element -->
 			<xsl:choose>
-				<xsl:when test="name(.)!='gmd:presentationForm' 
+				<xsl:when test="name(.)!='gmd:presentationForm'   
 					and 
 					name(.)!='gmd:voice'
 					and 
 					name(.)!='gmd:electronicMailAddress'
+					and 
+					name(.)!='gmd:facsimile'
+					and 
+					name(.)!='gmd:deliveryPoint'
 					and 
 					name(.)!='gmd:keyword'
 					and 
