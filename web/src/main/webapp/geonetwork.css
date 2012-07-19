@@ -356,7 +356,7 @@ fieldset.metadata-block {
 }
 
 fieldset.metadata-block * fieldset {
-    border: 2px #000000 solid;
+    border: 2px #9FC997 solid;
 }
 
 /*******************************************************************************
@@ -1103,7 +1103,8 @@ span.inspireThemeElement {
 }
 
 .xlinked {
-     font-style: italic;
+     /*font-style: italic;*/
+	 font-style: Verdana;
 }
 
 /*******************************

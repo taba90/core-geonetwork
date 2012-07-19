@@ -218,6 +218,11 @@
 					document.search.submit();
 			}
 
+			//
+			// Warkaround becose the dom is loaded after the JS code and OL make and error
+			//
+			document.namespaces;
+			
 			Ext.onReady(function(){
                 $("loading").hide();
 

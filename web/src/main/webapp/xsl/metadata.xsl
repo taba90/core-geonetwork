@@ -290,24 +290,47 @@
 			</xsl:call-template>
 		</xsl:param>
 		
-		<xsl:choose>
-			<xsl:when test="$edit=true()">
-				<xsl:call-template name="editSimpleElement">
-					<xsl:with-param name="schema"   select="$schema"/>
-					<xsl:with-param name="title"    select="$title"/>
-					<xsl:with-param name="text"     select="$text"/>
-					<xsl:with-param name="helpLink" select="$helpLink"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="showSimpleElement">
-					<xsl:with-param name="schema"   select="$schema"/>
-					<xsl:with-param name="title"    select="$title"/>
-					<xsl:with-param name="text"     select="$text"/>
-					<xsl:with-param name="helpLink" select="$helpLink"/>
-				</xsl:call-template>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:if test="contains($helpLink, '|gmd:MD_Metadata')
+			or
+			contains($helpLink, 'gmd:electronicMailAddress')
+			or
+			contains($helpLink, 'gmd:voice')
+			or
+			contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|')
+			or
+			contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role|')
+			or
+			contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|')
+			or
+			contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role|')		
+			or
+			contains($helpLink, 'gmd:URL')
+			or
+			contains($helpLink, 'gmd:keyword')
+			or
+			contains($helpLink, 'gmd:spatialRepresentationType')
+			or
+			contains($helpLink, 'gmd:presentationForm')">
+			<xsl:choose>
+				<xsl:when test="$edit=true()">
+					<xsl:call-template name="editSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="showSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>	
+		
 	</xsl:template>
 
 	<xsl:template mode="simpleElement" match="@*">
@@ -476,9 +499,17 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
 				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
 				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
+				and
+				not(contains($helpLink, '|gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))">
 				<xsl:call-template name="addLink">
@@ -492,6 +523,8 @@
 			</xsl:call-template>
 		</xsl:variable>
 
+<!--		<xsl:variable name="textnode" select="exslt:node-set($text)"/>-->
+		
 		<xsl:variable name="removeLink">
 			<!-- This test to visualize or not the remove button for the form fields -->
 			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:hierarchyLevel|')) 
@@ -506,9 +539,15 @@
 				and
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))	
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
 				and 
@@ -524,9 +563,15 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
 				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
@@ -542,9 +587,10 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) 
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))">
+			<!--xsl:if test="count($textnode/*) &gt; 0"-->
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -767,8 +813,11 @@
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
+		
 		<xsl:variable name="removeLink">
 			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|'))
+						  and
+						  not(contains($helpLink, 'gmd:MD_Keywords'))
 			              and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|'))
 						  and
@@ -791,12 +840,14 @@
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="upLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.up',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@up='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="downLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.down',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@down='true')">
@@ -854,72 +905,92 @@
 		<xsl:variable name="isXLinked" select="count(ancestor-or-self::node()[@xlink:href]) > 0" />
 		<xsl:variable name="geonet" select="starts-with(name(.),'geonet:')"/>
 
-		<tr id="{$id}" type="metadata">
-			<xsl:if test="not($visible)">
-				<xsl:attribute name="style">
-					display:none;
-				</xsl:attribute>
-			</xsl:if>
-			<th class="md" width="20%" valign="top">
-				<xsl:choose>
-					<xsl:when test="$isXLinked">
-						<xsl:attribute name="class">md xlinked</xsl:attribute>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:attribute name="class">md</xsl:attribute>
-					</xsl:otherwise>
-				</xsl:choose>
-			
-				<xsl:choose>
-					<xsl:when test="$helpLink!=''">
-						<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
-							<xsl:value-of select="$title"/>
-						</span>
-						<xsl:call-template name="asterisk">
-							<xsl:with-param name="link" select="$removeLink"/>
-							<xsl:with-param name="edit" select="$edit"/>
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="showTitleWithTag">
-							<xsl:with-param name="title" select="$title"/>
-						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:text>&#160;</xsl:text>
-				<xsl:if test="$edit and not($isXLinked)">
-					<xsl:call-template name="getButtons">
-						<xsl:with-param name="addLink" select="$addLink"/>
-						<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
-						<xsl:with-param name="removeLink" select="$removeLink"/>
-						<xsl:with-param name="upLink" select="$upLink"/>
-						<xsl:with-param name="downLink" select="$downLink"/>
-						<xsl:with-param name="validationLink" select="$validationLink"/>
-						<xsl:with-param name="id" select="$id"/>
-					</xsl:call-template>
+		<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem|'))">
+			<tr id="{$id}" type="metadata">
+				<xsl:if test="not($visible)">
+					<xsl:attribute name="style">
+						display:none;
+					</xsl:attribute>
 				</xsl:if>
-			</th>
-			<td class="padded" valign="top">
-			
-				<xsl:variable name="textnode" select="exslt:node-set($text)"/>
-				<xsl:choose>
-					<xsl:when test="$edit">
-						<xsl:copy-of select="$text"/>
-					</xsl:when>
-					<xsl:when test="count($textnode/*) &gt; 0">
-					<!-- In some templates, text already contains HTML (eg. codelist, link for download).
-						In that case copy text content and does not resolve
-						hyperlinks. -->
-						<xsl:copy-of select="$text"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="addLineBreaksAndHyperlinks">
-							<xsl:with-param name="txt" select="$text"/>
+				<th class="md" width="20%" valign="top">
+					<xsl:choose>
+						<xsl:when test="$isXLinked">
+							<xsl:attribute name="class">md xlinked</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="class">md</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+				
+					<xsl:choose>
+						<xsl:when test="$helpLink!=''">
+							<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
+								<xsl:choose>
+									<xsl:when test="$title='xlink:href'
+										and contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
+										CRS Verticale
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:choose>
+											<xsl:when test="$title='xlink:href'
+												and contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem/@xlink:href|')">
+												
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$title"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:otherwise>
+								</xsl:choose>
+							</span>
+							<xsl:call-template name="asterisk">
+								<xsl:with-param name="link" select="$removeLink"/>
+								<xsl:with-param name="edit" select="$edit"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="showTitleWithTag">
+								<xsl:with-param name="title" select="$title"/>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>&#160;</xsl:text>
+					<xsl:if test="$edit and not($isXLinked)">
+						<xsl:call-template name="getButtons">
+							<xsl:with-param name="addLink" select="$addLink"/>
+							<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
+							<xsl:with-param name="removeLink" select="$removeLink"/>
+							<xsl:with-param name="upLink" select="$upLink"/>
+							<xsl:with-param name="downLink" select="$downLink"/>
+							<xsl:with-param name="validationLink" select="$validationLink"/>
+							<xsl:with-param name="id" select="$id"/>
 						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>			
-			</td>
-		</tr>
+					</xsl:if>
+				</th>
+				<td class="padded" valign="top">
+				
+					<xsl:variable name="textnode" select="exslt:node-set($text)"/>
+					<xsl:choose>
+						<xsl:when test="$edit">
+							<xsl:copy-of select="$text"/>
+						</xsl:when>
+						<xsl:when test="count($textnode/*) &gt; 0">
+						<!-- In some templates, text already contains HTML (eg. codelist, link for download).
+							In that case copy text content and does not resolve
+							hyperlinks. -->
+							<xsl:copy-of select="$text"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="addLineBreaksAndHyperlinks">
+								<xsl:with-param name="txt" select="$text"/>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>			
+				</td>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 	<!--
 	gui to show a title and do special mapping for container elements
@@ -968,56 +1039,65 @@
 
 		<tr id="{$id}" type="metadata">
 			<td class="padded-content" width="100%" colspan="2">
-				<fieldset class="metadata-block">
-					<legend class="block-legend">
-						<xsl:if test="/root/gui/config/metadata-view-toggleTab">
-							<input id="toggle{$id}" type="checkbox" class="toggle" 
-								onclick="$('toggled{$id}').style.display=($(this.id).checked?'none':'block');"
-							/>
-							<!--
+				<xsl:choose>
+					<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier|')">
+						<table width="100%" id="toggled{$id}">
+							<xsl:copy-of select="$content"/>
+						</table>
+					</xsl:when>
+					<xsl:otherwise>
+						<fieldset class="metadata-block">
+							<legend class="block-legend">
+								<xsl:if test="/root/gui/config/metadata-view-toggleTab">
+									<input id="toggle{$id}" type="checkbox" class="toggle" 
+										onclick="$('toggled{$id}').style.display=($(this.id).checked?'none':'block');"
+									/>
+									<!--
 								Toggle mechanism could have been achieved without any JS but pure CSS
 								input.toggle { display: block; }
 								input.toggle:checked+table { display: none; }
 								
 								Issue is IE does not support pseudo class selection checked.
 							 -->
-						</xsl:if>
-						<xsl:choose>
-							<xsl:when test="$helpLink!=''">
-								<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="font-weight: bold; color: #000000; font-size: 12px; cursor:help;"><xsl:value-of select="$title"/>
-								</span>
-								<!-- Only show asterisks on simpleElements - user has to know
+								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="$helpLink!=''">
+										<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="font-weight: bold; color: #000000; font-size: 12px; cursor:help;"><xsl:value-of select="$title"/>
+										</span>
+										<!-- Only show asterisks on simpleElements - user has to know
 									which ones to fill out 
 									<xsl:call-template name="asterisk">
 									<xsl:with-param name="link" select="$helpLink"/>
 									<xsl:with-param name="edit" select="$edit"/>
 									</xsl:call-template>
 								-->
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="showTitleWithTag">
-									<xsl:with-param name="title" select="$title"/>
-									<xsl:with-param name="class" select="'no-help'"/>
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-						
-						<xsl:if test="$edit and not($isXLinked)">
-							<xsl:call-template name="getButtons">
-								<xsl:with-param name="addLink" select="$addLink"/>
-								<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
-								<xsl:with-param name="removeLink" select="$removeLink"/>
-								<xsl:with-param name="upLink" select="$upLink"/>
-								<xsl:with-param name="downLink" select="$downLink"/>
-								<xsl:with-param name="validationLink" select="$validationLink"/>
-								<xsl:with-param name="id" select="$id"/>
-							</xsl:call-template>
-						</xsl:if>
-					</legend>
-					<table width="100%" id="toggled{$id}">
-						<xsl:copy-of select="$content"/>
-					</table>
-				</fieldset>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:call-template name="showTitleWithTag">
+											<xsl:with-param name="title" select="$title"/>
+											<xsl:with-param name="class" select="'no-help'"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+								
+								<xsl:if test="$edit and not($isXLinked)">
+									<xsl:call-template name="getButtons">
+										<xsl:with-param name="addLink" select="$addLink"/>
+										<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
+										<xsl:with-param name="removeLink" select="$removeLink"/>
+										<xsl:with-param name="upLink" select="$upLink"/>
+										<xsl:with-param name="downLink" select="$downLink"/>
+										<xsl:with-param name="validationLink" select="$validationLink"/>
+										<xsl:with-param name="id" select="$id"/>
+									</xsl:call-template>
+								</xsl:if>
+							</legend>
+							<table width="100%" id="toggled{$id}">
+								<xsl:copy-of select="$content"/>
+							</table>
+						</fieldset>
+					</xsl:otherwise>
+				</xsl:choose>	
 			</td>
 		</tr>
 	</xsl:template>
