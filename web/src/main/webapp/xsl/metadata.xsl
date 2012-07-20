@@ -290,19 +290,55 @@
 			</xsl:call-template>
 		</xsl:param>
 		
-		<xsl:if test="contains($helpLink, '|gmd:MD_Metadata')
+		<xsl:if test="not(contains($helpLink, 'gmd:individualName'))
+			and
+			not(contains($helpLink, 'gmd:positionName'))
+			and
+			not(contains($helpLink, 'gmd:deliveryPoint'))
+			and
+			not(contains($helpLink, 'gmd:city'))
+			and
+			not(contains($helpLink, 'gmd:administrativeArea'))
+			and
+			not(contains($helpLink, 'gmd:postalCode'))
+			and
+			not(contains($helpLink, 'gmd:country'))
+			and
+			not(contains($helpLink, 'gmd:facsimile'))
+			and
+			not(contains($helpLink, 'gmd:type'))
+			and
+			not(contains($helpLink, 'gmd:contact/gmd:CI_ResponsibleParty/gmd:role'))">
+			<xsl:choose>
+				<xsl:when test="$edit=true()">
+					<xsl:call-template name="editSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="showSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>	
+		
+<!--	FIRST MODIFIED 
+			<xsl:if test="contains($helpLink, '|gmd:MD_Metadata')
 			or
 			contains($helpLink, 'gmd:electronicMailAddress')
 			or
 			contains($helpLink, 'gmd:voice')
 			or
-			contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|')
+			contains($helpLink, 'gmd:organisationName')
 			or
-			contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role|')
-			or
-			contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|')
-			or
-			contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role|')		
+			contains($helpLink, 'gmd:role')
 			or
 			contains($helpLink, 'gmd:URL')
 			or
@@ -329,7 +365,7 @@
 					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:if>	
+		</xsl:if>	-->
 		
 	</xsl:template>
 
@@ -490,12 +526,12 @@
 		<xsl:variable name="id" select="geonet:element/@uuid"/>
 		<xsl:variable name="addLink">
 			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
-				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
 				and 
@@ -511,7 +547,11 @@
 				and
 				not(contains($helpLink, '|gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))">
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))">
 				<xsl:call-template name="addLink">
 					<xsl:with-param name="id" select="$id"/>
 				</xsl:call-template>
@@ -522,16 +562,16 @@
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
-
-<!--		<xsl:variable name="textnode" select="exslt:node-set($text)"/>-->
 		
 		<xsl:variable name="removeLink">
 			<!-- This test to visualize or not the remove button for the form fields -->
 			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:hierarchyLevel|')) 
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification|')) 
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:presentationForm|'))
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:presentationForm|')) or (count(//gmd:presentationForm) &gt; 1))
 				and
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails|')) 
 				and 
@@ -559,7 +599,7 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))   or (count(//gmd:presentationForm) &gt; 1))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
@@ -587,10 +627,15 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
 				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) 
 				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))">
-			<!--xsl:if test="count($textnode/*) &gt; 0"-->
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -798,8 +843,6 @@
 			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
 						  and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution|'))
-						  and
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact|'))
 						  and  
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))">		
 				<xsl:call-template name="addLink">
@@ -813,13 +856,11 @@
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="removeLink">
-			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|'))
-						  and
-						  not(contains($helpLink, 'gmd:MD_Keywords'))
+			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (count(//gmd:MD_DigitalTransferOptions/gmd:onLine) &gt; 1))
 			              and
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|'))
+			              (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|')) or (count(//gmd:descriptiveKeywords) &gt; 1))
 						  and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
 						  and
@@ -827,9 +868,9 @@
 						  and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage|'))
 						  and
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|'))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (count(//gmd:pointOfContact/gmd:CI_ResponsibleParty) &gt; 1))
 						  and  
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|'))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty) &gt; 1))
 						  and  
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))
 						  and 
@@ -904,12 +945,18 @@
 
 		<xsl:variable name="isXLinked" select="count(ancestor-or-self::node()[@xlink:href]) > 0" />
 		<xsl:variable name="geonet" select="starts-with(name(.),'geonet:')"/>
-
+		
 		<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS|'))
 				and
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem|'))">
 			<tr id="{$id}" type="metadata">
-				<xsl:if test="not($visible)">
+				<xsl:if test="not($visible) 
+					or
+					contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
+					or
+					contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role|')
+					or
+					contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')">
 					<xsl:attribute name="style">
 						display:none;
 					</xsl:attribute>
@@ -1421,7 +1468,13 @@
 					</xsl:when>
 
 					<xsl:otherwise>
-						<input class="md" type="{$input_type}" value="{text()}" size="{$cols}">
+						<input class="md" type="{$input_type}" value="{text()}">
+							<xsl:if test="name(.) = 'gco:CharacterString'">
+								<xsl:attribute name="size">43</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="name(.) != 'gco:CharacterString'">
+								<xsl:attribute name="size"><xsl:value-of select="$cols"/></xsl:attribute>
+							</xsl:if>
 							<xsl:if test="$isXLinked">
 								<xsl:attribute name="disabled">disabled</xsl:attribute>
 							</xsl:if>						

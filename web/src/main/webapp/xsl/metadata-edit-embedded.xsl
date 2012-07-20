@@ -29,7 +29,9 @@
 					and 
 					name(.)!='gmd:keyword'
 					and 
-					name(.)!='gmd:spatialRepresentationType'">
+					name(.)!='gmd:spatialRepresentationType'
+					and 
+					name(.)!='gmd:otherConstraints'">
 					<xsl:apply-templates mode="complexElement" select=".">
 						<xsl:with-param name="edit" select="true()"/>
 						<xsl:with-param name="schema">

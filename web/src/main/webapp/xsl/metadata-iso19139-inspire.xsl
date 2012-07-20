@@ -707,14 +707,6 @@
 						<xsl:with-param name="edit" select="$edit" />
 					</xsl:apply-templates>
 					
-					<!-- Contant info (ADDED for CSI)
-					<xsl:apply-templates mode="complexElement"
-						select="
-						../../gmd:contact">
-						<xsl:with-param name="schema" select="$schema" />
-						<xsl:with-param name="edit" select="$edit" />
-					</xsl:apply-templates> -->
-					
 					<!-- Posizionato qui per problemi di rimozione campo TODO: FIX ME!-->
 					<xsl:apply-templates mode="elementEP"
 						select="
@@ -723,7 +715,15 @@
 						<xsl:with-param name="edit" select="$edit" />
 					</xsl:apply-templates>
 					
-					<!-- Contant info (MODIFIED for CSI) -->
+					<!-- Contant info (ADDED for CSI) -->
+					<xsl:apply-templates mode="complexElement"
+						select="
+						../../gmd:contact">
+						<xsl:with-param name="schema" select="$schema" />
+						<xsl:with-param name="edit" select="$edit" />
+					</xsl:apply-templates> 
+					
+					<!-- Contant info (MODIFIED for CSI) 
 					<xsl:call-template name="complexElementGuiWrapper">
 						<xsl:with-param name="title"
 							select="/root/gui/strings/inspireSection/metadata/contact" />
@@ -765,7 +765,7 @@
 							</xsl:apply-templates>
 							
 						</xsl:with-param>
-					</xsl:call-template>
+					</xsl:call-template> -->
 				</xsl:with-param>
 			</xsl:call-template>
 			
