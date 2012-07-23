@@ -311,7 +311,7 @@
     						<input type="checkbox" value="A1 PRESSIONE - distribuzione demografica e aspetti socio-economici" name="Distribuzione" id="psr_distribuzione"/>
     						
     						<span>
-    							<label for="psr_distribuzione">A1 PRESSIONE - distribuzione demografica e aspetti socio-economici</label>
+    							<label for="psr_distribuzione">A1 - distribuzione demografica e aspetti socio-economici</label>
     						</span>
     					</div>
     					
@@ -319,7 +319,7 @@
     						<input type="checkbox" value="A2 PRESSIONE - agricoltura, foreste, allevamento, pesca" name="Afap" id="psr_afap"/>
     						
     						<span>
-    							<label for="psr_afap">A2 PRESSIONE - agricoltura, foreste, allevamento, pesca</label>
+    							<label for="psr_afap">A2 - agricoltura, foreste, allevamento, pesca</label>
     						</span>
     					</div>
     					
@@ -327,7 +327,7 @@
     						<input type="checkbox" value="A3 PRESSIONE - attivita' produttive nell'industria e nell'artigianato" name="Industrie Artigianato" id="psr_ind_atig"/>
     						
     						<span>
-    							<label for="psr_ind_atig">A3 PRESSIONE - attivita' produttive nell'industria e nell'artigianato</label>
+    							<label for="psr_ind_atig">A3 - attivita' produttive nell'industria e nell'artigianato</label>
     						</span>
     					</div>
     					
@@ -335,7 +335,7 @@
     						<input type="checkbox" value="A4 PRESSIONE - commercio, produzione di servizi e turismo" name="Commercio Produzione Servizi" id="psr_cpst"/>
     						
     						<span>
-    							<label for="psr_cpst">A4 PRESSIONE - commercio, produzione di servizi e turismo</label>
+    							<label for="psr_cpst">A4 - commercio, produzione di servizi e turismo</label>
     						</span>
     					</div>
     					
@@ -343,7 +343,7 @@
     						<input type="checkbox" value="A5 PRESSIONE - processi energetici" name="Processi Energetici" id="psr_proc_energ"/>
     						
     						<span>
-    							<label for="psr_proc_energ">A5 PRESSIONE - processi energetici</label>
+    							<label for="psr_proc_energ">A5 - processi energetici</label>
     						</span>
     					</div>
     					
@@ -351,7 +351,7 @@
     						<input type="checkbox" value="A6 PRESSIONE - trasporti, comunicazioni e infrastrutture" name="Trasposti comunicazioni Infrastrutture" id="psr_tci"/>
     						
     						<span>
-    							<label for="psr_tci">A6 PRESSIONE - trasporti, comunicazioni e infrastrutture</label>
+    							<label for="psr_tci">A6 - trasporti, comunicazioni e infrastrutture</label>
     						</span>
     					</div>
     					
@@ -359,7 +359,7 @@
     						<input type="checkbox" value="A7 PRESSIONE - rifiuti e flussi di materiali" name="Rifiuti Flussi Materiali" id="psr_rfm"/>
     						
     						<span>
-    							<label for="psr_rfm">A7 PRESSIONE - rifiuti e flussi di materiali</label>
+    							<label for="psr_rfm">A7 - rifiuti e flussi di materiali</label>
     						</span>
     					</div>
     					
@@ -367,7 +367,7 @@
     						<input type="checkbox" value="A8 PRESSIONE - agenti fisici (radiazioni ionizzanti e non, rumore)" name="Agenti Fisici" id="psr_agenti_fisici"/>
     						
     						<span>
-    							<label for="psr_agenti_fisici">A8 PRESSIONE - agenti fisici (radiazioni ionizzanti e non, rumore)</label>
+    							<label for="psr_agenti_fisici">A8 - agenti fisici (radiazioni ionizzanti e non, rumore)</label>
     						</span>
     					</div>
     					
@@ -377,7 +377,7 @@
     						<input type="checkbox" value="B1 STATO - antroposfera (utilizzo del territorio, beni culturali e paesistici)" name="Antroposfera" id="psr_antroposfera"/>
     						
     						<span>
-    							<label for="psr_antroposfera">B1 STATO - antroposfera (utilizzo del territorio, beni culturali e paesistici)</label>
+    							<label for="psr_antroposfera">B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)</label>
     						</span>
     					</div>
     					
@@ -385,7 +385,7 @@
     						<input type="checkbox" value="B2 STATO - atmosfera (aria, meteorologia, climatologia)" name="Atmosfera" id="psr_atmosfera"/>
     						
     						<span>
-    							<label for="psr_atmosfera">B2 STATO - atmosfera (aria, meteorologia, climatologia)</label>
+    							<label for="psr_atmosfera">B2 - atmosfera (aria, meteorologia, climatologia)</label>
     						</span>
     					</div>
     					
@@ -393,7 +393,7 @@
     						<input type="checkbox" value="B3 STATO - biosfera (flora, fauna, ecosistemi)" name="Biosfera" id="psr_biosfera"/>
     						
     						<span>
-    							<label for="psr_biosfera">B3 STATO - biosfera (flora, fauna, ecosistemi)</label>
+    							<label for="psr_biosfera">B3 - biosfera (flora, fauna, ecosistemi)</label>
     						</span>
     					</div>
     					
@@ -401,7 +401,7 @@
     						<input type="checkbox" value="B4 STATO - idrosfera (idrografia, qualita' delle acque, bilancio idrico)" name="Idrosfera" id="psr_idrosfera"/>
     						
     						<span>
-    							<label for="psr_idrosfera">B4 STATO - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</label>
+    							<label for="psr_idrosfera">B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</label>
     						</span>
     					</div>
     					
@@ -409,7 +409,7 @@
     						<input type="checkbox" value="B5 STATO - geosfera (geologia, geomorfologia, idrogeologia, pedologia)" name="Geosfera" id="psr_geosfera"/>
     						
     						<span>
-    							<label for="psr_geosfera">B5 STATO - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</label>
+    							<label for="psr_geosfera">B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</label>
     						</span>
     					</div>
     					
@@ -419,7 +419,7 @@
     						<input type="checkbox" value="C1 RISPOSTE - istituzioni e competenze della pubblica amministrazione" name="Istituzioni e Competenze" id="psr_istituzioni"/>
     						
     						<span>
-    							<label for="psr_istituzioni">C1 RISPOSTE - istituzioni e competenze della pubblica amministrazione</label>
+    							<label for="psr_istituzioni">C1 - istituzioni e competenze della pubblica amministrazione</label>
     						</span>
     					</div>
     					
@@ -427,7 +427,7 @@
     						<input type="checkbox" value="C2 RISPOSTE - legislazione e norme tecniche" name="Legislazione e Norme" id="psr_legislazione"/>
     						
     						<span>
-    							<label for="psr_legislazione">C2 RISPOSTE - legislazione e norme tecniche</label>
+    							<label for="psr_legislazione">C2 - legislazione e norme tecniche</label>
     						</span>
     					</div>
     					
@@ -435,7 +435,7 @@
     						<input type="checkbox" value="C3 RISPOSTE - politiche, pianificazione, programmazione e spesa" name="Politiche e Pianificazione" id="psr_ppps"/>
     						
     						<span>
-    							<label for="psr_ppps">C3 RISPOSTE - politiche, pianificazione, programmazione e spesa</label>
+    							<label for="psr_ppps">C3 - politiche, pianificazione, programmazione e spesa</label>
     						</span>
     					</div>
     					
@@ -443,7 +443,7 @@
     						<input type="checkbox" value="C4 RISPOSTE - tutela, prevenzione, autorizzazioni e certificazioni ambientali" name="Tutela e Prevenzione" id="psr_tutela"/>
     						
     						<span>
-    							<label for="psr_tutela">C4 RISPOSTE - tutela, prevenzione, autorizzazioni e certificazioni ambientali</label>
+    							<label for="psr_tutela">C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali</label>
     						</span>
     					</div>
     					
@@ -451,7 +451,7 @@
     						<input type="checkbox" value="C5 RISPOSTE - sistemi di monitoraggio e controllo" name="Monitoraggio" id="psr_monitoraggio"/>
     						
     						<span>
-    							<label for="psr_monitoraggio">C5 RISPOSTE - sistemi di monitoraggio e controllo</label>
+    							<label for="psr_monitoraggio">C5 - sistemi di monitoraggio e controllo</label>
     						</span>
     					</div>
     					
@@ -459,7 +459,7 @@
     						<input type="checkbox" value="C6 RISPOSTE - gestione del rischio antropico e naturale" name="Rischio Antropico e Naturale" id="psr_rischio"/>
     						
     						<span>
-    							<label for="psr_rischio">C6 RISPOSTE - gestione del rischio antropico e naturale</label>
+    							<label for="psr_rischio">C6 - gestione del rischio antropico e naturale</label>
     						</span>
     					</div>
     					
