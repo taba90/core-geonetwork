@@ -6,6 +6,7 @@
 	xmlns:geonet="http://www.fao.org/geonetwork"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xmlns:svrl="http://purl.oclc.org/dsdl/svrl" 
+	xmlns:gml="http://www.opengis.net/gml"
 	exclude-result-prefixes="exslt xlink gco gmd geonet svrl">
 
 	<xsl:import href="text-utilities.xsl"/>
@@ -308,7 +309,9 @@
 			and
 			not(contains($helpLink, 'gmd:type'))
 			and
-			not(contains($helpLink, 'gmd:contact/gmd:CI_ResponsibleParty/gmd:role'))">
+			not(contains($helpLink, 'gmd:contact/gmd:CI_ResponsibleParty/gmd:role'))
+			and
+			not(contains($helpLink, 'gmd:description'))">
 			<xsl:choose>
 				<xsl:when test="$edit=true()">
 					<xsl:call-template name="editSimpleElement">
@@ -635,7 +638,11 @@
 				and 
 				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))">
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:language|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardVersion|'))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -950,13 +957,28 @@
 				and
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem|'))">
 			<tr id="{$id}" type="metadata">
-				<xsl:if test="not($visible) 
+				<!--xsl:if test="not($visible) 
 					or
 					contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
 					or
 					contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role|')
 					or
-					contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')">
+					contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')"-->
+					
+					<xsl:if test="not($visible) 
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier/@codeSpace|')
+						or
+						contains($helpLink, '|gml:BaseUnit|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem/@xlink:href|')">
+					
 					<xsl:attribute name="style">
 						display:none;
 					</xsl:attribute>
@@ -2054,13 +2076,67 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<xsl:text> </xsl:text>				
-			(<xsl:value-of select="/root/gui/strings/helperList"/>
-			<select onchange="$('_{$refId}').value=this.options[this.selectedIndex].value; if ($('_{$refId}').onkeyup) $('_{$refId}').onkeyup();" class="md">
-				<option/>
-				<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
-				<xsl:copy-of select="exslt:node-set($helper)"/>
-			</select>)
+			<!-- Fix to align with the workaround at line 1615 -->
+			<xsl:variable name="refIdCOLON">
+				<xsl:choose>
+					<xsl:when test="contains($refId,':')">
+						<xsl:value-of select="concat(substring-before($refId,':'),'COLON',substring-after($refId,':'))"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$refId"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			
+			<xsl:text> </xsl:text>	
+            
+            <!-- Workaround in order to che if the current element refers the temporal 
+            	extent becose the labels context not runs for this elements -->
+			<xsl:variable name="extentElement">
+				<xsl:value-of select="concat(../gml:TimePeriodTypeGROUP_ELEMENT0/geonet:element/@ref, '', '')"/>
+			</xsl:variable>
+			
+			<xsl:if test="$extentElement=''">
+				<xsl:choose>
+					<xsl:when test="name(.)!='gml:id'">
+						(<xsl:value-of select="/root/gui/strings/helperList"/>
+						<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+							<option/>
+							<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+							<xsl:copy-of select="exslt:node-set($helper)"/>
+						</select>)
+					</xsl:when>
+					<xsl:otherwise>
+						
+						<!-- To set the gml:identifier for Position Accouracy -->
+						<xsl:variable name="gmlIdentifierRefId">
+							<xsl:value-of select="../gml:identifier/geonet:element/@ref"/>
+						</xsl:variable>
+						
+						<xsl:choose>
+							<xsl:when test="$gmlIdentifierRefId!=''">
+								(<xsl:value-of select="/root/gui/strings/helperList"/>
+								<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; $('_{$gmlIdentifierRefId}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+									<option/>
+									<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+									<xsl:copy-of select="exslt:node-set($helper)"/>
+								</select>)
+							</xsl:when>
+							<xsl:otherwise>							
+								(<xsl:value-of select="/root/gui/strings/helperList"/>
+								<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+									<option/>
+									<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+									<xsl:copy-of select="exslt:node-set($helper)"/>
+								</select>)							
+							</xsl:otherwise>
+						</xsl:choose>
+						
+						
+					</xsl:otherwise>
+				</xsl:choose>				
+			</xsl:if>
+
 		</xsl:if>
 	</xsl:template>
 	
