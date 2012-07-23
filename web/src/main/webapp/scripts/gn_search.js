@@ -1067,20 +1067,36 @@ function toggleMoreFields() {
   }
 }
 
-function toggleInspire() {
-  $("inspiresearchfields").toggle();
+function toggleInspire(div, img) {
+  $(div).toggle();
 
-  var src = $("i_inspire").getAttribute('src');
+  var src = $(img).getAttribute('src');
   var ndx = src.lastIndexOf('/');
 
   src = src.substring(0, ndx+1);
 
-  if ($("inspiresearchfields").visible() == true) {
-	$("i_inspire").setAttribute('src', src +'minus.png');
+  if ($(div).visible() == true) {
+	$(img).setAttribute('src', src +'minus.png');
   } else {
-	$("i_inspire").setAttribute('src', src +'plus.gif');
+	$(img).setAttribute('src', src +'plus.gif');
   }
 }
+
+function toggleStateResponse() {
+  $("stateResponse").toggle();
+
+  var src = $("i_inspire_state_response").getAttribute('src');
+  var ndx = src.lastIndexOf('/');
+
+  src = src.substring(0, ndx+1);
+
+  if ($("stateResponse").visible() == true) {
+	$("i_inspire_state_response").setAttribute('src', src +'minus.png');
+  } else {
+	$("i_inspire_state_response").setAttribute('src', src +'plus.gif');
+  }
+}
+
 
 function toggleWhen() {
   $("whensearchfields").toggle();
