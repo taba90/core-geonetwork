@@ -843,12 +843,15 @@
                 <select name="place" size="1" onChange="document.mainForm._{$ref}.value=this.options[this.selectedIndex].text" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
-                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                        <xsl:sort select="label" order="ascending"/>
                         <option value="{id}">
-                            <xsl:if test="string(label/child::*[name() = $lang])=$keyword">
+<!--                            <xsl:if test="string(label/child::*[name() = $lang])=$keyword">-->
+                            <xsl:if test="string(label)=$keyword">
                                 <xsl:attribute name="selected"/>
                             </xsl:if>
-                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                            <xsl:value-of select="label"/>
                         </option>
                     </xsl:for-each>
                 </select>
@@ -3325,13 +3328,17 @@
                                     size="1">
                                     <option name="" />
                                     <xsl:for-each select="/root/gui/regions/record">
-                                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                                        <xsl:sort select="label" order="ascending"/>
 
-                                        <option value="{label/child::*[name() = $lang]}">
-                                            <xsl:if test="$value = label/child::*[name() = $lang]">
+<!--                                        <option value="{label/child::*[name() = $lang]}">-->
+                                        <option value="{label}">
+<!--                                            <xsl:if test="$value = label/child::*[name() = $lang]">-->
+                                            <xsl:if test="$value = label">
                                                 <xsl:attribute name="selected"/>
                                             </xsl:if>
-                                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                                            <xsl:value-of select="label"/>
                                         </option>
                                     </xsl:for-each>
                                 </select>

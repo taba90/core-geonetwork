@@ -986,7 +986,8 @@
 			</option>
 			
 			<xsl:for-each select="/root/gui/regions/record">
-				<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--				<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/> -->
+				<xsl:sort select="label" order="ascending"/>
 				<option value="{id}">
 					<xsl:if test="id=/root/gui/searchDefaults/region">
 						<xsl:attribute name="selected">selected</xsl:attribute>
@@ -994,7 +995,8 @@
 					<xsl:attribute name="value">
 							<xsl:value-of select="id"/>
 					</xsl:attribute>
-					<xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--					<xsl:value-of select="label/child::*[name() = $lang]"/> -->
+					<xsl:value-of select="label"/>
 				</option>
 			</xsl:for-each>
 		</select>							

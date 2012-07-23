@@ -190,14 +190,16 @@
                 <select name="place" size="1" onChange="javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
-                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                        <xsl:sort select="label" order="ascending"/>
                         
                         <xsl:variable name="value" select="concat(west,',',east,',',south,',',north)"/>
                         <option value="{$value}">
                             <xsl:if test="$value=$selection">
                                 <xsl:attribute name="selected"/>
                             </xsl:if>
-                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                            <xsl:value-of select="label"/>
                         </option>
                     </xsl:for-each>
                 </select>

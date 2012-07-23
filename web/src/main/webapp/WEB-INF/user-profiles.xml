@@ -254,7 +254,6 @@
 		<allow service="rating.popup"/>
 
 		<!-- Login and logout services -->
-		<allow service="main.login"/>
 		<allow service="user.login"/>
 		<allow service="user.logout"/>
 		<allow service="shib.user.login"/>
@@ -391,6 +390,13 @@
 		<!-- User self registration -->
 		<allow service="user.register.get"/>
 		<allow service="user.register.submit"/>
+
+        <!-- servizi custom per CSI piemonte -->
+		<allow service="main.login"/>
+        <allow service="xml.csi.comuni.get"/>
+        <allow service="xml.csi.comuni.getByProv"/>
+        <allow service="xml.csi.province.get"/>
+
 	</profile>
 
 	<!-- ====================================================================== -->

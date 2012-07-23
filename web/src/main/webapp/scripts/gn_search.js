@@ -537,7 +537,8 @@ function getRegion(region)
         var pars = "id="+region;
 
     var myAjax = new Ajax.Request(
-        getGNServiceURL('xml.region.get'),
+//        getGNServiceURL('xml.region.get'),
+        getGNServiceURL('xml.csi.province.get'),
         {
             method: 'get',
             parameters: pars,
