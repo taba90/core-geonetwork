@@ -47,9 +47,10 @@ public class GetComuniByProv implements Service
 
 		String provId      = params.getChildText("provId");
 		String provCode    = params.getChildText("provCode");
+		String provName    = params.getChildText("provName");
 
-        if(provId == null && provCode ==null)
-            throw new MissingParameterEx("provId or provCode", params);
+        if(provId == null && provCode == null && provName == null)
+            throw new MissingParameterEx("provId or provCode or provName", params);
 
         Dbms dbms = (Dbms) context.getResourceManager().open (Geonet.Res.MAIN_DB);
 
@@ -64,6 +65,8 @@ public class GetComuniByProv implements Service
             response = dbms.select("select c.* from comuni c, province p where p.id=? and p.code=c.provCode", id);
         } else if (provCode != null) {
             response = dbms.select("select * from comuni where provCode=?", provCode);
+        } else if (provName != null) {
+            response = dbms.select("select c.* from comuni c, province p where p.label=? and p.code=c.provCode", provName);
         } else {
             throw new IllegalStateException();
         }
