@@ -348,7 +348,7 @@ CREATE TABLE Comuni
   (
     id     int,
 
-    code    int2 not null,
+    code    int not null,
     label   varchar(96)   not null,
 
     north  float   not null,
