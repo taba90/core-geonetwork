@@ -497,14 +497,86 @@ function rateMetadata_OK(xmlRes)
 *** GET BOUNDINGBOX COORDINATES FOR A REGION
 ********************************************************************/
 
-function doRegionSearchSimple() {
+function doRegionSearchSimple(div) {
   doRegionSearch('region_simple');
   $('region').value = $('region_simple').value;
+  
+  if(div == 'region_simple'){
+	doAjaxMunicipality($('region').value);
+  }
 }
 
-function doRegionSearchAdvanced() {
-  doRegionSearch('region');
-  $('region_simple').value = $('region').value;
+function doRegionSearchAdvanced(div, loadingImg) {
+  /*doRegionSearch('region');
+  $('region_simple').value = $('region').value;*/
+  
+  doRegionSearch(div);
+  $('region_simple').value = $(div).value;
+  
+  if(div == 'region' && $('comune')){
+	doAjaxMunicipality($('region').value, loadingImg);
+  }
+}
+
+function doAjaxMunicipality(provId, loadingImg){    
+    if(provId && provId != "" && provId != 'userdefined'){
+	    
+		var envURL = Env.url + (loadingImg ? loadingImg : "/images/grid-loading.gif");
+		document.getElementById('comunegif').innerHTML = "<img src=\"" + envURL + "\">";
+		
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provId=" + provId;
+		
+		Ext.Ajax.request({
+		   url: serviceURL,
+		   method: 'GET',
+		   timeout: 60000,
+		   success: function(response, opts){
+				document.getElementById('comune').innerHTML = "";
+				document.getElementById('comunegif').innerHTML = "";
+					
+				var xmlFormat = new OpenLayers.Format.XML();        
+				var xml = xmlFormat.read(response.responseText);			
+				
+				xml = xml.getElementsByTagName("response")[0].childNodes;
+				
+				var size = xml.length;
+				
+				var firstOpt = document.createElement("option"); 
+				firstOpt.value = -1;
+				firstOpt.innerHTML = "- Qualunque -";
+				document.getElementById("comune").appendChild(firstOpt);
+				
+				for(var i=0; i<size; i++){
+					if(xml[i].nodeName == 'record'){
+						var option = document.createElement("option"); 
+						
+						var id = "";
+						var label = "";
+						if(Ext.isIE){
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].text;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].text;
+						}else{
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+						}
+						
+						option.value = id;
+						option.innerHTML = label;
+						document.getElementById("comune").appendChild(option);
+					}
+				}
+		   },
+		   failure:  function(response, opts){
+				document.getElementById('comunegif').innerHTML = "";
+				Ext.Msg.show({
+				   title: "Caricamento Comuni",
+				   msg: "Errore nel caricamento dei comuni associati alla provincia selezionata: " + response.status,
+				   buttons: Ext.Msg.OK,
+				   icon: Ext.MessageBox.ERROR
+				});
+		   }
+		});
+	}
 }
 
 function doRegionSearch(regionlist)
@@ -527,18 +599,20 @@ function doRegionSearch(regionlist)
 		// Do nothing. AoI is set by the user
     } else
     {
-        getRegion(region);
+        getRegion(regionlist, region);
     }
 }
 
-function getRegion(region)
+function getRegion(regionlist, region)
 {
     if(region)
         var pars = "id="+region;
 
+	var url = regionlist == 'region' ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
+	
     var myAjax = new Ajax.Request(
 //        getGNServiceURL('xml.region.get'),
-        getGNServiceURL('xml.csi.province.get'),
+        getGNServiceURL(url),
         {
             method: 'get',
             parameters: pars,

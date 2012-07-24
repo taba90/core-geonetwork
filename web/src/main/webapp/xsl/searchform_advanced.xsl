@@ -898,7 +898,11 @@
 	============================================================= -->
 	
 <xsl:template name="adv_where">
-
+	
+	<xsl:variable name="municipalitySearch">
+		<xsl:value-of select="/root/gui/config/municipalitySearch/enabled"/>
+	</xsl:variable>
+	
 	<h1 class="labelFieldSmall" style="margin-bottom:5px"><xsl:value-of select="/root/gui/strings/where"/></h1>
 	
 	<xsl:comment>MINIMAP</xsl:comment>
@@ -967,10 +971,70 @@
 			</xsl:for-each>
 		</select>
 	</div>
+
+    <!-- Province e Comuni -->
+	<table  border="0" cellpadding="0" cellspacing="1" style="width:350px;">
+		<tr>
+			<td style="width:200px;">
+				<div class="row">
+					<span class="labelField">Provincia<!--xsl:value-of select="/root/gui/strings/region"/--></span>
+					<select class="content" style="width: 223px;" name="region" id="region" onchange="javascript:doRegionSearchAdvanced('region');">
+						<option value="">
+							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="/root/gui/strings/any"/>
+						</option>
+						<option value="userdefined">
+							<xsl:if test="/root/gui/searchDefaults/theme='_userdefined_'">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="/root/gui/strings/userDefined"/>
+						</option>
+						
+						<xsl:for-each select="/root/gui/regions/record">
+							<!-- <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/> -->
+							<xsl:sort select="label" order="ascending"/>
+							<option value="{id}">
+								<xsl:if test="id=/root/gui/searchDefaults/region">
+									<xsl:attribute name="selected">selected</xsl:attribute>
+								</xsl:if>
+								<xsl:attribute name="value">
+									<xsl:value-of select="id"/>
+								</xsl:attribute>
+								<!-- <xsl:value-of select="label/child::*[name() = $lang]"/> -->
+								<xsl:value-of select="label"/>
+							</option>
+						</xsl:for-each>
+					</select>	
+				</div>
+			</td>
+		</tr>
+		
+		<xsl:if test="$municipalitySearch = 'true'">
+			<tr>
+				<td>
+					<span class="labelField">Comune</span>
+					<select class="content" style="width: 223px;" name="comune" id="comune" onchange="javascript:doRegionSearchAdvanced('comune');">
+						<option value="">
+							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="/root/gui/strings/any"/>
+						</option>
+					</select>	
+				</td>
+				<td style="width:20px;">
+					<div id="comunegif"></div>
+				</td>
+			</tr>
+		</xsl:if>
+		
+	</table>	
 	
-	<!-- Region -->
-	<div class="row">  <!-- div row-->
-		<span class="labelField"><xsl:value-of select="/root/gui/strings/region"/></span>
+	<!-- Region  old element -->
+<!--	<div class="row">  <!-\- div row-\->-->
+		<!--<span class="labelField"><xsl:value-of select="/root/gui/strings/region"/></span>
 		<select class="content" name="region" id="region" onchange="javascript:doRegionSearchAdvanced();">
 			<option value="">
 				<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
@@ -985,22 +1049,22 @@
 				<xsl:value-of select="/root/gui/strings/userDefined"/>
 			</option>
 			
-			<xsl:for-each select="/root/gui/regions/record">
-<!--				<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/> -->
-				<xsl:sort select="label" order="ascending"/>
+			<xsl:for-each select="/root/gui/regions/record">-->
+<!--	comment			<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/> -->
+				<!--<xsl:sort select="label" order="ascending"/>
 				<option value="{id}">
 					<xsl:if test="id=/root/gui/searchDefaults/region">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
 					<xsl:attribute name="value">
 							<xsl:value-of select="id"/>
-					</xsl:attribute>
-<!--					<xsl:value-of select="label/child::*[name() = $lang]"/> -->
-					<xsl:value-of select="label"/>
+					</xsl:attribute>-->
+<!--	comment				<xsl:value-of select="label/child::*[name() = $lang]"/> -->
+					<!--<xsl:value-of select="label"/>
 				</option>
 			</xsl:for-each>
 		</select>							
-	</div>
+	</div>-->
 </xsl:template>
 
 	<!-- ============================================================ 

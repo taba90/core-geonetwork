@@ -36,8 +36,8 @@
 							
 				<div style="margin-top:5px">
 					<!-- Region -->
-					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearchSimple();">
-							<option value="">
+					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearchSimple('region_simple');">
+						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>

@@ -23,6 +23,9 @@
   <tr/>
  </languages>
  
+ <municipalitySearch>
+	<enabled>true</enabled>
+ </municipalitySearch>
  
  <map>
   <!-- Configuration for map displayed in metadata sheet
