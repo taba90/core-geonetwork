@@ -1083,22 +1083,6 @@ function toggleInspire(div, img) {
   }
 }
 
-function toggleStateResponse() {
-  $("stateResponse").toggle();
-
-  var src = $("i_inspire_state_response").getAttribute('src');
-  var ndx = src.lastIndexOf('/');
-
-  src = src.substring(0, ndx+1);
-
-  if ($("stateResponse").visible() == true) {
-	$("i_inspire_state_response").setAttribute('src', src +'minus.png');
-  } else {
-	$("i_inspire_state_response").setAttribute('src', src +'plus.gif');
-  }
-}
-
-
 function toggleWhen() {
   $("whensearchfields").toggle();
  
