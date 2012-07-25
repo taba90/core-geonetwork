@@ -286,9 +286,9 @@ function runAdvancedSearch(type)
 	
 	// CSI
 	//pars += fetchParam('output');
-  pars += '&output=full';
+    pars += '&output=full';
 
-     //Inspire
+    //Inspire
     pars += fetchParam('inspireannex');
     pars += addINSPIREThemes();
 
@@ -326,6 +326,19 @@ function resetAdvancedSearch()
 	setParam('relation','overlaps');
 
     setParam('region',null);
+	
+	// reset comune form
+	var comune = document.getElementById('comune');
+	if(comune){
+		comune.innerHTML = "";
+		document.getElementById('comunegif').innerHTML = "";
+		
+		var firstOpt = document.createElement("option"); 
+		firstOpt.value = -1;
+		firstOpt.innerHTML = "- Qualunque -";
+		comune.appendChild(firstOpt);
+	}
+	
 	// Clear also region in simple search to keep synch
 	setParam('region_simple',null);
 	
@@ -1269,7 +1282,7 @@ function gn_hideInterList(id)
 /********************************************************************/
 function showInspireSearch() {
    var inspire = $('inspire');
-   if(inspire.checked) {
+   if(inspire && inspire.checked) {
        inspire.value = 'true';
    } else {
        inspire.value = '';
@@ -1320,28 +1333,65 @@ function taggleVisibility(elementId) {
 function addINSPIREThemes() {
 	var allThemes = '';
 	var prefix = '&inspiretheme=';
+	
     // Select all checkboxes in inspirethemesdiv
     var inspireThemeChk = $$('#inspirethemesdiv input[type="checkbox"]');
-    // console.log(inspireThemeChk.length);
+	
+    // Inspire Theme
     for (i=0;i<inspireThemeChk.length;i++) {
         if (inspireThemeChk[i].checked) {
             allThemes += prefix + inspireThemeChk[i].value+"*";
         }
     }
+	
+	// PSR Theme
+	var inspireThemeChkPSR = $$('#inspirethemesdivPsr input[type="checkbox"]');
+	for (i=0;i<inspireThemeChkPSR.length;i++) {
+        if (inspireThemeChkPSR[i].checked) {
+            allThemes += prefix + inspireThemeChkPSR[i].value+"*";
+        }
+    }
+	
 	return allThemes ;
 }
 
 function resetInspireOptions() {
-    if (!$('inspire')) return;
+    //if (!$('inspire')) return;
 
-     // reset INSPIRE options
-	$('inspire').checked=false;
+    // reset INSPIRE options
+	//$('inspire').checked=false;
 	setParam('title','');
 	setParam('inspireannex','');
 	setParam('inspirebrontype','');
 	setParam('protocol','');
 	setParam('orgselect_inspire','');
 
+	//
+	// PSR Theme
+	//
+	$('psr_distribuzione').checked=false;
+	$('psr_afap').checked=false;
+	$('psr_ind_atig').checked=false;
+	$('psr_cpst').checked=false;
+	$('psr_proc_energ').checked=false;
+	$('psr_tci').checked=false;
+	$('psr_rfm').checked=false;
+	$('psr_agenti_fisici').checked=false;
+	$('psr_antroposfera').checked=false;
+	$('psr_atmosfera').checked=false;
+	$('psr_biosfera').checked=false;
+	$('psr_idrosfera').checked=false;
+	$('psr_geosfera').checked=false;
+	$('psr_istituzioni').checked=false;
+	$('psr_legislazione').checked=false;
+	$('psr_ppps').checked=false;
+	$('psr_tutela').checked=false;
+	$('psr_monitoraggio').checked=false;
+	$('psr_rischio').checked=false;
+	
+	// 
+	// Inspire Theme
+	//
 	$('inspire_GeographicalNames').checked=false;
 	$('inspire_AdministrativeUnits').checked=false;
 	$('inspire_Addresses').checked=false;
