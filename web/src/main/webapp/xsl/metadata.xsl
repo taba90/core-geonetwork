@@ -594,15 +594,13 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
-				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
 				and 
-				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|'))   or (count(//gmd:presentationForm) &gt; 1))
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|')) or (count(//gmd:otherConstraints) &gt; 1))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
 				and 
@@ -865,7 +863,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="removeLink">
-			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (count(//gmd:MD_DigitalTransferOptions/gmd:onLine) &gt; 1))
+			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (position() > 1))
 			              and
 			              (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|')) or (count(//gmd:descriptiveKeywords) &gt; 1))
 						  and
@@ -875,9 +873,9 @@
 						  and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage|'))
 						  and
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (count(//gmd:pointOfContact/gmd:CI_ResponsibleParty) &gt; 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (position() > 1))
 						  and  
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty) &gt; 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() > 1))
 						  and  
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))
 						  and 
@@ -957,14 +955,6 @@
 				and
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem|'))">
 			<tr id="{$id}" type="metadata">
-				<!--xsl:if test="not($visible) 
-					or
-					contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
-					or
-					contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role|')
-					or
-					contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')"-->
-					
 					<xsl:if test="not($visible) 
 						or
 						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
@@ -1338,7 +1328,7 @@
 		<xsl:param name="rows" select="1"/>
 		<xsl:param name="cols" select="40"/>
 		<xsl:param name="langId"/>
-		<xsl:param name="visible" select="true"/>
+		<xsl:param name="visible" select="./true"/>
 		<!-- Add javascript validator function. By default, if element 
 		is mandatory a non empty validator is defined. -->
 		<xsl:param name="validator"/>
