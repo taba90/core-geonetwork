@@ -670,7 +670,7 @@ function handleCheckboxAsBoolean (input, ref) {
 }
 
 function getMunicipality(provLabel){    
-    if(provLabel && provLabel != "" && provLabel != 'userdefined'){
+    if(provLabel && provLabel != "" && provLabel != 'userdefined' && $('comune-medatata')){
 		
 		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provName=" + provLabel;
 		

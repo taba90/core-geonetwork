@@ -19,6 +19,7 @@ var mainViewport;
 
 function initSimpleSearch(wmc)
 {
+     resetSimpleSearch();
 }
 
 function gn_anyKeyObserver(e)
@@ -515,7 +516,7 @@ function doRegionSearchSimple(div) {
   doRegionSearch('region_simple');
   $('region').value = $('region_simple').value;
   
-  if(div == 'region_simple'){
+  if(div == 'region_simple' && $('comune')){
 	doAjaxMunicipality($('region').value);
   }
 }
@@ -622,7 +623,7 @@ function getRegion(regionlist, region)
     if(region)
         var pars = "id="+region;
 
-	var url = regionlist == 'region' ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
+	var url = (regionlist == 'region' || regionlist == 'region_simple') ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
 	
     var myAjax = new Ajax.Request(
 //        getGNServiceURL('xml.region.get'),
