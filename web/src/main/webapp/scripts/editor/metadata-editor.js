@@ -237,7 +237,16 @@ function topControls(el,min)
 }
 
 function doRemoveElementAction(action, ref, parentref, id, min)
-{
+{ 
+    //
+	// CSI modification to disable remove link with min occurrence = 0
+	//
+    if(id.indexOf("gmd:descriptiveKeywords") != -1 ||
+	   id.indexOf("gmd:otherConstraints") != -1    ||
+	   id.indexOf("gmd:presentationForm") != -1    ||
+	   id.indexOf("gmd:voice") != -1               ||
+	   id.indexOf("gmd:electronicMailAddress") != -1) min = 1;
+	
 	var metadataId = document.mainForm.id.value;
 	var thisElement = $(id);
 	var nextElement = thisElement.next();
@@ -260,7 +269,9 @@ function doRemoveElementAction(action, ref, parentref, id, min)
 					thisElement.remove();
 					thisElement = nextElement;
 				}
-				if (topElement(thisElement)) topControls(thisElement,min); 
+				var top = topElement(thisElement);
+				if (top) 
+					topControls(thisElement,min); 
 			} else { // last one, so replace with child-placeholder returned
 				if (orElement(thisElement)) thisElement.remove();
 				else thisElement.replace(html);
