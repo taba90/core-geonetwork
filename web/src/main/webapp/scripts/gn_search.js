@@ -279,6 +279,7 @@ function runAdvancedSearch(type)
 	pars += fetchBoolParam('dynamic');
 	pars += fetchBoolParam('download');
 	pars += fetchParam('protocol').toLowerCase();
+	pars += fetchParam('inspirebrontype').toLowerCase();
 	pars += fetchParam('template');
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
