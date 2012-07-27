@@ -6,6 +6,10 @@
 
 	<xsl:template name="geofields">
 		
+		<xsl:variable name="municipalitySearch">
+			<xsl:value-of select="/root/gui/config/municipalitySearch/enabled"/>
+		</xsl:variable>
+		
 		<div style="border-bottom: 1px solid">
 		
 			<!-- What --> 
@@ -36,6 +40,7 @@
 							
 				<div style="margin-top:5px">
 					<!-- Region -->
+					<span class="labelField">Provincia</span>
 					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearchSimple('region_simple');">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
@@ -66,6 +71,21 @@
 						</xsl:for-each>
 					</select>			
 				</div>
+				
+				<xsl:if test="$municipalitySearch = 'true'">
+					<div style="margin-top:5px">
+						<!-- Comuni -->						
+					    <span class="labelField">Comune</span>
+						<select class="content" style="width: 163px;" name="comune_simple" id="comune_simple" onchange="javascript:doRegionSearchSimple('comune_simple');">
+								<option value="">
+									<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+										<xsl:attribute name="selected">selected</xsl:attribute>
+									</xsl:if>
+									<xsl:value-of select="/root/gui/strings/any"/>
+								</option>
+							</select>				
+					</div>
+				</xsl:if>
 			</div>
 			
 			<!-- Search button -->

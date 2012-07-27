@@ -74,16 +74,18 @@ function runSimpleSearch(type)
 	var pars = "any=" + encodeURIComponent($('any') .value);
 
 	var region = $('region_simple').value;
-	if(region!="")
-  {
+	if(region!=""){
 		pars += "&"+im_mm_getURLselectedbbox();
+		//pars += "&bbox=" + $('westBL').value + "," + $('southBL').value + ',' + $('eastBL').value + ',' + $('northBL').value;
+
 		pars += fetchParam('relation');
 		pars += "&attrset=geo";
-		if(region!="userdefined")
-		{
-		pars += fetchParam('region');
+		
+		if(region!="userdefined"){
+			pars += fetchParam('region');
+		}
 	}
-	}
+	
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
 	pars += fetchParam('hitsPerPage');
@@ -513,8 +515,8 @@ function rateMetadata_OK(xmlRes)
 ********************************************************************/
 
 function doRegionSearchSimple(div) {
-  doRegionSearch('region_simple');
-  $('region').value = $('region_simple').value;
+  doRegionSearch(div);
+  $('region').value = $(div).value;
   
   if(div == 'region_simple' && $('comune')){
 	doAjaxMunicipality($('region').value);
@@ -546,25 +548,25 @@ function doAjaxMunicipality(provId, loadingImg){
 		   method: 'GET',
 		   timeout: 60000,
 		   success: function(response, opts){
-				document.getElementById('comune').innerHTML = "";
-				document.getElementById('comunegif').innerHTML = "";
+		        // Cleaning up the regions drop downs
+                resetRegionsComboBox();
 					
+			    // pars the response
 				var xmlFormat = new OpenLayers.Format.XML();        
-				var xml = xmlFormat.read(response.responseText);			
-				
+				var xml = xmlFormat.read(response.responseText);				
 				xml = xml.getElementsByTagName("response")[0].childNodes;
 				
+				// for adv search
+				var firstOpt = createComuniFirstOption();
+				document.getElementById("comune").appendChild(firstOpt);		
+
+				// for simple search
+                firstOpt = createComuniFirstOption();				
+			    document.getElementById("comune_simple").appendChild(firstOpt);
+				
 				var size = xml.length;
-				
-				var firstOpt = document.createElement("option"); 
-				firstOpt.value = -1;
-				firstOpt.innerHTML = "- Qualunque -";
-				document.getElementById("comune").appendChild(firstOpt);
-				
 				for(var i=0; i<size; i++){
-					if(xml[i].nodeName == 'record'){
-						var option = document.createElement("option"); 
-						
+					if(xml[i].nodeName == 'record'){											
 						var id = "";
 						var label = "";
 						if(Ext.isIE){
@@ -575,9 +577,12 @@ function doAjaxMunicipality(provId, loadingImg){
 							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
 						}
 						
-						option.value = id;
-						option.innerHTML = label;
+						// for adv search
+						var option = createComuniOption(id, label);
 						document.getElementById("comune").appendChild(option);
+						// for simple search
+						option = createComuniOption(id, label);
+						document.getElementById("comune_simple").appendChild(option);
 					}
 				}
 		   },
@@ -592,6 +597,35 @@ function doAjaxMunicipality(provId, loadingImg){
 		   }
 		});
 	}
+}
+
+function resetRegionsComboBox(){
+	//
+	// SIMPL FORM
+	//
+	document.getElementById('comune_simple').innerHTML = "";
+
+	//
+	// ADV FORM
+	//
+	document.getElementById('comune').innerHTML = "";
+	document.getElementById('comunegif').innerHTML = "";
+}
+
+function createComuniFirstOption(){
+	var firstOpt = document.createElement("option"); 
+	firstOpt.value = -1;
+	firstOpt.innerHTML = "- Qualunque -";
+
+	return firstOpt;
+}
+
+function createComuniOption(id, label){
+	var option = document.createElement("option"); 
+	option.value = id;
+	option.innerHTML = label;
+	
+	return option;
 }
 
 function doRegionSearch(regionlist)
@@ -1440,13 +1474,38 @@ function clearNode(node)
 	}			
 }
 
-function im_mm_getURLselectedbbox()
+/*function im_mm_getURLselectedbbox()
 {
-
     return "geometry=POLYGON(( " + $("westBL").value + " "  + $("northBL").value + ", " +
             $("eastBL").value + " " + $("northBL").value + ", " +
             $("eastBL").value + " " + $("southBL").value + ", " +
             $("westBL").value + " " + $("southBL").value + ", " +
             $("westBL").value + " "  + $("northBL").value + "))";
+}*/
+
+function im_mm_getURLselectedbbox()
+{
+	return urlizebb(
+		$("northBL").value,
+		$("eastBL").value,
+		$("southBL").value,
+		$("westBL").value);
 }
+
+/**
+ * Get the URLized version of the given bbox
+ * @param {int} n
+ * @param {int} e
+ * @param {int} s
+ * @param {int} w
+ * @return {String} URL
+ */
+function urlizebb(n, e, s, w)
+{
+	return	"northBL="+n+
+			"&eastBL="+e+
+			"&southBL="+s+
+			"&westBL="+w;
+};
+
 /*** EOF ***********************************************************/
