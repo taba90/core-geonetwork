@@ -62,11 +62,11 @@ public class GetComuniByProv implements Service
             } catch (NumberFormatException e) {
                 throw new BadParameterEx("provId", provId);
             }
-            response = dbms.select("select c.* from comuni c, province p where p.id=? and p.code=c.provCode", id);
+            response = dbms.select("select c.* from comuni c, province p where p.id=? and p.code=c.provCode order by c.label", id);
         } else if (provCode != null) {
-            response = dbms.select("select * from comuni where provCode=?", provCode);
+            response = dbms.select("select * from comuni where provCode=? order by label", provCode);
         } else if (provName != null) {
-            response = dbms.select("select c.* from comuni c, province p where p.label=? and p.code=c.provCode", provName);
+            response = dbms.select("select c.* from comuni c, province p where p.label=? and p.code=c.provCode order by c.label", provName);
         } else {
             throw new IllegalStateException();
         }
