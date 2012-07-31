@@ -24,7 +24,10 @@
             <xsl:if test="/root/gui/env/inspire/enable = 'true' and /root/gui/env/inspire/enableSearchPanel = 'true'">
 				<xsl:call-template name="adv_inspire"></xsl:call-template>
 			</xsl:if>
-			
+
+			<xsl:comment>ADV SEARCH: PSR</xsl:comment>
+    		<xsl:call-template name="adv_psr"></xsl:call-template>
+
 			<!-- Search button -->
 			<div>		
 				<table class="advsearchfields" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -298,176 +301,6 @@
              </div>
         </div>
 
-    	<span style="margin-top:5px; margin-bottom:5px"><a href="#" onclick="toggleInspire('stateResponse', 'i_inspire_state_response')" style="margin-right:2px"><img id="i_inspire_state_response" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a>Modello Pressione Stato Risposte</span>
-    	
-    	<div id="stateResponse" style="display:none">
-    		<fieldset>
-    			<legend>Tema PSR</legend>
-    			
-    			<div id="inspirethemesdivPsr">
-    				<div>
-    					<div class="inspireThemeTitle">Fattori di pressione sull'ambiente</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A1 - distribuzione demografica e aspetti socio-economici" name="Distribuzione" id="psr_distribuzione"/>
-    						
-    						<span>
-    							<label for="psr_distribuzione">A1 - distribuzione demografica e aspetti socio-economici</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A2 - agricoltura, foreste, allevamento, pesca" name="Afap" id="psr_afap"/>
-    						
-    						<span>
-    							<label for="psr_afap">A2 - agricoltura, foreste, allevamento, pesca</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A3 - attivita' produttive nell'industria e nell'artigianato" name="Industrie Artigianato" id="psr_ind_atig"/>
-    						
-    						<span>
-    							<label for="psr_ind_atig">A3 - attivita' produttive nell'industria e nell'artigianato</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A4 - commercio, produzione di servizi e turismo" name="Commercio Produzione Servizi" id="psr_cpst"/>
-    						
-    						<span>
-    							<label for="psr_cpst">A4 - commercio, produzione di servizi e turismo</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A5 - processi energetici" name="Processi Energetici" id="psr_proc_energ"/>
-    						
-    						<span>
-    							<label for="psr_proc_energ">A5 - processi energetici</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A6 - trasporti, comunicazioni e infrastrutture" name="Trasposti comunicazioni Infrastrutture" id="psr_tci"/>
-    						
-    						<span>
-    							<label for="psr_tci">A6 - trasporti, comunicazioni e infrastrutture</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A7 - rifiuti e flussi di materiali" name="Rifiuti Flussi Materiali" id="psr_rfm"/>
-    						
-    						<span>
-    							<label for="psr_rfm">A7 - rifiuti e flussi di materiali</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="A8 - agenti fisici (radiazioni ionizzanti e non, rumore)" name="Agenti Fisici" id="psr_agenti_fisici"/>
-    						
-    						<span>
-    							<label for="psr_agenti_fisici">A8 - agenti fisici (radiazioni ionizzanti e non, rumore)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeTitle">Stato delle Risorse Ambientali</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)" name="Antroposfera" id="psr_antroposfera"/>
-    						
-    						<span>
-    							<label for="psr_antroposfera">B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="B2 - atmosfera (aria, meteorologia, climatologia)" name="Atmosfera" id="psr_atmosfera"/>
-    						
-    						<span>
-    							<label for="psr_atmosfera">B2 - atmosfera (aria, meteorologia, climatologia)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="B3 - biosfera (flora, fauna, ecosistemi)" name="Biosfera" id="psr_biosfera"/>
-    						
-    						<span>
-    							<label for="psr_biosfera">B3 - biosfera (flora, fauna, ecosistemi)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)" name="Idrosfera" id="psr_idrosfera"/>
-    						
-    						<span>
-    							<label for="psr_idrosfera">B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)" name="Geosfera" id="psr_geosfera"/>
-    						
-    						<span>
-    							<label for="psr_geosfera">B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeTitle">Azioni di Monitoraggio e Controllo</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C1 - istituzioni e competenze della pubblica amministrazione" name="Istituzioni e Competenze" id="psr_istituzioni"/>
-    						
-    						<span>
-    							<label for="psr_istituzioni">C1 - istituzioni e competenze della pubblica amministrazione</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C2 - legislazione e norme tecniche" name="Legislazione e Norme" id="psr_legislazione"/>
-    						
-    						<span>
-    							<label for="psr_legislazione">C2 - legislazione e norme tecniche</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C3 - politiche, pianificazione, programmazione e spesa" name="Politiche e Pianificazione" id="psr_ppps"/>
-    						
-    						<span>
-    							<label for="psr_ppps">C3 - politiche, pianificazione, programmazione e spesa</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali" name="Tutela e Prevenzione" id="psr_tutela"/>
-    						
-    						<span>
-    							<label for="psr_tutela">C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C5 - sistemi di monitoraggio e controllo" name="Monitoraggio" id="psr_monitoraggio"/>
-    						
-    						<span>
-    							<label for="psr_monitoraggio">C5 - sistemi di monitoraggio e controllo</label>
-    						</span>
-    					</div>
-    					
-    					<div class="inspireThemeElement">
-    						<input type="checkbox" value="C6 - gestione del rischio antropico e naturale" name="Rischio Antropico e Naturale" id="psr_rischio"/>
-    						
-    						<span>
-    							<label for="psr_rischio">C6 - gestione del rischio antropico e naturale</label>
-    						</span>
-    					</div>
-    					
-    				</div>
-    			</div>
-    		</fieldset>
-    	</div>
     	
     	<br/>
     	
@@ -978,8 +811,8 @@
 		<tr>
 			<td style="width:200px;">
 				<div class="row">
-					<span class="labelField">Provincia<!--xsl:value-of select="/root/gui/strings/region"/--></span>
-					<select class="content" style="width: 223px;" name="region" id="region" onchange="javascript:doRegionSearchAdvanced('region');">
+					<span class="labelField">Ambito<!--xsl:value-of select="/root/gui/strings/region"/--></span>
+					<select class="content" style="width: 223px;" name="region" id="region" onchange="javascript:doRegionSearchAdvanced();">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
 								<xsl:attribute name="selected">selected</xsl:attribute>
@@ -1015,8 +848,8 @@
 		<xsl:if test="$municipalitySearch = 'true'">
 			<tr>
 				<td>
-					<span class="labelField">Comune</span>
-					<select class="content" style="width: 223px;" name="comune" id="comune" onchange="javascript:doRegionSearchAdvanced('comune');">
+					<span class="labelField">Sottoambito</span>
+					<select class="content" style="width: 223px;" name="comune" id="comune" onchange="javascript:comuneAdvancedSelected();">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
 								<xsl:attribute name="selected">selected</xsl:attribute>
@@ -1067,6 +900,186 @@
 		</select>							
 	</div>-->
 </xsl:template>
+
+
+    <xsl:template name="adv_psr">
+
+        <h1 class="labelFieldSmall" style="margin-top:5px;margin-bottom:5px">
+            <a href="#" onclick="toggleInspire('stateResponse', 'i_inspire_state_response')" style="margin-right:2px">
+                <img id="i_inspire_state_response" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" />
+            </a>Ricerca per tema PSR
+        </h1>
+
+    	<div id="stateResponse" style="display:none">
+    		<fieldset>
+    			<legend>Tema PSR</legend>
+
+    			<div id="inspirethemesdivPsr">
+    				<div>
+    					<div class="inspireThemeTitle">Fattori di pressione sull'ambiente</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A1 - distribuzione demografica e aspetti socio-economici" name="Distribuzione" id="psr_distribuzione"/>
+
+    						<span>
+    							<label for="psr_distribuzione">A1 - distribuzione demografica e aspetti socio-economici</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A2 - agricoltura, foreste, allevamento, pesca" name="Afap" id="psr_afap"/>
+
+    						<span>
+    							<label for="psr_afap">A2 - agricoltura, foreste, allevamento, pesca</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A3 - attivita' produttive nell'industria e nell'artigianato" name="Industrie Artigianato" id="psr_ind_atig"/>
+
+    						<span>
+    							<label for="psr_ind_atig">A3 - attivita' produttive nell'industria e nell'artigianato</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A4 - commercio, produzione di servizi e turismo" name="Commercio Produzione Servizi" id="psr_cpst"/>
+
+    						<span>
+    							<label for="psr_cpst">A4 - commercio, produzione di servizi e turismo</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A5 - processi energetici" name="Processi Energetici" id="psr_proc_energ"/>
+
+    						<span>
+    							<label for="psr_proc_energ">A5 - processi energetici</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A6 - trasporti, comunicazioni e infrastrutture" name="Trasposti comunicazioni Infrastrutture" id="psr_tci"/>
+
+    						<span>
+    							<label for="psr_tci">A6 - trasporti, comunicazioni e infrastrutture</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A7 - rifiuti e flussi di materiali" name="Rifiuti Flussi Materiali" id="psr_rfm"/>
+
+    						<span>
+    							<label for="psr_rfm">A7 - rifiuti e flussi di materiali</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="A8 - agenti fisici (radiazioni ionizzanti e non, rumore)" name="Agenti Fisici" id="psr_agenti_fisici"/>
+
+    						<span>
+    							<label for="psr_agenti_fisici">A8 - agenti fisici (radiazioni ionizzanti e non, rumore)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeTitle">Stato delle Risorse Ambientali</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)" name="Antroposfera" id="psr_antroposfera"/>
+
+    						<span>
+    							<label for="psr_antroposfera">B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="B2 - atmosfera (aria, meteorologia, climatologia)" name="Atmosfera" id="psr_atmosfera"/>
+
+    						<span>
+    							<label for="psr_atmosfera">B2 - atmosfera (aria, meteorologia, climatologia)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="B3 - biosfera (flora, fauna, ecosistemi)" name="Biosfera" id="psr_biosfera"/>
+
+    						<span>
+    							<label for="psr_biosfera">B3 - biosfera (flora, fauna, ecosistemi)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)" name="Idrosfera" id="psr_idrosfera"/>
+
+    						<span>
+    							<label for="psr_idrosfera">B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)" name="Geosfera" id="psr_geosfera"/>
+
+    						<span>
+    							<label for="psr_geosfera">B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeTitle">Azioni di Monitoraggio e Controllo</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C1 - istituzioni e competenze della pubblica amministrazione" name="Istituzioni e Competenze" id="psr_istituzioni"/>
+
+    						<span>
+    							<label for="psr_istituzioni">C1 - istituzioni e competenze della pubblica amministrazione</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C2 - legislazione e norme tecniche" name="Legislazione e Norme" id="psr_legislazione"/>
+
+    						<span>
+    							<label for="psr_legislazione">C2 - legislazione e norme tecniche</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C3 - politiche, pianificazione, programmazione e spesa" name="Politiche e Pianificazione" id="psr_ppps"/>
+
+    						<span>
+    							<label for="psr_ppps">C3 - politiche, pianificazione, programmazione e spesa</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali" name="Tutela e Prevenzione" id="psr_tutela"/>
+
+    						<span>
+    							<label for="psr_tutela">C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C5 - sistemi di monitoraggio e controllo" name="Monitoraggio" id="psr_monitoraggio"/>
+
+    						<span>
+    							<label for="psr_monitoraggio">C5 - sistemi di monitoraggio e controllo</label>
+    						</span>
+    					</div>
+
+    					<div class="inspireThemeElement">
+    						<input type="checkbox" value="C6 - gestione del rischio antropico e naturale" name="Rischio Antropico e Naturale" id="psr_rischio"/>
+
+    						<span>
+    							<label for="psr_rischio">C6 - gestione del rischio antropico e naturale</label>
+    						</span>
+    					</div>
+
+    				</div>
+    			</div>
+    		</fieldset>
+    	</div>
+
+    </xsl:template>
 
 	<!-- ============================================================ 
 		WHEN

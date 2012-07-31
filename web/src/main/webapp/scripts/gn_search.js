@@ -19,7 +19,6 @@ var mainViewport;
 
 function initSimpleSearch(wmc)
 {
-     resetSimpleSearch();
 }
 
 function gn_anyKeyObserver(e)
@@ -514,28 +513,38 @@ function rateMetadata_OK(xmlRes)
 *** GET BOUNDINGBOX COORDINATES FOR A REGION
 ********************************************************************/
 
-function doRegionSearchSimple(div) {
-  doRegionSearch(div);
-  $('region').value = $(div).value;
+function doRegionSearchSimple() {
+  doRegionSearch('region_simple');
+  var r = $('region_simple').value;
+  $('region').value = r;
   
-  if(div == 'region_simple' && $('comune')){
-	doAjaxMunicipality($('region').value);
+  if( $('comune') ){
+	doAjaxMunicipality(r);
   }
 }
 
-function doRegionSearchAdvanced(div, loadingImg) {
-  /*doRegionSearch('region');
-  $('region_simple').value = $('region').value;*/
-  
-  doRegionSearch(div);
-  $('region_simple').value = $(div).value;
-  
-  if(div == 'region' && $('comune')){
+function comuneSimpleSelected() {
+  doRegionSearch('comune_simple');
+  $('comune').value = $('comune_simple').value;
+}
+
+
+function doRegionSearchAdvanced(loadingImg) {
+  doRegionSearch('region');
+  $('region_simple').value = $('region').value;
+    
+  if( $('comune') ){
 	doAjaxMunicipality($('region').value, loadingImg);
   }
 }
 
+function comuneAdvancedSelected() {
+  doRegionSearch('comune');
+  $('comune_simple').value = $('comune').value;
+}
+
 function doAjaxMunicipality(provId, loadingImg){    
+
     if(provId && provId != "" && provId != 'userdefined'){
 	    
 		var envURL = Env.url + (loadingImg ? loadingImg : "/images/grid-loading.gif");
@@ -551,7 +560,7 @@ function doAjaxMunicipality(provId, loadingImg){
 		        // Cleaning up the regions drop downs
                 resetRegionsComboBox();
 					
-			    // pars the response
+			    // parse the response
 				var xmlFormat = new OpenLayers.Format.XML();        
 				var xml = xmlFormat.read(response.responseText);				
 				xml = xml.getElementsByTagName("response")[0].childNodes;
@@ -596,18 +605,25 @@ function doAjaxMunicipality(provId, loadingImg){
 				});
 		   }
 		});
-	}
+	} else {
+        resetRegionsComboBox();
+
+        // for adv search
+        var firstOpt = createComuniFirstOption();
+        document.getElementById("comune").appendChild(firstOpt);
+
+        // for simple search
+        firstOpt = createComuniFirstOption();
+        document.getElementById("comune_simple").appendChild(firstOpt);
+    }
 }
 
 function resetRegionsComboBox(){
-	//
-	// SIMPL FORM
-	//
+
+    // SIMPLE FORM
 	document.getElementById('comune_simple').innerHTML = "";
 
-	//
 	// ADV FORM
-	//
 	document.getElementById('comune').innerHTML = "";
 	document.getElementById('comunegif').innerHTML = "";
 }
@@ -652,10 +668,10 @@ function doRegionSearch(regionlist)
     }
 }
 
-function getRegion(regionlist, region)
+function getRegion(regionlist, regionId)
 {
-    if(region)
-        var pars = "id="+region;
+    if(regionId)
+        var pars = "id="+regionId;
 
 	var url = (regionlist == 'region' || regionlist == 'region_simple') ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
 	
