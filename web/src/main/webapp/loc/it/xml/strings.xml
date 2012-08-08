@@ -720,7 +720,8 @@
 	<xmlInsert>Importa i metadati formattati in XML o MEF</xmlInsert>
 	<xmlInsertTitle>Importa metadato</xmlInsertTitle>
 	<xmlTab>Vista XML</xmlTab>
-	<inspireTab>Vista INSPIRE</inspireTab>
+	<!--inspireTab>Vista INSPIRE</inspireTab-->
+	<inspireTab>Vista INSPIRE-RNDT</inspireTab>
 	<inspireSection>
 		<identification>
 			<title>Identificazione</title>

@@ -10,6 +10,7 @@
 	
 	<xsl:include href="header.xsl"/>
 	<xsl:include href="banner.xsl"/>
+	<xsl:include href="footer.xsl"/>
 	<xsl:include href="utils.xsl"/>
 	
 	<!--
@@ -38,7 +39,12 @@
 					<xsl:call-template name="content"/>
 				</div>
 
-				<xsl:apply-templates mode="loading" select="/"/>                
+				<xsl:apply-templates mode="loading" select="/"/>       
+				
+				<!-- footer -->
+				<div id="footer">
+					<xsl:call-template name="footer"/>
+				</div>
 			</body>
 		</html>
 	</xsl:template>
@@ -90,7 +96,7 @@
 			<xsl:call-template name="formFiller">
 				<xsl:with-param name="indent" select="$indent"/>
 			</xsl:call-template>
-			<tr><td class="blue-content" colspan="3"/></tr>
+			<!--<tr><td class="blue-content" colspan="3"/></tr>-->
 		</table>
 	</xsl:template>
 

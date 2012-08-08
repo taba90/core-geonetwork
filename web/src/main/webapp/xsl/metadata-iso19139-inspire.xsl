@@ -366,7 +366,7 @@
 							
 							<!-- Data (ADDED for CSI) -->
 							<xsl:apply-templates mode="complexElement"
-								select="gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date">
+								select="gmd:citation/gmd:CI_Citation/gmd:date">
 								<xsl:with-param name="schema" select="$schema" />
 								<xsl:with-param name="edit" select="$edit" />
 							</xsl:apply-templates>

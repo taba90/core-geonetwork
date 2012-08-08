@@ -1042,11 +1042,42 @@
 							<xsl:copy-of select="$text"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:call-template name="addLineBreaksAndHyperlinks">
-								<xsl:with-param name="txt" select="$text"/>
-							</xsl:call-template>
+							
+							<!-- Check to simplify the date text witout the hour -->
+							<xsl:choose>
+								<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date|')
+									    or 
+									    contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition|')
+										or 
+										contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition|')
+										or 
+										contains($helpLink, '|gmd:MD_Metadata/gmd:dateStamp|')">
+									<xsl:call-template name="addLineBreaksAndHyperlinks">
+										<xsl:with-param name="txt" select="substring-before($text, 'T')"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="addLineBreaksAndHyperlinks">
+										<xsl:with-param name="txt" select="$text"/>
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>	
+							
 						</xsl:otherwise>
 					</xsl:choose>			
+				
+					<xsl:if test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
+						<br/>
+						<br/>
+						<span>(Suggerimenti: 
+							<select  id="vertCrs" class="md" onchange="getInputCRSel(this);">
+								
+								<option value="EPSG::4979">EPSG::4979</option>
+								<option value="EPSG::4326">EPSG::4326</option>
+								<option value="EPSG::3003">EPSG::3003</option>
+							</select>
+					    )</span>
+					</xsl:if>
 				</td>
 			</tr>
 		</xsl:if>
@@ -1112,12 +1143,12 @@
 										onclick="$('toggled{$id}').style.display=($(this.id).checked?'none':'block');"
 									/>
 									<!--
-								Toggle mechanism could have been achieved without any JS but pure CSS
-								input.toggle { display: block; }
-								input.toggle:checked+table { display: none; }
-								
-								Issue is IE does not support pseudo class selection checked.
-							 -->
+										Toggle mechanism could have been achieved without any JS but pure CSS
+										input.toggle { display: block; }
+										input.toggle:checked+table { display: none; }
+										
+										Issue is IE does not support pseudo class selection checked.
+									 -->
 								</xsl:if>
 								<xsl:choose>
 									<xsl:when test="$helpLink!=''">
@@ -1643,7 +1674,16 @@
 				</select>
 			</xsl:when>
 			<xsl:when test="$edit=true() and $rows=1">
-				<input class="md" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+				
+				<xsl:choose>
+					<xsl:when test="$name = 'xlink:href' and $parent = 'gmd:verticalCRS'">
+						<input class="md" readonly="readonly" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+					</xsl:when>
+					<xsl:otherwise>
+						<input class="md" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+					</xsl:otherwise>
+				</xsl:choose>
+
 				
 				<xsl:call-template name="helper">
 					<xsl:with-param name="schema" select="$schema"/>
