@@ -2319,6 +2319,8 @@
             <xsl:param name="schema"/>
             <xsl:param name="edit"/>
 
+            <xsl:variable name="linkage" select="gmd:linkage/gmd:URL" />
+            
             <xsl:variable name="langId">
                 <xsl:call-template name="getLangId">
                     <xsl:with-param name="langGui" select="/root/gui/language" />
@@ -2366,6 +2368,22 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </a>
+                            
+                            <!-- This modification has been introduced to manage External (public and hidden) link service in the OnlineResource field -->
+                            <xsl:choose>
+                                <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Hidden')">
+                                    <xsl:if test="string(/root/gui/session/profile)!='Guest'">
+                                        <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                    </xsl:if>
+                                </xsl:when>
+                                <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Public')">
+                                    <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            
                         </xsl:with-param>
                     </xsl:apply-templates>
                 </xsl:when>

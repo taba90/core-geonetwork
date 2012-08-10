@@ -1599,7 +1599,7 @@ function getValidationReport()
 	);
 }
 
-function getInputCRSel(s){
+function setInputCRSel(s){
 	var inputEl = document.getElementById('vertCrs');
 	var i = inputEl.parentElement.parentElement.childElements()[0];
 	var input = document.getElementById(i.id);

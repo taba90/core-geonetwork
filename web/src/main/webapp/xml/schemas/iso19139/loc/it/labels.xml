@@ -2008,6 +2008,7 @@ e di trasformazione.</label>
         <description>Identificatore del punto</description>
 		<helper>
 			<option value="m">m</option>
+			<option value="km">km</option>
 		</helper>
     </element>
 

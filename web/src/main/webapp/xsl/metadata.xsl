@@ -1028,6 +1028,7 @@
 						</xsl:call-template>
 					</xsl:if>
 				</th>
+				<!-- Simple element gui TD -->
 				<td class="padded" valign="top">
 				
 					<xsl:variable name="textnode" select="exslt:node-set($text)"/>
@@ -1070,8 +1071,7 @@
 						<br/>
 						<br/>
 						<span>(Suggerimenti: 
-							<select  id="vertCrs" class="md" onchange="getInputCRSel(this);">
-								
+							<select  id="vertCrs" class="md" onchange="setInputCRSel(this);">								
 								<option value="EPSG::4979">EPSG::4979</option>
 								<option value="EPSG::4326">EPSG::4326</option>
 								<option value="EPSG::3003">EPSG::3003</option>

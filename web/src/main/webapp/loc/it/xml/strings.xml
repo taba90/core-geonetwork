@@ -563,6 +563,8 @@
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--related">Risorsa correlata (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--rss">Feed RSS (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--samples">Prodotto d'esempio (URL)</protocolChoice>
+	<protocolChoice show="-" value="External:Link-Hidden-Download">Download esterno nascosto</protocolChoice>
+	<protocolChoice show="-" value="External:Link-Public-Download">Download esterno pubblico</protocolChoice>
 	<protocolChoice show="-" value="UKST">Tipo di servizio sconosciuto</protocolChoice>
 	
 	<!-- INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service type -->
