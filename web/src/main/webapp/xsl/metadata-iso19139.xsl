@@ -757,7 +757,7 @@
 
             <xsl:choose>
                 <xsl:when test="$edit=true()">
-
+                    <!-- Metadata edit mode -->
                     <xsl:variable name="content">
                         <xsl:for-each select="gmd:MD_Keywords">
                         <tr>
@@ -799,7 +799,37 @@
                     </xsl:apply-templates>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:apply-templates mode="simpleElement" select=".">
+                    <!-- Metadata view mode -->
+                    <xsl:for-each select="gmd:MD_Keywords">
+                        <tr>
+                            <td class="padded-content" width="100%" colspan="2">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="50%" valign="top">
+                                            <table width="100%">
+                                                <xsl:apply-templates mode="elementEP" select="gmd:keyword|geonet:child[string(@name)='keyword']">
+                                                    <xsl:with-param name="schema" select="$schema"/>
+                                                    <xsl:with-param name="edit"   select="$edit"/>
+                                                </xsl:apply-templates>
+                                            </table>
+                                        </td>
+                                        <td valign="top">
+                                            <table width="100%">
+                                                <xsl:apply-templates mode="elementEP" select="gmd:thesaurusName|geonet:child[string(@name)='thesaurusName']">
+                                                    <xsl:with-param name="schema" select="$schema"/>
+                                                    <xsl:with-param name="edit"   select="$edit"/>
+                                                </xsl:apply-templates>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </xsl:for-each>
+                    
+                   <!-- MODIFIED FOR CSI (to show always the thesaurus if present)
+                       
+                   <xsl:apply-templates mode="simpleElement" select=".">
                         <xsl:with-param name="schema" select="$schema"/>
                         <xsl:with-param name="text">
                             <xsl:variable name="value">
@@ -814,10 +844,11 @@
                                 </xsl:if>
                                 <xsl:text>.</xsl:text>
                             </xsl:variable>
-                            <!-- Clean new lines which may be added by formatting. -->
+                            <!-\- Clean new lines which may be added by formatting. -\->
                             <xsl:value-of select="normalize-space($value)"/>
                         </xsl:with-param>
-                    </xsl:apply-templates>
+                    </xsl:apply-templates>-->
+                    
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:template>

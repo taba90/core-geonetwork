@@ -1072,9 +1072,9 @@
 						<br/>
 						<span>(Suggerimenti: 
 							<select  id="vertCrs" class="md" onchange="setInputCRSel(this);">								
-								<option value="EPSG::4979">EPSG::4979</option>
-								<option value="EPSG::4326">EPSG::4326</option>
-								<option value="EPSG::3003">EPSG::3003</option>
+								<option value="EPSG::4979">EPSG:4979</option>
+								<option value="EPSG::4326">EPSG:4326</option>
+								<option value="EPSG::3003">EPSG:3003</option>
 							</select>
 					    )</span>
 					</xsl:if>

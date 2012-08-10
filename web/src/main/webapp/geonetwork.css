@@ -1186,6 +1186,17 @@ div.attributionlogo {
 	float: left;
 }
 
+span.footer {
+	padding-left: 20px;
+	padding-bottom: 3px;
+	vertical-align: bottom;
+	font-weight: bold;
+	color: #FFFFFF;
+	display: table-cell;
+    display: inline-block;
+    font-size: 0.9em;
+}
+
 div.hitexport {
 	float: right;
 	margin-right: 5px;
