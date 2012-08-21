@@ -62,7 +62,16 @@
 							<xsl:with-param name="edit" select="$edit" />
 						</xsl:apply-templates>
 						
-					
+					    <!-- Risorsa accoppiata (MODIFIED FOR CSI) -->
+						<xsl:apply-templates mode="elementEP"
+							select="
+							srv:operatesOn|
+							geonet:child[string(@name)='operatesOn']">
+							<xsl:with-param name="schema" select="$schema" />
+							<xsl:with-param name="edit" select="$edit" />
+						</xsl:apply-templates>
+						
+						<!-- Risorsa accoppiata
 						<xsl:call-template name="complexElementGuiWrapper">
 							<xsl:with-param name="title" select="/root/gui/iso19139/element[@name='srv:operatesOn']/label" />
 							<xsl:with-param name="content">
@@ -74,7 +83,7 @@
 									<xsl:with-param name="edit" select="$edit" />
 								</xsl:apply-templates>
 							</xsl:with-param>
-						</xsl:call-template>
+						</xsl:call-template>-->
 					</xsl:if>
 
 					<!-- Distribution section (REMOVED for CSI) 
@@ -225,39 +234,49 @@
 							
 						</xsl:with-param>
 					</xsl:call-template>-->
+					
+					<!-- Operazioni contenute (ADDED for CSI) -->
+					<xsl:apply-templates mode="complexElement"
+						select="srv:containsOperations">
+						<xsl:with-param name="schema" select="$schema" />
+						<xsl:with-param name="edit" select="$edit" />
+					</xsl:apply-templates>
+
 				
 				</xsl:with-param>
 			</xsl:call-template>
 
-			<!--  Classification of spatial data and services -->
-			<xsl:call-template name="complexElementGuiWrapper">
-				<xsl:with-param name="title"
-					select="/root/gui/strings/inspireSection/classification/title" />
-				<xsl:with-param name="id"
-					select="generate-id(/root/gui/strings/inspireSection/classification/title)" />
-				<xsl:with-param name="content">
-
-					<xsl:apply-templates mode="elementEP"
-						select="
-						gmd:topicCategory|
-						geonet:child[string(@name)='topicCategory']
-						">
-						<xsl:with-param name="schema" select="$schema" />
-						<xsl:with-param name="edit" select="$edit" />
-						<xsl:with-param name="force" select="true()" />
-					</xsl:apply-templates>
-
-					<!-- Service info-->
-					<xsl:apply-templates mode="complexElement"
+			<xsl:if test="$dataset">
+				<!--  Classification of spatial data and services -->
+				<xsl:call-template name="complexElementGuiWrapper">
+					<xsl:with-param name="title"
+						select="/root/gui/strings/inspireSection/classification/title" />
+					<xsl:with-param name="id"
+						select="generate-id(/root/gui/strings/inspireSection/classification/title)" />
+					<xsl:with-param name="content">
+	
+						<xsl:apply-templates mode="elementEP"
 							select="
-							srv:serviceType|
-							geonet:child[string(@name)='serviceType']">
+							gmd:topicCategory|
+							geonet:child[string(@name)='topicCategory']
+							">
 							<xsl:with-param name="schema" select="$schema" />
 							<xsl:with-param name="edit" select="$edit" />
-					</xsl:apply-templates>
-
-				</xsl:with-param>
-			</xsl:call-template>
+							<xsl:with-param name="force" select="true()" />
+						</xsl:apply-templates>
+						
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+			
+			<!-- Service info, Classificazione dei servizi (MOVED HERE for CSI outside the previous if) -->
+			<xsl:apply-templates mode="complexElement"
+				select="
+				srv:serviceType|
+				geonet:child[string(@name)='serviceType']">
+				<xsl:with-param name="schema" select="$schema" />
+				<xsl:with-param name="edit" select="$edit" />
+			</xsl:apply-templates>
 
 			<!--  Keywords -->
 			<xsl:call-template name="complexElementGuiWrapper">
@@ -355,14 +374,14 @@
 						<xsl:with-param name="content">
 							
 							<!-- OLD Data fieldset (REMOVED for CSI) 
-						<xsl:apply-templates mode="elementEP"
-							select="
-							gmd:citation/gmd:CI_Citation/gmd:date|
-							gmd:citation/geonet:child[string(@name)='date']
-							">
-							<xsl:with-param name="schema" select="$schema" />
-							<xsl:with-param name="edit" select="$edit" />
-						</xsl:apply-templates>-->
+							<xsl:apply-templates mode="elementEP"
+								select="
+								gmd:citation/gmd:CI_Citation/gmd:date|
+								gmd:citation/geonet:child[string(@name)='date']
+								">
+								<xsl:with-param name="schema" select="$schema" />
+								<xsl:with-param name="edit" select="$edit" />
+							</xsl:apply-templates>-->
 							
 							<!-- Data (ADDED for CSI) -->
 							<xsl:apply-templates mode="complexElement"
@@ -388,12 +407,14 @@
 				</xsl:with-param>
 			</xsl:call-template>
 			
-			<!-- Sistema di riferimento spaziale (ADDED for CSI) -->
-			<xsl:apply-templates mode="complexElement" 
-				select="../../gmd:referenceSystemInfo">
-				<xsl:with-param name="schema" select="$schema" />
-				<xsl:with-param name="edit" select="$edit" />
-			</xsl:apply-templates>
+			<xsl:if test="$dataset">
+				<!-- Sistema di riferimento spaziale (ADDED for CSI) -->
+				<xsl:apply-templates mode="complexElement" 
+					select="../../gmd:referenceSystemInfo">
+					<xsl:with-param name="schema" select="$schema" />
+					<xsl:with-param name="edit" select="$edit" />
+				</xsl:apply-templates>
+			</xsl:if>
 
 			<!-- Quality and validity  -->
 			<xsl:call-template name="complexElementGuiWrapper">
@@ -451,53 +472,85 @@
 								<xsl:with-param name="force" select="true()" />
 							</xsl:apply-templates>
 						</xsl:if>
-					</xsl:if>					
-				</xsl:with-param>
-			</xsl:call-template>
+					</xsl:if>
 
-
-			<!-- Conformity  -->
-			<xsl:call-template name="complexElementGuiWrapper">
-				<xsl:with-param name="title"
-					select="/root/gui/strings/inspireSection/conformity/title" />
-				<xsl:with-param name="id"
-					select="generate-id(/root/gui/strings/inspireSection/conformity/title)" />
-				<xsl:with-param name="content">
-
-					<!-- Aggiungi conformità (REMOVED for CSI)
-					<xsl:if
-						test="not (../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult[contains(gmd:specification/gmd:CI_Citation/gmd:title/gco:CharacterString, 'INSPIRE')])">
-						<xsl:choose>
-							<xsl:when test="$edit = true()">
-								<a
-									href="metadata.processing?uuid={../../geonet:info/uuid}&amp;process=inspire-add-conformity"
-									alt="{/root/gui/strings/inspireAddConformity}" title="{/root/gui/strings/inspireAddConformity}">
-									<img src="../../images/inspire.png" align="absmiddle" />
-									<xsl:value-of select="/root/gui/strings/inspireAddConformity" />
-								</a>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if> -->
-
-					<xsl:apply-templates mode="iso19139"
-						select="../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result">
-						<xsl:with-param name="schema" select="$schema" />
-						<xsl:with-param name="edit" select="$edit" />
-					</xsl:apply-templates>
-
-					<xsl:if
-						test="not(../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult)">
-						<xsl:apply-templates mode="elementEP"
-							select="
-							../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/geonet:child[string(@name)='result']
-							">
-							<xsl:with-param name="schema" select="$schema" />
-							<xsl:with-param name="edit" select="$edit" />
-							<xsl:with-param name="force" select="true()" />
-						</xsl:apply-templates>
+					<!-- Added the conformity section here only for service (CSI modification) -->
+					<xsl:if test="not($dataset)">
+						<!-- Conformity  -->
+						<xsl:call-template name="complexElementGuiWrapper">
+							<xsl:with-param name="title"
+								select="/root/gui/strings/inspireSection/conformity/title" />
+							<xsl:with-param name="id"
+								select="generate-id(/root/gui/strings/inspireSection/conformity/title)" />
+							<xsl:with-param name="content">
+								
+								<xsl:apply-templates mode="iso19139"
+									select="../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates>
+								
+								<xsl:if
+									test="not(../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult)">
+									<xsl:apply-templates mode="elementEP"
+										select="
+										../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/geonet:child[string(@name)='result']
+										">
+										<xsl:with-param name="schema" select="$schema" />
+										<xsl:with-param name="edit" select="$edit" />
+										<xsl:with-param name="force" select="true()" />
+									</xsl:apply-templates>
+								</xsl:if>
+							</xsl:with-param>
+						</xsl:call-template>
 					</xsl:if>
 				</xsl:with-param>
 			</xsl:call-template>
+
+			<xsl:if test="$dataset">
+				<!-- Conformity  -->
+				<xsl:call-template name="complexElementGuiWrapper">
+					<xsl:with-param name="title"
+						select="/root/gui/strings/inspireSection/conformity/title" />
+					<xsl:with-param name="id"
+						select="generate-id(/root/gui/strings/inspireSection/conformity/title)" />
+					<xsl:with-param name="content">
+	
+						<!-- Aggiungi conformità (REMOVED for CSI)
+						<xsl:if
+							test="not (../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult[contains(gmd:specification/gmd:CI_Citation/gmd:title/gco:CharacterString, 'INSPIRE')])">
+							<xsl:choose>
+								<xsl:when test="$edit = true()">
+									<a
+										href="metadata.processing?uuid={../../geonet:info/uuid}&amp;process=inspire-add-conformity"
+										alt="{/root/gui/strings/inspireAddConformity}" title="{/root/gui/strings/inspireAddConformity}">
+										<img src="../../images/inspire.png" align="absmiddle" />
+										<xsl:value-of select="/root/gui/strings/inspireAddConformity" />
+									</a>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if> -->
+	
+						<xsl:apply-templates mode="iso19139"
+							select="../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result">
+							<xsl:with-param name="schema" select="$schema" />
+							<xsl:with-param name="edit" select="$edit" />
+						</xsl:apply-templates>
+	
+						<xsl:if
+							test="not(../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult)">
+							<xsl:apply-templates mode="elementEP"
+								select="
+								../../gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/geonet:child[string(@name)='result']
+								">
+								<xsl:with-param name="schema" select="$schema" />
+								<xsl:with-param name="edit" select="$edit" />
+								<xsl:with-param name="force" select="true()" />
+							</xsl:apply-templates>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
 
 			<!-- Constraint  -->
 			<xsl:call-template name="complexElementGuiWrapper">
@@ -601,76 +654,78 @@
 				</xsl:with-param>
 			</xsl:call-template> -->
 			
-			<!-- Distribution section (REORGANIZED HERE for CSI with added distribution tag in root, see row 80 of this file) -->
-			<xsl:call-template name="complexElementGuiWrapper">
-				<xsl:with-param name="title"
-					select="/root/gui/strings/inspireSection/distribution/title" />
-				<xsl:with-param name="id"
-					select="generate-id(/root/gui/strings/inspireSection/distribution/title)" />
-				<xsl:with-param name="content">
-					
-					<xsl:apply-templates mode="elementEP"
-						select="
-						../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat">
-						<xsl:with-param name="schema" select="$schema" />
-						<xsl:with-param name="edit" select="$edit" />
-					</xsl:apply-templates> 
-
-					<!-- Distributor (ADDED for CSI)
-					<xsl:apply-templates mode="elementEP"
-						select="
-						../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor">
-						<xsl:with-param name="schema" select="$schema" />
-						<xsl:with-param name="edit" select="$edit" />
-					</xsl:apply-templates>-->
-					
-					<!-- Distributor (MODIFIED for CSI) -->
-					<xsl:call-template name="complexElementGuiWrapper">
-						<xsl:with-param name="title"
-							select="/root/gui/strings/inspireSection/distribution/distributor" />
-						<xsl:with-param name="id"
-							select="generate-id(/root/gui/strings/inspireSection/distribution/distributor)" />
-						<xsl:with-param name="content">
-							
-							<xsl:apply-templates mode="elementEP"
-								select="
-								../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:organisationName">
-								<xsl:with-param name="schema" select="$schema" />
-								<xsl:with-param name="edit" select="$edit" />
-							</xsl:apply-templates> 			
-							
-							<xsl:apply-templates mode="elementEP"
-								select="
-								../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone">
-								<xsl:with-param name="schema" select="$schema" />
-								<xsl:with-param name="edit" select="$edit" />
-							</xsl:apply-templates> 
-							
-							<xsl:apply-templates mode="elementEP"
-								select="
-								../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address">
-								<xsl:with-param name="schema" select="$schema" />
-								<xsl:with-param name="edit" select="$edit" />
-							</xsl:apply-templates> 
-							
-							<xsl:apply-templates mode="elementEP"
-								select="
-								../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage">
-								<xsl:with-param name="schema" select="$schema" />
-								<xsl:with-param name="edit" select="$edit" />
-							</xsl:apply-templates> 
-							
-							<xsl:apply-templates mode="elementEP"
-								select="
-								../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role">
-								<xsl:with-param name="schema" select="$schema" />
-								<xsl:with-param name="edit" select="$edit" />
-							</xsl:apply-templates> 
-						</xsl:with-param>
-					</xsl:call-template>
-					
-				</xsl:with-param>
-			</xsl:call-template>
+			<xsl:if test="$dataset">
+				<!-- Distribution section (REORGANIZED HERE for CSI with added distribution tag in root, see row 80 of this file) -->
+				<xsl:call-template name="complexElementGuiWrapper">
+					<xsl:with-param name="title"
+						select="/root/gui/strings/inspireSection/distribution/title" />
+					<xsl:with-param name="id"
+						select="generate-id(/root/gui/strings/inspireSection/distribution/title)" />
+					<xsl:with-param name="content">
+						
+						<xsl:apply-templates mode="elementEP"
+							select="
+							../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat">
+							<xsl:with-param name="schema" select="$schema" />
+							<xsl:with-param name="edit" select="$edit" />
+						</xsl:apply-templates> 
+	
+						<!-- Distributor (ADDED for CSI)
+						<xsl:apply-templates mode="elementEP"
+							select="
+							../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor">
+							<xsl:with-param name="schema" select="$schema" />
+							<xsl:with-param name="edit" select="$edit" />
+						</xsl:apply-templates>-->
+						
+						<!-- Distributor (MODIFIED for CSI) -->	
+						<xsl:call-template name="complexElementGuiWrapper">
+							<xsl:with-param name="title"
+								select="/root/gui/strings/inspireSection/distribution/distributor" />
+							<xsl:with-param name="id"
+								select="generate-id(/root/gui/strings/inspireSection/distribution/distributor)" />
+							<xsl:with-param name="content">
+								
+								<xsl:apply-templates mode="elementEP"
+									select="
+									../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:organisationName">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates> 			
+								
+								<xsl:apply-templates mode="elementEP"
+									select="
+									../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates> 
+								
+								<xsl:apply-templates mode="elementEP"
+									select="
+									../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates> 
+								
+								<xsl:apply-templates mode="elementEP"
+									select="
+									../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates> 
+								
+								<xsl:apply-templates mode="elementEP"
+									select="
+									../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role">
+									<xsl:with-param name="schema" select="$schema" />
+									<xsl:with-param name="edit" select="$edit" />
+								</xsl:apply-templates> 
+							</xsl:with-param>
+						</xsl:call-template>					
+						
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
 			
 			<!-- Gestione dei dati (ADDED for CSI) -->
 			<xsl:apply-templates mode="complexElement"

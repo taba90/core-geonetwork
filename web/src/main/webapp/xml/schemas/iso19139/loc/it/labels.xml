@@ -87,10 +87,15 @@
         <description>Data di riferimento ed evento usato per descriverla (YYYY-MM-DD)</description>
 	<_condition>L'obbligatorietà di questo campo dipende dal soggetto referente</_condition>
     </element>
+	    <element name="gmd:CI_OnlineResource" context="srv:connectPoint" id="396.0">
+        <label>Punto di connessione</label>
+        <description>Riferimento delle fonti online dei dati e/o delle specifiche e/o del profilo di metadati usato</description>
+		<_condition>L'obbligatorietà di questo campo dipende dal soggetto referente</_condition>
+    </element>
     <element name="gmd:CI_OnlineResource" id="396.0">
         <label>Risorsa online</label>
         <description>Riferimento delle fonti online dei dati e/o delle specifiche e/o del profilo di metadati usato</description>
-	<_condition>L'obbligatorietà di questo campo dipende dal soggetto referente</_condition>
+		<_condition>L'obbligatorietà di questo campo dipende dal soggetto referente</_condition>
     </element>
     <element name="gmd:CI_ResponsibleParty" id="374.0">
         <label>Responsabile dei dati</label>
@@ -2030,7 +2035,8 @@ e di trasformazione.</label>
         <label>Parameter direction</label>
     </element>
     <element name="srv:serviceType"><!-- readonly="true" -->
-        <label>Tipo di servizio</label>
+        <!--label>Tipo di servizio</label-->
+		<label>Classificazione dei servizi</label>
         <description>Nome del tipo di servizio da un registro di servizi. Per esempio, i valori dello nameSpace e il nome degli attributi di GeneralName possono essere 'OGC' e 'catalogue'</description>
         <helper>
             <option value="OGC:WMS">OGC Web Map Service (OGC:WMS)</option>
@@ -2063,7 +2069,8 @@ e di trasformazione.</label>
         <description>Fornisce informazioni sulle operazioni che costituiscono il servizio</description>
     </element>
     <element name="srv:operatesOn">
-        <label>Lavora su</label>
+        <!--label>Lavora su</label-->
+		<label>Risorsa accoppiata</label>
         <description>Fornisce informazioni sui dataset su cui opera il servizio</description>
     </element>
     <element name="srv:operationName">
@@ -2083,7 +2090,8 @@ e di trasformazione.</label>
         <description>Testo libero che descrive lo scopo del funzionamento e i risultati dell'operazione</description>
     </element>
     <element name="srv:invocationName">
-        <label>Nome invocazione</label>
+        <!--label>Nome invocazione</label-->
+		<label>Nome richiesta</label>
         <description>Il nome utilizzato per richiamare questa interfaccia nel contesto del DCP. Il nome è identico per tutti i DCP</description>
     </element>
     <element name="srv:parameters">
@@ -2146,7 +2154,8 @@ e di trasformazione.</label>
         <description>Identificatore di risorsa a cui si applica l'operazione</description>
     </element>
     <element name="srv:couplingType">
-        <label>Tipo di accoppiamento</label>
+        <!--label>Tipo di accoppiamento</label-->
+		<label>Tipo di aggancio</label>
         <description>Tipo di accoppiamentog</description>
     </element>
     <element name="srv:extent">
