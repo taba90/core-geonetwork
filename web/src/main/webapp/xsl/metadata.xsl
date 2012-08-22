@@ -672,7 +672,13 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:language|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardVersion|'))">
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardVersion|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo/gmd:MD_ImageDescription/gmd:dimension/gmd:MD_Band/gmd:bitsPerValue|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo/gmd:MD_ImageDescription/gmd:triangulationIndicator|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -887,12 +893,15 @@
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:variable>
-		
-		<xsl:variable name="addXMLFragment">
-			<xsl:call-template name="addXMLFragment">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
-		</xsl:variable>
+	
+     	<xsl:variable name="addXMLFragment">
+     		<!-- Per rimuovere il binocolo dalla sezione del sistema di riferimento spaziale -->
+     		<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata|gmd:MD_Metadata/gmd:referenceSystemInfo|'))">
+     			<xsl:call-template name="addXMLFragment">
+     				<xsl:with-param name="id" select="$id"/>
+     			</xsl:call-template>
+     		</xsl:if>
+		</xsl:variable>	
 
 		<xsl:variable name="removeLink">
 			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (position() > 1))
@@ -919,7 +928,13 @@
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))
 						  and 
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))">
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -1030,6 +1045,11 @@
 									<xsl:when test="$title='xlink:href'
 										and contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
 										CRS Verticale
+									</xsl:when>
+									<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|')
+										or
+										contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|')">
+										Identificativo risorsa
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:choose>
@@ -2107,6 +2127,13 @@
 		<xsl:param name="schema"/>
 		<xsl:param name="attribute"/>
 		
+		<xsl:param name="helpLink">
+			<xsl:call-template name="getHelpLink">
+				<xsl:with-param name="name"   select="name(.)"/>
+				<xsl:with-param name="schema" select="$schema"/>
+			</xsl:call-template>
+		</xsl:param>
+
 		<!-- Define the element to look for. -->
 		<xsl:variable name="parentName">
 			<xsl:choose>
@@ -2136,7 +2163,12 @@
 		
 		
 		<!-- Display the helper list -->
-		<xsl:if test="normalize-space($helper)!=''">
+		<xsl:if test="normalize-space($helper)!='' 
+			and 
+			not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString|'))
+			and 
+			not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString|'))">
+			
 			<xsl:variable name="refId">
 				<xsl:choose>
 					<xsl:when test="$attribute=true()">

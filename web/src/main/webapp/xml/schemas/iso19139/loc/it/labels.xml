@@ -488,7 +488,8 @@
         <_condition>M</_condition>
     </element>
     <element name="gmd:bitsPerValue" id="264.0">
-        <label>Bits per valore</label>
+        <!--label>Bits per valore</label-->
+		<label>Risoluzione radiometrica</label>
         <description>Numero massimo di bit significativi con cui può essere rappresentata l'intensità radiometrica di ogni pixel</description>
     </element>
     <element name="gmd:cameraCalibrationInformationAvailability" id="253.0">
@@ -578,14 +579,14 @@
         <help>Codice del valore (ad es. numerico)</help>
     </element>
 	<element name="gmd:code" id="548.0" context="gmd:RS_Identifier">
-	    <label>Identificativo risorsa</label>
+	    <label>Codice</label>
         <description>Codice del Sistema di riferimento</description>
         <help>Codice del Sistema di riferimento</help>
-		<!--helper>
+		<helper>
 			<option value="EPSG:4326">EPSG:4326</option>
 			<option value="EPSG:3003">EPSG:3003</option>
 			<option value="EPSG:4979">EPSG:4979</option>
-		</helper-->
+		</helper>
     </element>
     <element name="gmd:codeSpace" id="208.1">
         <label>Codespace</label>

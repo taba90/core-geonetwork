@@ -12,6 +12,8 @@
 		<xsl:param name="schema" />
 		<xsl:param name="edit" />
 		<xsl:param name="dataset" />
+		<xsl:param name="georeferenceable"/>
+		<xsl:param name="georectified"/>
 
 		<xsl:for-each
 			select="gmd:identificationInfo/gmd:MD_DataIdentification|
@@ -415,7 +417,99 @@
 					<xsl:with-param name="edit" select="$edit" />
 				</xsl:apply-templates>
 			</xsl:if>
-
+			
+			<xsl:if test="$georeferenceable or $georectified">
+				<!-- Contenuto dei dati raster (ADDED for CSI) -->
+				<xsl:apply-templates mode="complexElement" 
+					select="../../gmd:contentInfo">
+					<xsl:with-param name="schema" select="$schema" />
+					<xsl:with-param name="edit" select="$edit" />
+				</xsl:apply-templates>
+			</xsl:if>
+			
+			<xsl:if test="$georeferenceable or $georectified">
+				<xsl:call-template name="complexElementGuiWrapper">
+					<xsl:with-param name="title"
+						select="/root/gui/strings/inspireSection/rasterDataset/spatialRepresentationInfo" />
+					<xsl:with-param name="id"
+						select="generate-id(/root/gui/strings/inspireSection/rasterDataset/spatialRepresentationInfo)" />
+					<xsl:with-param name="content">
+						
+						<!--  Raster Georeferenceable datasets  -->
+						<xsl:if test="$georeferenceable">
+							<xsl:call-template name="complexElementGuiWrapper">
+								<xsl:with-param name="title"
+									select="/root/gui/strings/inspireSection/rasterDataset/georeferenceable" />
+								<xsl:with-param name="id"
+									select="generate-id(/root/gui/strings/inspireSection/rasterDataset/georeferenceable)" />
+								<xsl:with-param name="content">
+									
+									<!-- Numero delle dimensioni (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:numberOfDimensions">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Proprietà dimensionali (ADDED for CSI) -->
+									<xsl:apply-templates mode="complexElement" 
+										select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties">
+										<xsl:with-param name="schema" select="$schema" />
+										<xsl:with-param name="edit" select="$edit" />
+									</xsl:apply-templates>
+									
+									<!-- Geometria della cella (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:cellGeometry">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Disponibnilità dei coefficienti di trasformazione (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:transformationParameterAvailability">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Disponibilità dei punti di controllo (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:controlPointAvailability">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Disponibilità dei parametri di orientamento (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:orientationParameterAvailability">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Parametri per la georeferenziazione (ADDED for CSI) -->
+									<xsl:apply-templates mode="complexElement" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:georeferencedParameters">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:if>
+						
+						<!--  Raster Georectified datasets  -->
+						<xsl:if test="$georectified">
+							<xsl:call-template name="complexElementGuiWrapper">
+								<xsl:with-param name="title"
+									select="/root/gui/strings/inspireSection/rasterDataset/georectified" />
+								<xsl:with-param name="id"
+									select="generate-id(/root/gui/strings/inspireSection/rasterDataset/georectified)" />
+								<xsl:with-param name="content">
+									
+									
+									
+								</xsl:with-param>
+							</xsl:call-template>
+						</xsl:if>
+						
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
+			
 			<!-- Quality and validity  -->
 			<xsl:call-template name="complexElementGuiWrapper">
 				<xsl:with-param name="title"

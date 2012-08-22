@@ -1077,7 +1077,11 @@
             <xsl:param name="embedded"/>
 
             <xsl:variable name="dataset" select="gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue='dataset' or normalize-space(gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue)=''"/>
-
+            
+            <!-- check if the template is a raster template -->
+            <xsl:variable name="georeferenceable" select="(count(./gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable) >= 1)"/>
+            <xsl:variable name="georectified" select="(count(./gmd:spatialRepresentationInfo/gmd:MD_Georectified) >= 1)"/>
+            
             <!-- thumbnail -->
             <tr>
                 <td valign="middle" colspan="2">
@@ -1242,6 +1246,8 @@
                         <xsl:with-param name="schema" select="$schema"/>
                         <xsl:with-param name="edit"   select="$edit"/>
                         <xsl:with-param name="dataset" select="$dataset"/>
+                        <xsl:with-param name="georeferenceable" select="$georeferenceable"/>
+                        <xsl:with-param name="georectified" select="$georectified"/>
                     </xsl:call-template>
                 </xsl:when>
 

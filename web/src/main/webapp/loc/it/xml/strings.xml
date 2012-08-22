@@ -805,6 +805,11 @@
 				</div>
 			</help>
 		</temporal>
+		<rasterDataset>
+			<spatialRepresentationInfo>Informazioni sulla rappresentazione spaziale dei dati raster</spatialRepresentationInfo>
+			<georectified>Georettificata</georectified>
+			<georeferenceable>Georeferenziabile</georeferenceable>
+		</rasterDataset>
 		<quality>
 			<title>Qualità e validità</title>
 			<help>

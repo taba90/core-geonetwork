@@ -27,7 +27,7 @@ function toolTip(spanId)
 				//ker.showError(translate('cannotGetTooltip'), xmlRes);
 				htmlTip = translate('cannotGetTooltip');
 			} else {
-				htmlTip= getHtmlTip(xmlRes.getElementsByTagName('element')[0]);
+				htmlTip= getHtmlTip(spanId, xmlRes.getElementsByTagName('element')[0]);
 			}
 			tip.innerHTML     = htmlTip;
 			elem.appendChild(tip);
@@ -41,7 +41,7 @@ function toolTip(spanId)
 
 //=========================================================================
 
-function getHtmlTip(node)
+function getHtmlTip(spanId, node)
 {
 	var err = node.getAttribute('error');
 	
@@ -56,12 +56,19 @@ function getHtmlTip(node)
 	else
 	{
 		var temp = toolTipTemp;
-		var label= xml.evalXPath(node, 'label');
-		var descr= xml.evalXPath(node, 'description');
-		var cond = xml.evalXPath(node, 'condition');
-		var help = xml.evalXPath(node, 'help');
-		var help_link = xml.evalXPath(node, 'help_link');
-        
+		
+		if(spanId.indexOf("|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|") != -1){
+			var label = "Identificativo risorsa";
+		    var descr= "Valore alfanumerico che identifica un’istanza in un namespace";
+		    var cond = "obbligatorio";
+		}else{		
+			var label= xml.evalXPath(node, 'label');
+			var descr= xml.evalXPath(node, 'description');
+			var cond = xml.evalXPath(node, 'condition');
+			var help = xml.evalXPath(node, 'help');
+		    var help_link = xml.evalXPath(node, 'help_link');
+		}
+		
 		if (cond == null)
 			cond = '';
 		if (help == null)
