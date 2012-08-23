@@ -4,22 +4,21 @@
     xmlns:srv="http://www.isotc211.org/2005/srv"
     xmlns:gmx="http://www.isotc211.org/2005/gmx">
     
-  <element name="gmd:MD_ScopeCode">
-    <label>Codice del soggetto</label>
-    <description>Categoria d'informazione cui vengono applicati i metadati</description>
-  </element>
+    <element name="gmd:MD_ScopeCode">
+		<label>Codice del soggetto</label>
+		<description>Categoria d'informazione cui vengono applicati i metadati</description>
+    </element>
 
-  <element name="code" id="207.0" context="gmd:MD_Identifier">
-    <label>Codice</label>
-    <description>Codice alfanumerico che identifica una istanza in un namespace</description>
-    <help>Codice alfanumerico dell'identificatore.</help> 
-  </element>
+    <element name="code" id="207.0" context="gmd:MD_Identifier">
+		<label>Codice</label>
+		<description>Codice alfanumerico che identifica una istanza in un namespace</description>
+		<help>Codice alfanumerico dell'identificatore.</help> 
+    </element>
 
-  <element name="code">
-    <label>Codice del sistema</label>
-    <description>Codice. Ad esempio, il Codice EPSG.</description>
-   </element>
-    
+    <element name="code">
+		<label>Codice del sistema</label>
+		<description>Codice. Ad esempio, il Codice EPSG.</description>
+    </element>
 
     <element name="code" id="547.0" context="gmd:MD_CodeValue">
         <label>Codice</label>
@@ -653,7 +652,8 @@
         <label>Disponibilità dei punti di controllo</label>
     </element>
     <element name="gmd:cornerPoints" id="165.0">
-        <label>Punti angolari</label>
+        <!--label>Punti angolari</label-->
+		<label>Coordinate dei vertici</label>
         <description>Posizione sulla Terra nel sistema di riferimento definito dall' SRS e dalla coordinata griglia delle celle agli estremi opposti di un'immagine raster lungo le due diagonali</description>
         <condition>obbligatorio</condition>
     </element>
@@ -2009,20 +2009,35 @@ e di trasformazione.</label>
     </element>
     
     <element name="gml:id" id="191.0" context="gmd:MD_Georectified">
-        <!--label>Identificatore</label-->
-		<label>Unità di misura</label>
+        <label>Identificatore</label>
         <description>Identificatore del punto</description>
-		<helper>
+    </element>
+	
+	<element name="gml:id" id="191.0" context="gml:TimePeriod">
+        <label>Identificatore</label>
+        <description>Identificatore dell'estenzione temporale</description>
+    </element>
+	
+	<element name="gml:id" id="191.0" context="gml:Point">
+        <label>Identificatore</label>
+        <description>Identificatore del punto</description>
+    </element>
+
+	<element name="gml:id" id="191.0" context="gml:BaseUnit">
+        <label>Unità di misura</label>
+        <description>Identificatore del punto</description>
+	    <helper>
 			<option value="m">m</option>
 			<option value="km">km</option>
 		</helper>
     </element>
-
+	
     <element name="gml:id" id="191.0" context="gmd:MD_CRS">
         <label>Ellissoide</label>
         <description>Identità del ellissoide utilizzato</description>
         <help>identità del ellissoide utilizzato</help>
     </element>
+
     <element name="id" id="191.0">
         <label>Identificatore</label>
         <description>Identificatore unico</description>

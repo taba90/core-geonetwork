@@ -678,7 +678,11 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo/gmd:MD_ImageDescription/gmd:triangulationIndicator|'))
 				and 
-				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))">
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:checkPointDescription|'))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -932,9 +936,15 @@
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo|'))
 						  and 
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|'))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|')) or (position() > 1))
 						  and 
-						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))">
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+						  and 
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties|')) or (position() > 1))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+						  and 
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cornerPoints|')) or (position() > 1))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -1347,67 +1357,68 @@
     <xsl:template name="getTitle">
         <xsl:param name="name"/>
         <xsl:param name="schema"/>
-
-        <xsl:variable name="fullContext">
-            <xsl:call-template name="getXPath" />
-        </xsl:variable>
-
-        <xsl:variable name="context" select="name(parent::node())"/>
-        <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
-
-        <xsl:variable name="title">
-            <xsl:choose>
-                <xsl:when test="starts-with($schema,'iso19139')">
-
-                    <!-- Name with context in current schema -->
-                    <xsl:variable name="schematitleWithContext"
-                                  select="string(/root/gui/*[name(.)=$schema]
-                                  /element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
-                                  /label)"/>
-
-                    <!-- Name with context in base schema -->
-                    <xsl:variable name="schematitleWithContextIso"
-                        select="string(/root/gui/iso19139/element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
-                        /label)"/>
-
-                    <!-- Name in current schema -->
-                    <xsl:variable name="schematitle" select="string(/root/gui/*[name(.)=$schema]/element[@name=$name and not(@context)]/label)"/>
-
-                    <xsl:choose>
-
-                        <xsl:when test="normalize-space($schematitle)='' and
-                                        normalize-space($schematitleWithContext)='' and
-                                        normalize-space($schematitleWithContextIso)=''">
-                            <xsl:value-of select="string(/root/gui/iso19139/element[@name=$name]/label)"/>
-                        </xsl:when>
-                        <xsl:when test="normalize-space($schematitleWithContext)='' and
-                                        normalize-space($schematitleWithContextIso)=''">
-                                <xsl:value-of select="$schematitle"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:value-of select="$schematitleWithContext"/>
-                        </xsl:otherwise>
-
-                    </xsl:choose>
-                </xsl:when>
-
-                <!-- otherwise just get the title out of the approriate schema help file -->
-
-                <xsl:otherwise>
-                    <xsl:value-of select="string(/root/gui/*[name(.)=$schema]/element[@name=$name]/label)"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-
-        <xsl:choose>
-            <xsl:when test="normalize-space($title)!=''">
-                <xsl:value-of select="$title"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$name"/>
-            </xsl:otherwise>
-        </xsl:choose>
+    		   	
+	        <xsl:variable name="fullContext">
+	            <xsl:call-template name="getXPath" />
+	        </xsl:variable>
+	
+	        <xsl:variable name="context" select="name(parent::node())"/>
+	        <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
+	
+	        <xsl:variable name="title">
+	            <xsl:choose>
+	                <xsl:when test="starts-with($schema,'iso19139')">
+	
+	                    <!-- Name with context in current schema -->
+	                    <xsl:variable name="schematitleWithContext"
+	                                  select="string(/root/gui/*[name(.)=$schema]
+	                                  /element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
+	                                  /label)"/>
+	
+	                    <!-- Name with context in base schema -->
+	                    <xsl:variable name="schematitleWithContextIso"
+	                        select="string(/root/gui/iso19139/element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
+	                        /label)"/>
+	
+	                    <!-- Name in current schema -->
+	                    <xsl:variable name="schematitle" select="string(/root/gui/*[name(.)=$schema]/element[@name=$name and not(@context)]/label)"/>
+	
+	                    <xsl:choose>
+	
+	                        <xsl:when test="normalize-space($schematitle)='' and
+	                                        normalize-space($schematitleWithContext)='' and
+	                                        normalize-space($schematitleWithContextIso)=''">
+	                            <xsl:value-of select="string(/root/gui/iso19139/element[@name=$name]/label)"/>
+	                        </xsl:when>
+	                        <xsl:when test="normalize-space($schematitleWithContext)='' and
+	                                        normalize-space($schematitleWithContextIso)=''">
+	                                <xsl:value-of select="$schematitle"/>
+	                        </xsl:when>
+	                        <xsl:otherwise>
+	                                <xsl:value-of select="$schematitleWithContext"/>
+	                        </xsl:otherwise>
+	
+	                    </xsl:choose>
+	                </xsl:when>
+	
+	                <!-- otherwise just get the title out of the approriate schema help file -->
+	
+	                <xsl:otherwise>
+	                    <xsl:value-of select="string(/root/gui/*[name(.)=$schema]/element[@name=$name]/label)"/>
+	                </xsl:otherwise>
+	            </xsl:choose>
+	        </xsl:variable>
+	
+	
+	        <xsl:choose>
+	            <xsl:when test="normalize-space($title)!=''">
+	                <xsl:value-of select="$title"/>
+	            </xsl:when>
+	            <xsl:otherwise>
+	                <xsl:value-of select="$name"/>
+	            </xsl:otherwise>
+	        </xsl:choose>
+    	
     </xsl:template>
 
 	<!--
@@ -2226,13 +2237,14 @@
 									<xsl:copy-of select="exslt:node-set($helper)"/>
 								</select>)
 							</xsl:when>
-							<xsl:otherwise>							
-								(<xsl:value-of select="/root/gui/strings/helperList"/>
+							<xsl:otherwise>					
+								<!-- This fragment is commented due to a bug in some cases like for the 'cornerPoints' element (CSI) -->
+<!--								(<xsl:value-of select="/root/gui/strings/helperList"/>
 								<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
 									<option/>
-									<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+									<!-\- This assume that helper list is already sort in alphabetical order in loc file. -\->
 									<xsl:copy-of select="exslt:node-set($helper)"/>
-								</select>)							
+								</select>)		-->					
 							</xsl:otherwise>
 						</xsl:choose>
 						

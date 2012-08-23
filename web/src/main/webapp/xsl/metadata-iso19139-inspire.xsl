@@ -463,7 +463,7 @@
 										<xsl:with-param name="edit"   select="$edit"/>
 									</xsl:apply-templates>
 									
-									<!-- Disponibnilità dei coefficienti di trasformazione (ADDED for CSI) -->
+									<!-- Disponibilità dei coefficienti di trasformazione (ADDED for CSI) -->
 									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:transformationParameterAvailability">
 										<xsl:with-param name="schema" select="$schema"/>
 										<xsl:with-param name="edit"   select="$edit"/>
@@ -500,7 +500,54 @@
 									select="generate-id(/root/gui/strings/inspireSection/rasterDataset/georectified)" />
 								<xsl:with-param name="content">
 									
+									<!-- Numero delle dimensioni (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:numberOfDimensions">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
 									
+									<!-- Proprietà dimensionali (ADDED for CSI) -->
+									<xsl:apply-templates mode="complexElement" 
+										select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties">
+										<xsl:with-param name="schema" select="$schema" />
+										<xsl:with-param name="edit" select="$edit" />
+									</xsl:apply-templates>
+									
+									<!-- Geometria della cella (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cellGeometry">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Disponibilità dei coefficienti di trasformazione (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:transformationParameterAvailability">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Disponibilità dei punti di controllo (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:checkPointAvailability">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Descrizione dei punti di controllo (ADDED for CSI) -->
+									<xsl:apply-templates mode="elementEP" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:checkPointDescription">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Coordinate dei vertici (ADDED for CSI) -->
+									<xsl:apply-templates mode="complexElement" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cornerPoints">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
+									
+									<!-- Punto del pixel (ADDED for CSI) -->
+									<xsl:apply-templates mode="complexElement" select="../../gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:pointInPixel">
+										<xsl:with-param name="schema" select="$schema"/>
+										<xsl:with-param name="edit"   select="$edit"/>
+									</xsl:apply-templates>
 									
 								</xsl:with-param>
 							</xsl:call-template>
