@@ -760,35 +760,35 @@
                     <!-- Metadata edit mode -->
                     <xsl:variable name="content">
                         <xsl:for-each select="gmd:MD_Keywords">
-                        <tr>
-                            <td class="padded-content" width="100%" colspan="2">
-                                <table width="100%">
-                                    <tr>
-                                        <td width="50%" valign="top">
-                                            <table width="100%">
-                                                <xsl:apply-templates mode="elementEP" select="gmd:keyword|geonet:child[string(@name)='keyword']">
-                                                    <xsl:with-param name="schema" select="$schema"/>
-                                                    <xsl:with-param name="edit"   select="$edit"/>
-                                                </xsl:apply-templates>
-                                                <!-- KEYWORD TYPE (REMOVED FOR CSI)
-												xsl:apply-templates mode="elementEP" select="gmd:type|geonet:child[string(@name)='type']">
-                                                    <xsl:with-param name="schema" select="$schema"/>
-                                                    <xsl:with-param name="edit"   select="$edit"/>
-                                                </xsl:apply-templates-->
-                                            </table>
-                                        </td>
-                                        <td valign="top">
-                                            <table width="100%">
-                                                <xsl:apply-templates mode="elementEP" select="gmd:thesaurusName|geonet:child[string(@name)='thesaurusName']">
-                                                    <xsl:with-param name="schema" select="$schema"/>
-                                                    <xsl:with-param name="edit"   select="$edit"/>
-                                                </xsl:apply-templates>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="padded-content" width="100%" colspan="2">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="50%" valign="top">
+                                                <table width="100%">
+                                                    <xsl:apply-templates mode="elementEP" select="gmd:keyword|geonet:child[string(@name)='keyword']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates>
+                                                    <!-- KEYWORD TYPE (REMOVED FOR CSI)
+    												xsl:apply-templates mode="elementEP" select="gmd:type|geonet:child[string(@name)='type']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates-->
+                                                </table>
+                                            </td>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <xsl:apply-templates mode="elementEP" select="gmd:thesaurusName|geonet:child[string(@name)='thesaurusName']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
                         </xsl:for-each>
                     </xsl:variable>
 
@@ -825,7 +825,7 @@
                                 </table>
                             </td>
                         </tr>
-                    </xsl:for-each>
+                    </xsl:for-each>                    
                     
                    <!-- MODIFIED FOR CSI (to show always the thesaurus if present)
                        

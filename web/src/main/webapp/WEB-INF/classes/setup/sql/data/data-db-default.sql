@@ -10600,7 +10600,7 @@ INSERT INTO "province" (id,code,label,south,north,west,east) VALUES (5,'004','CU
 INSERT INTO "province" (id,code,label,south,north,west,east) VALUES (6,'001','TORINO',44.71373111606435,45.60231331404492,6.626637308631442,8.151864934530069);
 INSERT INTO "province" (id,code,label,south,north,west,east) VALUES (7,'005','ASTI',44.518955852252326,45.132999108779735,7.883449553087235,8.513631864949943);
 INSERT INTO "province" (id,code,label,south,north,west,east) VALUES (8,'006','ALESSANDRIA',44.46491832121465,45.205461378158525,8.109343659244185,9.214256535004726);
-    
+INSERT INTO "province" (id,code,label,north,south,west,east) VALUES (9,'000','REGIONE',46.46,44.06,6.62,9.21);
   
 INSERT INTO "comuni" (id,code,label,south,north,west,east,provcode) VALUES (1,494,'Baceno',46.24627225355571,46.38629526878776,8.196217991841875,8.343417630108151,'103');
 INSERT INTO "comuni" (id,code,label,south,north,west,east,provcode) VALUES (2,585,'Montecrestese',46.14070033081315,46.299293046549174,8.306790317228389,8.45633531337151,'103');

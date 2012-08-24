@@ -854,7 +854,8 @@ function buildDuration(ref) {
 * nullValue - {Boolean} Allow null value
 * decimals - {Boolean} Allow decimals
 */
-function validateNumber(input, nullValue, decimals) {
+function validateNumber(input, nullValue, decimals, optional) {
+
     var text = input.value;
     var validChars = "0123456789";
     
@@ -877,15 +878,23 @@ function validateNumber(input, nullValue, decimals) {
             isNumber = false;
         }
     }
-    if (! isNumber) {
-        input.addClassName('error');
-        return false;
-    } else {
-        input.removeClassName('error');
-        return true;
-    }
-}
 
+	//
+	// Optional values are real numbers that can be NaN (CSI)
+	//
+	if(optional && input.value == 'NaN'){
+	    input.removeClassName('error');
+        return true;
+	}else{
+		if (!isNumber) {
+			input.addClassName('error');
+			return false;
+		}else {
+			input.removeClassName('error');
+			return true;
+		}
+	}
+}
 /**
 * Validate numeric value input form element.
 * If invalid, set the class attribute to "error".

@@ -908,7 +908,7 @@
 		</xsl:variable>	
 
 		<xsl:variable name="removeLink">
-			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (position() > 1))
+			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (position() &gt; 1))
 			              and
 			              (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|')) or (count(//gmd:descriptiveKeywords) &gt; 1))
 			              and
@@ -920,13 +920,13 @@
 						  and
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage|'))
 						  and
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (position() &gt; 1))
 						  and
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact|')) or (position() &gt; 1))
 						  and  
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() &gt; 1))
 						  and  
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() &gt; 1))
 						  and  
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))
 						  and 
@@ -936,15 +936,15 @@
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo|'))
 						  and 
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|')) or (position() &gt; 1))
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 						  and 
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties|')) or (position() > 1))
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties|')) or (position() &gt; 1))
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 						  and 
-						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cornerPoints|')) or (position() > 1))">
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cornerPoints|')) or (position() &gt; 1))">
 				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
 			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
@@ -1137,7 +1137,8 @@
 						</xsl:otherwise>
 					</xsl:choose>			
 				
-					<xsl:if test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
+				    <!-- adding custom SRS selection to the verticalCSR element (CSI) -->
+					<xsl:if test="$edit=true() and contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
 						<br/>
 						<br/>
 						<span>(Suggerimenti: 
@@ -1619,7 +1620,23 @@
 											<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, false);</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, true);</xsl:attribute>
+											
+											<xsl:variable name="path">
+												<xsl:call-template name="getXPath" />
+											</xsl:variable>
+											
+											<xsl:choose>
+												<!-- minimumValue e maximumValue non sono necessari per RNDT (CSI)-->
+												<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue')
+													or 
+													contains($path, 'gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:minimumValue')">
+													<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, false, true);</xsl:attribute>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, true, false);</xsl:attribute>
+												</xsl:otherwise>
+											</xsl:choose>
+											
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>

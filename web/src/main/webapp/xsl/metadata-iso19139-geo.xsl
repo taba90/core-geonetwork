@@ -192,7 +192,7 @@
                 <xsl:variable name="selection" select="concat(gmd:westBoundLongitude/gco:Decimal,';',gmd:eastBoundLongitude/gco:Decimal,';',gmd:southBoundLatitude/gco:Decimal,';',gmd:northBoundLatitude/gco:Decimal)"/>            
                 <xsl:variable name="lang" select="/root/gui/language"/>
     	
-                <span class="labelField">Provincia</span>
+                <span class="labelField">Ambito</span>
                     <select name="place" size="1" onChange="javascript:getMunicipality(this.options[this.selectedIndex].text); javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
@@ -213,7 +213,7 @@
                 <xsl:if test="$municipalitySearch = 'true'">
                     <br/>
                     <br/>
-                    <span class="labelField">Regione</span>
+                    <span class="labelField">Sottoambito</span>
                     <select class="md" style="width: 110px;" name="comune-medatata" id="comune-medatata" onChange="javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')">
                         <option value=""/>
                     </select>	
