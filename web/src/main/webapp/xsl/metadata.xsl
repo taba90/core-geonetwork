@@ -1799,7 +1799,7 @@
 	-->
 	<xsl:template name="getContent">
 		<xsl:param name="schema"/>
-		<xsl:param name="edit"   select="false()"/>
+		<xsl:param name="edit" select="false()"/>
 		<xsl:param name="hLink"/>		
 		
 		<xsl:choose>

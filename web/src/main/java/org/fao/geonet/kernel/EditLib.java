@@ -506,17 +506,28 @@ public class EditLib
 				Log.debug(Geonet.EDITOR,"####     - suggested = "+sugg.isSuggested(elemName, childName));
 				Log.debug(Geonet.EDITOR,"####     - has suggestion = "+hasSuggestion );
 				
-				if (minCard > 0 || sugg.isSuggested(elemName, childName)) {
+				boolean suggested = sugg.isSuggested(elemName, childName);
+				
+				if (minCard > 0 || suggested) {
 					MetadataType elemType = schema.getTypeInfo(schema.getElementType(childName,elemName));
 
 					//--- There can be 'or' elements with other 'or' elements inside them.
 					//--- In this case we cannot expand the inner 'or' elements so the
 					//--- only way to solve the problem is to avoid the creation of them
 
-					if (
-							(schema.isSimpleElement(elemName, childName) || !elemType.isOrType()) ||
-							(elemType.isOrType() && elemType.getElementList().contains("gco:CharacterString") && !hasSuggestion)
-						) {
+					boolean isSimple = schema.isSimpleElement(elemName, childName);
+					boolean isOrType = elemType.isOrType();
+					boolean isCharacter = elemType.getElementList().contains("gco:CharacterString");
+
+					boolean hs = !hasSuggestion;
+					
+					if (isSimple || !isOrType || (isOrType && isCharacter && hs)) {
+						
+					
+//					if ((schema.isSimpleElement(elemName, childName) || 
+//							!elemType.isOrType()) ||
+//							(elemType.isOrType() && elemType.getElementList().contains("gco:CharacterString") && !hasSuggestion)) {
+//						
 						String name   = getUnqualifiedName(childName);
 						String ns     = getNamespace(childName, md, schema);
 						String prefix = getPrefix(childName);

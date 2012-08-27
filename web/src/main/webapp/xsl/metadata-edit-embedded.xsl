@@ -31,9 +31,7 @@
 					and 
 					name(.)!='gmd:spatialRepresentationType'
 					and 
-					name(.)!='gmd:otherConstraints'
-					and 
-					name(.)!='srv:DCP'">
+					name(.)!='gmd:otherConstraints'">
 					<xsl:apply-templates mode="complexElement" select=".">
 						<xsl:with-param name="edit" select="true()"/>
 						<xsl:with-param name="schema">
