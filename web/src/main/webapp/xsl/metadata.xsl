@@ -1446,7 +1446,14 @@
 		<xsl:variable name="name"  select="name(.)"/>
 		<xsl:variable name="value" select="string(.)"/>
 		<xsl:variable name="isXLinked" select="count(ancestor-or-self::node()[@xlink:href]) > 0" />		
-							
+	
+		<xsl:variable name="path">
+			<xsl:call-template name="getXPath" />
+		</xsl:variable>
+		
+		<!-- Used for the gmd:pass warkaround see below (CSI) -->
+		<xsl:variable name="explanationValue" select="string(../../gmd:explanation)"/>
+		
 		<xsl:choose>
 			<!-- list of values -->
 			<xsl:when test="geonet:element/geonet:text">
@@ -1564,20 +1571,99 @@
 					        </xsl:choose>
 					    </input>
 					    
+					    <!-- This choose element contains a warkaround to manage the 'gmd:pass' as a select due to the RNDT specifications (CSI) -->
 						<xsl:choose>
-						    <xsl:when test="text()='true' or text()='1'">
-								<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');" checked="checked">
-									<xsl:if test="$isXLinked">
-										<xsl:attribute name="disabled">disabled</xsl:attribute>
-									</xsl:if>
-								</input>
+						    <xsl:when test="text()='true' or text()='1'">						    	
+						    	<xsl:choose>
+						    		<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+						    			
+						    			<xsl:variable name="explanationRef">
+						    				<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+						    			</xsl:variable>
+						    			
+						    			<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+						    				<option value="non compilato">non compilato</option>
+						    				<option value="conforme" selected="selected">conforme</option>
+						    				<option value="non conforme">non conforme</option>
+						    			</select>
+						    		</xsl:when>
+						    		<xsl:otherwise>
+						    			<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');" checked="checked">
+						    				<xsl:if test="$isXLinked">
+						    					<xsl:attribute name="disabled">disabled</xsl:attribute>
+						    				</xsl:if>
+						    			</input>
+						    		</xsl:otherwise>
+						    	</xsl:choose>						    	
+							</xsl:when>
+							<xsl:when test="text()='false' and $explanationValue!='non compilato'">								
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme" selected="selected">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>								
+							</xsl:when>
+							<xsl:when test="text()='false' and $explanationValue='non compilato'">								
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato" selected="selected">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>								
 							</xsl:when>
 							<xsl:otherwise>
-								<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
-									<xsl:if test="$isXLinked">
-										<xsl:attribute name="disabled">disabled</xsl:attribute>
-									</xsl:if>								
-								</input>
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">										
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme" selected="selected">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
@@ -1620,11 +1706,6 @@
 											<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, false);</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
-											
-											<xsl:variable name="path">
-												<xsl:call-template name="getXPath" />
-											</xsl:variable>
-											
 											<xsl:choose>
 												<!-- minimumValue e maximumValue non sono necessari per RNDT (CSI)-->
 												<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue')
@@ -1635,8 +1716,7 @@
 												<xsl:otherwise>
 													<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, true, false);</xsl:attribute>
 												</xsl:otherwise>
-											</xsl:choose>
-											
+											</xsl:choose>											
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
@@ -1696,10 +1776,32 @@
 				<xsl:choose>
 					<xsl:when test="$label"><xsl:value-of select="$label"/></xsl:when>
 					<xsl:when test="starts-with($schema,'iso19139') 
-							and name(.)!='gco:ScopedName' and name(.)!='gco:Date' and name(.)!='gco:DateTime'">
-						<xsl:apply-templates mode="localised" select="..">
-							<xsl:with-param name="langId" select="$langId"></xsl:with-param>
-						</xsl:apply-templates>
+							and name(.)!='gco:ScopedName' and name(.)!='gco:Date' and name(.)!='gco:DateTime'">					
+						
+						<xsl:choose>	
+							<!-- Modificationd for the gmd:pass warkaround (CSI) -->
+							<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+
+								<xsl:choose>							
+									<xsl:when test="$value='true'">
+										<xsl:value-of>conforme</xsl:value-of>
+									</xsl:when>
+									<xsl:when test="$value='false' and $explanationValue!='non compilato'">
+										<xsl:value-of>non conforme</xsl:value-of>
+									</xsl:when>					
+									<xsl:otherwise>
+										<xsl:value-of>non compilato</xsl:value-of>
+									</xsl:otherwise>							
+								</xsl:choose>
+								
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates mode="localised" select="..">
+									<xsl:with-param name="langId" select="$langId"></xsl:with-param>
+								</xsl:apply-templates>
+							</xsl:otherwise>							
+						</xsl:choose>
+	
 					</xsl:when>
 					<xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
 				</xsl:choose>

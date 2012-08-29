@@ -278,7 +278,9 @@
             <div class="row">  <!-- div row-->
                 <span class="labelField"><!--Brontype--><xsl:value-of select="/root/gui/strings/inspire/what/l7"/></span>
 <!--                <select id="inspirebrontype" class="content" name="inspirebrontype" style="width:200px; !important" onchange="inspireBrontypeChanged(this.value)">-->
-            	<select id="inspirebrontype" class="content" name="inspirebrontype" style="width:200px; !important">
+            	<!-- CSI MODIFICATION due to a bug 
+            		<select id="inspirebrontype" class="content" name="inspirebrontype" style="width:200px; !important">-->
+            	<select id="type" class="content" name="type" style="width:200px; !important">
                     <option value="" selected="selected"/>
                     <option value="dataset"><!--Datasets en dataset series--><xsl:value-of select="/root/gui/strings/inspire/what/l9"/></option>
                     <option value="service"><!--Services--><xsl:value-of select="/root/gui/strings/inspire/what/l10"/></option>

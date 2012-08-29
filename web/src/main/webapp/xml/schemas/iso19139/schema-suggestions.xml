@@ -46,11 +46,11 @@
 		<suggest name="gmd:MD_Format"/>
 	</field> -->
 	
-    <!--field name="gmd:axisDimensionProperties">
+    <field name="gmd:axisDimensionProperties">
 		<suggest name="gmd:MD_Dimension"/>
 	</field>
 	
-    <field name="gmd:MD_Dimension">
+	<field name="gmd:MD_Dimension">
 		<suggest name="gmd:dimensionName"/>
 		<suggest name="gmd:dimensionSize"/>
 		<suggest name="gmd:resolution"/>
@@ -58,7 +58,7 @@
 	
 	<field name="gmd:resolution">
 		<suggest name="gco:Measure"/>
-	</field-->
+	</field>
 	
 	<field name="srv:containsOperations">
 		<suggest name="srv:SV_OperationMetadata"/>
@@ -75,14 +75,23 @@
 		<suggest name="srv:DCPList"/>
 	</field>
 	
-    <!--field name="gml:Point">
+    <field name="gml:Point">
 	    <suggest name="gml:PointTypeGROUP_ELEMENT0"/>
 		<suggest name="gml:PointTypeCHOICE_ELEMENT1"/>
 	</field>
 	
 	<field name="gml:PointTypeCHOICE_ELEMENT1">
 		<suggest name="gml:coordinates"/>
-	</field-->
+	</field>
+	
+	<field name="gmd:CI_Date">
+		<suggest name="gmd:date"/>
+		<suggest name="gmd:dateType"/>
+	</field>
+	
+    <field name="gmd:date">
+		<suggest name="gco:DateTime"/>
+	</field>	
 	
 	<!-- Contact info: suggest all by default. -->
 	<field name="gmd:CI_ResponsibleParty">

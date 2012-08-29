@@ -281,7 +281,9 @@ function runAdvancedSearch(type)
 	pars += fetchBoolParam('dynamic');
 	pars += fetchBoolParam('download');
 	pars += fetchParam('protocol').toLowerCase();
-	pars += fetchParam('inspirebrontype').toLowerCase();
+	// CSI
+	//pars += fetchParam('inspirebrontype').toLowerCase();
+	pars += fetchParam('type').toLowerCase();
 	pars += fetchParam('template');
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
@@ -1414,7 +1416,11 @@ function resetInspireOptions() {
 	//$('inspire').checked=false;
 	setParam('title','');
 	setParam('inspireannex','');
-	setParam('inspirebrontype','');
+	
+	// CSI
+	//setParam('inspirebrontype','');
+	setParam('type','');
+	
 	setParam('protocol','');
 	setParam('orgselect_inspire','');
 
