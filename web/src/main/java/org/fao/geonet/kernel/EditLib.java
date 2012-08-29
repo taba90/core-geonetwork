@@ -521,8 +521,7 @@ public class EditLib
 
 					boolean hs = !hasSuggestion;
 					
-					if (isSimple || !isOrType || (isOrType && isCharacter && hs)) {
-						
+					if (isSimple || !isOrType || (isOrType && isCharacter && hs)) {						
 					
 //					if ((schema.isSimpleElement(elemName, childName) || 
 //							!elemType.isOrType()) ||
