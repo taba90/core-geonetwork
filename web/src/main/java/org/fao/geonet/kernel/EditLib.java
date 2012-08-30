@@ -496,15 +496,83 @@ public class EditLib
 		//-----------------------------------------------------------------------
 		//--- add mandatory children
 
-		if (!type.isOrType()) {
+		//
+		// WARKAROUND -> Code modified for CSI in order to manage duplication for the OR types: gmd:resolutions, gml:PointTypeCHOICE_ELEMENT1 and gmd:date.
+		//
+		boolean typeIsOrType = type.isOrType();		
+		boolean element = elemName.equals("gmd:MD_Dimension") || elemName.equals("gmd:resolution") ||
+				elemName.equals("gmd:CI_Date") || elemName.equals("gmd:date") ||
+				elemName.equals("gml:Point") ||  elemName.equals("gml:PointTypeCHOICE_ELEMENT1") || elemName.equals("gml:coordinates");
+
+		if(element){			
+			int count = type.getElementCount();
+			
+			for(int i=0; i<count; i++) {
+				int    minCard   = type.getMinCardinAt(i);
+				String childName = type.getElementAt(i);
+				boolean hasSuggestion = sugg.hasSuggestion(childName, type.getElementList());
+
+				Log.debug(Geonet.EDITOR,"####   - " + i + " element = " + childName); 
+				Log.debug(Geonet.EDITOR,"####     - suggested = " + sugg.isSuggested(elemName, childName));
+				Log.debug(Geonet.EDITOR,"####     - has suggestion = " + hasSuggestion );
+				
+				boolean suggested = sugg.isSuggested(elemName, childName);
+				
+				if (minCard > 0 || suggested) {
+					MetadataType elemType = schema.getTypeInfo(schema.getElementType(childName,elemName));
+
+					boolean isValid = elemType.getElementList().contains("gco:CharacterString") || 
+							childName.equals("gmd:dimensionName") || 
+							childName.equals("gmd:dimensionSize") ||  
+							childName.equals("gmd:resolution")    ||
+							childName.equals("gmd:CI_Date") 	  ||
+							childName.equals("gmd:date")          ||
+							childName.equals("gmd:dateType")      ||
+							childName.equals("gco:DateTime")      ||
+							childName.equals("gco:Measure")       ||
+							childName.equals("gml:coordinates")   ||
+							childName.equals("gml:PointTypeCHOICE_ELEMENT1");
+					
+					if (isValid) {
+						
+						if(childName.equals("gml:PointTypeCHOICE_ELEMENT1")){
+							Iterator<String> iter = elemType.getElementList().iterator();
+							
+							while(iter.hasNext()){
+								String elem = iter.next();
+								boolean s = sugg.isSuggested(childName, elem);
+								
+								if(s){
+									String name   = getUnqualifiedName(elem);
+									String ns     = getNamespace(elem, md, schema);
+									String prefix = getPrefix(elem);
+
+									Element child = new Element(name, prefix, ns);
+									md.addContent(child);
+								}
+							}								
+						}else{
+							String name   = getUnqualifiedName(childName);
+							String ns     = getNamespace(childName, md, schema);
+							String prefix = getPrefix(childName);
+
+							Element child = new Element(name, prefix, ns);
+
+							md.addContent(child);
+							fillElement(schema, sugg, md, child);								
+						}
+					}
+				}
+			}
+		}else if (!typeIsOrType) {
 			for(int i=0; i<type.getElementCount(); i++) {
 				int    minCard   = type.getMinCardinAt(i);
 				String childName = type.getElementAt(i);
 				boolean hasSuggestion = sugg.hasSuggestion(childName, type.getElementList());
 
 				Log.debug(Geonet.EDITOR,"####   - " + i + " element = " + childName); 
-				Log.debug(Geonet.EDITOR,"####     - suggested = "+sugg.isSuggested(elemName, childName));
-				Log.debug(Geonet.EDITOR,"####     - has suggestion = "+hasSuggestion );
+				Log.debug(Geonet.EDITOR,"####     - suggested = " + sugg.isSuggested(elemName, childName));
+				Log.debug(Geonet.EDITOR,"####     - has suggestion = " + hasSuggestion );
 				
 				boolean suggested = sugg.isSuggested(elemName, childName);
 				
@@ -545,8 +613,7 @@ public class EditLib
 					}
 				}
 			}
-		}
-		else if (type.getElementList().contains("gco:CharacterString") && !useSuggestion) {
+		} else if (type.getElementList().contains("gco:CharacterString") && !useSuggestion) {
 			// Here we could probably expand element having one and only one suggestion for 
 			// an or element - then we force to expand that only one suggestion ? 
 			Log.debug(Geonet.EDITOR,"####   - Requested expansion of an OR element having gco:CharacterString substitute and no suggestion: " + md.getName());

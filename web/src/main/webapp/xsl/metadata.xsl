@@ -680,6 +680,8 @@
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 				and 
+				not(contains($helpLink, '|gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 				and 
 				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:checkPointDescription|'))">
@@ -941,6 +943,8 @@
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 						  and 
 						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties|')) or (position() &gt; 1))
+						  and 
+						  not(contains($helpLink, '|gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 						  and 
 						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
 						  and 

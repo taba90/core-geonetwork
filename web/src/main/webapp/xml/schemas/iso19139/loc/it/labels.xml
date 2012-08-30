@@ -2278,6 +2278,11 @@ e di trasformazione.</label>
 		<label>Valore</label>
         <description/>
     </element>
+	<element name="gco:Real" context="gco:Record">
+        <!--label>Record</label-->
+		<label>Valore</label>
+        <description/>
+    </element>
     <element name="gco:Binary">
         <label>Binario</label>
         <description/>
