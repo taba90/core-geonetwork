@@ -1611,15 +1611,16 @@ function getValidationReport()
 function setConformityPass(sel, selRef, explRef){	
 	if (sel.value.indexOf("non conforme") != -1) {
 		$(selRef).value = 'false';
-		$(explRef).value = '';
+		$(explRef).value = 'non conforme';
 	} else if (sel.value.indexOf("conforme") != -1) {	
 		$(selRef).value = 'true';
-		$(explRef).value = '';
+		$(explRef).value = 'conforme';
 	} else {
 	    $(selRef).value = 'false';
 		$(explRef).value = sel.value;
 	}
 }
+
 
 function setInputCRSel(s){
 	var inputEl = document.getElementById('vertCrs');

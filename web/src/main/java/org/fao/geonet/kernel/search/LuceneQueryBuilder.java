@@ -64,6 +64,8 @@ public class LuceneQueryBuilder {
 	private static final String maxBoundingLatitudeValue  = "450";  //   90 + 360
 	private static final String minBoundingLongitudeValue = "180";  // -180 + 360
 	private static final String maxBoundingLongitudeValue = "540";  //  180 + 360
+	
+	private static final double bboxBuffer = 0.1;
 
 	public LuceneQueryBuilder(HashSet<String> tokenizedFieldSet, PerFieldAnalyzerWrapper analyzer) {
 		_tokenizedFieldSet = tokenizedFieldSet;
@@ -942,26 +944,26 @@ public class LuceneQueryBuilder {
 		if (relation.equals(Geonet.SearchResult.Relation.OVERLAPS)) {
 			// eastBL
 			if (westBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(westBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(westBL) + bboxBuffer);
 				String upperTerm = maxBoundingLongitudeValue;
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.EAST, lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// westBL
 			if (eastBL != null) {
 				String lowerTerm = minBoundingLongitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(eastBL) - 1);
+				String upperTerm = Double.toString(Double.parseDouble(eastBL) - bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.WEST, lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// northBL
 			if (southBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(southBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(southBL) + bboxBuffer);
 				String upperTerm = maxBoundingLatitudeValue;
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.NORTH, lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// southBL
 			if (northBL != null) {
 				String lowerTerm = minBoundingLatitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(northBL) - 1);
+				String upperTerm = Double.toString(Double.parseDouble(northBL) - bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.SOUTH, lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 		}
@@ -972,26 +974,26 @@ public class LuceneQueryBuilder {
 		else if (relation.equals(Geonet.SearchResult.Relation.EQUAL)) {
 			// eastBL
 			if(eastBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(eastBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(eastBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.EAST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// westBL
 			if(westBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(westBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(westBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(westBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(westBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.WEST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// northBL
 			if(northBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(northBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(northBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(northBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(northBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.NORTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// southBL
 			if(southBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(southBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(southBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(southBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(southBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.SOUTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 		}
@@ -1001,26 +1003,26 @@ public class LuceneQueryBuilder {
 		else if(relation.equals(Geonet.SearchResult.Relation.ENCLOSES)) {
 			// eastBL
 			if(eastBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - 1);
+				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - bboxBuffer);
 				String upperTerm = maxBoundingLongitudeValue;
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.EAST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// westBL
 			if(westBL != null) {
 				String lowerTerm = minBoundingLongitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(westBL) + 1);
+				String upperTerm = Double.toString(Double.parseDouble(westBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.WEST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// northBL
 			if(northBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(northBL) - 1);
+				String lowerTerm = Double.toString(Double.parseDouble(northBL) - bboxBuffer);
 				String upperTerm = maxBoundingLatitudeValue;
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.NORTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// southBL
 			if(southBL != null) {
 				String lowerTerm = minBoundingLatitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(southBL) + 1);
+				String upperTerm = Double.toString(Double.parseDouble(southBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.SOUTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 		}
@@ -1030,26 +1032,26 @@ public class LuceneQueryBuilder {
 		else if(relation.equals(Geonet.SearchResult.Relation.ENCLOSEDWITHIN)) {
 			// eastBL
 			if(eastBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(westBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(eastBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(westBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(eastBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.EAST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// westBL
 			if(westBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(westBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(eastBL) + 1); 
+				String lowerTerm = Double.toString(Double.parseDouble(westBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(eastBL) + bboxBuffer); 
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.WEST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// northBL
 			if(northBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(southBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(northBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(southBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(northBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.NORTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// southBL
 			if(southBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(southBL) - 1);
-				String upperTerm = Double.toString(Double.parseDouble(northBL) + 1);
+				String lowerTerm = Double.toString(Double.parseDouble(southBL) - bboxBuffer);
+				String upperTerm = Double.toString(Double.parseDouble(northBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.SOUTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 		}
@@ -1062,24 +1064,24 @@ public class LuceneQueryBuilder {
 			// eastBL
 			if(westBL != null) {
 				String lowerTerm = minBoundingLongitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(westBL) + 1);
+				String upperTerm = Double.toString(Double.parseDouble(westBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.EAST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// westBL
 			if(eastBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - 1);
+				String lowerTerm = Double.toString(Double.parseDouble(eastBL) - bboxBuffer);
 				String upperTerm = maxBoundingLongitudeValue; 
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.WEST,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// northBL
 			if(southBL != null) {
 				String lowerTerm = minBoundingLatitudeValue;
-				String upperTerm = Double.toString(Double.parseDouble(southBL) + 1);
+				String upperTerm = Double.toString(Double.parseDouble(southBL) + bboxBuffer);
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.NORTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}
 			// southBL
 			if(northBL != null) {
-				String lowerTerm = Double.toString(Double.parseDouble(northBL) - 1);
+				String lowerTerm = Double.toString(Double.parseDouble(northBL) - bboxBuffer);
 				String upperTerm = maxBoundingLatitudeValue;
 				query.add(getBBoxTermRangeQuery(LuceneIndexField.SOUTH,lowerTerm, upperTerm, inclusive), defaultBBoxOccur);
 			}

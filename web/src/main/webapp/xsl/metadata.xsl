@@ -1655,9 +1655,9 @@
 										</xsl:variable>
 										
 										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
-											<option value="non compilato">non compilato</option>
+											<option value="non compilato" selected="selected">non compilato</option>
 											<option value="conforme">conforme</option>
-											<option value="non conforme" selected="selected">non conforme</option>
+											<option value="non conforme">non conforme</option>
 										</select>
 									</xsl:when>
 									<xsl:otherwise>
@@ -1785,16 +1785,13 @@
 						<xsl:choose>	
 							<!-- Modificationd for the gmd:pass warkaround (CSI) -->
 							<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
-
+																
 								<xsl:choose>							
 									<xsl:when test="$value='true'">
-										<xsl:value-of>conforme</xsl:value-of>
-									</xsl:when>
-									<xsl:when test="$value='false' and $explanationValue!='non compilato'">
-										<xsl:value-of>non conforme</xsl:value-of>
-									</xsl:when>					
+										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>conforme</xsl:value-of>)
+									</xsl:when>			
 									<xsl:otherwise>
-										<xsl:value-of>non compilato</xsl:value-of>
+										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>non conforme</xsl:value-of>)
 									</xsl:otherwise>							
 								</xsl:choose>
 								
