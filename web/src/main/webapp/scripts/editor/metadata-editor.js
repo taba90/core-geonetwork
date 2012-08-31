@@ -1624,7 +1624,7 @@ function setConformityPass(sel, selRef, explRef){
 
 function setInputCRSel(s){
 	var inputEl = document.getElementById('vertCrs');
-	var i = inputEl.parentElement.parentElement.childElements()[0];
+	var i = inputEl.parentElement.parentElement.childNodes[0];
 	var input = document.getElementById(i.id);
 	var v = input.value;								
 	input.value = v.substring(0, v.indexOf('EPSG')) + s.value;

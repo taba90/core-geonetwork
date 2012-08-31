@@ -2417,7 +2417,7 @@
                                     <br/>(External-Link: <xsl:value-of select="$linkage"/>)
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                    <br/>(<xsl:value-of select="$linkage"/>)
                                 </xsl:otherwise>
                             </xsl:choose>
                             

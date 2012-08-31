@@ -640,7 +640,8 @@
     </element>
     <element name="gmd:contentInfo" id="16.0">
         <description>Informazioni sulle caratteristiche dei dati di tipo immagine</description>
-        <label>Informazioni sul contenuto</label>
+        <!--label>Informazioni sul contenuto</label-->
+		<label>Contenuto dei dati raster</label>
     </element>
     <element name="gmd:contentType" id="241.0">
         <label>Tipo di contenuto</label>
@@ -2272,6 +2273,10 @@ e di trasformazione.</label>
         <helper>
             <option value="m">meters</option>
         </helper>
+    </element>
+	<element name="gco:Record" context="gmd:georeferencedParameters">
+        <label>Record</label>
+        <description/>
     </element>
     <element name="gco:Record">
         <!--label>Record</label-->
