@@ -724,6 +724,8 @@
 	<xmlTab>Vista XML</xmlTab>
 	<!--inspireTab>Vista INSPIRE</inspireTab-->
 	<inspireTab>Vista INSPIRE-RNDT</inspireTab>
+	<ricercaPSR>Opzioni di ricerca PSR</ricercaPSR>
+	<temaPSR>Tema PSR</temaPSR>
 	<inspireSection>
 		<identification>
 			<title>Identificazione</title>
@@ -779,7 +781,7 @@
 			</help>
 		</keywords>
 		<geoloc>
-		    <geogroup>Estenzione dei dati</geogroup>
+		    <geogroup>Estensione dei dati</geogroup>
 			<title>Localizzazione geografica</title>
 			<help>
 				<div>

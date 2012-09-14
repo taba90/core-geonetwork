@@ -811,15 +811,15 @@
 							<xsl:with-param name="edit" select="$edit" />
 						</xsl:apply-templates> 
 	
-						<!-- Distributor (ADDED for CSI)
+						<!-- Distributor (ADDED for CSI) -->
 						<xsl:apply-templates mode="elementEP"
 							select="
 							../../gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor">
 							<xsl:with-param name="schema" select="$schema" />
 							<xsl:with-param name="edit" select="$edit" />
-						</xsl:apply-templates>-->
+						</xsl:apply-templates>
 						
-						<!-- Distributor (MODIFIED for CSI) -->	
+						<!-- Distributor (MODIFIED for CSI) 
 						<xsl:call-template name="complexElementGuiWrapper">
 							<xsl:with-param name="title"
 								select="/root/gui/strings/inspireSection/distribution/distributor" />
@@ -862,7 +862,7 @@
 									<xsl:with-param name="edit" select="$edit" />
 								</xsl:apply-templates> 
 							</xsl:with-param>
-						</xsl:call-template>					
+						</xsl:call-template>-->			
 						
 					</xsl:with-param>
 				</xsl:call-template>

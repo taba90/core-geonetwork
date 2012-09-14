@@ -401,8 +401,8 @@
         <label>Identificatore</label>
     </element>
     <element name="gmd:URL" id="608.0">
-        <!--label>URL</label-->
-		<label>Sito web</label>
+        <label>URL</label>
+		<!--abel>Sito web</label-->
         <description>URL</description>
     </element>
     <element name="gmd:abstract" id="25.0">
@@ -1313,7 +1313,7 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
     </element>
     <element name="gmd:name" context="gmd:CI_OnlineResource" id="400.0">
         <!--label>Nome della risorsa</label-->
-		<label>Nome del layer</label>
+		<label>Tipo URL/Nome del layer</label>
         <description>Nome della risorsa online</description>
     </element>
     <element name="gmd:name" context="gmd:CI_Series" id="404.0">
@@ -1368,7 +1368,7 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
     </element>
     <element name="gmd:onLine" id="277.0">
         <!--label>Risorsa online</label-->
-		<label>Localizzazione della risorsa</label>
+		<label>Localizzatore della risorsa</label>
         <description>Informazioni sulle fonti online dalle quali la risorsa può essere ottenuta</description>
     </element>
     <element name="gmd:onlineResource" id="390.0">

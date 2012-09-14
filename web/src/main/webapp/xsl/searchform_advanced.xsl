@@ -306,9 +306,10 @@
     	
     	<br/>
     	
-    	<span style="margin-top:5px; margin-bottom:5px"><a href="#" onclick="toggleInspire('inspireTheme', 'i_inspire_theme')" style="margin-right:2px"><img id="i_inspire_theme" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a>Modello Inspire</span>
+<!--    	<span style="margin-top:5px; margin-bottom:5px"><a href="#" onclick="toggleInspire('inspireTheme', 'i_inspire_theme')" style="margin-right:2px"><img id="i_inspire_theme" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a>Modello Inspire</span>-->
     	
-    	<div id="inspireTheme" style="display:none">
+    	<!--<div id="inspireTheme" style="display:none">-->
+    	<div id="inspireTheme">
     		<!-- INSPIRE Thema -->
     		<div> <!-- style="float:left; margin-left: 20px;"-->
     			<fieldset>
@@ -909,12 +910,13 @@
         <h1 class="labelFieldSmall" style="margin-top:5px;margin-bottom:5px">
             <a href="#" onclick="toggleInspire('stateResponse', 'i_inspire_state_response')" style="margin-right:2px">
                 <img id="i_inspire_state_response" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" />
-            </a>Ricerca per tema PSR
+            </a>
+        	<xsl:value-of select="/root/gui/strings/ricercaPSR"/>
         </h1>
 
     	<div id="stateResponse" style="display:none">
     		<fieldset>
-    			<legend>Tema PSR</legend>
+    			<legend><xsl:value-of select="/root/gui/strings/temaPSR"/></legend>
 
     			<div id="inspirethemesdivPsr">
     				<div>
