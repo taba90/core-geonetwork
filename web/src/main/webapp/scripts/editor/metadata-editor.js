@@ -1621,13 +1621,20 @@ function setConformityPass(sel, selRef, explRef){
 	}
 }
 
-
 function setInputCRSel(s){
 	var inputEl = document.getElementById('vertCrs');
 	var i = inputEl.parentElement.parentElement.childNodes[0];
 	var input = document.getElementById(i.id);
-	var v = input.value;								
-	input.value = v.substring(0, v.indexOf('EPSG')) + s.value;
+	var v = input.value;	
+   
+    if(s.value == -1)
+		input.value = "";
+	else{
+		if(input.value == "")
+			input.value = "http://www.epsg-registry.org/export.htm?gml=urn:ogc:def:crs:" + s.value;
+		else
+			input.value = v.substring(0, v.indexOf('EPSG')) + s.value;
+	}
 }
 
 /**
