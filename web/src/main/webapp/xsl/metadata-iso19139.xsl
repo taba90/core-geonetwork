@@ -2409,7 +2409,11 @@
                             <!-- This modification has been introduced to manage External (public and hidden) link service in the OnlineResource field -->
                             <xsl:choose>
                                 <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Hidden')">
-                                    <xsl:if test="string(/root/gui/session/profile)!='Guest'">
+                                    <xsl:if test="string(/root/gui/session/profile)='Administrator' 
+                                        or string(/root/gui/session/profile)='Editor' 
+                                        or string(/root/gui/session/profile)='RegisteredUser' 
+                                        or string(/root/gui/session/profile)='Reviewer'
+                                        or string(/root/gui/session/profile)='UserAdmin'">
                                         <br/>(External-Link: <xsl:value-of select="$linkage"/>)
                                     </xsl:if>
                                 </xsl:when>
