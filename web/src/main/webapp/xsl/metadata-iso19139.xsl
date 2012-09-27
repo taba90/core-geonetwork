@@ -2392,7 +2392,7 @@
                     <xsl:apply-templates mode="simpleElement" select=".">
                         <xsl:with-param name="schema"  select="$schema"/>
                         <xsl:with-param name="text">
-                            <a href="{$linkage}" target="_new">
+<!--                            <a href="{$linkage}" target="_new">
                                 <xsl:choose>
                                     <xsl:when test="string($description)!=''">
                                         <xsl:value-of select="$description"/>
@@ -2404,7 +2404,7 @@
                                         <xsl:value-of select="$linkage"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                            </a>
+                            </a>-->
                             
                             <!-- This modification has been introduced to manage External (public and hidden) link service in the OnlineResource field -->
                             <xsl:choose>
@@ -2414,13 +2414,52 @@
                                         or string(/root/gui/session/profile)='RegisteredUser' 
                                         or string(/root/gui/session/profile)='Reviewer'
                                         or string(/root/gui/session/profile)='UserAdmin'">
+                                        <a href="{$linkage}" target="_new">
+                                            <xsl:choose>
+                                                <xsl:when test="string($description)!=''">
+                                                    <xsl:value-of select="$description"/>
+                                                </xsl:when>
+                                                <xsl:when test="string($name)!=''">
+                                                    <xsl:value-of select="$name"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:value-of select="$linkage"/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </a>
                                         <br/>(External-Link: <xsl:value-of select="$linkage"/>)
                                     </xsl:if>
                                 </xsl:when>
                                 <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Public')">
+                                    <a href="{$linkage}" target="_new">
+                                        <xsl:choose>
+                                            <xsl:when test="string($description)!=''">
+                                                <xsl:value-of select="$description"/>
+                                            </xsl:when>
+                                            <xsl:when test="string($name)!=''">
+                                                <xsl:value-of select="$name"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$linkage"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </a>
                                     <br/>(External-Link: <xsl:value-of select="$linkage"/>)
                                 </xsl:when>
                                 <xsl:otherwise>
+                                    <a href="{$linkage}" target="_new">
+                                        <xsl:choose>
+                                            <xsl:when test="string($description)!=''">
+                                                <xsl:value-of select="$description"/>
+                                            </xsl:when>
+                                            <xsl:when test="string($name)!=''">
+                                                <xsl:value-of select="$name"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$linkage"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </a>
                                     <br/>(<xsl:value-of select="$linkage"/>)
                                 </xsl:otherwise>
                             </xsl:choose>
