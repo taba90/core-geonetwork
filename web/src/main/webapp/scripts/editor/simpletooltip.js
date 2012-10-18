@@ -61,6 +61,10 @@ function getHtmlTip(spanId, node)
 			var label = "Identificativo risorsa";
 		    var descr= "Valore alfanumerico che identifica una istanza in un namespace";
 		    var cond = "obbligatorio";
+		}else if(spanId.indexOf("|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|") != -1){
+			var label = "Identificativo risorsa";
+		    var descr = "Valore alfanumerico che identifica una istanza in un namespace";
+		    var cond = "obbligatorio";
 		}else{		
 			var label= xml.evalXPath(node, 'label');
 			var descr= xml.evalXPath(node, 'description');
