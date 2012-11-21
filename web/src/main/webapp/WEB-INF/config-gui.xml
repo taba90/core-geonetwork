@@ -27,6 +27,10 @@
 	<enabled>true</enabled>
  </municipalitySearch>
  
+ <psrOpts>
+	<enabled>true</enabled>
+ </psrOpts>
+ 
  <map>
   <!-- Configuration for map displayed in metadata sheet
   (view or edit mode). -->

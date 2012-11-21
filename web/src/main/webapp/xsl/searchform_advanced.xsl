@@ -7,6 +7,11 @@
 
 	<!--xsl:template match="/"-->
 	<xsl:template name="advanced_search_fields">
+	
+	<xsl:variable name="psrOpts">
+		<xsl:value-of select="/root/gui/config/psrOpts/enabled"/>
+	</xsl:variable>
+	
 	<form name="advsearch" id="advsearch" onsubmit="javascript:runAdvancedSearch();" action="">
 		<div style="border-bottom: 1px solid;">
 			<xsl:comment>ADVANCED SEARCH</xsl:comment>	
@@ -25,9 +30,10 @@
 				<xsl:call-template name="adv_inspire"></xsl:call-template>
 			</xsl:if>
 
-			<xsl:comment>ADV SEARCH: PSR</xsl:comment>
-    		<xsl:call-template name="adv_psr"></xsl:call-template>
-
+			<xsl:if test="$psrOpts = 'true'">
+				<xsl:comment>ADV SEARCH: PSR</xsl:comment>
+				<xsl:call-template name="adv_psr"></xsl:call-template>
+			</xsl:if>
 			<!-- Search button -->
 			<div>		
 				<table class="advsearchfields" width="100%" border="0" cellspacing="0" cellpadding="0">
