@@ -179,9 +179,12 @@ public class ShibLogin implements Service
         }
 		//--- update user information into the database
 
-		String query = "UPDATE Users SET name=?, surname=?, profile=?, password=? WHERE username=?";
+//		String query = "UPDATE Users SET name=?, surname=?, profile=?, password=? WHERE username=?";
+//
+//		int res = dbms.execute(query, firstname, surname, profile, "Via Shibboleth", username);
+		String query = "UPDATE Users SET name=?, surname=?, password=? WHERE username=?";
 
-		int res = dbms.execute(query, firstname, surname, profile, "Via Shibboleth", username);
+		int res = dbms.execute(query, firstname, surname, "Via Shibboleth", username);
 
 		//--- if the user was not found --> add it
 

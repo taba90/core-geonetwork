@@ -148,7 +148,12 @@
 					</td>
 				</tr>
 			</xsl:for-each>
-			<tr><td class="blue-content" colspan="3"/></tr>
+			<tr>
+				<td class="blue-content" colspan="3" style="vertical-align: middle;">
+					<xsl:call-template name="footer"/>
+				</td>
+			</tr>
+			
 		</table>
 	</xsl:template>
 	
@@ -222,8 +227,6 @@
             </xsl:otherwise>
         </xsl:choose>
 
-		
-		
 	</xsl:template>
 	
 	<xsl:template name="templateChoice">

@@ -229,13 +229,13 @@
 		<table width="100%">
 			<!-- Tab visibility is managed in config-gui.xml -->
 			<!-- simple tab -->
-            <xsl:if test="/root/gui/env/metadata/enableSimpleView = 'true'">
+      <xsl:if test="/root/gui/env/metadata/enableSimpleView = 'true' and string(/root/gui/session/profile)='Administrator'">
 				<xsl:call-template name="displayTab">
 					<xsl:with-param name="tab"     select="'simple'"/>
 					<xsl:with-param name="text"    select="/root/gui/strings/simpleTab"/>
 					<xsl:with-param name="tabLink" select="$tabLink"/>
 				</xsl:call-template>
-			</xsl:if>
+			</xsl:if> 
 			
 			<!--  complete tab(s) -->
 			<xsl:choose>
@@ -273,7 +273,7 @@
 			</xsl:choose>
 			
 			<!-- xml tab -->
-			<xsl:if test="/root/gui/env/metadata/enableXmlView = 'true'">
+			<xsl:if test="/root/gui/env/metadata/enableXmlView = 'true' and string(/root/gui/session/profile)='Administrator'">
 				<xsl:call-template name="displayTab">
 					<xsl:with-param name="tab"     select="'xml'"/>
 					<xsl:with-param name="text"    select="/root/gui/strings/xmlTab"/>

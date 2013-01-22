@@ -6,6 +6,7 @@
 	xmlns:geonet="http://www.fao.org/geonetwork"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xmlns:svrl="http://purl.oclc.org/dsdl/svrl" 
+	xmlns:gml="http://www.opengis.net/gml"
 	exclude-result-prefixes="exslt xlink gco gmd geonet svrl">
 
 	<xsl:import href="text-utilities.xsl"/>
@@ -13,7 +14,7 @@
 	<xsl:include href="metadata-controls.xsl"/>
 	
 	<xsl:variable name="flat" select="/root/gui/config/metadata-tab/*[name(.)=$currTab]/@flat"/>
-	 
+	
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 	<!-- main schema switch -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -290,24 +291,85 @@
 			</xsl:call-template>
 		</xsl:param>
 		
-		<xsl:choose>
-			<xsl:when test="$edit=true()">
-				<xsl:call-template name="editSimpleElement">
-					<xsl:with-param name="schema"   select="$schema"/>
-					<xsl:with-param name="title"    select="$title"/>
-					<xsl:with-param name="text"     select="$text"/>
-					<xsl:with-param name="helpLink" select="$helpLink"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="showSimpleElement">
-					<xsl:with-param name="schema"   select="$schema"/>
-					<xsl:with-param name="title"    select="$title"/>
-					<xsl:with-param name="text"     select="$text"/>
-					<xsl:with-param name="helpLink" select="$helpLink"/>
-				</xsl:call-template>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:if test="not(contains($helpLink, 'gmd:individualName'))
+			and
+			not(contains($helpLink, 'gmd:positionName'))
+			and
+			not(contains($helpLink, 'gmd:deliveryPoint'))
+			and
+			not(contains($helpLink, 'gmd:city'))
+			and
+			not(contains($helpLink, 'gmd:administrativeArea'))
+			and
+			not(contains($helpLink, 'gmd:postalCode'))
+			and
+			not(contains($helpLink, 'gmd:country'))
+			and
+			not(contains($helpLink, 'gmd:facsimile'))
+			and
+			not(contains($helpLink, 'gmd:type'))
+			and
+			not(contains($helpLink, 'gmd:contact/gmd:CI_ResponsibleParty/gmd:role'))
+			and
+			not(contains($helpLink, 'gmd:description'))">
+			<xsl:choose>
+				<xsl:when test="$edit=true()">
+					<xsl:call-template name="editSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="showSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>	
+		
+<!--	FIRST MODIFIED 
+			<xsl:if test="contains($helpLink, '|gmd:MD_Metadata')
+			or
+			contains($helpLink, 'gmd:electronicMailAddress')
+			or
+			contains($helpLink, 'gmd:voice')
+			or
+			contains($helpLink, 'gmd:organisationName')
+			or
+			contains($helpLink, 'gmd:role')
+			or
+			contains($helpLink, 'gmd:URL')
+			or
+			contains($helpLink, 'gmd:keyword')
+			or
+			contains($helpLink, 'gmd:spatialRepresentationType')
+			or
+			contains($helpLink, 'gmd:presentationForm')">
+			<xsl:choose>
+				<xsl:when test="$edit=true()">
+					<xsl:call-template name="editSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="showSimpleElement">
+						<xsl:with-param name="schema"   select="$schema"/>
+						<xsl:with-param name="title"    select="$title"/>
+						<xsl:with-param name="text"     select="$text"/>
+						<xsl:with-param name="helpLink" select="$helpLink"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>	-->
+		
 	</xsl:template>
 
 	<xsl:template mode="simpleElement" match="@*">
@@ -361,16 +423,17 @@
 				<xsl:with-param name="schema" select="$schema"/>
 			</xsl:call-template>
 		</xsl:param>
-		<xsl:param name="content">
-			<xsl:call-template name="getContent">
-				<xsl:with-param name="schema" select="$schema"/>
-				<xsl:with-param name="edit"   select="$edit"/>
-			</xsl:call-template>
-		</xsl:param>
 		<xsl:param name="helpLink">
 			<xsl:call-template name="getHelpLink">
 				<xsl:with-param name="name"   select="name(.)"/>
 				<xsl:with-param name="schema" select="$schema"/>
+			</xsl:call-template>
+		</xsl:param>
+		<xsl:param name="content">
+			<xsl:call-template name="getContent">
+				<xsl:with-param name="schema" select="$schema"/>
+				<xsl:with-param name="edit"   select="$edit"/>
+				<xsl:with-param name="hLink"   select="$helpLink"/>
 			</xsl:call-template>
 		</xsl:param>
 		
@@ -465,21 +528,170 @@
 
 		<xsl:variable name="id" select="geonet:element/@uuid"/>
 		<xsl:variable name="addLink">
-			<xsl:call-template name="addLink">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
+				and
+				not(contains($helpLink, '|gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))">
+				<xsl:call-template name="addLink">
+					<xsl:with-param name="id" select="$id"/>
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="addXMLFragment">
 			<xsl:call-template name="addXMLFragment">
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:call-template>
 		</xsl:variable>
+		
 		<xsl:variable name="removeLink">
-			<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			<!-- This test to visualize or not the remove button for the form fields -->
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:hierarchyLevel|')) 
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification|')) 
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:presentationForm|')) or (count(//gmd:presentationForm) &gt; 1))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:otherCitationDetails|')) 
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+                and 
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice) &gt; 1))
+				and
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))	
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice) &gt; 1))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) or (count(//gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|')) or (count(//gmd:otherConstraints) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:useConstraints|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints|')) or (count(//gmd:otherConstraints) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|')) or (count(//gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:description|'))
+				and 
+				(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) or (count(//gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress) &gt; 1))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:parentIdentifier|'))			
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:phone/gmd:CI_Telephone/gmd:voice|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|')) 
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress|'))
+				and 
+				not(contains($helpLink, '|gmd:contact/gmd:CI_ResponsibleParty/gmd:organisationName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardName|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:language|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:metadataStandardVersion|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo/gmd:MD_ImageDescription/gmd:dimension/gmd:MD_Band/gmd:bitsPerValue|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo/gmd:MD_ImageDescription/gmd:triangulationIndicator|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
+				not(contains($helpLink, '|gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+				and 
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:checkPointDescription|'))">
+				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="upLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.up',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@up='true')">
@@ -492,7 +704,8 @@
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-<!-- xsd and schematron validation info -->
+		
+        <!-- xsd and schematron validation info -->
 		<xsl:variable name="validationLink">
 			<xsl:variable name="ref" select="concat('#_',geonet:element/@ref)"/>
 			<xsl:call-template name="validationLink">
@@ -674,35 +887,90 @@
 		<xsl:param name="helpLink"/>
 		
 		<xsl:variable name="id" select="geonet:element/@uuid"/>
+		
 		<xsl:variable name="addLink">
-			<xsl:call-template name="addLink">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
+			<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution|'))
+						  and  
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))">		
+				<xsl:call-template name="addLink">
+					<xsl:with-param name="id" select="$id"/>
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="addXMLFragment">
-			<xsl:call-template name="addXMLFragment">
-				<xsl:with-param name="id" select="$id"/>
-			</xsl:call-template>
-		</xsl:variable>
+	
+     	<xsl:variable name="addXMLFragment">
+     		<!-- Per rimuovere il binocolo dalla sezione del sistema di riferimento spaziale -->
+     		<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata|gmd:MD_Metadata/gmd:referenceSystemInfo|'))">
+     			<xsl:call-template name="addXMLFragment">
+     				<xsl:with-param name="id" select="$id"/>
+     			</xsl:call-template>
+     		</xsl:if>
+		</xsl:variable>	
+
 		<xsl:variable name="removeLink">
-			<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			<xsl:if test="(not(contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine|')) or (position() &gt; 1))
+			              and
+			              (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords|')) or (count(//gmd:descriptiveKeywords) &gt; 1))
+			              and
+			              (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords|')) or (count(//gmd:descriptiveKeywords) &gt; 1))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:referenceSystemInfo|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution|'))
+						  and
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage|'))
+						  and
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact|')) or (position() &gt; 1))
+						  and
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:pointOfContact|')) or (position() &gt; 1))
+						  and  
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() &gt; 1))
+						  and  
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty|')) or (position() &gt; 1))
+						  and  
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:contentInfo|'))
+						  and 
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties|')) or (position() &gt; 1))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+						  and 
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties|')) or (position() &gt; 1))
+						  and 
+						  not(contains($helpLink, '|gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+						  and 
+						  not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution|'))
+						  and 
+						  (not(contains($helpLink, '|gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georectified/gmd:cornerPoints|')) or (position() &gt; 1))">
+				<xsl:value-of select="concat('doRemoveElementAction(',$apos,'/metadata.elem.delete',$apos,',',geonet:element/@ref,',',geonet:element/@parent,',',$apos,$id,$apos,',',geonet:element/@min,');')"/>
+			</xsl:if>
 			<xsl:if test="not(geonet:element/@del='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="upLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.up',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@up='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
+		
 		<xsl:variable name="downLink">
 			<xsl:value-of select="concat('doMoveElementAction(',$apos,'/metadata.elem.down',$apos,',',geonet:element/@ref,',',$apos,$id,$apos,');')"/>
 			<xsl:if test="not(geonet:element/@down='true')">
 				<xsl:text>!OPTIONAL</xsl:text>
 			</xsl:if>
 		</xsl:variable>
-<!-- xsd and schematron validation info -->
+        
+		<!-- xsd and schematron validation info -->
 		<xsl:variable name="validationLink">
 			<xsl:variable name="ref" select="concat('#_',geonet:element/@ref)"/>
 			<xsl:call-template name="validationLink">
@@ -751,73 +1019,144 @@
 
 		<xsl:variable name="isXLinked" select="count(ancestor-or-self::node()[@xlink:href]) > 0" />
 		<xsl:variable name="geonet" select="starts-with(name(.),'geonet:')"/>
-
-		<tr id="{$id}" type="metadata">
-			<xsl:if test="not($visible)">
-				<xsl:attribute name="style">
-					display:none;
-				</xsl:attribute>
-			</xsl:if>
-			<th class="md" width="20%" valign="top">
-				<xsl:choose>
-					<xsl:when test="$isXLinked">
-						<xsl:attribute name="class">md xlinked</xsl:attribute>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:attribute name="class">md</xsl:attribute>
-					</xsl:otherwise>
-				</xsl:choose>
-			
-				<xsl:choose>
-					<xsl:when test="$helpLink!=''">
-						<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
-							<xsl:value-of select="$title"/>
-						</span>
-						<xsl:call-template name="asterisk">
-							<xsl:with-param name="link" select="$removeLink"/>
-							<xsl:with-param name="edit" select="$edit"/>
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="showTitleWithTag">
-							<xsl:with-param name="title" select="$title"/>
-						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:text>&#160;</xsl:text>
-				<xsl:if test="$edit and not($isXLinked)">
-					<xsl:call-template name="getButtons">
-						<xsl:with-param name="addLink" select="$addLink"/>
-						<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
-						<xsl:with-param name="removeLink" select="$removeLink"/>
-						<xsl:with-param name="upLink" select="$upLink"/>
-						<xsl:with-param name="downLink" select="$downLink"/>
-						<xsl:with-param name="validationLink" select="$validationLink"/>
-						<xsl:with-param name="id" select="$id"/>
-					</xsl:call-template>
+		
+		<xsl:if test="not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS|'))
+				and
+				not(contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem|'))">
+			<tr id="{$id}" type="metadata">
+					<xsl:if test="not($visible) 
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:explanation|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributor/gmd:MD_Distributor/gmd:distributorContact/gmd:CI_ResponsibleParty/gmd:role|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:contact/gmd:CI_ResponsibleParty/gmd:role|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier/@codeSpace|')
+						or
+						contains($helpLink, '|gml:BaseUnit|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier|')
+						or
+						contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem/@xlink:href|')">
+					
+					<xsl:attribute name="style">
+						display:none;
+					</xsl:attribute>
 				</xsl:if>
-			</th>
-			<td class="padded" valign="top">
-			
-				<xsl:variable name="textnode" select="exslt:node-set($text)"/>
-				<xsl:choose>
-					<xsl:when test="$edit">
-						<xsl:copy-of select="$text"/>
-					</xsl:when>
-					<xsl:when test="count($textnode/*) &gt; 0">
-					<!-- In some templates, text already contains HTML (eg. codelist, link for download).
-						In that case copy text content and does not resolve
-						hyperlinks. -->
-						<xsl:copy-of select="$text"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="addLineBreaksAndHyperlinks">
-							<xsl:with-param name="txt" select="$text"/>
+				<th class="md" width="20%" valign="top">
+					<xsl:choose>
+						<xsl:when test="$isXLinked">
+							<xsl:attribute name="class">md xlinked</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="class">md</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+				
+					<xsl:choose>
+						<xsl:when test="$helpLink!=''">
+							<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
+								<xsl:choose>
+									<xsl:when test="$title='xlink:href'
+										and contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
+										CRS Verticale
+									</xsl:when>
+									<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|')
+										or
+										contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code|')">
+										Identificativo risorsa
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:choose>
+											<xsl:when test="$title='xlink:href'
+												and contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:unitsSystem/@xlink:href|')">
+												
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$title"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:otherwise>
+								</xsl:choose>
+							</span>
+							<xsl:call-template name="asterisk">
+								<xsl:with-param name="link" select="$removeLink"/>
+								<xsl:with-param name="edit" select="$edit"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="showTitleWithTag">
+								<xsl:with-param name="title" select="$title"/>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text>&#160;</xsl:text>
+					<xsl:if test="$edit and not($isXLinked)">
+						<xsl:call-template name="getButtons">
+							<xsl:with-param name="addLink" select="$addLink"/>
+							<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
+							<xsl:with-param name="removeLink" select="$removeLink"/>
+							<xsl:with-param name="upLink" select="$upLink"/>
+							<xsl:with-param name="downLink" select="$downLink"/>
+							<xsl:with-param name="validationLink" select="$validationLink"/>
+							<xsl:with-param name="id" select="$id"/>
 						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>			
-			</td>
-		</tr>
+					</xsl:if>
+				</th>
+				<!-- Simple element gui TD -->
+				<td class="padded" valign="top">
+				
+					<xsl:variable name="textnode" select="exslt:node-set($text)"/>
+					<xsl:choose>
+						<xsl:when test="$edit">
+							<xsl:copy-of select="$text"/>
+						</xsl:when>
+						<xsl:when test="count($textnode/*) &gt; 0">
+						<!-- In some templates, text already contains HTML (eg. codelist, link for download).
+							In that case copy text content and does not resolve
+							hyperlinks. -->
+							<xsl:copy-of select="$text"/>
+						</xsl:when>
+						<xsl:otherwise>
+							
+							<!-- Check to simplify the date text witout the hour -->
+							<xsl:choose>
+								<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date|')
+									    or 
+									    contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition|')
+										or 
+										contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition|')
+										or 
+										contains($helpLink, '|gmd:MD_Metadata/gmd:dateStamp|')">
+									<xsl:call-template name="addLineBreaksAndHyperlinks">
+										<xsl:with-param name="txt" select="substring-before($text, 'T')"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="addLineBreaksAndHyperlinks">
+										<xsl:with-param name="txt" select="$text"/>
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>	
+							
+						</xsl:otherwise>
+					</xsl:choose>			
+				
+				    <!-- adding custom SRS selection to the verticalCSR element (CSI) -->
+					<xsl:if test="$edit=true() and contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:verticalCRS/@xlink:href|')">
+						<br/>
+						<br/>
+						<span>(Suggerimenti: 
+							<select  id="vertCrs" class="md" onchange="setInputCRSel(this);">	
+								<option value="-1"></option>
+								<option value="EPSG::4979" selected="selected">EPSG:4979</option>
+								<option value="EPSG::4326">EPSG:4326</option>
+								<option value="EPSG::3003">EPSG:3003</option>
+							</select>
+					    )</span>
+					</xsl:if>
+				</td>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 	<!--
 	gui to show a title and do special mapping for container elements
@@ -866,56 +1205,65 @@
 
 		<tr id="{$id}" type="metadata">
 			<td class="padded-content" width="100%" colspan="2">
-				<fieldset class="metadata-block">
-					<legend class="block-legend">
-						<xsl:if test="/root/gui/config/metadata-view-toggleTab">
-							<input id="toggle{$id}" type="checkbox" class="toggle" 
-								onclick="$('toggled{$id}').style.display=($(this.id).checked?'none':'block');"
-							/>
-							<!--
-								Toggle mechanism could have been achieved without any JS but pure CSS
-								input.toggle { display: block; }
-								input.toggle:checked+table { display: none; }
-								
-								Issue is IE does not support pseudo class selection checked.
-							 -->
-						</xsl:if>
-						<xsl:choose>
-							<xsl:when test="$helpLink!=''">
-								<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;"><xsl:value-of select="$title"/>
-								</span>
-								<!-- Only show asterisks on simpleElements - user has to know
+				<xsl:choose>
+					<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_AbsoluteExternalPositionalAccuracy/gmd:result/gmd:DQ_QuantitativeResult/gmd:valueUnit/gml:BaseUnit/gml:identifier|')">
+						<table width="100%" id="toggled{$id}">
+							<xsl:copy-of select="$content"/>
+						</table>
+					</xsl:when>
+					<xsl:otherwise>
+						<fieldset class="metadata-block">
+							<legend class="block-legend">
+								<xsl:if test="/root/gui/config/metadata-view-toggleTab">
+									<input id="toggle{$id}" type="checkbox" class="toggle" 
+										onclick="$('toggled{$id}').style.display=($(this.id).checked?'none':'block');"
+									/>
+									<!--
+										Toggle mechanism could have been achieved without any JS but pure CSS
+										input.toggle { display: block; }
+										input.toggle:checked+table { display: none; }
+										
+										Issue is IE does not support pseudo class selection checked.
+									 -->
+								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="$helpLink!=''">
+										<span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="font-weight: bold; color: #000000; font-size: 12px; cursor:help;"><xsl:value-of select="$title"/>
+										</span>
+										<!-- Only show asterisks on simpleElements - user has to know
 									which ones to fill out 
 									<xsl:call-template name="asterisk">
 									<xsl:with-param name="link" select="$helpLink"/>
 									<xsl:with-param name="edit" select="$edit"/>
 									</xsl:call-template>
 								-->
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="showTitleWithTag">
-									<xsl:with-param name="title" select="$title"/>
-									<xsl:with-param name="class" select="'no-help'"/>
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-						
-						<xsl:if test="$edit and not($isXLinked)">
-							<xsl:call-template name="getButtons">
-								<xsl:with-param name="addLink" select="$addLink"/>
-								<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
-								<xsl:with-param name="removeLink" select="$removeLink"/>
-								<xsl:with-param name="upLink" select="$upLink"/>
-								<xsl:with-param name="downLink" select="$downLink"/>
-								<xsl:with-param name="validationLink" select="$validationLink"/>
-								<xsl:with-param name="id" select="$id"/>
-							</xsl:call-template>
-						</xsl:if>
-					</legend>
-					<table width="100%" id="toggled{$id}">
-						<xsl:copy-of select="$content"/>
-					</table>
-				</fieldset>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:call-template name="showTitleWithTag">
+											<xsl:with-param name="title" select="$title"/>
+											<xsl:with-param name="class" select="'no-help'"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+								
+								<xsl:if test="$edit and not($isXLinked)">
+									<xsl:call-template name="getButtons">
+										<xsl:with-param name="addLink" select="$addLink"/>
+										<xsl:with-param name="addXMLFragment" select="$addXMLFragment"/>
+										<xsl:with-param name="removeLink" select="$removeLink"/>
+										<xsl:with-param name="upLink" select="$upLink"/>
+										<xsl:with-param name="downLink" select="$downLink"/>
+										<xsl:with-param name="validationLink" select="$validationLink"/>
+										<xsl:with-param name="id" select="$id"/>
+									</xsl:call-template>
+								</xsl:if>
+							</legend>
+							<table width="100%" id="toggled{$id}">
+								<xsl:copy-of select="$content"/>
+							</table>
+						</fieldset>
+					</xsl:otherwise>
+				</xsl:choose>	
 			</td>
 		</tr>
 	</xsl:template>
@@ -1015,67 +1363,68 @@
     <xsl:template name="getTitle">
         <xsl:param name="name"/>
         <xsl:param name="schema"/>
-
-        <xsl:variable name="fullContext">
-            <xsl:call-template name="getXPath" />
-        </xsl:variable>
-
-        <xsl:variable name="context" select="name(parent::node())"/>
-        <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
-
-        <xsl:variable name="title">
-            <xsl:choose>
-                <xsl:when test="starts-with($schema,'iso19139')">
-
-                    <!-- Name with context in current schema -->
-                    <xsl:variable name="schematitleWithContext"
-                                  select="string(/root/gui/*[name(.)=$schema]
-                                  /element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
-                                  /label)"/>
-
-                    <!-- Name with context in base schema -->
-                    <xsl:variable name="schematitleWithContextIso"
-                        select="string(/root/gui/iso19139/element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
-                        /label)"/>
-
-                    <!-- Name in current schema -->
-                    <xsl:variable name="schematitle" select="string(/root/gui/*[name(.)=$schema]/element[@name=$name and not(@context)]/label)"/>
-
-                    <xsl:choose>
-
-                        <xsl:when test="normalize-space($schematitle)='' and
-                                        normalize-space($schematitleWithContext)='' and
-                                        normalize-space($schematitleWithContextIso)=''">
-                            <xsl:value-of select="string(/root/gui/iso19139/element[@name=$name]/label)"/>
-                        </xsl:when>
-                        <xsl:when test="normalize-space($schematitleWithContext)='' and
-                                        normalize-space($schematitleWithContextIso)=''">
-                                <xsl:value-of select="$schematitle"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                                <xsl:value-of select="$schematitleWithContext"/>
-                        </xsl:otherwise>
-
-                    </xsl:choose>
-                </xsl:when>
-
-                <!-- otherwise just get the title out of the approriate schema help file -->
-
-                <xsl:otherwise>
-                    <xsl:value-of select="string(/root/gui/*[name(.)=$schema]/element[@name=$name]/label)"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
-
-        <xsl:choose>
-            <xsl:when test="normalize-space($title)!=''">
-                <xsl:value-of select="$title"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$name"/>
-            </xsl:otherwise>
-        </xsl:choose>
+    		   	
+	        <xsl:variable name="fullContext">
+	            <xsl:call-template name="getXPath" />
+	        </xsl:variable>
+	
+	        <xsl:variable name="context" select="name(parent::node())"/>
+	        <xsl:variable name="contextIsoType" select="parent::node()/@gco:isoType"/>
+	
+	        <xsl:variable name="title">
+	            <xsl:choose>
+	                <xsl:when test="starts-with($schema,'iso19139')">
+	
+	                    <!-- Name with context in current schema -->
+	                    <xsl:variable name="schematitleWithContext"
+	                                  select="string(/root/gui/*[name(.)=$schema]
+	                                  /element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
+	                                  /label)"/>
+	
+	                    <!-- Name with context in base schema -->
+	                    <xsl:variable name="schematitleWithContextIso"
+	                        select="string(/root/gui/iso19139/element[@name=$name and (@context=$fullContext or @context=$context or @context=$contextIsoType)]
+	                        /label)"/>
+	
+	                    <!-- Name in current schema -->
+	                    <xsl:variable name="schematitle" select="string(/root/gui/*[name(.)=$schema]/element[@name=$name and not(@context)]/label)"/>
+	
+	                    <xsl:choose>
+	
+	                        <xsl:when test="normalize-space($schematitle)='' and
+	                                        normalize-space($schematitleWithContext)='' and
+	                                        normalize-space($schematitleWithContextIso)=''">
+	                            <xsl:value-of select="string(/root/gui/iso19139/element[@name=$name]/label)"/>
+	                        </xsl:when>
+	                        <xsl:when test="normalize-space($schematitleWithContext)='' and
+	                                        normalize-space($schematitleWithContextIso)=''">
+	                                <xsl:value-of select="$schematitle"/>
+	                        </xsl:when>
+	                        <xsl:otherwise>
+	                                <xsl:value-of select="$schematitleWithContext"/>
+	                        </xsl:otherwise>
+	
+	                    </xsl:choose>
+	                </xsl:when>
+	
+	                <!-- otherwise just get the title out of the approriate schema help file -->
+	
+	                <xsl:otherwise>
+	                    <xsl:value-of select="string(/root/gui/*[name(.)=$schema]/element[@name=$name]/label)"/>
+	                </xsl:otherwise>
+	            </xsl:choose>
+	        </xsl:variable>
+	
+	
+	        <xsl:choose>
+	            <xsl:when test="normalize-space($title)!=''">
+	                <xsl:value-of select="$title"/>
+	            </xsl:when>
+	            <xsl:otherwise>
+	                <xsl:value-of select="$name"/>
+	            </xsl:otherwise>
+	        </xsl:choose>
+    	
     </xsl:template>
 
 	<!--
@@ -1087,7 +1436,7 @@
 		<xsl:param name="rows" select="1"/>
 		<xsl:param name="cols" select="40"/>
 		<xsl:param name="langId"/>
-		<xsl:param name="visible" select="true"/>
+		<xsl:param name="visible" select="./true"/>
 		<!-- Add javascript validator function. By default, if element 
 		is mandatory a non empty validator is defined. -->
 		<xsl:param name="validator"/>
@@ -1102,7 +1451,14 @@
 		<xsl:variable name="name"  select="name(.)"/>
 		<xsl:variable name="value" select="string(.)"/>
 		<xsl:variable name="isXLinked" select="count(ancestor-or-self::node()[@xlink:href]) > 0" />		
-							
+	
+		<xsl:variable name="path">
+			<xsl:call-template name="getXPath" />
+		</xsl:variable>
+		
+		<!-- Used for the gmd:pass warkaround see below (CSI) -->
+		<xsl:variable name="explanationValue" select="string(../../gmd:explanation)"/>
+		
 		<xsl:choose>
 			<!-- list of values -->
 			<xsl:when test="geonet:element/geonet:text">
@@ -1220,26 +1576,111 @@
 					        </xsl:choose>
 					    </input>
 					    
+					    <!-- This choose element contains a warkaround to manage the 'gmd:pass' as a select due to the RNDT specifications (CSI) -->
 						<xsl:choose>
-						    <xsl:when test="text()='true' or text()='1'">
-								<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');" checked="checked">
-									<xsl:if test="$isXLinked">
-										<xsl:attribute name="disabled">disabled</xsl:attribute>
-									</xsl:if>
-								</input>
+						    <xsl:when test="text()='true' or text()='1'">						    	
+						    	<xsl:choose>
+						    		<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+						    			
+						    			<xsl:variable name="explanationRef">
+						    				<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+						    			</xsl:variable>
+						    			
+						    			<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+						    				<option value="non compilato">non compilato</option>
+						    				<option value="conforme" selected="selected">conforme</option>
+						    				<option value="non conforme">non conforme</option>
+						    			</select>
+						    		</xsl:when>
+						    		<xsl:otherwise>
+						    			<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');" checked="checked">
+						    				<xsl:if test="$isXLinked">
+						    					<xsl:attribute name="disabled">disabled</xsl:attribute>
+						    				</xsl:if>
+						    			</input>
+						    		</xsl:otherwise>
+						    	</xsl:choose>						    	
+							</xsl:when>
+							<xsl:when test="text()='false' and $explanationValue!='non compilato'">								
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme" selected="selected">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>								
+							</xsl:when>
+							<xsl:when test="text()='false' and $explanationValue='non compilato'">								
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato" selected="selected">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>								
 							</xsl:when>
 							<xsl:otherwise>
-								<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
-									<xsl:if test="$isXLinked">
-										<xsl:attribute name="disabled">disabled</xsl:attribute>
-									</xsl:if>								
-								</input>
+								<xsl:choose>
+									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">										
+										
+										<xsl:variable name="explanationRef">
+											<xsl:value-of select="../../gmd:explanation/gco:CharacterString/geonet:element/@ref"/>
+										</xsl:variable>
+										
+										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
+											<option value="non compilato" selected="selected">non compilato</option>
+											<option value="conforme">conforme</option>
+											<option value="non conforme">non conforme</option>
+										</select>
+									</xsl:when>
+									<xsl:otherwise>
+										<input class="md" type="checkbox" id="_{geonet:element/@ref}_checkbox" onclick="handleCheckboxAsBoolean(this, '_{geonet:element/@ref}');">
+											<xsl:if test="$isXLinked">
+												<xsl:attribute name="disabled">disabled</xsl:attribute>
+											</xsl:if>								
+										</input>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 
 					<xsl:otherwise>
-						<input class="md" type="{$input_type}" value="{text()}" size="{$cols}">
+						<input class="md" type="{$input_type}" value="{text()}">
+							<xsl:if test="name(.) = 'gco:CharacterString'">
+								<xsl:attribute name="size">43</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="name(.) != 'gco:CharacterString'">
+								<xsl:attribute name="size"><xsl:value-of select="$cols"/></xsl:attribute>
+							</xsl:if>
 							<xsl:if test="$isXLinked">
 								<xsl:attribute name="disabled">disabled</xsl:attribute>
 							</xsl:if>						
@@ -1270,7 +1711,17 @@
 											<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, false);</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, true);</xsl:attribute>
+											<xsl:choose>
+												<!-- minimumValue e maximumValue non sono necessari per RNDT (CSI)-->
+												<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue')
+													or 
+													contains($path, 'gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:minimumValue')">
+													<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, false, true);</xsl:attribute>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:attribute name="onkeyup">validateNumber(this, <xsl:value-of select="not($mandatory)"/>, true, false);</xsl:attribute>
+												</xsl:otherwise>
+											</xsl:choose>											
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
@@ -1330,10 +1781,29 @@
 				<xsl:choose>
 					<xsl:when test="$label"><xsl:value-of select="$label"/></xsl:when>
 					<xsl:when test="starts-with($schema,'iso19139') 
-							and name(.)!='gco:ScopedName' and name(.)!='gco:Date' and name(.)!='gco:DateTime'">
-						<xsl:apply-templates mode="localised" select="..">
-							<xsl:with-param name="langId" select="$langId"></xsl:with-param>
-						</xsl:apply-templates>
+							and name(.)!='gco:ScopedName' and name(.)!='gco:Date' and name(.)!='gco:DateTime'">					
+						
+						<xsl:choose>	
+							<!-- Modificationd for the gmd:pass warkaround (CSI) -->
+							<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
+																
+								<xsl:choose>							
+									<xsl:when test="$value='true'">
+										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>conforme</xsl:value-of>)
+									</xsl:when>			
+									<xsl:otherwise>
+										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>non conforme</xsl:value-of>)
+									</xsl:otherwise>							
+								</xsl:choose>
+								
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates mode="localised" select="..">
+									<xsl:with-param name="langId" select="$langId"></xsl:with-param>
+								</xsl:apply-templates>
+							</xsl:otherwise>							
+						</xsl:choose>
+	
 					</xsl:when>
 					<xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
 				</xsl:choose>
@@ -1396,7 +1866,16 @@
 				</select>
 			</xsl:when>
 			<xsl:when test="$edit=true() and $rows=1">
-				<input class="md" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+				
+				<xsl:choose>
+					<xsl:when test="$name = 'xlink:href' and $parent = 'gmd:verticalCRS'">
+						<input class="md" readonly="readonly" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+					</xsl:when>
+					<xsl:otherwise>
+						<input class="md" type="text" id="_{../geonet:element/@ref}_{$updatename}" name="_{../geonet:element/@ref}_{$updatename}" value="{string()}" size="{$cols}" />
+					</xsl:otherwise>
+				</xsl:choose>
+
 				
 				<xsl:call-template name="helper">
 					<xsl:with-param name="schema" select="$schema"/>
@@ -1424,10 +1903,14 @@
 	-->
 	<xsl:template name="getContent">
 		<xsl:param name="schema"/>
-		<xsl:param name="edit"   select="false()"/>
+		<xsl:param name="edit" select="false()"/>
+		<xsl:param name="hLink"/>		
 		
 		<xsl:choose>
-			<xsl:when test="$edit=true()">
+			<!-- MODIFIED for CSI in order to disable the thesaurus editing (added a specific condition) -->
+			<xsl:when test="$edit=true() 
+				and not(contains($hLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))
+				and not(contains($hLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName|'))">
 				<xsl:apply-templates mode="elementEP" select="@*">
 					<xsl:with-param name="schema" select="$schema"/>
 					<xsl:with-param name="edit"   select="true()"/>
@@ -1776,6 +2259,13 @@
 		<xsl:param name="schema"/>
 		<xsl:param name="attribute"/>
 		
+		<xsl:param name="helpLink">
+			<xsl:call-template name="getHelpLink">
+				<xsl:with-param name="name"   select="name(.)"/>
+				<xsl:with-param name="schema" select="$schema"/>
+			</xsl:call-template>
+		</xsl:param>
+
 		<!-- Define the element to look for. -->
 		<xsl:variable name="parentName">
 			<xsl:choose>
@@ -1805,7 +2295,12 @@
 		
 		
 		<!-- Display the helper list -->
-		<xsl:if test="normalize-space($helper)!=''">
+		<xsl:if test="normalize-space($helper)!='' 
+			and 
+			not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString|'))
+			and 
+			not(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString|'))">
+			
 			<xsl:variable name="refId">
 				<xsl:choose>
 					<xsl:when test="$attribute=true()">
@@ -1817,13 +2312,68 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<xsl:text> </xsl:text>				
-			(<xsl:value-of select="/root/gui/strings/helperList"/>
-			<select onchange="$('_{$refId}').value=this.options[this.selectedIndex].value; if ($('_{$refId}').onkeyup) $('_{$refId}').onkeyup();" class="md">
-				<option/>
-				<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
-				<xsl:copy-of select="exslt:node-set($helper)"/>
-			</select>)
+			<!-- Fix to align with the workaround at line 1615 -->
+			<xsl:variable name="refIdCOLON">
+				<xsl:choose>
+					<xsl:when test="contains($refId,':')">
+						<xsl:value-of select="concat(substring-before($refId,':'),'COLON',substring-after($refId,':'))"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$refId"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			
+			<xsl:text> </xsl:text>	
+            
+            <!-- Workaround in order to che if the current element refers the temporal 
+            	extent becose the labels context not runs for this elements -->
+			<xsl:variable name="extentElement">
+				<xsl:value-of select="concat(../gml:TimePeriodTypeGROUP_ELEMENT0/geonet:element/@ref, '', '')"/>
+			</xsl:variable>
+			
+			<xsl:if test="$extentElement=''">
+				<xsl:choose>
+					<xsl:when test="name(.)!='gml:id'">
+						(<xsl:value-of select="/root/gui/strings/helperList"/>
+						<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+							<option/>
+							<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+							<xsl:copy-of select="exslt:node-set($helper)"/>
+						</select>)
+					</xsl:when>
+					<xsl:otherwise>
+						
+						<!-- To set the gml:identifier for Position Accouracy -->
+						<xsl:variable name="gmlIdentifierRefId">
+							<xsl:value-of select="../gml:identifier/geonet:element/@ref"/>
+						</xsl:variable>
+						
+						<xsl:choose>
+							<xsl:when test="$gmlIdentifierRefId!=''">
+								(<xsl:value-of select="/root/gui/strings/helperList"/>
+								<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; $('_{$gmlIdentifierRefId}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+									<option/>
+									<!-- This assume that helper list is already sort in alphabetical order in loc file. -->
+									<xsl:copy-of select="exslt:node-set($helper)"/>
+								</select>)
+							</xsl:when>
+							<xsl:otherwise>					
+								<!-- This fragment is commented due to a bug in some cases like for the 'cornerPoints' element (CSI) -->
+<!--								(<xsl:value-of select="/root/gui/strings/helperList"/>
+								<select onchange="$('_{$refIdCOLON}').value=this.options[this.selectedIndex].value; if ($('_{$refIdCOLON}').onkeyup) $('_{$refIdCOLON}').onkeyup();" class="md">
+									<option/>
+									<!-\- This assume that helper list is already sort in alphabetical order in loc file. -\->
+									<xsl:copy-of select="exslt:node-set($helper)"/>
+								</select>)		-->					
+							</xsl:otherwise>
+						</xsl:choose>
+						
+						
+					</xsl:otherwise>
+				</xsl:choose>				
+			</xsl:if>
+
 		</xsl:if>
 	</xsl:template>
 	

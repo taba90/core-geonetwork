@@ -14,13 +14,45 @@
 
 	<xsl:template match="/">
 		<xsl:for-each select="/root/*[name(.)!='gui' and name(.)!='request']">
-			<xsl:apply-templates mode="elementEP" select=".">
-				<xsl:with-param name="edit" select="true()"/>
-				<xsl:with-param name="schema">
-					<xsl:apply-templates mode="schema" select="."/>
-				</xsl:with-param>
-				<xsl:with-param name="embedded" select="true()" />
-			</xsl:apply-templates>
+			
+			<!-- MODIFIED for CSI in order to enable de possibility to choice the type of the added element -->
+			<xsl:choose>
+				<xsl:when test="name(.)!='gmd:presentationForm'   
+					and 
+					name(.)!='gmd:voice'
+					and 
+					name(.)!='gmd:electronicMailAddress'
+					and 
+					name(.)!='gmd:facsimile'
+					and 
+					name(.)!='gmd:deliveryPoint'
+					and 
+					name(.)!='gmd:keyword'
+					and 
+					name(.)!='gmd:spatialRepresentationType'
+					and 
+					name(.)!='gmd:otherConstraints'
+					and 
+					name(.)!='srv:DCP'">
+					<xsl:apply-templates mode="complexElement" select=".">
+						<xsl:with-param name="edit" select="true()"/>
+						<xsl:with-param name="schema">
+							<xsl:apply-templates mode="schema" select="."/>
+						</xsl:with-param>
+						<xsl:with-param name="embedded" select="true()" />
+					</xsl:apply-templates>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates mode="elementEP" select=".">
+						<xsl:with-param name="edit" select="true()"/>
+						<xsl:with-param name="schema">
+							<xsl:apply-templates mode="schema" select="."/>
+						</xsl:with-param>
+						<xsl:with-param name="embedded" select="true()" />
+					</xsl:apply-templates>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 		</xsl:for-each>
 	</xsl:template>
 	

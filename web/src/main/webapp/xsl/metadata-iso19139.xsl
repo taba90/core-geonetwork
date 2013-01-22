@@ -757,9 +757,50 @@
 
             <xsl:choose>
                 <xsl:when test="$edit=true()">
-
+                    <!-- Metadata edit mode -->
                     <xsl:variable name="content">
                         <xsl:for-each select="gmd:MD_Keywords">
+                            <tr>
+                                <td class="padded-content" width="100%" colspan="2">
+                                    <table width="100%">
+                                        <tr>
+                                            <td width="50%" valign="top">
+                                                <table width="100%">
+                                                    <xsl:apply-templates mode="elementEP" select="gmd:keyword|geonet:child[string(@name)='keyword']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates>
+                                                    <!-- KEYWORD TYPE (REMOVED FOR CSI)
+    												xsl:apply-templates mode="elementEP" select="gmd:type|geonet:child[string(@name)='type']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates-->
+                                                </table>
+                                            </td>
+                                            <td valign="top">
+                                                <table width="100%">
+                                                    <xsl:apply-templates mode="elementEP" select="gmd:thesaurusName|geonet:child[string(@name)='thesaurusName']">
+                                                        <xsl:with-param name="schema" select="$schema"/>
+                                                        <xsl:with-param name="edit"   select="$edit"/>
+                                                    </xsl:apply-templates>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </xsl:for-each>
+                    </xsl:variable>
+
+                    <xsl:apply-templates mode="complexElement" select=".">
+                        <xsl:with-param name="schema"  select="$schema"/>
+                        <xsl:with-param name="edit"    select="$edit"/>
+                        <xsl:with-param name="content" select="$content"/>
+                    </xsl:apply-templates>
+                </xsl:when>
+                <xsl:otherwise>
+                    <!-- Metadata view mode -->
+                    <xsl:for-each select="gmd:MD_Keywords">
                         <tr>
                             <td class="padded-content" width="100%" colspan="2">
                                 <table width="100%">
@@ -767,10 +808,6 @@
                                         <td width="50%" valign="top">
                                             <table width="100%">
                                                 <xsl:apply-templates mode="elementEP" select="gmd:keyword|geonet:child[string(@name)='keyword']">
-                                                    <xsl:with-param name="schema" select="$schema"/>
-                                                    <xsl:with-param name="edit"   select="$edit"/>
-                                                </xsl:apply-templates>
-                                                <xsl:apply-templates mode="elementEP" select="gmd:type|geonet:child[string(@name)='type']">
                                                     <xsl:with-param name="schema" select="$schema"/>
                                                     <xsl:with-param name="edit"   select="$edit"/>
                                                 </xsl:apply-templates>
@@ -788,17 +825,11 @@
                                 </table>
                             </td>
                         </tr>
-                        </xsl:for-each>
-                    </xsl:variable>
-
-                    <xsl:apply-templates mode="complexElement" select=".">
-                        <xsl:with-param name="schema"  select="$schema"/>
-                        <xsl:with-param name="edit"    select="$edit"/>
-                        <xsl:with-param name="content" select="$content"/>
-                    </xsl:apply-templates>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates mode="simpleElement" select=".">
+                    </xsl:for-each>                    
+                    
+                   <!-- MODIFIED FOR CSI (to show always the thesaurus if present)
+                       
+                   <xsl:apply-templates mode="simpleElement" select=".">
                         <xsl:with-param name="schema" select="$schema"/>
                         <xsl:with-param name="text">
                             <xsl:variable name="value">
@@ -813,10 +844,11 @@
                                 </xsl:if>
                                 <xsl:text>.</xsl:text>
                             </xsl:variable>
-                            <!-- Clean new lines which may be added by formatting. -->
+                            <!-\- Clean new lines which may be added by formatting. -\->
                             <xsl:value-of select="normalize-space($value)"/>
                         </xsl:with-param>
-                    </xsl:apply-templates>
+                    </xsl:apply-templates>-->
+                    
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:template>
@@ -842,12 +874,15 @@
                 <select name="place" size="1" onChange="document.mainForm._{$ref}.value=this.options[this.selectedIndex].text" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
-                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                        <xsl:sort select="label" order="ascending"/>
                         <option value="{id}">
-                            <xsl:if test="string(label/child::*[name() = $lang])=$keyword">
+<!--                            <xsl:if test="string(label/child::*[name() = $lang])=$keyword">-->
+                            <xsl:if test="string(label)=$keyword">
                                 <xsl:attribute name="selected"/>
                             </xsl:if>
-                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                            <xsl:value-of select="label"/>
                         </option>
                     </xsl:for-each>
                 </select>
@@ -1042,7 +1077,11 @@
             <xsl:param name="embedded"/>
 
             <xsl:variable name="dataset" select="gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue='dataset' or normalize-space(gmd:hierarchyLevel/gmd:MD_ScopeCode/@codeListValue)=''"/>
-
+            
+            <!-- check if the template is a raster template -->
+            <xsl:variable name="georeferenceable" select="(count(./gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable) >= 1)"/>
+            <xsl:variable name="georectified" select="(count(./gmd:spatialRepresentationInfo/gmd:MD_Georectified) >= 1)"/>
+            
             <!-- thumbnail -->
             <tr>
                 <td valign="middle" colspan="2">
@@ -1207,6 +1246,8 @@
                         <xsl:with-param name="schema" select="$schema"/>
                         <xsl:with-param name="edit"   select="$edit"/>
                         <xsl:with-param name="dataset" select="$dataset"/>
+                        <xsl:with-param name="georeferenceable" select="$georeferenceable"/>
+                        <xsl:with-param name="georectified" select="$georectified"/>
                     </xsl:call-template>
                 </xsl:when>
 
@@ -2315,6 +2356,8 @@
             <xsl:param name="schema"/>
             <xsl:param name="edit"/>
 
+            <xsl:variable name="linkage" select="gmd:linkage/gmd:URL" />
+            
             <xsl:variable name="langId">
                 <xsl:call-template name="getLangId">
                     <xsl:with-param name="langGui" select="/root/gui/language" />
@@ -2349,7 +2392,7 @@
                     <xsl:apply-templates mode="simpleElement" select=".">
                         <xsl:with-param name="schema"  select="$schema"/>
                         <xsl:with-param name="text">
-                            <a href="{$linkage}" target="_new">
+<!--                            <a href="{$linkage}" target="_new">
                                 <xsl:choose>
                                     <xsl:when test="string($description)!=''">
                                         <xsl:value-of select="$description"/>
@@ -2361,7 +2404,66 @@
                                         <xsl:value-of select="$linkage"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                            </a>
+                            </a>-->
+                            
+                            <!-- This modification has been introduced to manage External (public and hidden) link service in the OnlineResource field -->
+                            <xsl:choose>
+                                <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Hidden')">
+                                    <xsl:if test="string(/root/gui/session/profile)='Administrator' 
+                                        or string(/root/gui/session/profile)='Editor' 
+                                        or string(/root/gui/session/profile)='RegisteredUser' 
+                                        or string(/root/gui/session/profile)='Reviewer'
+                                        or string(/root/gui/session/profile)='UserAdmin'">
+                                        <a href="{$linkage}" target="_new">
+                                            <xsl:choose>
+                                                <xsl:when test="string($description)!=''">
+                                                    <xsl:value-of select="$description"/>
+                                                </xsl:when>
+                                                <xsl:when test="string($name)!=''">
+                                                    <xsl:value-of select="$name"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:value-of select="$linkage"/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </a>
+                                        <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                    </xsl:if>
+                                </xsl:when>
+                                <xsl:when test="starts-with(gmd:protocol/gco:CharacterString,'External:Link-Public')">
+                                    <a href="{$linkage}" target="_new">
+                                        <xsl:choose>
+                                            <xsl:when test="string($description)!=''">
+                                                <xsl:value-of select="$description"/>
+                                            </xsl:when>
+                                            <xsl:when test="string($name)!=''">
+                                                <xsl:value-of select="$name"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$linkage"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </a>
+                                    <br/>(External-Link: <xsl:value-of select="$linkage"/>)
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <a href="{$linkage}" target="_new">
+                                        <xsl:choose>
+                                            <xsl:when test="string($description)!=''">
+                                                <xsl:value-of select="$description"/>
+                                            </xsl:when>
+                                            <xsl:when test="string($name)!=''">
+                                                <xsl:value-of select="$name"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="$linkage"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </a>
+                                    <br/>(<xsl:value-of select="$linkage"/>)
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            
                         </xsl:with-param>
                     </xsl:apply-templates>
                 </xsl:when>
@@ -3146,7 +3248,7 @@
                 <xsl:with-param name="schema" select="$schema"/>
             </xsl:apply-templates>
 
-            <xsl:if test="/root/gui/env/metadata/enableIsoView = 'true'">
+            <xsl:if test="/root/gui/env/metadata/enableIsoView = 'true' and string(/root/gui/session/profile)='Administrator'">
                 <xsl:call-template name="displayTab">
                     <xsl:with-param name="tab"     select="'groups'"/> <!-- just a non-existing tab -->
                     <xsl:with-param name="text"    select="/root/gui/strings/byGroup"/>
@@ -3175,8 +3277,8 @@
                 </xsl:call-template>
             </xsl:if>
 
-            <xsl:if test="/root/gui/config/metadata-tab/advanced">
-                <xsl:call-template name="displayTab">
+            <xsl:if test="/root/gui/config/metadata-tab/advanced and (string(/root/gui/session/profile)='Administrator' or string(/root/gui/session/profile)='UserAdmin')">
+                <xsl:call-template name="displayTab"> 
                     <xsl:with-param name="tab"     select="'packages'"/> <!-- just a non-existing tab -->
                     <xsl:with-param name="text"    select="/root/gui/strings/byPackage"/>
                     <xsl:with-param name="tabLink" select="''"/>
@@ -3324,13 +3426,17 @@
                                     size="1">
                                     <option name="" />
                                     <xsl:for-each select="/root/gui/regions/record">
-                                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                                        <xsl:sort select="label" order="ascending"/>
 
-                                        <option value="{label/child::*[name() = $lang]}">
-                                            <xsl:if test="$value = label/child::*[name() = $lang]">
+<!--                                        <option value="{label/child::*[name() = $lang]}">-->
+                                        <option value="{label}">
+<!--                                            <xsl:if test="$value = label/child::*[name() = $lang]">-->
+                                            <xsl:if test="$value = label">
                                                 <xsl:attribute name="selected"/>
                                             </xsl:if>
-                                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                                            <xsl:value-of select="label"/>
                                         </option>
                                     </xsl:for-each>
                                 </select>

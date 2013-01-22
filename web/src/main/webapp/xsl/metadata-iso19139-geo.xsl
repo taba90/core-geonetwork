@@ -119,6 +119,7 @@
                 <xsl:with-param name="name" select="$name" />
             </xsl:call-template>
         </xsl:variable>
+        
         <b>
             <xsl:choose>
                 <xsl:when test="$helpLink!=''">
@@ -178,6 +179,10 @@
             </xsl:choose>
         </xsl:variable>
         
+        <xsl:variable name="municipalitySearch">
+            <xsl:value-of select="/root/gui/config/municipalitySearch/enabled"/>
+        </xsl:variable>
+        
         <!-- regions combobox -->
         <xsl:variable name="places">
             <xsl:if test="$edit=true() and /root/gui/regions/record">
@@ -186,21 +191,33 @@
                 
                 <xsl:variable name="selection" select="concat(gmd:westBoundLongitude/gco:Decimal,';',gmd:eastBoundLongitude/gco:Decimal,';',gmd:southBoundLatitude/gco:Decimal,';',gmd:northBoundLatitude/gco:Decimal)"/>            
                 <xsl:variable name="lang" select="/root/gui/language"/>
-                
-                <select name="place" size="1" onChange="javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')" class="md">
+    	
+                <span class="labelField">Ambito</span>
+                    <select name="place" size="1" onChange="javascript:getMunicipality(this.options[this.selectedIndex].text); javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
-                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                        <xsl:sort select="label" order="ascending"/>
                         
                         <xsl:variable name="value" select="concat(west,',',east,',',south,',',north)"/>
                         <option value="{$value}">
                             <xsl:if test="$value=$selection">
                                 <xsl:attribute name="selected"/>
                             </xsl:if>
-                            <xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--                            <xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                            <xsl:value-of select="label"/>
                         </option>
                     </xsl:for-each>
                 </select>
+                
+                <xsl:if test="$municipalitySearch = 'true'">
+                    <br/>
+                    <br/>
+                    <span class="labelField">Sottoambito</span>
+                    <select class="md" style="width: 110px;" name="comune-medatata" id="comune-medatata" onChange="javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}')">
+                        <option value=""/>
+                    </select>	
+                </xsl:if>
             </xsl:if>
         </xsl:variable>
         

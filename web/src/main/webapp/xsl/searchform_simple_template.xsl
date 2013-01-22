@@ -6,6 +6,10 @@
 
 	<xsl:template name="geofields">
 		
+		<xsl:variable name="municipalitySearch">
+			<xsl:value-of select="/root/gui/config/municipalitySearch/enabled"/>
+		</xsl:variable>
+		
 		<div style="border-bottom: 1px solid">
 		
 			<!-- What --> 
@@ -16,7 +20,7 @@
 		
 			<!-- Where --> 
 			<div class="row" style="margin-top:10px">
-				<h1 class="labelField"><xsl:value-of select="/root/gui/strings/where"/></h1>
+				<h1 class="labelFieldSmall"><xsl:value-of select="/root/gui/strings/where"/></h1>
 			
 				<!-- Search map container -->
 				<div id="ol_minimap1" style="margin-left: 60px; margin-top:5px"></div>
@@ -34,10 +38,11 @@
 				<input type="hidden" class="content" id="relation" name="relation" size="7"
 					value="overlaps"/-->
 							
-				<div style="margin-left: 60px; margin-top:5px">
+				<div style="margin-top:5px">
 					<!-- Region -->
+					<span class="labelField">Ambito</span>
 					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearchSimple();">
-							<option value="">
+						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
@@ -51,7 +56,8 @@
 						</option>
 
 						<xsl:for-each select="/root/gui/regions/record">
-							<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--							<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+							<xsl:sort select="label" order="ascending"/>
 							<option>
 								<xsl:if test="id=/root/gui/searchDefaults/region">
 									<xsl:attribute name="selected">selected</xsl:attribute>
@@ -59,11 +65,27 @@
 								<xsl:attribute name="value">
 									<xsl:value-of select="id"/>
 								</xsl:attribute>
-								<xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--								<xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                                <xsl:value-of select="label"/>
 							</option>
 						</xsl:for-each>
 					</select>			
 				</div>
+				
+				<xsl:if test="$municipalitySearch = 'true'">
+					<div style="margin-top:5px">
+						<!-- Comuni -->						
+					    <span class="labelField">Sottoambito</span>
+						<select class="content" style="width: 163px;" name="comune_simple" id="comune_simple" onchange="javascript:comuneSimpleSelected();">
+								<option value="">
+									<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+										<xsl:attribute name="selected">selected</xsl:attribute>
+									</xsl:if>
+									<xsl:value-of select="/root/gui/strings/any"/>
+								</option>
+							</select>				
+					</div>
+				</xsl:if>
 			</div>
 			
 			<!-- Search button -->
@@ -143,7 +165,7 @@
 				</div>
 				
 				<!-- output - - - - - - - - - - - - - - - - - - - - - - -->
-				<div class="row">  <!-- div row-->
+				 <!--<div class="row">  div row
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/output"/></span>
 					<select id="output_simple" size="1" class="content" onchange="$('output').value = this.options[this.selectedIndex].value">
 						<xsl:for-each select="/root/gui/strings/outputType">
@@ -155,7 +177,7 @@
 							</option>
 						</xsl:for-each>
 					</select>
-				</div>			
+				</div>		-->	
 			</div>
 		
 		</div>

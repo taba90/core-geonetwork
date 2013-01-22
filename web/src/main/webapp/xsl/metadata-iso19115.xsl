@@ -1411,12 +1411,14 @@
 			<select name="place" size="1" onChange="document.mainForm._{$ref}.value=this.options[this.selectedIndex].text">
 				<option value=""/>
 				<xsl:for-each select="/root/gui/regions/record">
-					<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--					<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+					<xsl:sort select="label" order="ascending"/>
 					<option value="{id}">
 						<xsl:if test="string(label/child::*[name() = $lang])=$keyword">
 							<xsl:attribute name="selected"/>
 						</xsl:if>
-						<xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--						<xsl:value-of select="label/child::*[name() = $lang]"/>-->
+						<xsl:value-of select="label"/>
 					</option>
 				</xsl:for-each>
 			</select>
@@ -1457,14 +1459,16 @@
 					<select name="place" size="1" onChange="javascript:setRegion(document.mainForm._{westBL/geonet:element/@ref}, document.mainForm._{eastBL/geonet:element/@ref}, document.mainForm._{southBL/geonet:element/@ref}, document.mainForm._{northBL/geonet:element/@ref}, this.options[this.selectedIndex].value)">
 						<option value=""/>
 						<xsl:for-each select="/root/gui/regions/record">
-							<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>
+<!--							<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+							<xsl:sort select="label" order="ascending"/>
 
 							<xsl:variable name="value" select="concat(west,';',east,';',south,';',north)"/>
 							<option value="{$value}">
 								<xsl:if test="$value=$selection">
 									<xsl:attribute name="selected"/>
 								</xsl:if>
-								<xsl:value-of select="label/child::*[name() = $lang]"/>
+<!--								<xsl:value-of select="label/child::*[name() = $lang]"/>-->
+								<xsl:value-of select="label"/>
 							</option>
 						</xsl:for-each>
 					</select>

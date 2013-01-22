@@ -149,15 +149,23 @@ function doResetCommonsAction(action, name, licenseurl, type, id, ref)
 }
 
 function getControlsFromElement(el) {
-    var id = el.getAttribute('id');
-	elButtons = $('buttons_'+id);
-	return elButtons.immediateDescendants();
+    elButtons = null;
+	
+    if(el){
+	    var id = el.getAttribute('id');
+		elButtons = $('buttons_'+id);
+		elButtons = elButtons.immediateDescendants();
+	}
+
+	return elButtons;
 }
 
 function topElement(el) 
 {
-	if (el.previous() == undefined) return true;
-	else return (!isSameElement(el.previous(),el));
+    if (el != null){
+		if (el.previous() == undefined) return true;
+		else return (!isSameElement(el.previous(),el));
+    }else return false
 }
 
 function bottomElement(el) 
@@ -229,7 +237,16 @@ function topControls(el,min)
 }
 
 function doRemoveElementAction(action, ref, parentref, id, min)
-{
+{ 
+    //
+	// CSI modification to disable remove link with min occurrence = 0
+	//
+    if(id.indexOf("gmd:descriptiveKeywords") != -1 ||
+	   id.indexOf("gmd:otherConstraints") != -1    ||
+	   id.indexOf("gmd:presentationForm") != -1    ||
+	   id.indexOf("gmd:voice") != -1               ||
+	   id.indexOf("gmd:electronicMailAddress") != -1) min = 1;
+	
 	var metadataId = document.mainForm.id.value;
 	var thisElement = $(id);
 	var nextElement = thisElement.next();
@@ -252,7 +269,9 @@ function doRemoveElementAction(action, ref, parentref, id, min)
 					thisElement.remove();
 					thisElement = nextElement;
 				}
-				if (topElement(thisElement)) topControls(thisElement,min); 
+				var top = topElement(thisElement);
+				if (top) 
+					topControls(thisElement,min); 
 			} else { // last one, so replace with child-placeholder returned
 				if (orElement(thisElement)) thisElement.remove();
 				else thisElement.replace(html);
@@ -272,12 +291,23 @@ function swapControls(el1,el2)
     var el1Descs = getControlsFromElement(el1);
 	var el2Descs = getControlsFromElement(el2);
 	for (var index = 0; index < el1Descs.length; ++index) {
-	 var visible1 = el1Descs[index].visible();
-	 var visible2 = el2Descs[index].visible();
-	 if (visible1) el2Descs[index].show();
-	 else el2Descs[index].hide();
-	 if (visible2) el1Descs[index].show();
-	 else el1Descs[index].hide();
+	 var visible1 = null;
+	 if(el1Descs != null)
+		visible1 = el1Descs[index].visible();
+		
+	var visible2 = null;	
+	 if(el2Descs != null)
+		visible2 = el2Descs[index].visible();
+	
+     if(el2Descs != null){
+	 	 if (visible1) el2Descs[index].show();
+		else el2Descs[index].hide();
+	 }	
+
+	 if(el1Descs != null){
+		if (visible2) el1Descs[index].show();
+		else el1Descs[index].hide();
+	 }
 	}
 }
 
@@ -639,6 +669,75 @@ function handleCheckboxAsBoolean (input, ref) {
 	}
 }
 
+function getMunicipality(provLabel){    
+    if(provLabel && provLabel != "" && provLabel != 'userdefined' && $('comune-medatata')){
+		
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provName=" + provLabel;
+		
+		Ext.Ajax.request({
+		   url: serviceURL,
+		   method: 'GET',
+		   timeout: 60000,
+		   success: function(response, opts){
+				document.getElementById('comune-medatata').innerHTML = "";
+					
+				var xmlFormat = new OpenLayers.Format.XML();        
+				var xml = xmlFormat.read(response.responseText);			
+				
+				xml = xml.getElementsByTagName("response")[0].childNodes;
+				
+				var size = xml.length;
+				
+				var firstOpt = document.createElement("option"); 
+				firstOpt.value = -1;
+				firstOpt.innerHTML = "";
+				document.getElementById("comune-medatata").appendChild(firstOpt);
+				
+				for(var i=0; i<size; i++){
+					if(xml[i].nodeName == 'record'){
+						var option = document.createElement("option"); 
+						
+						var id = "";
+						var label = "";
+						var west = "";
+						var south = "";
+						var east = "";
+						var north = "";
+						
+						if(Ext.isIE){
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].text;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].text;
+							west = xml[i].getElementsByTagName("west")[0].childNodes[0].text;
+							south = xml[i].getElementsByTagName("south")[0].childNodes[0].text;
+							east = xml[i].getElementsByTagName("east")[0].childNodes[0].text;
+							north = xml[i].getElementsByTagName("north")[0].childNodes[0].text;
+						}else{
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+							west = xml[i].getElementsByTagName("west")[0].childNodes[0].nodeValue;
+							south = xml[i].getElementsByTagName("south")[0].childNodes[0].nodeValue;
+							east = xml[i].getElementsByTagName("east")[0].childNodes[0].nodeValue;
+							north = xml[i].getElementsByTagName("north")[0].childNodes[0].nodeValue;
+						}
+						
+						option.value = west + "," + east + "," + south + "," + north;
+						option.innerHTML = label;
+						document.getElementById("comune-medatata").appendChild(option);
+					}
+				}
+		   },
+		   failure:  function(response, opts){
+				Ext.Msg.show({
+				   title: "Caricamento Comuni",
+				   msg: "Errore nel caricamento dei comuni associati alla provincia selezionata: " + response.status,
+				   buttons: Ext.Msg.OK,
+				   icon: Ext.MessageBox.ERROR
+				});
+		   }
+		});
+	}
+}
+
 /**
  * Update bounding box form element.
  * If description id is provided, set description character string.
@@ -755,7 +854,8 @@ function buildDuration(ref) {
 * nullValue - {Boolean} Allow null value
 * decimals - {Boolean} Allow decimals
 */
-function validateNumber(input, nullValue, decimals) {
+function validateNumber(input, nullValue, decimals, optional) {
+
     var text = input.value;
     var validChars = "0123456789";
     
@@ -778,15 +878,23 @@ function validateNumber(input, nullValue, decimals) {
             isNumber = false;
         }
     }
-    if (! isNumber) {
-        input.addClassName('error');
-        return false;
-    } else {
-        input.removeClassName('error');
-        return true;
-    }
-}
 
+	//
+	// Optional values are real numbers that can be NaN (CSI)
+	//
+	if(optional && input.value == 'NaN'){
+	    input.removeClassName('error');
+        return true;
+	}else{
+		if (!isNumber) {
+			input.addClassName('error');
+			return false;
+		}else {
+			input.removeClassName('error');
+			return true;
+		}
+	}
+}
 /**
 * Validate numeric value input form element.
 * If invalid, set the class attribute to "error".
@@ -1500,6 +1608,34 @@ function getValidationReport()
 	);
 }
 
+function setConformityPass(sel, selRef, explRef){	
+	if (sel.value.indexOf("non conforme") != -1) {
+		$(selRef).value = 'false';
+		$(explRef).value = 'non conforme';
+	} else if (sel.value.indexOf("conforme") != -1) {	
+		$(selRef).value = 'true';
+		$(explRef).value = 'conforme';
+	} else {
+	    $(selRef).value = 'false';
+		$(explRef).value = sel.value;
+	}
+}
+
+function setInputCRSel(s){
+	var inputEl = document.getElementById('vertCrs');
+	var i = inputEl.parentElement.parentElement.childNodes[0];
+	var input = document.getElementById(i.id);
+	var v = input.value;	
+   
+    if(s.value == -1)
+		input.value = "";
+	else{
+		if(input.value == "")
+			input.value = "http://www.epsg-registry.org/export.htm?gml=urn:ogc:def:crs:" + s.value;
+		else
+			input.value = v.substring(0, v.indexOf('EPSG')) + s.value;
+	}
+}
 
 /**
  * Launch metadata processing to compute extent based on keyword analysis.

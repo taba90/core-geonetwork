@@ -29,7 +29,7 @@
               <script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.libs.js"></script>      
             </xsl:otherwise>
         </xsl:choose>
-    
+
 		<xsl:call-template name="geoHeader"/>
 		
 		<!-- Required by keyword selection panel -->
@@ -141,6 +141,8 @@
 		<xsl:variable name="urlWMS"><xsl:copy-of select="/root/request/url"/></xsl:variable>
 		<xsl:variable name="typeWMS"><xsl:copy-of select="/root/request/type"/></xsl:variable>
 		
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
 		<script type="text/javascript" language="JavaScript1.2">
 
 			function init()
@@ -216,6 +218,11 @@
 					document.search.submit();
 			}
 
+			//
+			// Warkaround becose the dom is loaded after the JS code and OL make and error
+			//
+			document.namespaces;
+			
 			Ext.onReady(function(){
                 $("loading").hide();
 
@@ -322,6 +329,13 @@
 										
 									}]
 							}]
+						}, 
+						
+						// South
+						{
+							region:'south',
+							contentEl :'footer',
+							border:false
 						}]});
 						
 						
@@ -375,6 +389,7 @@
             
 			function collapseMap(pnl) {
 				Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.innerHTML = '<xsl:value-of select="/root/gui/strings/showMap"/>';
+				Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.style.color = '#1E800C';
 			}
 			
 			function expandMap(pnl) {
@@ -950,8 +965,8 @@
 										</option>
 
 										<xsl:for-each select="/root/gui/regions/record">
-											<xsl:sort select="label/child::*[name() = $lang]"
-												order="ascending"/>
+<!-- 											<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/> -->
+ 											<xsl:sort select="label" order="ascending"/>
 											<option>
 												<xsl:if test="id=/root/gui/searchDefaults/region">
 												<xsl:attribute name="selected"/>
@@ -959,8 +974,10 @@
 												<xsl:attribute name="value">
 												<xsl:value-of select="id"/>
 												</xsl:attribute>
-												<xsl:value-of
-												select="label/child::*[name() = $lang]"/>
+<!--												<xsl:value-of
+												select="label/child::*[name() = $lang]"/> -->
+                               					<xsl:value-of select="label"/>
+
 											</option>
 										</xsl:for-each>
 									</select>

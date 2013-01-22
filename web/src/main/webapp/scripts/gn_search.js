@@ -77,20 +77,25 @@ function runSimpleSearch(type)
 	var pars = "any=" + encodeURIComponent($('any') .value);
 
 	var region = $('region_simple').value;
-	if(region!="")
-  {
+	if(region!=""){
 		pars += "&"+im_mm_getURLselectedbbox();
+		//pars += "&bbox=" + $('westBL').value + "," + $('southBL').value + ',' + $('eastBL').value + ',' + $('northBL').value;
+
 		pars += fetchParam('relation');
 		pars += "&attrset=geo";
-		if(region!="userdefined")
-		{
-		pars += fetchParam('region');
+		
+		if(region!="userdefined"){
+			pars += fetchParam('region');
+		}
 	}
-	}
+	
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
 	pars += fetchParam('hitsPerPage');
-	pars += fetchParam('output');
+	
+	// CSI
+	//pars += fetchParam('output');
+  pars += '&output=full';
 
 	if (type == "pdf")
        gn_searchpdf(pars);
@@ -124,8 +129,8 @@ function resetSimpleSearch()
     setParam('sortOrder',   '');
     setParam('hitsPerPage', '10');
     setParam('hitsPerPage_simple', '10');
-    setParam('output',      'full');
-    setParam('output_simple',      'full');
+    //setParam('output',      'full');
+    //setParam('output_simple',      'full');
 
 }
 
@@ -242,8 +247,11 @@ function runAdvancedSearch(type)
 	pars += fetchParam('title');
 	pars += fetchParam('abstract');
 	pars += fetchParam('themekey');
-	pars += fetchRadioParam('similarity');
-
+	
+	// CSI
+	//pars += fetchRadioParam('similarity');
+  pars += '&similarity=.8';
+	
 	var region = $('region').value;
 	if(region!="")
   {
@@ -277,13 +285,19 @@ function runAdvancedSearch(type)
 	pars += fetchBoolParam('dynamic');
 	pars += fetchBoolParam('download');
 	pars += fetchParam('protocol').toLowerCase();
+	// CSI
+	//pars += fetchParam('inspirebrontype').toLowerCase();
+	pars += fetchParam('type').toLowerCase();
 	pars += fetchParam('template');
 	pars += fetchParam('sortBy');
 	pars += fetchParam('sortOrder');
 	pars += fetchParam('hitsPerPage');
-	pars += fetchParam('output');
+	
+	// CSI
+	//pars += fetchParam('output');
+    pars += '&output=full';
 
-     //Inspire
+    //Inspire
     pars += fetchParam('inspireannex');
     pars += addINSPIREThemes();
 
@@ -313,11 +327,27 @@ function resetAdvancedSearch()
 	setParam('title','');
 	setParam('abstract','');
 	setParam('themekey','');
-	var radioSimil = document.getElementsByName('similarity');
-	radioSimil[1].checked=true;
+	
+	// CSI
+	//var radioSimil = document.getElementsByName('similarity');
+	//radioSimil[1].checked=true;
+	
 	setParam('relation','overlaps');
 
     setParam('region',null);
+	
+	// reset comune form
+	var comune = document.getElementById('comune');
+	if(comune){
+		comune.innerHTML = "";
+		document.getElementById('comunegif').innerHTML = "";
+		
+		var firstOpt = document.createElement("option"); 
+		firstOpt.value = -1;
+		firstOpt.innerHTML = "- Qualunque -";
+		comune.appendChild(firstOpt);
+	}
+	
 	// Clear also region in simple search to keep synch
 	setParam('region_simple',null);
 	
@@ -349,8 +379,8 @@ function resetAdvancedSearch()
     setParam('sortOrder',   '');
     setParam('hitsPerPage', '10');
     setParam('hitsPerPage_simple', '10');
-    setParam('output',      'full');
-    setParam('output_simple',      'full');
+    //setParam('output',      'full');
+    //setParam('output_simple',      'full');
 
 
     // reset INSPIRE options
@@ -491,12 +521,133 @@ function rateMetadata_OK(xmlRes)
 
 function doRegionSearchSimple() {
   doRegionSearch('region_simple');
-  $('region').value = $('region_simple').value;
+  var r = $('region_simple').value;
+  $('region').value = r;
+  
+  if( $('comune') ){
+	doAjaxMunicipality(r);
+  }
 }
 
-function doRegionSearchAdvanced() {
+function comuneSimpleSelected() {
+  doRegionSearch('comune_simple');
+  $('comune').value = $('comune_simple').value;
+}
+
+
+function doRegionSearchAdvanced(loadingImg) {
   doRegionSearch('region');
   $('region_simple').value = $('region').value;
+    
+  if( $('comune') ){
+	doAjaxMunicipality($('region').value, loadingImg);
+  }
+}
+
+function comuneAdvancedSelected() {
+  doRegionSearch('comune');
+  $('comune_simple').value = $('comune').value;
+}
+
+function doAjaxMunicipality(provId, loadingImg){    
+
+    if(provId && provId != "" && provId != 'userdefined'){
+	    
+		var envURL = Env.url + (loadingImg ? loadingImg : "/images/grid-loading.gif");
+		document.getElementById('comunegif').innerHTML = "<img src=\"" + envURL + "\">";
+		
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provId=" + provId;
+		
+		Ext.Ajax.request({
+		   url: serviceURL,
+		   method: 'GET',
+		   timeout: 60000,
+		   success: function(response, opts){
+		        // Cleaning up the regions drop downs
+                resetRegionsComboBox();
+					
+			    // parse the response
+				var xmlFormat = new OpenLayers.Format.XML();        
+				var xml = xmlFormat.read(response.responseText);				
+				xml = xml.getElementsByTagName("response")[0].childNodes;
+				
+				// for adv search
+				var firstOpt = createComuniFirstOption();
+				document.getElementById("comune").appendChild(firstOpt);		
+
+				// for simple search
+                firstOpt = createComuniFirstOption();				
+			    document.getElementById("comune_simple").appendChild(firstOpt);
+				
+				var size = xml.length;
+				for(var i=0; i<size; i++){
+					if(xml[i].nodeName == 'record'){											
+						var id = "";
+						var label = "";
+						if(Ext.isIE){
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].text;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].text;
+						}else{
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+						}
+						
+						// for adv search
+						var option = createComuniOption(id, label);
+						document.getElementById("comune").appendChild(option);
+						// for simple search
+						option = createComuniOption(id, label);
+						document.getElementById("comune_simple").appendChild(option);
+					}
+				}
+		   },
+		   failure:  function(response, opts){
+				document.getElementById('comunegif').innerHTML = "";
+				Ext.Msg.show({
+				   title: "Caricamento Comuni",
+				   msg: "Errore nel caricamento dei comuni associati alla provincia selezionata: " + response.status,
+				   buttons: Ext.Msg.OK,
+				   icon: Ext.MessageBox.ERROR
+				});
+		   }
+		});
+	} else {
+        resetRegionsComboBox();
+
+        // for adv search
+        var firstOpt = createComuniFirstOption();
+        document.getElementById("comune").appendChild(firstOpt);
+
+        // for simple search
+        firstOpt = createComuniFirstOption();
+        document.getElementById("comune_simple").appendChild(firstOpt);
+    }
+}
+
+function resetRegionsComboBox(){
+
+    // SIMPLE FORM
+	document.getElementById('comune_simple').innerHTML = "";
+
+	// ADV FORM
+	document.getElementById('comune').innerHTML = "";
+	document.getElementById('comunegif').innerHTML = "";
+}
+
+function createComuniFirstOption(){
+	var firstOpt = document.createElement("option"); 
+	firstOpt.value = -1;
+	firstOpt.innerHTML = "- Qualunque -";
+
+	return firstOpt;
+}
+
+function createComuniOption(id, label){
+	var option = document.createElement("option"); 
+	option.value = id;
+	option.innerHTML = label;
+	
+	return option;
 }
 
 function doRegionSearch(regionlist)
@@ -519,17 +670,20 @@ function doRegionSearch(regionlist)
 		// Do nothing. AoI is set by the user
     } else
     {
-        getRegion(region);
+        getRegion(regionlist, region);
     }
 }
 
-function getRegion(region)
+function getRegion(regionlist, regionId)
 {
-    if(region)
-        var pars = "id="+region;
+    if(regionId)
+        var pars = "id="+regionId;
 
+	var url = (regionlist == 'region' || regionlist == 'region_simple') ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
+	
     var myAjax = new Ajax.Request(
-        getGNServiceURL('xml.region.get'),
+//        getGNServiceURL('xml.region.get'),
+        getGNServiceURL(url),
         {
             method: 'get',
             parameters: pars,
@@ -662,11 +816,21 @@ function gn_present(frompage, topage)
 	);
 }
 
-function gn_search_complete(req) {
+/*function gn_search_complete(req) {
     var rlist = $('resultList');
 
     rlist.innerHTML = req.responseText;
 
+    $('loadingMD').hide();
+}*/
+
+function gn_search_complete(req) {
+    var rlist = $('resultList');
+    
+    if(req.status==200 && req.readyState==4){
+      rlist.innerHTML = req.responseText;
+    }
+    
     $('loadingMD').hide();
 }
 
@@ -677,7 +841,8 @@ function gn_search_complete(req) {
 ********************************************************************/
 function gn_showSingleMetadataUUID(uuid)
 {
-   var pars = 'uuid=' + uuid + '&control&currTab=simple';
+   //var pars = 'uuid=' + uuid + '&control&currTab=simple';
+   var pars = 'uuid=' + uuid + '&control&currTab=inspire';
    gn_showSingleMet(pars);
 }
 
@@ -1048,18 +1213,18 @@ function toggleMoreFields() {
   }
 }
 
-function toggleInspire() {
-  $("inspiresearchfields").toggle();
+function toggleInspire(div, img) {
+  $(div).toggle();
 
-  var src = $("i_inspire").getAttribute('src');
+  var src = $(img).getAttribute('src');
   var ndx = src.lastIndexOf('/');
 
   src = src.substring(0, ndx+1);
 
-  if ($("inspiresearchfields").visible() == true) {
-	$("i_inspire").setAttribute('src', src +'minus.png');
+  if ($(div).visible() == true) {
+	$(img).setAttribute('src', src +'minus.png');
   } else {
-	$("i_inspire").setAttribute('src', src +'plus.gif');
+	$(img).setAttribute('src', src +'plus.gif');
   }
 }
 
@@ -1175,7 +1340,7 @@ function gn_hideInterList(id)
 /********************************************************************/
 function showInspireSearch() {
    var inspire = $('inspire');
-   if(inspire.checked) {
+   if(inspire && inspire.checked) {
        inspire.value = 'true';
    } else {
        inspire.value = '';
@@ -1226,28 +1391,69 @@ function taggleVisibility(elementId) {
 function addINSPIREThemes() {
 	var allThemes = '';
 	var prefix = '&inspiretheme=';
+	
     // Select all checkboxes in inspirethemesdiv
     var inspireThemeChk = $$('#inspirethemesdiv input[type="checkbox"]');
-    // console.log(inspireThemeChk.length);
+	
+    // Inspire Theme
     for (i=0;i<inspireThemeChk.length;i++) {
         if (inspireThemeChk[i].checked) {
             allThemes += prefix + inspireThemeChk[i].value+"*";
         }
     }
+	
+	// PSR Theme
+	var inspireThemeChkPSR = $$('#inspirethemesdivPsr input[type="checkbox"]');
+	for (i=0;i<inspireThemeChkPSR.length;i++) {
+        if (inspireThemeChkPSR[i].checked) {
+            allThemes += prefix + inspireThemeChkPSR[i].value+"*";
+        }
+    }
+	
 	return allThemes ;
 }
 
 function resetInspireOptions() {
-    if (!$('inspire')) return;
+    //if (!$('inspire')) return;
 
-     // reset INSPIRE options
-	$('inspire').checked=false;
+    // reset INSPIRE options
+	//$('inspire').checked=false;
 	setParam('title','');
 	setParam('inspireannex','');
-	setParam('inspirebrontype','');
+	
+	// CSI
+	//setParam('inspirebrontype','');
+	setParam('type','');
+	
 	setParam('protocol','');
 	setParam('orgselect_inspire','');
 
+	//
+	// PSR Theme
+	//
+	$('psr_distribuzione').checked=false;
+	$('psr_afap').checked=false;
+	$('psr_ind_atig').checked=false;
+	$('psr_cpst').checked=false;
+	$('psr_proc_energ').checked=false;
+	$('psr_tci').checked=false;
+	$('psr_rfm').checked=false;
+	$('psr_agenti_fisici').checked=false;
+	$('psr_antroposfera').checked=false;
+	$('psr_atmosfera').checked=false;
+	$('psr_biosfera').checked=false;
+	$('psr_idrosfera').checked=false;
+	$('psr_geosfera').checked=false;
+	$('psr_istituzioni').checked=false;
+	$('psr_legislazione').checked=false;
+	$('psr_ppps').checked=false;
+	$('psr_tutela').checked=false;
+	$('psr_monitoraggio').checked=false;
+	$('psr_rischio').checked=false;
+	
+	// 
+	// Inspire Theme
+	//
 	$('inspire_GeographicalNames').checked=false;
 	$('inspire_AdministrativeUnits').checked=false;
 	$('inspire_Addresses').checked=false;
@@ -1294,13 +1500,38 @@ function clearNode(node)
 	}			
 }
 
-function im_mm_getURLselectedbbox()
+/*function im_mm_getURLselectedbbox()
 {
-
     return "geometry=POLYGON(( " + $("westBL").value + " "  + $("northBL").value + ", " +
             $("eastBL").value + " " + $("northBL").value + ", " +
             $("eastBL").value + " " + $("southBL").value + ", " +
             $("westBL").value + " " + $("southBL").value + ", " +
             $("westBL").value + " "  + $("northBL").value + "))";
+}*/
+
+function im_mm_getURLselectedbbox()
+{
+	return urlizebb(
+		$("northBL").value,
+		$("eastBL").value,
+		$("southBL").value,
+		$("westBL").value);
 }
+
+/**
+ * Get the URLized version of the given bbox
+ * @param {int} n
+ * @param {int} e
+ * @param {int} s
+ * @param {int} w
+ * @return {String} URL
+ */
+function urlizebb(n, e, s, w)
+{
+	return	"northBL="+n+
+			"&eastBL="+e+
+			"&southBL="+s+
+			"&westBL="+w;
+};
+
 /*** EOF ***********************************************************/
