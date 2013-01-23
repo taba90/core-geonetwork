@@ -64,7 +64,7 @@ public class LuceneQueryBuilder {
 	private static final String minBoundingLongitudeValue = "180";  // -180 + 360
 	private static final String maxBoundingLongitudeValue = "540";  //  180 + 360
 	
-	private static final double bboxBuffer = 0.1;
+	private double bboxBuffer = 0.1; // may be set() in order to make old tests pass
 
 	public LuceneQueryBuilder(HashSet<String> tokenizedFieldSet, PerFieldAnalyzerWrapper analyzer) {
 		_tokenizedFieldSet = tokenizedFieldSet;
@@ -1090,5 +1090,10 @@ public class LuceneQueryBuilder {
 
     private boolean onlyWildcard(String s) {
         return s != null && s.trim().equals("*");
+    }
+
+    protected LuceneQueryBuilder setBboxBuffer(double bboxBuffer) {
+        this.bboxBuffer = bboxBuffer;
+        return this;
     }
 }
