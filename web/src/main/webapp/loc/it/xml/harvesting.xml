@@ -186,7 +186,7 @@
   <collectionFragmentStylesheet>Collection Stylesheet</collectionFragmentStylesheet>
   <threddsFragmentStylesheetForAtomics>Stylesheet da utilizzare per creare frammenti XML di metadati dai atomic datasets</threddsFragmentStylesheetForAtomics>
   <atomicFragmentStylesheet>Atomic Stylesheet</atomicFragmentStylesheet>
-	<threddsCreateSubtemplates>Crea i subtemplate per frammenti (Xlink sarà utilizzato nei metadati generati)</threddsCreateSubtemplates>
+	<threddsCreateSubtemplates>Crea i sottomodelli per i frammenti (Xlink sarà utilizzato nei metadati generati)</threddsCreateSubtemplates>
 	<threddsIgnoreHarvestOnCollections>Ignora attributo harvesting di raccolta datasets nel catalogo</threddsIgnoreHarvestOnCollections>
 	<threddsOSCollections>Seleziona lo schema per di raccolta dei record di metadati</threddsOSCollections>
 	<threddsIgnoreHarvestOnAtomics>Ignora attributo harvesting in atomic datasets</threddsIgnoreHarvestOnAtomics>
@@ -195,7 +195,7 @@
 	
 	<metadatafragmentsQuery>GetFeature Query</metadatafragmentsQuery>
 	<metadataFragmentsStylesheet>Stylesheet da utilizzare per creare frammenti</metadataFragmentsStylesheet>
-	<template>Template da utilizzare per costruire metadati utilizzando frammenti</template>
+	<template>Modello da utilizzare per costruire metadati utilizzando frammenti</template>
 	<fragmentCategory>Categoria per frammenti</fragmentCategory>
 	<recordCategory>Categoria per i record costruiti con frammenti collegati</recordCategory>
 
@@ -291,9 +291,9 @@
 		<collectionDatasetRecords>Collezioni aggiunte</collectionDatasetRecords>
 		<atomicDatasetRecords>Atomic aggiunti</atomicDatasetRecords>
         <fragmentsAdded>Frammenti aggiunti</fragmentsAdded>
-        <subtemplatesAdded>Sub-template aggiunti</subtemplatesAdded>
+        <subtemplatesAdded>Sotto-modelli aggiunti</subtemplatesAdded>
         <fragmentsRemoved>Frammenti rimossi</fragmentsRemoved>
-        <subtemplatesRemoved>Sub-template rimossi</subtemplatesRemoved>
+        <subtemplatesRemoved>Sotto-modelli rimossi</subtemplatesRemoved>
 		<fragmentsUnknownSchema>Frammenti con schema sconosciuto</fragmentsUnknownSchema>
 		<fragmentsReturned>Frammenti ritornati</fragmentsReturned>
 		<fragmentsMatched>Frammenti corrispondenti</fragmentsMatched>
