@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="3.2.0">
+<schema targetNamespace="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="3.2.1">
 	<annotation>
-		<appinfo source="urn:ogc:specification:gml:schema-xsd:geometryBasic2d:3.2.0">geometryBasic2d.xsd</appinfo>
+		<appinfo source="urn:x-ogc:specification:gml:schema-xsd:geometryBasic2d:3.2.1">geometryBasic2d.xsd</appinfo>
 		<documentation>See ISO/DIS 19136 Clause 10.</documentation>
 	</annotation>
 	<include schemaLocation="geometryBasic0d1d.xsd"/>
@@ -42,11 +42,6 @@
 		</sequence>
 		<attributeGroup ref="gml:OwnershipAttributeGroup"/>
 	</complexType>
-	<element name="surfaceArrayProperty" type="gml:SurfaceArrayPropertyType">
-		<annotation>
-			<documentation>This property element contains a list of surface elements. surfaceArrayProperty is the predefined property which may be used by GML Application Schemas whenever a GML feature has a property with a value that is substitutable for a list of AbstractSurfaces.</documentation>
-		</annotation>
-	</element>
 	<complexType name="PolygonType">
 		<complexContent>
 			<extension base="gml:AbstractSurfaceType">
