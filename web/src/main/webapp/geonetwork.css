@@ -1,16 +1,8 @@
-/*
-Used to set color for the panels header inside the viewer
-*/
-.x-panel-header-text {
-	color:#1E800C;
-}
 
 /*******************************************************************************
 general
 *******************************************************************************/
-.mylabel{
-color: #ffffff;
-}
+
 
 * {
 	font-size: 100%; /* without this font sizes are not inherited correctly */
@@ -20,7 +12,7 @@ body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 9pt;
 	margin: 0px;
-	color: #000000;
+	color: #064377;
 }
 
 div {
@@ -71,7 +63,7 @@ a {
 	color: #266377;
 	text-decoration: none;
 	*/
-	color: #1E800C;
+	color: #064377;
 }
 
 a:hover
@@ -116,9 +108,7 @@ td.banner {
 td.banner-menu {
 	font-size: 8pt;
 	color: #ffffff;
-	/*background: #000000;*/
-	/*background:  #3D863F;*/
-	background: #C2CEC4;
+	background: #064377;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -131,9 +121,7 @@ td.banner-login {
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
-	/*background: #266397;*/
-	/*background:  #82AB7F;*/
-	background: #1E800C;
+	background: #266397;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -141,24 +129,10 @@ td.banner-login {
 	vertical-align: middle
 }
 
-td.banner-login a{
+a.banner {
 	color: #ffffff;
 	text-decoration: none;
-	font-weight: bold;
 }
-
-a.banner {
-	/*color: #ffffff;*/
-	color: #000000;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-span.banner {
-	color: #000000;
-	text-decoration: none;
-}
-
 
 a.banner:hover
 {
@@ -180,19 +154,17 @@ input.banner {
 	margin-right: 4px;
 	margin-left: 4px;
 	font: 7pt Verdana;
-	color: #000000;
-	/*border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	color: #064377;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 button.banner {
 	font-family: Verdana;
 	font-size: 7pt;
-	color: #000000;
+	color: #064377;
 	cursor: pointer;
 	cursor: hand;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 a.palette {
@@ -202,7 +174,7 @@ a.palette {
 
 a.palette:hover
 {
-	background: #000000;
+	background: #064377;
 }
 
 /* added since the browser adds some margin for the form */
@@ -224,10 +196,6 @@ td.content {
 .padded-content {
 	/*background: #e7edf5;*/
 	padding: 5px;
-}
-
-td.padded-content  a{
-	color: #000000;
 }
 
 .text-aligned-left {
@@ -260,8 +228,7 @@ td.green-content {
 
 td.blue-content {
 	color: #ffffff;
-	/*background: #266397;*/
-	background: #1E800C;
+	background: #266397;
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
@@ -271,17 +238,16 @@ td.blue-content {
 input.content, select.content, textarea.content {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #000000;
+	color: #064377;
 	max-width: 400px;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 
 .checkbox_results {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #000000;
+	color: #064377;
 	margin-right: 2px;
 }
 
@@ -301,12 +267,11 @@ select.lang_selector {
 a.content, button.content {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #000000;
+	color: #064377;
 	max-width: 400px;
 	cursor: pointer;
 	cursor: hand;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 	background-color: #e7e7e7;
 	text-shadow: gray 2px 2px 3px;
 }
@@ -329,20 +294,15 @@ a.content:hover {
 input.content-small, button.content-small {
 	font-family: Verdana;
 	font-size: 7pt;
-	color: #000000;
+	color: #064377;
 	min-width: 150px;
 	cursor: pointer;
 	cursor: hand;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 td.padded p {
     padding-bottom:2px;
-}
-
-td.padded a {
-    color: #000000;
 }
 
 legend.block-legend {
@@ -351,12 +311,11 @@ legend.block-legend {
 
 fieldset.metadata-block {
 	padding: 5px;
-    /*border: 1px #266397 solid;*/
-	border: 2px #1E800C solid;
+    border: 1px #266397 solid;
 }
 
 fieldset.metadata-block * fieldset {
-    border: 2px #9FC997 solid;
+    border: 1px #266397 solid;
 }
 
 /*******************************************************************************
@@ -373,7 +332,7 @@ td.footer {
 }
 
 a.footer {
-	color: #000000;
+	color: #064377;
 }
 
 a.footer:hover
@@ -401,21 +360,19 @@ ul.md {
 input.md, select.md, textarea.md {
 	font-family: Verdana;
 	font-size: 8pt;
-	color: #000000;
+	color: #064377;
 	/* max-width: 400; */
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 button.md {
 	font-family: Verdana;
 	font-size: 8pt;
-	color: #000000;
+	color: #064377;
 	/* max-width: 400; */
 	cursor: pointer;
 	cursor: hand;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 }
 
 /*******************************************************************************
@@ -461,8 +418,7 @@ font.error, font.warning {
 
 
 td.box {
-	/*border: 2px solid #266397;*/
-	border: 2px solid #000000;
+	border: 2px solid #266397;
 	background: #4683b7;
 }
 
@@ -475,8 +431,7 @@ td.separator {
 td.dots {
 	width: 0;
 	height: 0;
-	/*border-top: 1px inset #266397;*/
-	border-top: 1px inset #000000;
+	border-top: 1px inset #266397;
 }
 
 th.padded, td.padded {
@@ -498,7 +453,7 @@ td.spacer {
 }
 
 div.track  {
-	background: #000000;
+	background: #064377;
 	margin-top:2px;
 }
 
@@ -511,8 +466,7 @@ div.handle {
 {
 	height: 1px;
 	width: 1px;
-	/*border-left: 1px solid #266397;*/
-	border-left: 1px solid #000000;
+	border-left: 1px solid #266397;
 }
 
 /*******************************************************************************
@@ -558,8 +512,7 @@ Other action buttons
 *******************************************************************************/
 
 .oAcEle {
-    /*border: 1px solid #266397;*/
-	border: 1px solid #000000;
+    border: 1px solid #266397;
     background-color: #e7e7e7;
     position: absolute;
     opacity: .9;
@@ -571,7 +524,7 @@ Other action buttons
 .oAcEle button {
     text-align:left;
     font-family: Verdana;
-    color: #000000;
+    color: #064377;
     font-size: 8pt;
     cursor: pointer;
     cursor: hand;
@@ -599,7 +552,7 @@ div.keywordSelectorFrame {
 
 div.keywordSelector {
         background: #fff;
-        border: 4px solid #000000;
+        border: 4px solid #064377;
 		margin: 2px;
 		padding: 5px;
         cursor: pointer;
@@ -757,7 +710,7 @@ td.advsearchfields {
 .IMBtn{
 	font-family: Verdana;
 	font-size: 9px;
-	color: #000000;
+	color: #064377;
 	cursor: pointer;
 	padding: 2px 8px 2px 2px;
 }
@@ -810,7 +763,7 @@ label {
 }
 
 imenabled {
-	color: #000000;
+	color: #064377;
 	cursor: pointer;
 }
 
@@ -850,8 +803,7 @@ img.calendar:hover {
 
 .ilwhiteboard {
     position:relative;
-	/*border: 1px solid #266397;*/
-	border: 1px solid #000000;
+	border: 1px solid #266397;
 	margin: 4px;
 }
 
@@ -861,13 +813,12 @@ button.rating
 {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #000000;
+	color: #064377;
 	max-width: 400px;
 	width: 100px;
 	cursor: pointer;
 	cursor: hand;
-	/*border: 1px solid #266397;  moved here from tr since IE accepts it only here */
-	border: 1px solid #000000;
+	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
 	margin-bottom: 4px;
 }
 
@@ -914,8 +865,7 @@ div#error {
 }
 
 #resultList {
-	/*border-top: 1px solid #2a628f;*/
-	border-top: 1px solid #1E800C;
+	border-top: 1px solid #2a628f;
 	padding-top: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -923,8 +873,7 @@ div#error {
 
 #leftcolumn {
 	margin: 20px;
-	/*border-right: 1px solid #2a628f;*/
-	border-right: 1px solid #1E800C;
+	border-right: 1px solid #2a628f;
 }
 
 #sortBy.live {
@@ -942,8 +891,7 @@ div.thumbnail {
     margin:2px;
 }
 img.thumbnail {
-    /*border: 1px solid #266397;*/
-	border: 1px solid #000000;
+    border: 1px solid #266397;
  }
  img.thumbnail {
     width: 120px;
@@ -1074,10 +1022,6 @@ span.labelField {
     font-size: 0.9em;
 }
 
-.labelFieldSmall{
-	color: #1E800C;
-}
-
 span.labelFieldSmall {
     display: table-cell;
     display: inline-block;
@@ -1090,7 +1034,6 @@ div.inspireThemeTitle {
     margin-top: 5px;
     margin-bottom: 5px;
     font-style: italic;
-	font-weight: bold;
 }
 
 span.inspireThemeElement {
@@ -1104,8 +1047,7 @@ span.inspireThemeElement {
 }
 
 .xlinked {
-     /*font-style: italic;*/
-	 font-style: Verdana;
+     font-style: italic;
 }
 
 /*******************************
