@@ -409,7 +409,7 @@
 	<longitude>Longitudine (tra -180 e 180) in gradi</longitude>
 	<longMax>long (max)</longMax>
 	<longMin>long (min)</longMin>
-	<mainpageTitle>Geoportale - verso la condivisione dell'informazione geografica</mainpageTitle>
+	<mainpageTitle>Trova mappe interattive, dati GIS, Immagini Satellitari e applicazioni relative</mainpageTitle>
 	<maintenanceTab>Manutenzione</maintenanceTab>
 	<management>Gestione</management>
 	<mandatory>Obbligatorio</mandatory>
@@ -913,23 +913,20 @@ Questo elemento fornisce anche informazioni su eventuali tariffe richieste per a
 		<meta name="DC.coverage" content="Global"/>
 	</header_meta>
 	<mainpage1>
-		<!--<h1>Gli obiettivi di GeoNetwork sono:</h1>
+		<h1>Gli obiettivi di GeoNetwork sono:</h1>
 		<ul>
 			<li>Migliorare l'accesso e l'uso integrato di dati geografici ed informazioni</li>
 			<li>Supporto alle decisioni</li>
 			<li>Promuovere approcci interdisciplinari allo sviluppo sostenibile</li>
 			<li>Migliorare la conoscenza dei benefici dell'informazione geografica</li>
-		</ul>-->
-		<p>
-		Il <b>Geoportale</b> rappresenta il punto di raccolta organizzata del patrimonio di conoscenze disponibile presso gli Enti della Pubblica Amministrazione piemontese, finalizzato alla condivisione e all’interscambio delle informazioni geografiche. 
-		</p>
+		</ul>
 	</mainpage1>
 	<mainpage2>
 		<p>
-		E’ stato sviluppato in linea con la Direttiva Europea <b>INSPIRE</b> ed in coerenza con le diverse iniziative e disposizioni promosse e stabilite in sede nazionale ed internazionale in materia di dati geografici informatici (DigitPA, IntesaGIS, OGC), configurandosi  anche come <b>Catalogo delle Informazioni Ambientali</b>, strumento essenziale per garantire l'informazione in materia di Ambiente, secondo quanto previsto dalla Direttiva Comunitaria 4/2003 inerente "L'accesso del pubblico all'informazione ambientale”.
+	        GeoNetwork opensource permette di condividere semplicemente l'informazione geografica tematica tra organizzazioni differenti. 
 		</p>
 		<p>
-		Consente l’accesso libero ai metadati raccolti e gestiti dagli Enti della Pubblica Amministrazione piemontese che desiderano partecipare al sistema della conoscenza geografica. Attraverso l’utilizzo di standard di interoperabilità permette infatti di ricercare tra i cataloghi metadati dei diversi Enti che possono essere navigati  fino ad arrivare alla consultazione e al download dei dati, in accordo con le politiche di diffusione  decise dai proprietari del dato.
+		E’ stato sviluppato in linea con la Direttiva Europea <b>INSPIRE</b> ed in coerenza con le diverse iniziative e disposizioni promosse e stabilite in sede nazionale ed internazionale in materia di dati geografici informatici (DigitPA, IntesaGIS, OGC), configurandosi  anche come <b>Catalogo delle Informazioni Ambientali</b>, strumento essenziale per garantire l'informazione in materia di Ambiente, secondo quanto previsto dalla Direttiva Comunitaria 4/2003 inerente "L'accesso del pubblico all'informazione ambientale”.
 		</p>
 		<p>
 		Presenta diverse modalità di ricerca, tra le quali quella secondo gli <b>Annex di INSPIRE</b> e quella prettamente ambientale, basata sugli argomenti <b>Pressioni - Stato - Risposte</b>.
