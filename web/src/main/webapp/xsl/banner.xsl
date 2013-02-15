@@ -17,7 +17,7 @@
 					<img src="{/root/gui/url}/images/csi/banner2.jpg" alt="Regione Piemonte logo" align="middle"/>
 				</td-->
 				<td class="banner">
-					<img src="{/root/gui/url}/images/header-left.jpg" alt="World picture" align="top" />
+					<img src="{/root/gui/url}/images/header-left-gs.jpg" alt="World picture" align="top" />
 				</td>
 				<td align="right" class="banner">
 					<img src="{/root/gui/url}/images/header-right.gif" alt="GeoNetwork opensource logo" align="top" />
