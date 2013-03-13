@@ -6,7 +6,7 @@
         xmlns:gmx="http://www.isotc211.org/2005/gmx"
         xmlns:srv="http://www.isotc211.org/2005/srv"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:gml="http://www.opengis.net/gml"
+        xmlns:gml="http://www.opengis.net/gml/3.2"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:geonet="http://www.fao.org/geonetwork"
         xmlns:exslt="http://exslt.org/common"
@@ -2553,7 +2553,7 @@
                             <!-- ETj
                             <a href="javascript:popInterMap('{/root/gui/url}/intermap/srv/{/root/gui/language}/map.addServicesExt?url={gmd:linkage/gmd:URL}&amp;service={gmd:name/gco:CharacterString|gmd:name/gmx:MimeFileType}&amp;type=2')" title="{/root/strings/interactiveMap}">
                             -->
-                            <a href="javascript:addWMSLayer([['{$name}','{$linkage}','{$name}','{$metadata_id}']])" title="{/root/strings/interactiveMap}">
+                            <a href="javascript:addWMSLayer([['{$name}','{$linkage}','{//geonet:info/uuid}','{$name}','{$metadata_id}']])" title="{/root/strings/interactiveMap}">
                                     <xsl:choose>
                                     <xsl:when test="string($description)!=''">
                                         <xsl:value-of select="$description"/>
@@ -3020,7 +3020,7 @@
                         <!-- no protocol, but URL is for a WMS service -->
                          <xsl:when test="(not(string($protocol)) and contains(upper-case($linkage),'SERVICE=WMS') and string($name)!='')">
                             <link type="wms">
-                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
+                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage, '&#34;,&#34;' , $uuid,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
                             </link>
                         </xsl:when>
                         <xsl:when test="starts-with($protocol,'WWW:DOWNLOAD-') and contains($protocol,'http--download') and not(contains($linkage,$download_check))">
@@ -3029,7 +3029,7 @@
                         <xsl:when test="starts-with($protocol,'ESRI:AIMS-') and contains($protocol,'-get-image') and string($linkage)!='' and string($name)!=''">
                             <link type="arcims">
     <!--							<xsl:value-of select="concat('javascript:popInterMap(&#34;',/root/gui/url,'/intermap/srv/',/root/gui/language,'/map.addServicesExt?url=',$linkage,'&amp;service=',$name,'&amp;type=1&#34;)')"/>-->
-                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
+                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage, '&#34;,&#34;' , $uuid,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
                             </link>
                         </xsl:when>
                         <xsl:when test="(starts-with($protocol,'OGC:WMS-') and contains($protocol,'-get-map') and string($linkage)!='' and string($name)!='') or ($protocol = 'OGC:WMS' and string($linkage)!='' and string($name)!='')">
@@ -3037,7 +3037,7 @@
     <!--							<xsl:value-of select="concat('javascript:popInterMap(&#34;',/root/gui/url,'/intermap/srv/',/root/gui/language,'/map.addServicesExt?url=',$linkage,'&amp;service=',$name,'&amp;type=2&#34;)')"/>-->
 
                                 <!--xsl:value-of select="concat('javascript:runIM_addService(&#34;'  ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;, 2)' )"/-->
-                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
+                                <xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage, '&#34;,&#34;' , $uuid,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
 
                             </link>
                             <link type="googleearth">

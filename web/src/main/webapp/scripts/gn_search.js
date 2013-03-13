@@ -1244,15 +1244,20 @@ function toggleWhen() {
 }
 
 function addWMSLayer(layers) {
-	Ext.getCmp("north-map-panel").expand();
+	var name = layers[0][0];
+	var wmsURL = layers[0][1];
+	var uuid = layers[0][2];
+	parent.addMSLayer(name, name, wmsURL, Env.host + Env.url + "/", true, uuid, Env.lang);
+	/*Ext.getCmp("north-map-panel").expand();
 	mainViewport.doLayout();
-    GeoNetwork.mapViewer.addWMSLayer(layers);
+    GeoNetwork.mapViewer.addWMSLayer(layers);*/
 }
 
 function addWMSServerLayers(url) {
-	Ext.getCmp("north-map-panel").expand();
+	parent.addMSSource(url);
+	/*Ext.getCmp("north-map-panel").expand();
 	mainViewport.doLayout();
-    GeoNetwork.mapViewer.addWMSServerLayers(url);
+    GeoNetwork.mapViewer.addWMSServerLayers(url);*/
 }
 
 function addSelectedWMSLayers(metadataIdForm) {

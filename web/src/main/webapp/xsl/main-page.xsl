@@ -231,7 +231,7 @@
                 GeoNetwork.MapStateManager.loadMapState();
                 
 				initMapViewer();
-				var mapViewport =  GeoNetwork.mapViewer.getViewport();
+				//var mapViewport =  GeoNetwork.mapViewer.getViewport();
 				
 				var categories = new Ext.Panel({
 					region: 'south',
@@ -302,7 +302,7 @@
 										border:false,
 										layout: 'border',
 										items: [
-											{region:'north',
+											/*{region:'north',
 											id: 'north-map-panel',
 											title: '<xsl:value-of select="/root/gui/strings/mapViewer"/>',
 											border:false,
@@ -319,7 +319,7 @@
 											   },
 											items: [mapViewport]
 											
-											},
+											},*/
 											{region:'center', 
 											contentEl :'content',
 											border:false,
@@ -353,8 +353,8 @@
 			});
 			
             
-            function initMapViewer() {
-                var mapOptions = <xsl:value-of select='/root/gui/config/mapViewer/@options'/>;
+      function initMapViewer() {
+          /*var mapOptions = <xsl:value-of select='/root/gui/config/mapViewer/@options'/>;
 
                 // Init projection list
                 <xsl:for-each select="/root/gui/config/mapViewer/proj/crs">
@@ -368,9 +368,9 @@
 
  				var scales = <xsl:value-of select='/root/gui/config/mapViewer/scales/@values'/>;
 
-                // Initialize map viewer
-                GeoNetwork.mapViewer.init(backgroundLayers, mapOptions, scales);
-            }
+          // Initialize map viewer
+          GeoNetwork.mapViewer.init(backgroundLayers, mapOptions, scales);*/
+      }
 
             function initMapsSearch() {
                 var mapOptions1 = <xsl:value-of select='/root/gui/config/mapSearch/@options'/>;
@@ -389,7 +389,7 @@
             
 			function collapseMap(pnl) {
 				Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.innerHTML = '<xsl:value-of select="/root/gui/strings/showMap"/>';
-			    Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.style.color = '#333333';
+			    //Ext.getCmp('main-viewport').layout.north.getCollapsedEl().titleEl.dom.style.color = '#333333';
 			}
 			
 			function expandMap(pnl) {
