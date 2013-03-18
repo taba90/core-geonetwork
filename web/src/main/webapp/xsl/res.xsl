@@ -15,12 +15,12 @@
 			<body>
 				<table width="100%" height="100%">
 					<tr>
-            <td>
+            <!--td>
               <img src="{/root/gui/url}/images/csi/banner1.jpg" alt="CSI Piemonte logo" />
             </td>
             <td align="right" style="vertical-align: bottom">
               <img src="{/root/gui/url}/images/csi/banner2.jpg" alt="Regione Piemonte logo" align="middle"/>
-            </td>
+            </td-->
 						<!--td class="banner">
 							<img src="{/root/gui/url}/images/header-left.jpg" alt="GeoNetwork opensource" align="top" />
 						</td>
