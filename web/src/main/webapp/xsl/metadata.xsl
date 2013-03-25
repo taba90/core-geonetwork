@@ -1822,12 +1822,16 @@
 																
 								<xsl:choose>							
 									<xsl:when test="$value='true'">
-										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>conforme</xsl:value-of>)
+										<xsl:value-of select="$explanationValue"/> 
+										<!-- CSI: disabled this new added element to show only selected value 
+										(<xsl:value-of>conforme</xsl:value-of>) -->
 									</xsl:when>			
 									<xsl:otherwise>
-										<xsl:value-of select="$explanationValue"/> (<xsl:value-of>non conforme</xsl:value-of>)
+										<xsl:value-of select="$explanationValue"/> 
+										<!-- CSI: disabled this new added element to show only selected value 
+										(<xsl:value-of>non conforme</xsl:value-of>) -->
 									</xsl:otherwise>							
-								</xsl:choose>
+								</xsl:choose> 
 								
 							</xsl:when>
 							<xsl:otherwise>

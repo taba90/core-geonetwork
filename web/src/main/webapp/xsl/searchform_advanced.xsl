@@ -391,7 +391,7 @@
     							<span>
     								<label for="inspire_SistemiGriglieGeografiche"><!--Sistemi di griglie geografiche--><xsl:value-of select="/root/gui/strings/inspire/annex1/l11"/></label>
     							</span>
-    						</div> 
+    						</div>    						
     						
     						<div class="inspireThemeTitle"><xsl:value-of select="/root/gui/strings/inspire/what/l6"/> II</div>
     						<div class="inspireThemeElement">
