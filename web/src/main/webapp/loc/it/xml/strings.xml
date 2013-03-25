@@ -558,14 +558,16 @@
     <protocolChoice show="-" value="OGC:WPS">OGC-WPS Web Processing Service</protocolChoice>
 	<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-ftp--download">File scaricabile (FTP)</protocolChoice>
 	<protocolChoice show="-" value="WWW:DOWNLOAD-1.0-http--download">File scaricabile (HTTP)</protocolChoice>
+	<protocolChoice show="-" value="WWW:EXTDOWNLOAD-1.0-http--external-hidden">Download esterno nascosto (HTTP)</protocolChoice>
+	<protocolChoice show="-" value="WWW:EXTDOWNLOAD-1.0-http--external-public">Download esterno pubblico (HTTP)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--ical">iCalendar (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--link">Indirizzo web (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--partners">Indirizzo web di collaboratori (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--related">Risorsa correlata (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--rss">Feed RSS (URL)</protocolChoice>
 	<protocolChoice show="-" value="WWW:LINK-1.0-http--samples">Prodotto d'esempio (URL)</protocolChoice>
-	<protocolChoice show="-" value="External:Link-Hidden-Download">Download esterno nascosto</protocolChoice>
-	<protocolChoice show="-" value="External:Link-Public-Download">Download esterno pubblico</protocolChoice>
+	<!--protocolChoice show="-" value="External:Link-Hidden-Download">Download esterno nascosto</protocolChoice>
+	<protocolChoice show="-" value="External:Link-Public-Download">Download esterno pubblico</protocolChoice-->
 	<protocolChoice show="-" value="UKST">Tipo di servizio sconosciuto</protocolChoice>
 	
 	<!-- INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service type -->
