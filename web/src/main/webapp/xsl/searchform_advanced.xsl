@@ -48,8 +48,8 @@
 						</td>
 						<!-- <td align="center" style="background: url({/root/gui/url}/images/search-bg.gif) repeat-x; width: auto; white-space: nowrap; padding-bottom: 8px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runAdvancedSearch();" >
 							<font color="#FFFFFF"><strong><xsl:value-of select="/root/gui/strings/search"/></strong></font>
-						</td> -->
-                        <td align="center" style="background-color:#2A628F; width: auto; white-space: nowrap; padding-bottom: 3px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runSimpleSearch();" >
+						</td-->
+						<td align="center" style="background-color:#1e800c; width: auto; white-space: nowrap; padding-bottom: 8px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runAdvancedSearch();" >
 							<font color="#FFFFFF"><strong><xsl:value-of select="/root/gui/strings/search"/></strong></font>
 						</td>
 						<td style="padding:0px; margin:0px;" width="12px">
