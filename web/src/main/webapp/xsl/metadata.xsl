@@ -6,7 +6,7 @@
 	xmlns:geonet="http://www.fao.org/geonetwork"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xmlns:svrl="http://purl.oclc.org/dsdl/svrl" 
-	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:gml="http://www.opengis.net/gml/3.2"
 	exclude-result-prefixes="exslt xlink gco gmd geonet svrl">
 
 	<xsl:import href="text-utilities.xsl"/>
@@ -1120,13 +1120,15 @@
 							
 							<!-- Check to simplify the date text witout the hour -->
 							<xsl:choose>
-								<xsl:when test="contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date|')
+								<xsl:when test="(contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date|')
 									    or 
 									    contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition|')
 										or 
 										contains($helpLink, '|gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition|')
 										or 
-										contains($helpLink, '|gmd:MD_Metadata/gmd:dateStamp|')">
+										contains($helpLink, '|gmd:MD_Metadata/gmd:dateStamp|'))
+										and 
+										contains($text, 'T')">
 									<xsl:call-template name="addLineBreaksAndHyperlinks">
 										<xsl:with-param name="txt" select="substring-before($text, 'T')"/>
 									</xsl:call-template>
@@ -1587,7 +1589,7 @@
 						    			</xsl:variable>
 						    			
 						    			<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
-						    				<option value="non compilato">non compilato</option>
+						    				<option value="non valutato">non valutato</option>
 						    				<option value="conforme" selected="selected">conforme</option>
 						    				<option value="non conforme">non conforme</option>
 						    			</select>
@@ -1601,7 +1603,7 @@
 						    		</xsl:otherwise>
 						    	</xsl:choose>						    	
 							</xsl:when>
-							<xsl:when test="text()='false' and $explanationValue!='non compilato'">								
+							<xsl:when test="text()='false' and $explanationValue!='non valutato'">
 								<xsl:choose>
 									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
 										
@@ -1610,7 +1612,7 @@
 										</xsl:variable>
 										
 										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
-											<option value="non compilato">non compilato</option>
+											<option value="non valutato">non valutato</option>
 											<option value="conforme">conforme</option>
 											<option value="non conforme" selected="selected">non conforme</option>
 										</select>
@@ -1624,7 +1626,7 @@
 									</xsl:otherwise>
 								</xsl:choose>								
 							</xsl:when>
-							<xsl:when test="text()='false' and $explanationValue='non compilato'">								
+							<xsl:when test="text()='false' and $explanationValue='non valutato'">
 								<xsl:choose>
 									<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
 										
@@ -1633,7 +1635,7 @@
 										</xsl:variable>
 										
 										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
-											<option value="non compilato" selected="selected">non compilato</option>
+											<option value="non valutato" selected="selected">non valutato</option>
 											<option value="conforme">conforme</option>
 											<option value="non conforme">non conforme</option>
 										</select>
@@ -1656,7 +1658,7 @@
 										</xsl:variable>
 										
 										<select class="md" style="width: 103px;" name="conformity-pass" id="_{geonet:element/@ref}_checkbox" onChange="javascript:setConformityPass(this, '_{geonet:element/@ref}', '_{$explanationRef}');">
-											<option value="non compilato" selected="selected">non compilato</option>
+											<option value="non valutato" selected="selected">non valutato</option>
 											<option value="conforme">conforme</option>
 											<option value="non conforme">non conforme</option>
 										</select>
@@ -1784,7 +1786,7 @@
 							and name(.)!='gco:ScopedName' and name(.)!='gco:Date' and name(.)!='gco:DateTime'">					
 						
 						<xsl:choose>	
-							<!-- Modificationd for the gmd:pass warkaround (CSI) -->
+							<!-- Modification for the gmd:pass warkaround (CSI) -->
 							<xsl:when test="contains($path, 'gmd:MD_Metadata/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:report/gmd:DQ_DomainConsistency/gmd:result/gmd:DQ_ConformanceResult/gmd:pass')">
 																
 								<xsl:choose>							
