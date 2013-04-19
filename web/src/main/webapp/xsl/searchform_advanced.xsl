@@ -49,7 +49,7 @@
 						<!-- <td align="center" style="background: url({/root/gui/url}/images/search-bg.gif) repeat-x; width: auto; white-space: nowrap; padding-bottom: 8px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runAdvancedSearch();" >
 							<font color="#FFFFFF"><strong><xsl:value-of select="/root/gui/strings/search"/></strong></font>
 						</td> -->
-                        <td align="center" style="background-color:#2A628F; width: auto; white-space: nowrap; padding-bottom: 3px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runSimpleSearch();" >
+                        <td align="center" style="background-color:#2A628F; width: auto; white-space: nowrap; padding-bottom: 3px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runAdvancedSearch();" >
 							<font color="#FFFFFF"><strong><xsl:value-of select="/root/gui/strings/search"/></strong></font>
 						</td>
 						<td style="padding:0px; margin:0px;" width="12px">
@@ -378,7 +378,7 @@
     								<label for="inspire_ProtectedSites"><!--Protected sites--><xsl:value-of select="/root/gui/strings/inspire/annex1/l9"/></label>
     							</span>
     						</div>    						
-							<div class="inspireThemeElement">
+    						<div class="inspireThemeElement">
     							<input type="checkbox" value="{/root/gui/strings/inspire/annex1/l10}" name="Sistemi di coordinate" id="inspire_SistemiCoordinates"/>
     							
     							<span>
@@ -391,7 +391,7 @@
     							<span>
     								<label for="inspire_SistemiGriglieGeografiche"><!--Sistemi di griglie geografiche--><xsl:value-of select="/root/gui/strings/inspire/annex1/l11"/></label>
     							</span>
-    						</div> 
+    						</div>       						
     						
     						<div class="inspireThemeTitle"><xsl:value-of select="/root/gui/strings/inspire/what/l6"/> II</div>
     						<div class="inspireThemeElement">
