@@ -29,6 +29,7 @@ import jeeves.server.ProfileManager;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+
 import org.fao.geonet.constants.Geonet;
 import org.jdom.Element;
 
@@ -59,7 +60,7 @@ public class List implements Service
 	//--------------------------------------------------------------------------
 
 	public Element exec(Element params, ServiceContext context) throws Exception
-	{
+	{		
 		UserSession session = context.getUserSession();
 
 		//--- retrieve groups for myself
@@ -105,6 +106,9 @@ public class List implements Service
 			}
 		}
 		//--- remove unwanted users
+		
+		// Add user groups
+		addGroupNames(dbms, elUsers);
 
 		for (Element elem : alToRemove) elem.detach();
 
@@ -140,6 +144,47 @@ public class List implements Service
 
 		return hs;
 	}
+
+	/**
+	 * Include user groups names to the result
+	 * 
+	 * @param dbms
+	 * @param elUsers
+	 * @throws Exception
+	 */
+	private void addGroupNames(Dbms dbms, Element elUsers) throws Exception {
+		for (Iterator it = elUsers.getChildren().iterator(); it.hasNext();) {
+			Element elRec = (Element) it.next();
+			String userId = elRec.getChildText("id");
+
+			Element groups = dbms
+					.select("SELECT Groups.name FROM UserGroups JOIN Groups WHERE userId=? AND Groups.id > ?",
+							Integer.valueOf(userId), 1);
+
+			java.util.List<Element> list = groups.getChildren();
+
+			String userGroupsText = "";
+			Set<String> hs = new HashSet<String>();
+			int i = 0;
+
+			for (Element el : list) {
+				String name = el.getChildText("name");
+				if (!hs.contains(name)) {
+					if (i > 0) {
+						userGroupsText += ",";
+					}
+					userGroupsText += name;
+					i++;
+					hs.add(name);
+				}
+			}
+
+			Element group = new Element(Geonet.Elem.GROUPS)
+					.setText(userGroupsText);
+			elRec.addContent(group);
+		}
+	}
+
 }
 
 //=============================================================================
