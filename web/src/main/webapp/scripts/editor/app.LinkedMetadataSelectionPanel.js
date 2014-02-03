@@ -9,7 +9,26 @@ app.Filter = {
 	    	// If dataset search should be restricted to ISO19139 or profil add criteria on schema. 
 	    	//, {name: 'S__schema', value: 'iso19139'}
 	    ],
-	    FEATURE_CATALOGUE: [{name: 'E__schema', value: 'iso19110'}]
+	    FEATURE_CATALOGUE: [{name: 'E__schema', value: 'iso19110'}],
+        /**
+         * Change one property in a subFilter
+         **/
+        changeFilter: function (subFilter, name, value){
+            var subFilters = app.Filter[subFilter];
+            var found = false;
+            for(var i = 0; i < subFilters.length; i++){
+                if(subFilters[i].name == name){
+                    subFilters[i].value = value; 
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if(!found){
+                subFilters.push({name: name, value: value});
+            }
+            app.Filter[subFilter] = subFilters;
+        }
 };
 
 /**
