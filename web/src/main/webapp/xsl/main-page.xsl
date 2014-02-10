@@ -249,6 +249,7 @@
 								border:false,
 								layout: 'border',
 								items: [
+									/* Hide Map viewer on MapStore integration
 									{region:'north',
 									id: 'north-map-panel',
 									title: '<xsl:value-of select="/root/gui/strings/mapViewer"/>',
@@ -266,7 +267,7 @@
 											},
 									items: [mapViewport]
 									
-									},
+									},*/
 									{region:'center', 
 									contentEl :'content',
 									border:false,
