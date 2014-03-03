@@ -35,6 +35,44 @@
 				<script type="text/javascript" src="{/root/gui/url}/scripts/lib/gn.editor.js"></script>
             </xsl:otherwise>
         </xsl:choose>
+
+		<!-- Extend editor. Override filter -->
+		<xsl:choose>
+			<xsl:when test="/root/gui/config/appFilter">
+				<xsl:if test="/root/gui/config/appFilter/service">
+					<xsl:for-each select="/root/gui/config/appFilter/service/element">
+						<script type="text/javascript">
+						var name = "<xsl:value-of select='@name'/>";
+						var value = "<xsl:value-of select='@value'/>";
+						app.Filter.changeFilter("SERVICE", name, value);
+						</script>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:if test="/root/gui/config/appFilter/dataset">
+					<xsl:for-each select="/root/gui/config/appFilter/dataset/element">
+						<script type="text/javascript">
+						var name = "<xsl:value-of select='@name'/>";
+						var value = "<xsl:value-of select='@value'/>";
+						app.Filter.changeFilter("DATASET", name, value);
+						</script>
+					</xsl:for-each>
+				</xsl:if>
+				<xsl:if test="/root/gui/config/appFilter/featureCatalog">
+					<xsl:for-each select="/root/gui/config/appFilter/featureCatalog/element">
+						<script type="text/javascript">
+						var name = "<xsl:value-of select='@name'/>";
+						var value = "<xsl:value-of select='@value'/>";
+						app.Filter.changeFilter("FEATURE_CATALOGUE", name, value);
+						</script>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- 
+					no changes
+				-->
+			</xsl:otherwise>
+		</xsl:choose>
 	
 		<xsl:call-template name="edit-header"/>
 

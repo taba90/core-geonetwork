@@ -190,6 +190,10 @@
    	 <ancestorException schema="iso19139" for="EX_TemporalExtent,CI_Date,spatialResolution"/>
      <exception schema="iso19139" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
   </inspire>
+  <rndt flat="true">
+     <ancestorException schema="iso19139" for="EX_TemporalExtent,CI_Date,spatialResolution"/>
+     <exception schema="iso19139.rndt" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
+  </rndt>
   <xml/>
  </metadata-tab>
 
@@ -307,6 +311,26 @@
 		<show-remote-search/> 
 	-->
  </search>
+
+ <!-- Override app.Filter 
+      @see app.LinkedMetadataSelectionPanel.js -->
+ <appFilter>
+  <service>
+    <element name="E_type" value="service" />
+  </service>
+  <dataset>
+    <!-- Allow to search all types as parent metadata -->
+    <element name="[E_type" value="" />
+    <!-- Used to search parent metadata: Only search dataset and series 
+    <element name="[E_type" value="dataset,series" /> -->
+  </dataset>
+  <featureCatalog>
+    <element name="E__schema" value="iso19110" />
+    <!-- If dataset search should be restricted 
+         to ISO19139 or profil add criteria on schema. 
+    <element name="S__schema" value="iso19139" /> -->
+  </featureCatalog>
+ </appFilter>
 	
 	
   <repository>
