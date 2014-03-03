@@ -158,8 +158,7 @@ public class List implements Service
 			String userId = elRec.getChildText("id");
 
 			Element groups = dbms
-					.select("SELECT Groups.name FROM UserGroups JOIN Groups WHERE userId=? AND Groups.id > ?",
-							Integer.valueOf(userId), 1);
+					.select("SELECT Groups.name FROM UserGroups, Groups WHERE UserGroups.groupId=Groups.id AND UserGroups.userId=?", Integer.valueOf(userId));
 
 			java.util.List<Element> list = groups.getChildren();
 
