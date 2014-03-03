@@ -2742,6 +2742,7 @@
 		<xsl:variable name="linkage" select="gmd:linkage/gmd:URL" />
 		<xsl:variable name="name" select="normalize-space(gmd:name/gco:CharacterString|gmd:name/gmx:MimeFileType)" />
 		<xsl:variable name="description" select="normalize-space(gmd:description/gco:CharacterString)" />
+		<xsl:variable name="uuid" select="/root/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/geonet:info/uuid" />
 
 		<xsl:choose>
 			<xsl:when test="$edit=true()">
@@ -2756,7 +2757,7 @@
 					<xsl:with-param name="schema"  select="$schema"/>
 					<xsl:with-param name="title"  select="/root/gui/strings/interactiveMap"/>
 					<xsl:with-param name="text">
-						<a href="javascript:addWMSLayer([['{$name}','{$linkage}','{$name}','{$metadata_id}']])" title="{/root/strings/interactiveMap}">
+						<a href="javascript:addWMSLayer([['{$name}','{$linkage}','{$name}','{$metadata_id}','{$uuid}']])" title="{/root/strings/interactiveMap}">
 							<xsl:choose>
 								<xsl:when test="string($description)!=''">
 									<xsl:value-of select="$description"/>
@@ -2774,7 +2775,7 @@
 					<xsl:with-param name="schema"  select="$schema"/>
 					<xsl:with-param name="title"  select="/root/gui/strings/viewInGE"/>
 					<xsl:with-param name="text">
-						<a href="{/root/gui/locService}/google.kml?uuid={/root/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/geonet:info/uuid}&amp;layers={$name}" title="{/root/strings/interactiveMap}">
+						<a href="{/root/gui/locService}/google.kml?uuid={$uuid}&amp;layers={$name}" title="{/root/strings/interactiveMap}">
 							<xsl:choose>
 								<xsl:when test="string($description)!=''">
 									<xsl:value-of select="$description"/>
@@ -3266,7 +3267,7 @@
 				<!-- no protocol, but URL is for a WMS service -->
 				<xsl:when test="(not(string($protocol)) and contains(upper-case($linkage),'SERVICE=WMS') and string($name)!='')">
 					<link type="wms">
-						<xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
+						<xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;,&#34;',$uuid,'&#34;]])')"/>
 					</link>
 				</xsl:when>
 				<xsl:when test="matches($protocol,'^WWW:DOWNLOAD-.*-http--download.*') and not(contains($linkage,$download_check))">
@@ -3279,7 +3280,7 @@
 				</xsl:when>
 				<xsl:when test="(starts-with($protocol,'OGC:WMS-') and contains($protocol,'-get-map') and string($linkage)!='' and string($name)!='') or ($protocol = 'OGC:WMS' and string($linkage)!='' and string($name)!='')">
 					<link type="wms">
-						<xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;]])')"/>
+						<xsl:value-of select="concat('javascript:addWMSLayer([[&#34;' , $name , '&#34;,&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;,&#34;',$uuid,'&#34;]])')"/>
 					</link>
 					<link type="googleearth">
 						<xsl:value-of select="concat(/root/gui/locService,'/google.kml?uuid=',$uuid,'&amp;layers=',$name)"/>

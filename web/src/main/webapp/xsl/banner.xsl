@@ -24,7 +24,7 @@
 
         <table width="100%">
 
-            <!-- title -->
+            <!-- title: Hide banner on MapStore integration
             <tr class="banner">
                 <td class="banner">
                     <img src="{/root/gui/url}/images/header-left.jpg" alt="World picture" align="top" />
@@ -32,7 +32,7 @@
                 <td align="right" class="banner">
                     <img src="{/root/gui/url}/images/header-right.gif" alt="GeoNetwork opensource logo" align="top" />
                 </td>
-            </tr>
+            </tr> -->
 
             <!-- buttons -->
             <tr class="banner">
