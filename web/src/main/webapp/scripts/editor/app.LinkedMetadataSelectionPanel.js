@@ -402,7 +402,9 @@ app.LinkedMetadataSelectionPanel = Ext.extend(Ext.FormPanel, {
     	
         var url = Env.locService + "/csw";
         app.nbResultPerPage = 20;
-        if (Ext.getCmp('nbResultPerPage')) {
+		//Fixed problem on result number field in 'Releted metadata selection' form
+		//if (Ext.getCmp('nbResultPerPage')) {
+        if (Ext.getCmp('nbResultPerPage') && Ext.getCmp('nbResultPerPage').getValue()) {
         	app.nbResultPerPage = Ext.getCmp('nbResultPerPage').getValue();
 		}
         CSWSearchTools.doCSWQueryFromForm(this.id, url, 1, this.showResults, null, Ext.emptyFn);

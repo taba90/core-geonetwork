@@ -191,13 +191,14 @@
 						displayed for both service and datasets metadata.
 						
 						Display a tree representation of parent
-					-->
+					-->					
 		        	<xsl:if test="(normalize-space($parent)!='' or $children or $edit) and geonet:info/schema != 'iso19110'">
 		        		<h3><img src="{/root/gui/url}/images/dataset.gif"
 		        			alt="{/root/gui/strings/linkedParentMetadataHelp}" title="{/root/gui/strings/linkedParentMetadataHelp}" align="absmiddle"/>
 		        			<xsl:value-of select="/root/gui/strings/linkedParentMetadata"/></h3>
-		        		
-		        		<xsl:if test="normalize-space($parent)!='' or $children">
+		        		<!-- To fix recursive call for parentid=fileid -->
+		        		<!-- <xsl:if test="normalize-space($parent)!='' or $children"> -->
+						<xsl:if test="(normalize-space($parent)!='' or $children) and $parent!=$uuid">
 		        			<ul>
 		        				<xsl:if test="normalize-space($parent)!=''">
 		        					<li>
@@ -212,8 +213,8 @@
 		        					<ul>
 		        						<li><xsl:call-template name="getMetadataTitle">
 		        								<xsl:with-param name="uuid" select="$uuid"/>
-		        							</xsl:call-template></li>
-	        							<xsl:if test="$children">
+		        							</xsl:call-template></li>	        							
+										<xsl:if test="$children ">										
 	        								<li>
 		        								<ul>
 		        									<xsl:for-each select="$children">
