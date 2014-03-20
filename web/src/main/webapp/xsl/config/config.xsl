@@ -180,7 +180,7 @@
 			<table>
 				<tr>
 					<td class="padded" width="{$width}"><label for="inspire.enable"><xsl:value-of select="/root/gui/config/enable"/></label></td>
-					<td class="padded"><input id="inspire.enable" class="content" type="checkbox"/></td>
+					<td class="padded"><input id="inspire.enable" class="content" type="checkbox" disabled="disabled"/></td>
 				</tr>
 
                 <tr>
@@ -188,7 +188,7 @@
 					<td class="padded">
                         <div id="inspire.subpanel">
                             <div align="left">
-                                <input id="inspire.enableSearchPanel" class="content" type="checkbox"/><label for="inspire.enableSearchPanel"><xsl:value-of select="/root/gui/config/metadataEnableInspireSearch"/></label>
+                                <input id="inspire.enableSearchPanel" class="content" type="checkbox" disabled="disabled"/><label for="inspire.enableSearchPanel"><xsl:value-of select="/root/gui/config/metadataEnableInspireSearch"/></label>
                             </div>
                         </div>
 					</td>
@@ -214,7 +214,7 @@
                             <input id="metadata.enableIsoView" class="content" type="checkbox"/><label for="metadata.enableIsoView"><xsl:value-of select="/root/gui/config/metadataEnableIsoView"/></label>
                         </div>
                         <div align="left">
-                            <input id="metadata.enableInspireView" class="content" type="checkbox"/><label for="metadata.enableInspireView"><xsl:value-of select="/root/gui/config/metadataEnableInspireView"/></label>
+                        	<input id="metadata.enableInspireView" class="content" type="checkbox" disabled="disabled"/><label for="metadata.enableInspireView"><xsl:value-of select="/root/gui/config/metadataEnableInspireView"/></label>
                         </div>
                         <div align="left">
                             <input id="metadata.enableXmlView" class="content" type="checkbox"/><label for="metadata.enableXmlView"><xsl:value-of select="/root/gui/config/metadataEnableXmlView"/></label>
