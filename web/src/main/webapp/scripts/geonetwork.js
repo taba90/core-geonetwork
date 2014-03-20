@@ -184,9 +184,17 @@ function get_cookie ( cookie_name )
 		adminWindow.focus()
 	}
 
-// Forms
+    // Forms
 	function goSubmit(form_name) {
-		document.forms[form_name].submit();
+		var forms = document.forms[form_name];
+
+		// Encode special character decoded from teh text area
+		if (forms.data) {
+			forms.data.value = forms.data.value.replace(/&/g, '&amp;')
+			forms.data.value = forms.data.value.replace(/&amp;([^;&]+);/g, '&$1;');
+		}
+		
+		forms.submit();
 	}
 
 	function goReset(form_name)

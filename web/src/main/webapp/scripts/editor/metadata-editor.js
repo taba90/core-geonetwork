@@ -470,6 +470,17 @@ function doSaveAction(action,validateAction)
 //  }
 
 	if (action.include('finish')) { // save and then replace editor with viewer 
+	
+		var data = $('editForm');
+		
+		var serialized = data.serialize(true);
+		
+		// Encode special character decoded from the text area
+		if(serialized.data){
+			serialized.data = serialized.data.replace(/&/g, '&amp;')
+			serialized.data = serialized.data.replace(/&amp;([^;&]+);/g, '&$1;');
+		}
+		
 		var myAjax = new Ajax.Request(
 			getGNServiceURL(action),
 			{
