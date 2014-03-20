@@ -880,6 +880,8 @@
 	<xmlInsertTitle>Importa metadato</xmlInsertTitle>
 	<xmlTab>Vista XML</xmlTab>
 	<inspireTab>Vista INSPIRE</inspireTab>
+	<ricercaPSR>OPZIONI DI RICERCA INFORMAZIONI AMBIENTALI</ricercaPSR>
+	<temaPSR>Tema Modello Pressione Stato Risposte</temaPSR>
 	<inspireSection>
 		<identification>
 			<title>Identificazione</title>
@@ -1318,6 +1320,100 @@ Questo elemento fornisce anche informazioni su eventuali tariffe richieste per a
             <theme id="inspire_MineralResources">Risorse minerarie</theme>
         </annex3>
     </inspire>
+	
+	<psr>
+		<what>
+			<l1>Fattori di pressione sull'ambiente</l1>
+			<l2>Stato delle Risorse Ambientali</l2>
+			<l3>Azioni di Monitoraggio e Controllo</l3>
+		</what>
+		<annex1>
+			<theme id="psr_distribuzione">
+				<label>A1 - distribuzione demografica e aspetti socio-economici</label>
+				<value>A1 PRESSIONE - distribuzione demografica e aspetti socio-economici</value>
+			</theme>
+			<theme id="psr_afap">
+				<label>A2 - agricoltura, foreste, allevamento, pesca</label>
+				<value>A2 PRESSIONE - agricoltura, foreste, allevamento, pesca</value>
+			</theme>
+			<theme id="psr_ind_atig">
+				<label>A3 - attivita' produttive nell'industria e nell'artigianato</label>
+				<value>A3 PRESSIONE - attivita' produttive nell'industria e nell'artigianato</value>
+			</theme>
+			<theme id="psr_cpst">
+				<label>A4 - commercio, produzione di servizi e turismo</label>
+				<value>A4 PRESSIONE - commercio, produzione di servizi e turismo</value>
+			</theme>
+			<theme id="psr_proc_energ">
+				<label>A5 - processi energetici</label>
+				<value>A5 PRESSIONE - processi energetici" name="Processi Energetici</value>
+			</theme>
+			<theme id="psr_tci">
+				<label>A6 - trasporti, comunicazioni e infrastrutture</label>
+				<value>A6 PRESSIONE - trasporti, comunicazioni e infrastrutture</value>
+			</theme>
+			<theme id="psr_rfm">
+				<label>A7 - rifiuti e flussi di materiali</label>
+				<value>A7 PRESSIONE - rifiuti e flussi di materiali</value>
+			</theme>
+			<theme id="psr_agenti_fisici">
+				<label>A8 - agenti fisici (radiazioni ionizzanti e non, rumore)</label>
+				<value>A8 PRESSIONE - agenti fisici (radiazioni ionizzanti e non, rumore)</value>
+			</theme>
+		</annex1>
+		<annex2>
+			<theme id="psr_antroposfera">
+				<label>B1 - antroposfera (utilizzo del territorio, beni culturali e paesistici)</label>
+				<value>B1 STATO - antroposfera (utilizzo del territorio, beni culturali e paesistici)</value>
+			</theme>
+			<theme id="psr_atmosfera">
+				<label>B2 - atmosfera (aria, meteorologia, climatologia)</label>
+				<value>B2 STATO - atmosfera (aria, meteorologia, climatologia)</value>
+			</theme>
+			<theme id="psr_biosfera">
+				<label>B3 - biosfera (flora, fauna, ecosistemi)</label>
+				<value>B3 STATO - biosfera (flora, fauna, ecosistemi)</value>
+			</theme>
+			<theme id="psr_idrosfera">
+				<label>B4 - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</label>
+				<value>B4 STATO - idrosfera (idrografia, qualita' delle acque, bilancio idrico)</value>
+			</theme>
+			<theme id="psr_geosfera">
+				<label>B5 - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</label>
+				<value>B5 STATO - geosfera (geologia, geomorfologia, idrogeologia, pedologia)</value>
+			</theme>
+		</annex2>
+		<annex3>
+			<theme id="psr_istituzioni">
+				<label>C1 - istituzioni e competenze della pubblica amministrazione</label>
+				<value>C1 RISPOSTE - istituzioni e competenze della pubblica amministrazione</value>
+			</theme>
+			<theme id="psr_legislazione">
+				<label>C2 - legislazione e norme tecniche</label>
+				<value>C2 RISPOSTE - legislazione e norme tecniche</value>
+			</theme>
+			<theme id="psr_ppps">
+				<label>C3 - politiche, pianificazione, programmazione e spesa</label>
+				<value>C3 RISPOSTE - politiche, pianificazione, programmazione e spesa</value>
+			</theme>
+			<theme id="psr_tutela">
+				<label>C4 - tutela, prevenzione, autorizzazioni e certificazioni ambientali</label>
+				<value>C4 RISPOSTE - tutela, prevenzione, autorizzazioni e certificazioni ambientali</value>
+			</theme>
+			<theme id="psr_monitoraggio">
+				<label>C5 - sistemi di monitoraggio e controllo</label>
+				<value>C5 RISPOSTE - sistemi di monitoraggio e controllo</value>
+			</theme>
+			<theme id="psr_rischio">
+				<label>C6 - gestione del rischio antropico e naturale</label>
+				<value>C6 RISPOSTE - gestione del rischio antropico e naturale</value>
+			</theme>
+			<theme id="psr_info_amb">
+				<label>C7 - gestione del rischio antropico e naturale</label>
+				<value>C7 RISPOSTE - gestione del rischio antropico e naturale</value>
+			</theme>
+		</annex3>
+	</psr>
 
 	<selectMetadataFileAlert>Selezionare un file di metadati da inserire</selectMetadataFileAlert>        
 	<showMoreSearchFields>Mostra/Nascondi campi di ricerca</showMoreSearchFields>

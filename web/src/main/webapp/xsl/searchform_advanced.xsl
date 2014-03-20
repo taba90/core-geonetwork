@@ -13,9 +13,13 @@
 
 		<xsl:variable name="formName">
 			<xsl:choose>
-     		<xsl:when test="$remote">remote_search_form</xsl:when>
-      	<xsl:otherwise>advanced_search_form</xsl:otherwise>
-    	</xsl:choose>
+	     		<xsl:when test="$remote">remote_search_form</xsl:when>
+		      	<xsl:otherwise>advanced_search_form</xsl:otherwise>
+	    	</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:variable name="psrOpts">
+			<xsl:value-of select="/root/gui/config/psrOpts/enabled"/>
 		</xsl:variable>
 			
 		<form name="{$formName}" id="{$formName}">
@@ -34,18 +38,23 @@
 		
 			<xsl:comment>ADV SEARCH: WHEN?/SERVERS?</xsl:comment>
 			<xsl:choose>
-      	<xsl:when test="$remote">
-        	<xsl:call-template name="adv_servers"></xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise>
-        	<xsl:call-template name="adv_when"></xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
+		      	<xsl:when test="$remote">
+		        	<xsl:call-template name="adv_servers"></xsl:call-template>
+		        </xsl:when>
+		        <xsl:otherwise>
+		        	<xsl:call-template name="adv_when"></xsl:call-template>
+		        </xsl:otherwise>
+		    </xsl:choose>
 		
 			<xsl:comment>ADV SEARCH: INSPIRE</xsl:comment>
 			<xsl:if test="/root/gui/env/inspire/enable = 'true' and /root/gui/env/inspire/enableSearchPanel = 'true' and not($remote)">
 				<xsl:call-template name="adv_inspire"></xsl:call-template>
 			</xsl:if>
+		 	
+		 	<xsl:if test="$psrOpts = 'true'">
+		 		<xsl:comment>ADV SEARCH: PSR</xsl:comment>
+		 		<xsl:call-template name="adv_psr"></xsl:call-template>
+		 	</xsl:if>
 
 			<!-- Search button -->
 			<div>		
@@ -337,7 +346,7 @@
         INSPIRE
     ======================================= ===================== -->
 <xsl:template name="adv_inspire">
-    <h1 style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleInspire()" style="margin-right:2px"><img id="i_inspire" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a><xsl:value-of select="/root/gui/strings/inspire/what/l1"/></h1>
+	<h1 style="margin-top:5px;margin-bottom:5px"><a href="#" onclick="toggleInspire('inspiresearchfields', 'i_inspire')" style="margin-right:2px"><img id="i_inspire" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" /></a><xsl:value-of select="/root/gui/strings/inspire/what/l1"/></h1>
 
     <!-- INSPIRE search elements -->
     <div id="inspiresearchfields" style="display:none">
@@ -798,6 +807,70 @@
 	</div>
 
 </xsl:template>
+	
+	
+	<!-- ============================================================ 
+		PSR 
+	============================================================= -->
+	<xsl:template name="adv_psr">
+		
+		<h1 class="labelFieldSmall" style="margin-top:5px;margin-bottom:5px">
+			<a href="#" onclick="toggleInspire('stateResponse', 'i_inspire_state_response')" style="margin-right:2px">
+				<img id="i_inspire_state_response" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt="" />
+			</a>
+			<xsl:value-of select="/root/gui/strings/ricercaPSR"/>
+		</h1>
+		
+		<div id="stateResponse" style="display:none">
+			<fieldset>
+				<legend><xsl:value-of select="/root/gui/strings/temaPSR"/></legend>
+				
+				<div id="inspirethemesdivPsr">
+					<div>
+						
+						<div class="inspireThemeTitle"><xsl:value-of select="/root/gui/strings/psr/what/l1"/></div>
+						
+						<xsl:for-each select="/root/gui/strings/psr/annex1/theme">
+							<xsl:sort select="." />
+							<div class="inspireThemeElement">
+								<input type="checkbox" value="{./value/text()}" name="keyword" id="{@id}"/>
+								
+								<span>
+									<label for="{@id}"><xsl:value-of select="./label/text()"/></label>
+								</span>
+							</div>
+						</xsl:for-each>
+						
+						<div class="inspireThemeTitle"><xsl:value-of select="/root/gui/strings/psr/what/l2"/></div>
+						
+						<xsl:for-each select="/root/gui/strings/psr/annex2/theme">
+							<xsl:sort select="." />
+							<div class="inspireThemeElement">
+								<input type="checkbox" value="{./value/text()}" name="keyword" id="{@id}"/>
+								
+								<span>
+									<label for="{@id}"><xsl:value-of select="./label/text()"/></label>
+								</span>
+							</div>
+						</xsl:for-each>
+						
+						<div class="inspireThemeTitle"><xsl:value-of select="/root/gui/strings/psr/what/l3"/></div>
+						
+						<xsl:for-each select="/root/gui/strings/psr/annex3/theme">
+							<xsl:sort select="." />
+							<div class="inspireThemeElement">
+								<input type="checkbox" value="{./value/text()}" name="keyword" id="{@id}"/>
+								
+								<span>
+									<label for="{@id}"><xsl:value-of select="./label/text()"/></label>
+								</span>
+							</div>
+						</xsl:for-each>						
+					</div>
+				</div>
+			</fieldset>
+		</div>		
+	</xsl:template>
 
 	<!-- ============================================================ 
 		WHEN

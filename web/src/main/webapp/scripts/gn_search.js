@@ -1146,7 +1146,7 @@ function toggleMoreFields() {
   }
 }
 
-function toggleInspire() {
+/*function toggleInspire() {
   $("inspiresearchfields").toggle();
 
   var src = $("i_inspire").getAttribute('src');
@@ -1158,6 +1158,21 @@ function toggleInspire() {
 	$("i_inspire").setAttribute('src', src +'minus.png');
   } else {
 	$("i_inspire").setAttribute('src', src +'plus.gif');
+  }
+}*/
+
+function toggleInspire(div, img) {
+  $(div).toggle();
+
+  var src = $(img).getAttribute('src');
+  var ndx = src.lastIndexOf('/');
+
+  src = src.substring(0, ndx+1);
+
+  if ($(div).visible() == true) {
+	$(img).setAttribute('src', src +'minus.png');
+  } else {
+	$(img).setAttribute('src', src +'plus.gif');
   }
 }
 
