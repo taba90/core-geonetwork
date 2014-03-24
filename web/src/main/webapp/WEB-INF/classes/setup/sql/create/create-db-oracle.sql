@@ -472,3 +472,38 @@ ALTER TABLE UserGroups ADD FOREIGN KEY (userId) REFERENCES Users (id);
 ALTER TABLE UserGroups ADD FOREIGN KEY (groupId) REFERENCES Groups (id);
 ALTER TABLE MetadataNotifications ADD FOREIGN KEY (notifierId) REFERENCES MetadataNotifiers(id);
 ALTER TABLE CswServerCapabilitiesInfo ADD FOREIGN KEY (langId) REFERENCES Languages (id);
+CREATE TABLE Province
+  (
+    id     int,
+
+    code    char(3) not null,
+    label   varchar(96)   not null,
+
+    north  float   not null,
+    south  float   not null,
+    west   float   not null,
+    east   float   not null,
+
+    UNIQUE(code),
+    primary key(id)
+  );
+
+  
+CREATE TABLE Comuni
+  (
+    id     int,
+
+    code    int not null,
+    label   varchar(96)   not null,
+
+    north  float   not null,
+    south  float   not null,
+    west   float   not null,
+    east   float   not null,
+
+    provCode    char(3) not null,
+
+    primary key(id)
+  );
+
+ALTER TABLE Comuni ADD FOREIGN KEY (provCode) REFERENCES Province(code);

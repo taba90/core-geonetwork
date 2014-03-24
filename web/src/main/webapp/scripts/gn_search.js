@@ -90,15 +90,27 @@ function runSimpleSearch(type)
 function resetWherePars() {
 
   setParam('region_simple',null);
-	// Clear also region in advanced and remote search to keep synch
-	setParam('region',null);
-	setParam('region_remote',null);
+  setParam('comune_simple',null);
+  
+  // Clear also region in advanced and remote search to keep synch
+  setParam('region',null);
+  setParam('comune',null);
+  
+  $("comune_simple").disabled = true;
+  $("comune").disabled = true;
+  
+  $("comune_simple").value = "";
+  $("comune").value =  "";
+  $("region_simple").value =  "";
+  $("region").value =  "";  
+  
+  setParam('region_remote',null);
     
   setParam('relation_simple','overlaps');	
   setParam('relation','overlaps');	
   setParam('relation_remote','overlaps');	
 
-	resetMinimaps();
+  resetMinimaps();
 }
 
 function resetSimpleSearch()
@@ -559,6 +571,162 @@ function rateMetadata_OK(xmlRes)
 *** GET BOUNDINGBOX COORDINATES FOR A REGION
 ********************************************************************/
 
+function doRegionSearchSimple() {
+  doRegionSearch('region_simple');
+  var r = $('region_simple').value;
+  $('region').value = r;
+  
+  if(r == "" || r == "userdefined") {
+	$("comune_simple").disabled = true;
+	$("comune").disabled = true;
+  }else{
+	$("comune_simple").disabled = false;
+	$("comune").disabled = false;
+  }
+  
+  if( $('comune') ){
+	doAjaxMunicipality(r);
+  }
+}
+
+function comuneSimpleSelected() {
+  doRegionSearch('comune_simple');
+  $('comune').value = $('comune_simple').value;
+}
+
+function doRegionSearchAdvanced(loadingImg) {
+  doRegionSearch('region');
+  var r = $('region').value;
+  $('region_simple').value = r;  
+  
+  if(r == "" || r == "userdefined") {
+	$("comune_simple").disabled = true;
+	$("comune").disabled = true;
+  }else{
+	$("comune_simple").disabled = false;
+	$("comune").disabled = false;
+  }
+  
+  if( $('comune') ){
+	doAjaxMunicipality($('region').value, loadingImg);
+  }
+}
+
+function comuneAdvancedSelected() {
+  doRegionSearch('comune');
+  $('comune_simple').value = $('comune').value;
+}
+
+function doAjaxMunicipality(provId, loadingImg){    
+
+    if(provId && provId != "" && provId != 'userdefined'){
+	    
+		var envURL = Env.url + (loadingImg ? loadingImg : "/images/grid-loading.gif");
+		document.getElementById('comunegif').innerHTML = "<img src=\"" + envURL + "\">";
+		
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provId=" + provId;
+		
+		Ext.Ajax.request({
+		   url: serviceURL,
+		   method: 'GET',
+		   timeout: 60000,
+		   success: function(response, opts){
+		        // Cleaning up the regions drop downs
+                resetRegionsComboBox();
+					
+			    // parse the response
+				var xmlFormat = new OpenLayers.Format.XML();        
+				var xml = xmlFormat.read(response.responseText);				
+				xml = xml.getElementsByTagName("response")[0].childNodes;
+				
+				// for adv search
+				/*var firstOpt = createComuniFirstOption();
+				document.getElementById("comune").appendChild(firstOpt);		*/
+
+				// for simple search
+                /*firstOpt = createComuniFirstOption();				
+			    document.getElementById("comune_simple").appendChild(firstOpt);*/
+				
+				var size = xml.length;
+				for(var i=0; i<size; i++){
+					if(xml[i].nodeName == 'record'){											
+						var id = "";
+						var label = "";
+						if(Ext.isIE){
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].text;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].text;
+						}else{
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+						}
+						
+						// for adv search
+						var option = createComuniOption(id, label);
+						document.getElementById("comune").appendChild(option);
+						// for simple search
+						option = createComuniOption(id, label);
+						document.getElementById("comune_simple").appendChild(option);
+					}
+				}
+		   },
+		   failure:  function(response, opts){
+				document.getElementById('comunegif').innerHTML = "";
+				Ext.Msg.show({
+				   title: "Caricamento Comuni",
+				   msg: "Errore nel caricamento dei comuni associati alla provincia selezionata: " + response.status,
+				   buttons: Ext.Msg.OK,
+				   icon: Ext.MessageBox.ERROR
+				});
+		   }
+		});
+	} else {
+        resetRegionsComboBox();
+
+        // for adv search
+        /*var firstOpt = createComuniFirstOption();
+        document.getElementById("comune").appendChild(firstOpt);
+
+        // for simple search
+        firstOpt = createComuniFirstOption();
+        document.getElementById("comune_simple").appendChild(firstOpt);*/
+    }
+}
+
+function resetRegionsComboBox(){
+
+    // SIMPLE FORM
+    resetComboAmbito('comune_simple');
+	// ADV FORM
+	resetComboAmbito('comune');
+	document.getElementById('comunegif').innerHTML = "";
+}
+function resetComboAmbito(id){
+    var firstOpt = $$('#'+id + ' option').first();
+    var comuni =$(id);
+    var sel =document.getElementById(id);
+	sel.innerHTML="";
+    sel.appendChild(firstOpt);
+}
+
+function selectAnyComboAmbito(id){
+    var firstOpt = $(id).options[0].selected=true;
+	
+}
+function createComuniFirstOption(){
+	var firstOpt = document.createElement("option"); 
+	firstOpt.value = -1;
+	firstOpt.innerHTML = "- Qualunque -";
+
+	return firstOpt;
+}
+
+function createComuniOption(id, label){
+	var option = document.createElement("option"); 
+	option.value = id;
+	option.innerHTML = label;
+	
+	return option;
+}
 function doRegionSearch(regionlist)
 {
     var region = $(regionlist).value;
@@ -566,56 +734,71 @@ function doRegionSearch(regionlist)
 			resetMinimaps();
     }  else if (region=="userdefined") {
 		// Do nothing. AoI is set by the user
-    } else {
-        getRegion(region);
+    } else
+    {
+        getRegion(regionlist, region);
     }
 
-		$('region').value = $(regionlist).value;
+		/*$('region').value = $(regionlist).value;
 		$('region_remote').value = $(regionlist).value;
-		$('region_simple').value = $(regionlist).value;
+		$('region_simple').value = $(regionlist).value;*/
 }
 
-function getRegion(region)
+function getRegion(regionlist, regionId)
 {
-    if (region) 
-			var pars = "id="+encodeURIComponent(region);
+    if(regionId)
+        var pars = "id="+regionId;
 
+	var url = (regionlist == 'region' || regionlist == 'region_simple') ? 'xml.csi.province.get' : 'xml.csi.comuni.get';
+	url =  getGNServiceURL(url);
     var myAjax = new Ajax.Request(
-        getGNServiceURL('xml.region.get'),
+//        getGNServiceURL('xml.region.get'),
+        url,
         {
             method: 'get',
             parameters: pars,
-            onSuccess: function(req) {
-    					//Response received
-    					var node = req.responseXML;
-    					var northcc = xml.evalXPath(node, 'regions/region/north');
-    					var southcc = xml.evalXPath(node, 'regions/region/south');
-    					var eastcc = xml.evalXPath(node, 'regions/region/east');
-    					var westcc = xml.evalXPath(node, 'regions/region/west');
-
-    					$('northBL').value=northcc;
-    					$('southBL').value=southcc;
-    					$('eastBL').value=eastcc;
-    					$('westBL').value=westcc;
-    					$('northBL_remote').value=northcc;
-    					$('southBL_remote').value=southcc;
-    					$('eastBL_remote').value=eastcc;
-    					$('westBL_remote').value=westcc;
-    					$('northBL_simple').value=northcc;
-    					$('southBL_simple').value=southcc;
-    					$('eastBL_simple').value=eastcc;
-    					$('westBL_simple').value=westcc;
-
-							GeoNetwork.minimapSimpleSearch.updateExtentBox();
-							GeoNetwork.minimapAdvancedSearch.updateExtentBox();
-							GeoNetwork.minimapRemoteSearch.updateExtentBox();
-	
-						},
+            onSuccess: getRegion_complete,
             onFailure: getRegion_error
         }
     );
 }
 
+function getRegion_complete(req) {
+    //Response received
+    var node = req.responseXML;
+    var northcc = xml.evalXPath(node, 'response/record/north');
+    var southcc = xml.evalXPath(node, 'response/record/south');
+    var eastcc = xml.evalXPath(node, 'response/record/east');
+    var westcc = xml.evalXPath(node, 'response/record/west');
+
+	$('northBL').value=northcc;
+	$('southBL').value=southcc;
+	$('eastBL').value=eastcc;
+	$('westBL').value=westcc;
+	$('northBL_remote').value=northcc;
+	$('southBL_remote').value=southcc;
+	$('eastBL_remote').value=eastcc;
+	$('westBL_remote').value=westcc;
+	$('northBL_simple').value=northcc;
+	$('southBL_simple').value=southcc;
+	$('eastBL_simple').value=eastcc;
+	$('westBL_simple').value=westcc;
+
+	GeoNetwork.minimapSimpleSearch.updateExtentBox();
+	GeoNetwork.minimapAdvancedSearch.updateExtentBox();
+	GeoNetwork.minimapRemoteSearch.updateExtentBox();
+							
+    /*$('northBL').value=northcc;
+    $('southBL').value=southcc;
+    $('eastBL').value=eastcc;
+    $('westBL').value=westcc;
+
+	GeoNetwork.minimapSimpleSearch.updateExtentBox();
+	GeoNetwork.minimapAdvancedSearch.updateExtentBox();*/
+	
+    //im_mm_redrawAoI();
+    //im_mm_zoomToAoI();
+}
 
 function getRegion_error() {
     alert(translate("error"));
@@ -952,7 +1135,9 @@ function getCheckedValue(radioObj) {
 function setParam(p, val)
 {
   var pL = $(p);
-  if (pL) pL.value = val;
+  if (pL) {
+	pL.value = val;
+  }
 }
 
 function setBoolParam(p, val)

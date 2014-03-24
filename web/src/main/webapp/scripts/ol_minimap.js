@@ -250,13 +250,17 @@ GeoNetwork.miniapp = function() {
         },
         
         synch: function(regionIndex, eBox) {
-            $(regionControl).selectedIndex = regionIndex;
-						if (eBox && extentBox) {
-							extentBox.minxelement.set({value: eBox.minxelement.getValue()});
-							extentBox.minyelement.set({value: eBox.minyelement.getValue()});
-							extentBox.maxxelement.set({value: eBox.maxxelement.getValue()});
-							extentBox.maxyelement.set({value: eBox.maxyelement.getValue()});
-						}
+            var r = $(regionControl);
+			if(r){
+				r.selectedIndex = regionIndex;
+			}
+						
+			if (eBox && extentBox) {
+				extentBox.minxelement.set({value: eBox.minxelement.getValue()});
+				extentBox.minyelement.set({value: eBox.minyelement.getValue()});
+				extentBox.maxxelement.set({value: eBox.maxxelement.getValue()});
+				extentBox.maxyelement.set({value: eBox.maxyelement.getValue()});
+			}
 
             updateMap(false);
         },

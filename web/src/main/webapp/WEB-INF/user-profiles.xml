@@ -5,6 +5,10 @@
     <profile extends="Editor" name="Reviewer"></profile>
     <profile extends="RegisteredUser" name="Editor"></profile>
     <profile extends="Guest" name="RegisteredUser"></profile>
-    <profile name="Guest"></profile>
     <profile extends="RegisteredUser" name="Monitor"></profile>
+    <profile name="Guest">
+	    <allow service="xml.csi.comuni.get"/>
+        <allow service="xml.csi.comuni.getByProv"/>
+        <allow service="xml.csi.province.get"/>
+	</profile>
 </profiles>
