@@ -91,7 +91,12 @@
 				<call name="position" 	   class =".guiservices.util.GetPositionMD"/>
 				<call name="groups"        class =".guiservices.groups.GetMine"/>
 				<call name="relation"  	   class =".guiservices.metadata.GetRelated"/>
-				<call name="regions"       class =".guiservices.regions.Get"/>
+<!--				<call name="regions"       class =".guiservices.regions.Get"/>-->
+                <call name="regions" class="jeeves.services.db.Select">
+                    <param name="db" value="main-db" />
+                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+                </call>
+
 				<call name="sources"       class =".guiservices.util.Sources"/>
 				<call name="isoLang"       class =".guiservices.isolanguages.Get"/>
 				<call name="subtemplates"  class ="jeeves.services.db.Select">
@@ -110,7 +115,12 @@
 				<call name="currTab"       class =".guiservices.util.GetCurrentMDTab"/>
 				<call name="position" 		 class =".guiservices.util.GetPositionMD"/>
 				<call name="groups"        class =".guiservices.groups.GetMine"/>
-				<call name="regions"       class =".guiservices.regions.Get"/>
+<!--				<call name="regions"       class =".guiservices.regions.Get"/>-->
+                <call name="regions" class="jeeves.services.db.Select">
+                    <param name="db" value="main-db" />
+                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+                </call>
+
 				<call name="sources"       class =".guiservices.util.Sources"/>
 				<call name="isoLang"       class =".guiservices.isolanguages.Get"/>
 				<call name="subtemplates"  class ="jeeves.services.db.Select">
@@ -130,7 +140,12 @@
 				<call name="currTab"       class =".guiservices.util.GetCurrentMDTab"/>
 				<call name="position" 		 class =".guiservices.util.GetPositionMD"/>
 				<call name="groups"        class =".guiservices.groups.GetMine"/>
-				<call name="regions"       class =".guiservices.regions.Get"/>
+<!--				<call name="regions"       class =".guiservices.regions.Get"/>-->
+                <call name="regions" class="jeeves.services.db.Select">
+                    <param name="db" value="main-db" />
+                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+                </call>
+
 				<call name="sources"       class =".guiservices.util.Sources"/>
 				<call name="isoLang"       class =".guiservices.isolanguages.Get"/>
 				<call name="subtemplates"  class ="jeeves.services.db.Select">

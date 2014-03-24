@@ -697,6 +697,75 @@ function handleCheckboxAsBoolean (input, ref) {
 	}
 }
 
+function getMunicipality(provLabel){    
+    if(provLabel && provLabel != "" && provLabel != 'userdefined' && $('comune-medatata')){
+		
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provName=" + provLabel;
+		
+		Ext.Ajax.request({
+		   url: serviceURL,
+		   method: 'GET',
+		   timeout: 60000,
+		   success: function(response, opts){
+				document.getElementById('comune-medatata').innerHTML = "";
+					
+				var xmlFormat = new OpenLayers.Format.XML();        
+				var xml = xmlFormat.read(response.responseText);			
+				
+				xml = xml.getElementsByTagName("response")[0].childNodes;
+				
+				var size = xml.length;
+				
+				var firstOpt = document.createElement("option"); 
+				firstOpt.value = -1;
+				firstOpt.innerHTML = "";
+				document.getElementById("comune-medatata").appendChild(firstOpt);
+				
+				for(var i=0; i<size; i++){
+					if(xml[i].nodeName == 'record'){
+						var option = document.createElement("option"); 
+						
+						var id = "";
+						var label = "";
+						var west = "";
+						var south = "";
+						var east = "";
+						var north = "";
+						
+						if(Ext.isIE){
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].text;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].text;
+							west = xml[i].getElementsByTagName("west")[0].childNodes[0].text;
+							south = xml[i].getElementsByTagName("south")[0].childNodes[0].text;
+							east = xml[i].getElementsByTagName("east")[0].childNodes[0].text;
+							north = xml[i].getElementsByTagName("north")[0].childNodes[0].text;
+						}else{
+							id = xml[i].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+							label = xml[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+							west = xml[i].getElementsByTagName("west")[0].childNodes[0].nodeValue;
+							south = xml[i].getElementsByTagName("south")[0].childNodes[0].nodeValue;
+							east = xml[i].getElementsByTagName("east")[0].childNodes[0].nodeValue;
+							north = xml[i].getElementsByTagName("north")[0].childNodes[0].nodeValue;
+						}
+						
+						option.value = west + "," + east + "," + south + "," + north;
+						option.innerHTML = label;
+						document.getElementById("comune-medatata").appendChild(option);
+					}
+				}
+		   },
+		   failure:  function(response, opts){
+				Ext.Msg.show({
+				   title: "Caricamento Comuni",
+				   msg: "Errore nel caricamento dei comuni associati alla provincia selezionata: " + response.status,
+				   buttons: Ext.Msg.OK,
+				   icon: Ext.MessageBox.ERROR
+				});
+		   }
+		});
+	}
+}
+
 /**
  * Update bounding box form element.
  * If description id is provided, set description character string.

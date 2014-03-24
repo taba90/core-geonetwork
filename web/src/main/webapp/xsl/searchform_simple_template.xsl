@@ -5,6 +5,10 @@
 
 
 	<xsl:template name="simple_search_panel">
+	
+	 <xsl:variable name="municipalitySearch">
+			<xsl:value-of select="/root/gui/config/municipalitySearch/enabled"/>
+	 </xsl:variable>
 		
 	 <form name="simple_search_form" id="simple_search_form">
 		<div style="border-bottom: 1px solid">
@@ -36,8 +40,58 @@
 					value="{/root/gui/searchDefaults/southBL}"/>
 				<input type="hidden" class="content" id="relation_simple" name="relation" size="7" value="overlaps"/>
 							
-				<div style="margin-left: 60px; margin-top:5px">
+				<div style="margin-top:5px">
 					<!-- Region -->
+					<span class="labelField">Ambito</span>
+					<select class="content" id="region_simple" onchange="javascript:doRegionSearchSimple();">
+						<option value="">
+							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="/root/gui/strings/any"/>
+						</option>
+						<option value="userdefined">
+							<xsl:if test="/root/gui/searchDefaults/theme='_userdefined_'">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="/root/gui/strings/userDefined"/>
+						</option>
+
+						<xsl:for-each select="/root/gui/regions/record">
+<!--							<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+							<xsl:sort select="label" order="ascending"/>
+							<option>
+								<xsl:if test="id=/root/gui/searchDefaults/region">
+									<xsl:attribute name="selected">selected</xsl:attribute>
+								</xsl:if>
+								<xsl:attribute name="value">
+									<xsl:value-of select="id"/>
+								</xsl:attribute>
+<!--								<xsl:value-of select="label/child::*[name() = $lang]"/>-->
+                                <xsl:value-of select="label"/>
+							</option>
+						</xsl:for-each>
+					</select>			
+				</div>
+				
+				<xsl:if test="$municipalitySearch = 'true'">
+					<div style="margin-top:5px">
+						<!-- Comuni -->						
+					    <span class="labelField">Sottoambito</span>
+						<select disabled="disabled" class="content" style="width: 163px;" id="comune_simple" onchange="javascript:comuneSimpleSelected();">
+								<option value="">
+									<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+										<xsl:attribute name="selected">selected</xsl:attribute>
+									</xsl:if>
+									<xsl:value-of select="/root/gui/strings/any"/>
+								</option>
+							</select>				
+					</div>
+				</xsl:if>
+			</div>
+			
+			<!-- Region Old
+			<div style="margin-left: 60px; margin-top:5px">
 					<select class="content" name="region_simple" id="region_simple" onchange="javascript:doRegionSearch(this.id);">
 							<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
@@ -65,8 +119,7 @@
 							</option>
 						</xsl:for-each>
 					</select>			
-				</div>
-			</div>
+			</div>-->
 			
 			<!-- Search button -->
 			<div>

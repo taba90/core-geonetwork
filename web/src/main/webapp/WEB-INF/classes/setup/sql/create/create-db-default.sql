@@ -502,3 +502,38 @@ CREATE TABLE ServiceParameters
         
     foreign key(service) references Services(id)
   );
+  
+CREATE TABLE Province
+  (
+    id     int,
+
+    code    char(3) not null,
+    label   varchar(96)   not null,
+
+    north  float   not null,
+    south  float   not null,
+    west   float   not null,
+    east   float   not null,
+
+    UNIQUE(code),
+    primary key(id)
+  );
+
+  
+CREATE TABLE Comuni
+  (
+    id     int,
+
+    code    int not null,
+    label   varchar(96)   not null,
+
+    north  float   not null,
+    south  float   not null,
+    west   float   not null,
+    east   float   not null,
+
+    provCode    char(3) not null,
+    foreign key(provCode) references Province(code),
+
+    primary key(id)
+  );

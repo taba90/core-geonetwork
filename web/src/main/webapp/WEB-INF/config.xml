@@ -397,7 +397,11 @@
 				<call name="status" class=".services.main.Info">
 					<param name="type" value="status" />
 				</call>
-				<call name="regions" class=".guiservices.regions.Get" />
+				<!--call name="regions" class=".guiservices.regions.Get" /-->
+				<call name="regions" class="jeeves.services.db.Select">
+		                    <param name="db" value="main-db" />
+		                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+		                </call>
 				<call name="sources" class=".guiservices.util.Sources" />
 				<call name="repositories" class=".services.main.Info">
 					<param name="type" value="z3950repositories" />
@@ -519,7 +523,11 @@
 				<call name="keywords" class=".guiservices.keywords.Get" />
 				<call name="groups" class=".guiservices.groups.GetMine" />
 				<call name="categories" class=".services.category.List" />
-				<call name="regions" class=".guiservices.regions.Get" />
+				<!--<call name="regions" class=".guiservices.regions.Get" /> -->
+		                <call name="regions" class="jeeves.services.db.Select">
+		                    <param name="db" value="main-db" />
+		                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+		                </call>
 				<call name="sources" class=".guiservices.util.Sources" />
 				<call name="repositories" class=".services.main.Info">
 					<param name="type" value="z3950repositories" />
@@ -553,7 +561,12 @@
 				<call name="keywords" class=".guiservices.keywords.Get" />
 				<call name="groups" class=".guiservices.groups.GetMine" />
 				<call name="categories" class=".services.category.List" />
-				<call name="regions" class=".guiservices.regions.Get" />
+<!--				<call name="regions" class=".guiservices.regions.Get" /> -->
+                <call name="regions" class="jeeves.services.db.Select">
+                    <param name="db" value="main-db" />
+                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
+                </call>
+
 				<call name="sources" class=".guiservices.util.Sources" />
 				<call name="repositories" class=".services.main.Info">
 					<param name="type" value="z3950repositories" />
@@ -1476,6 +1489,16 @@
 		<service name="crs.get">
 			<class name=".services.crs.GetCRS" />
 			<output sheet="crs.xsl" contentType="text/xml; charset=UTF-8" />
+		</service>
+		
+		<service name="xml.csi.comuni.getByProv">
+			<class name=".services.csi.GetComuniByProv" />
+		</service>
+		<service name="xml.csi.comuni.get">
+			<class name=".services.csi.GetComune" />
+		</service>
+		<service name="xml.csi.province.get">
+			<class name=".services.csi.GetProvincia" />
 		</service>
 
 		<service name="system.properties.set">

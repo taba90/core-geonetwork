@@ -16,6 +16,10 @@
 			   <!-- There always has to be one intercept url you can replace it -->
 			    <sec:intercept-url pattern="/srv/.*/null!?.*" access="hasRole('Administrator')"></sec:intercept-url>
 			    
+				
+                <sec:intercept-url pattern="/srv/[a-z]{2,3}/xml.csi.comuni.getByProv!?.*" access="permitAll"></sec:intercept-url>
+                <sec:intercept-url pattern="/srv/[a-z]{2,3}/xml.csi.comuni.get!?.*" access="permitAll"></sec:intercept-url>
+				<sec:intercept-url pattern="/srv/[a-z]{2,3}/xml.csi.province.get!?.*" access="permitAll"></sec:intercept-url>
 			</sec:filter-security-metadata-source>
 		</property>
 	</bean>
