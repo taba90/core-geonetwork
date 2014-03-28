@@ -129,7 +129,11 @@
       <xsl:when test="(starts-with($protocol,'WWW:LINK-') or starts-with($protocol,'WWW:DOWNLOAD-')) and $mimeType!=''">
         <xsl:value-of select="$mimeType"/>
       </xsl:when>
-      <xsl:when test="starts-with($protocol,'WWW:LINK')">text/html</xsl:when>
+      <!--xsl:when test="starts-with($protocol,'WWW:LINK')">text/html</xsl:when-->
+      
+  	  <!-- New: modified adding 'WWW:EXTDOWNLOAD-' in order to manage externals download enabling the download button in result-list -->
+  	  <xsl:when test="starts-with($protocol,'WWW:LINK-') or starts-with($protocol,'WWW:EXTDOWNLOAD-')">text/html</xsl:when>
+      
       <xsl:when test="starts-with($protocol,'WWW:DOWNLOAD') and contains($linkage,'.jpg')">image/jpeg</xsl:when>
       <xsl:when test="starts-with($protocol,'WWW:DOWNLOAD') and contains($linkage,'.png')">image/png</xsl:when>
       <xsl:when test="starts-with($protocol,'WWW:DOWNLOAD') and contains($linkage,'.gif')">image/gif</xsl:when>
