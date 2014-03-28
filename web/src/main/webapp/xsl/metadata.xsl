@@ -1536,9 +1536,11 @@
 		<xsl:param name="edit"/>
 
 		<!-- <xsl:if test="$link='' and not(contains(name(.),'geonet:')) and $edit"> -->
-		<xsl:if test="geonet:element/@min='1' and $edit">
+		
+		<!-- Rmoved red asterix as custom modification -->
+		<!--xsl:if test="geonet:element/@min='1' and $edit">
 			<sup><font size="-1" color="#FF0000">&#xA0;*</font></sup>
-		</xsl:if>
+		</xsl:if-->
 	</xsl:template>
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
