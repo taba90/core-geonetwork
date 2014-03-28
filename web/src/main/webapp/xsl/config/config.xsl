@@ -229,6 +229,7 @@
                             <option id="metadata.defaultView.Simple" value="simple"><xsl:value-of select="/root/gui/config/metadataSimpleView"/></option>
                             <option id="metadata.defaultView.Advanced" value="advanced"><xsl:value-of select="/root/gui/config/metadataAdvancedView"/></option>
                             <option id="metadata.defaultView.Iso" value="iso"><xsl:value-of select="/root/gui/config/metadataIsoView"/></option>
+							<option id="metadata.defaultView.metadataRNDTView" value="rndt"><xsl:value-of select="/root/gui/config/metadataRNDTView"/></option>
                             <option id="metadata.defaultView.Inspire" value="inspire"><xsl:value-of select="/root/gui/config/metadataInspireView"/></option>
                             <option id="metadata.defaultView.Xml" value="xml"><xsl:value-of select="/root/gui/config/metadataXmlView"/></option>
                         </select>

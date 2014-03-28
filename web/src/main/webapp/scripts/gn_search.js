@@ -955,8 +955,8 @@ function gn_showSingleMet(pars)
             onFailure: gn_search_error// FIXME
         });
 }
-function gn_showMetadata(id) {
-	gn_showMetadataTab(id, 'simple');
+function gn_showMetadata(id, tab) {
+	gn_showMetadataTab(id, (tab ? tab : 'simple'));
 }
 function gn_showMetadataTab(id, currTab)
 {
