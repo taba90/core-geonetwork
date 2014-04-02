@@ -216,11 +216,21 @@
                             <xsl:attribute name="type">application/xml</xsl:attribute>
                         </xsl:element>
                     </xsl:when>
-				<xsl:otherwise>
-                    <a href="{$serviceUrl}" target="_blank" title="{$exportLabel}">
-						<img src="{/root/gui/url}/images/xml.png" alt="{$exportLabel}" title="{$exportLabel}" border="0"/>
-					</a>
-				</xsl:otherwise>
+					<xsl:otherwise>
+						<!-- Modification in order to introduce specific icon for rndt -->
+						<xsl:choose>
+							<xsl:when test="$name = 'rndt2rndt'">
+								<a href="{$serviceUrl}" target="_blank" title="{$exportLabel}">
+									<img src="{/root/gui/url}/images/rndt.jpg" width="16" height="16" alt="{$exportLabel}" title="{$exportLabel}" border="0"/>
+								</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<a href="{$serviceUrl}" target="_blank" title="{$exportLabel}">
+									<img src="{/root/gui/url}/images/xml.png" alt="{$exportLabel}" title="{$exportLabel}" border="0"/>
+								</a>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
 		</xsl:for-each>
