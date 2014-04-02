@@ -36,6 +36,8 @@
             </xsl:otherwise>
         </xsl:choose>
 
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
 		<!-- Extend editor. Override filter -->
 		<xsl:choose>
 			<xsl:when test="/root/gui/config/appFilter">

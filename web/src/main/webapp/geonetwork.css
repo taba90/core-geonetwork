@@ -12,7 +12,7 @@ body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 9pt;
 	margin: 0px;
-	color: #064377;
+	color: #000000;
 	background-color: #fff;
 }
 
@@ -50,7 +50,24 @@ img {
 
 h1 {
 	text-transform: uppercase;
+	color: #1E800C;
 	font: bold 10px Verdana, Arial, Geneva, Helvetica, sans-serif;
+}
+
+#content h1{
+    color: #000000;    
+}
+
+.content option{
+    color: #000000;    
+}
+
+.padded a{
+    color: #000000;    
+}
+
+.padded-content h1{
+    color: #000000;
 }
 
 h2 {
@@ -64,7 +81,7 @@ a {
 	color: #266377;
 	text-decoration: none;
 	*/
-	color: #064377;
+	color: #000000;
 }
 
 td.padded a {
@@ -118,7 +135,7 @@ td.banner {
 td.banner-menu {
 	font-size: 8pt;
 	color: #ffffff;
-	background: #064377;
+	background: #1E800C;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -131,7 +148,7 @@ td.banner-login {
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
-	background: #266397;
+	background: #1E800C;
 	padding-left: 8px;
 	padding-right: 8px;
 	border-bottom: 1px solid #ffffff; /* moved here from tr since IE accepts it only here */
@@ -160,7 +177,7 @@ font.banner-active {
 	font-weight: bold;
 }
 font.banner-tab-active {
-  color: #064377;
+  color: #1E800C;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -175,14 +192,14 @@ input.banner {
 	margin-right: 4px;
 	margin-left: 4px;
 	font: 7pt Verdana;
-	color: #064377;
-	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
+	color: #000000;
+	border: 1px solid #000000; /* moved here from tr since IE accepts it only here */
 }
 
 button.banner {
 	font-family: Verdana;
 	font-size: 7pt;
-	color: #064377;
+	color: #000000;
 	cursor: pointer;
 	cursor: hand;
 	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
@@ -195,7 +212,7 @@ a.palette {
 
 a.palette:hover
 {
-	background: #064377;
+	background: #1E800C;
 }
 
 /* added since the browser adds some margin for the form */
@@ -249,7 +266,7 @@ td.green-content {
 
 td.blue-content {
 	color: #ffffff;
-	background: #266397;
+	background: #1E800C;
 	/*
 	background-image: url('images/blue-background.gif');
 	*/
@@ -259,9 +276,9 @@ td.blue-content {
 input.content, select.content, textarea.content {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #064377;
+	color: #000000;
 	max-width: 400px;
-	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
+	border: 1px solid #000000; /* moved here from tr since IE accepts it only here */
 }
 
 textarea.md {
@@ -271,7 +288,7 @@ textarea.md {
 .checkbox_results {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #064377;
+	color: #1E800C;
 	margin-right: 2px;
 }
 
@@ -295,11 +312,11 @@ select.lang_selector {
 a.content, button.content {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #064377;
+	color: #000000;
 	max-width: 400px;
 	cursor: pointer;
 	cursor: hand;
-	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
+	border: 1px solid #000000; /* moved here from tr since IE accepts it only here */
 	background-color: #e7e7e7;
 	text-shadow: gray 2px 2px 3px;
 }
@@ -347,7 +364,7 @@ a.content:hover {
 input.content-small, button.content-small {
 	font-family: Verdana;
 	font-size: 7pt;
-	color: #064377;
+	color: #1E800C;
 	min-width: 150px;
 	cursor: pointer;
 	cursor: hand;
@@ -360,15 +377,15 @@ td.padded p {
 
 fieldset.metadata-block {
     margin-top: 30px;
-	border-top: 3px #266397 solid;
+	border-top: 3px #1E800C solid;
 	border-bottom-width: 0px;
 	border-left-width: 0px;
-	border-right: 3px #266397 solid;
+	border-right: 3px #1E800C solid;
 }
 
 fieldset.metadata-block * fieldset {
 	margin-top: 2px;
-	border: 1px #266397 solid;
+	border: 1px #1E800C solid;
 	border-bottom-width: 0px;
 	border-right-width: 0px;
 	padding: 2px;
@@ -411,7 +428,7 @@ td.footer {
 }
 
 a.footer {
-	color: #064377;
+	color: #1E800C;
 }
 
 a.footer:hover
@@ -439,15 +456,15 @@ ul.md {
 input.md, select.md, textarea.md {
 	font-family: Verdana;
 	font-size: 8pt;
-	color: #064377;
+	color: #000000;
 	/* max-width: 400; */
-	border: 1px solid #266397; /* moved here from tr since IE accepts it only here */
+	border: 1px solid #000000; /* moved here from tr since IE accepts it only here */
 }
 
 button.md {
 	font-family: Verdana;
 	font-size: 8pt;
-	color: #064377;
+	color: #1E800C;
 	/* max-width: 400; */
 	cursor: pointer;
 	cursor: hand;
@@ -510,7 +527,7 @@ td.separator {
 td.dots {
 	width: 0;
 	height: 0;
-	border-top: 1px inset #266397;
+	border-top: 1px inset #1E800C;
 }
 
 th.padded, td.padded {
@@ -532,7 +549,7 @@ td.spacer {
 }
 
 div.track  {
-	background: #064377;
+	background: #1E800C;
 	margin-top:2px;
 }
 
@@ -545,7 +562,7 @@ div.handle {
 {
 	height: 1px;
 	width: 1px;
-	border-left: 1px solid #266397;
+	border-left: 1px solid #1E800C;
 }
 
 /*******************************************************************************
@@ -603,7 +620,7 @@ Other action buttons
 .oAcEle button {
     text-align:left;
     font-family: Verdana;
-    color: #064377;
+    color: #1E800C;
     font-size: 8pt;
     cursor: pointer;
     cursor: hand;
@@ -631,7 +648,7 @@ div.keywordSelectorFrame {
 
 div.keywordSelector {
         background: #fff;
-        border: 4px solid #064377;
+        border: 4px solid #1E800C;
 		margin: 2px;
 		padding: 5px;
         cursor: pointer;
@@ -792,7 +809,7 @@ td.advsearchfields {
 .IMBtn{
 	font-family: Verdana;
 	font-size: 9px;
-	color: #064377;
+	color: #1E800C;
 	cursor: pointer;
 	padding: 2px 8px 2px 2px;
 }
@@ -845,7 +862,7 @@ label {
 }
 
 imenabled {
-	color: #064377;
+	color: #1E800C;
 	cursor: pointer;
 }
 
@@ -895,7 +912,7 @@ button.rating
 {
 	font-family: Verdana;
 	font-size: 9pt;
-	color: #064377;
+	color: #1E800C;
 	max-width: 400px;
 	width: 100px;
 	cursor: pointer;
@@ -947,7 +964,7 @@ div#error {
 }
 
 #resultList {
-	border-top: 1px solid #2a628f;
+	border-top: 1px solid #000000;
 	padding-top: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
@@ -1113,7 +1130,7 @@ div.row {
 span.labelField {
     display: table-cell;
     display: inline-block;
-    width: 180px;
+    width: 100px;
     vertical-align: top;
     font-size: 0.9em;
 }

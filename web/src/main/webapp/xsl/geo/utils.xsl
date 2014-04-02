@@ -105,6 +105,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
 		<script type="text/javascript" language="JavaScript1.2">
 		// Load layers defined in config file
 		var backgroundLayers = [];

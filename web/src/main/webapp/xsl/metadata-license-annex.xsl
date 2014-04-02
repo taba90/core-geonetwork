@@ -53,7 +53,7 @@
 	</xsl:template>
 
 	<xsl:template name="mybanner">
-		<table width="100%">
+<!--		<table width="100%">
 			<tr class="banner">
 				<td class="banner">
 					<img src="{$baseurl}/images/header-left.jpg" alt="World picture" align="top" />
@@ -62,7 +62,7 @@
 					<img src="{$baseurl}/images/header-right.gif" alt="GeoNetwork opensource logo" align="top" />
 				</td>
 			</tr>
-		</table>
+		</table>-->
 	</xsl:template>
 
 	<!-- page content -->

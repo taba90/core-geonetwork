@@ -61,10 +61,14 @@
 	<displayRemoteHtml>Mostra i risultati usando l'HTML proveniente dal server remoto?</displayRemoteHtml>
 	<noSearchCriteria js="true">Inserisci o seleziona qualche criterio di ricerca</noSearchCriteria>
 	<noServer js="true">Selezionare il server su cui effettuare la ricerca</noServer>
-	<anyWith>Qualsiasi - con almeno UNA di queste parole</anyWith>
+	<!--anyWith>Qualsiasi - con almeno UNA di queste parole</anyWith>
 	<anyWithExactPhrase>Qualsiasi - con questa esatta frase</anyWithExactPhrase>
 	<anyWithAllWords>Qualsiasi - con TUTTE queste parole</anyWithAllWords>
-	<anyWithoutWords>Qualsiasi - SENZA queste parole</anyWithoutWords>
+	<anyWithoutWords>Qualsiasi - SENZA queste parole</anyWithoutWords-->
+	<anyWith>Almeno una parola</anyWith>
+	<anyWithExactPhrase>Frase esatta</anyWithExactPhrase>
+	<anyWithAllWords>Cosa ?</anyWithAllWords>
+	<anyWithoutWords>Senza le parole</anyWithoutWords>
 	<dataDownload>Dati scaricabili</dataDownload>
 	<addSchema>Aggiungi uno schema/profilo di metadati</addSchema>
 	<updateSchema>Aggiorna uno schema/profilo di metadati</updateSchema>
@@ -532,7 +536,7 @@
 	<hitsPerPageChoice value="100">100</hitsPerPageChoice>
 	<hitsPerPageChoice value="20">20</hitsPerPageChoice>
 	<hitsPerPageChoice value="50">50</hitsPerPageChoice>
-	<home>Home</home>
+	<home>Catalogo</home>
 	<i18n>Test i18n</i18n>
 	<i18nDesc>Pagina di test dei file di localizzazione</i18nDesc>
 	<identificationTab>Identificazione</identificationTab>

@@ -114,6 +114,21 @@
 		<xsl:variable name="tab"><xsl:copy-of select="/root/request/tab"/></xsl:variable>
 		<xsl:variable name="search"><xsl:copy-of select="/root/request/search"/></xsl:variable>
 
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
+		<!-- Override the extjs tab CSS text -->
+		<style type="text/css">
+			
+			.x-tab-strip span.x-tab-strip-text{
+				color: #1E800C; 
+			}
+			
+			.x-tab-strip-active span.x-tab-strip-text {
+				color: #1E800C; 
+			}
+			
+		</style>
+		
 		<script type="text/javascript">
 
 			function init() {};

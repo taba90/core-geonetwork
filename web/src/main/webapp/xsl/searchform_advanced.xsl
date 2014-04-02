@@ -605,7 +605,7 @@
 			</table>
 		</div>
 
-		<!-- Fuzzy search -->	
+		<!-- Fuzzy search 	
 		<div class="row">
 			<a onclick="showFields('fuzzy.img','fuzzy.td')" style="cursor:pointer;cursor:hand;">
 				<img id="fuzzy.img" src="{/root/gui/url}/images/plus.gif" alt="" />
@@ -645,7 +645,7 @@
 				</tr>
 			</table>	
 	
-		</div>
+		</div>-->
 
 	</xsl:if>
 

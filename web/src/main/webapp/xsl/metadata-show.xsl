@@ -118,6 +118,8 @@
 
 		<script type="text/javascript" src="{/root/gui/url}/scripts/core/kernel/kernel.js"/><xsl:text>&#10;</xsl:text>
 
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
 		<xsl:variable name="urlWMS"><xsl:copy-of select="/root/request/url"/></xsl:variable>
 		<xsl:variable name="typeWMS"><xsl:copy-of select="/root/request/type"/></xsl:variable>
 

@@ -211,9 +211,14 @@ font-size:xx-small;
 }
 
 .x-collapsed-title{
-color:#15428B;
+color:#1E800C;
 font:bold 11px/15px tahoma,arial,verdana,sans-serif;
 padding:2px 5px;
+}
+
+.x-panel-header-text{
+  color: #1E800C;  
+    
 }
 
 .x-tool {

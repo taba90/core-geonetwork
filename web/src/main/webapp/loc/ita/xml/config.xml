@@ -155,6 +155,7 @@
 	<metadataDefaultView>Vista di default</metadataDefaultView>
 	<metadataSimpleView>Vista base</metadataSimpleView>
 	<metadataIsoView>Vista ISO</metadataIsoView>
+	<metadataRNDTView>Vista RNDT</metadataRNDTView>
 	<metadataInspireView>Vista INSPIRE</metadataInspireView>
 	<metadataXmlView>Vista XML</metadataXmlView>
 	<metadataAdvancedView>Vista avanzata</metadataAdvancedView>
