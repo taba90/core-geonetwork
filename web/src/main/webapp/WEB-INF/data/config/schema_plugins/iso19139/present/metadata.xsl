@@ -3328,7 +3328,7 @@
 					</link>
 				</xsl:when>
 				<!-- New: Added in order to manage externals download enabling the download button in result-list -->
-				<xsl:when test="starts-with($protocol,'WWW:EXTDOWNLOAD-') and contains($protocol,'http--external') and string($linkage)!=''">
+				<xsl:when test="starts-with($protocol,'WWW:DOWNLOAD-') and contains($protocol,'http--external') and string($linkage)!=''">
 					<link type="download"><xsl:value-of select="$linkage"/></link>
 				</xsl:when>
 				<xsl:when test="matches($protocol,'^WWW:DOWNLOAD-.*-http--download.*') and not(contains($linkage,$download_check))">
