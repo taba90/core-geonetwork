@@ -920,11 +920,14 @@ INSERT INTO Settings VALUES (122,120,'contactId',NULL);
 INSERT INTO Settings VALUES (131,120,'metadataPublic','false');
 INSERT INTO Settings VALUES (170,1,'shib',NULL);
 INSERT INTO Settings VALUES (171,170,'use','false');
-INSERT INTO Settings VALUES (172,170,'path','/geonetwork/srv/en/shib.user.login');
+
+INSERT INTO Settings VALUES (172,170,'path','/geonetwork/srv/ita/shib.user.login');
 INSERT INTO Settings VALUES (173,170,'attrib',NULL);
-INSERT INTO Settings VALUES (174,173,'username','REMOTE_USER');
-INSERT INTO Settings VALUES (175,173,'surname','Shib-Person-surname');
-INSERT INTO Settings VALUES (176,173,'firstname','Shib-InetOrgPerson-givenName');
+
+INSERT INTO Settings VALUES (174,173,'username','Shib-Iride-IdentitaDigitale');
+INSERT INTO Settings VALUES (175,173,'surname','Shib-Identita-Cognome');
+INSERT INTO Settings VALUES (176,173,'firstname','Shib-Identita-Nome');
+
 INSERT INTO Settings VALUES (177,173,'profile','Shib-EP-Entitlement');
 INSERT INTO Settings VALUES (178,173,'group',NULL);
 INSERT INTO Settings VALUES (179,170,'defaultGroup', NULL);

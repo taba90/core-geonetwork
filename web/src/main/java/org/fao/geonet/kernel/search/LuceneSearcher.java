@@ -600,12 +600,14 @@ public class LuceneSearcher extends MetaSearcher {
 			    //--- in case of an admin show all results
                 if (userSession != null) {
                     if (userSession.isAuthenticated()) {
-                        if (userSession.getProfile().equals(Geonet.Profile.ADMINISTRATOR)) {
-                            request.addContent(new Element(SearchParameter.ISADMIN).addContent("true"));
-}
-                        else if (userSession.getProfile().equals(Geonet.Profile.REVIEWER)) {
-                            request.addContent(new Element(SearchParameter.ISREVIEWER).addContent("true"));
-}
+                    	String profile = userSession.getProfile();
+                    	if(profile != null){
+                    		if (profile.equals(Geonet.Profile.ADMINISTRATOR)) {
+                    			request.addContent(new Element(SearchParameter.ISADMIN).addContent("true"));
+                    		}else if (profile.equals(Geonet.Profile.REVIEWER)) {
+                    			request.addContent(new Element(SearchParameter.ISREVIEWER).addContent("true"));
+                    		}
+                    	}
                     }
                 }
             }

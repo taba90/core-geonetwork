@@ -10,5 +10,7 @@
 	    <allow service="xml.csi.comuni.get"/>
         <allow service="xml.csi.comuni.getByProv"/>
         <allow service="xml.csi.province.get"/>
+        
+        <allow service="main.login"/>
 	</profile>
 </profiles>

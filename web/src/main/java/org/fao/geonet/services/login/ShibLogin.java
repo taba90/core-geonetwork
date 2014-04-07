@@ -173,7 +173,8 @@ public class ShibLogin extends NotInReadOnlyModeService
         int userId = -1;
 
         if (groupProvided) {
-            String query = "SELECT id FROM Groups WHERE name=?";
+//            String query = "SELECT id FROM Groups WHERE name=?";
+            String query = "SELECT name FROM Groups WHERE id=?";
 
             List list  = dbms.select(query, group).getChildren();
 
@@ -185,16 +186,19 @@ public class ShibLogin extends NotInReadOnlyModeService
                 Lib.local.insert(dbms, "Groups", groupId, group);
 
             } else {
-                String gi = ((Element) list.get(0)).getChildText("id");
+//                String gi = ((Element) list.get(0)).getChildText("id");
 
-                groupId = Integer.valueOf(gi).intValue();
+//                groupId = Integer.valueOf(gi).intValue();
+                groupId = Integer.valueOf(group).intValue();
             }
         }
 		//--- update user information into the database
 
-		String query = "UPDATE Users SET name=?, surname=?, profile=?, password=?, authtype=? WHERE username=?";
+		//String query = "UPDATE Users SET name=?, surname=?, profile=?, password=?, authtype=? WHERE username=?";
+		String query = "UPDATE Users SET name=?, surname=?, password=?, authtype=? WHERE username=?";
 
-		int res = dbms.execute(query, firstname, surname, profile, VIA_SHIBBOLETH, SHIBBOLETH_FLAG, username);
+		//int res = dbms.execute(query, firstname, surname, profile, VIA_SHIBBOLETH, SHIBBOLETH_FLAG, username);
+		int res = dbms.execute(query, firstname, surname, VIA_SHIBBOLETH, SHIBBOLETH_FLAG, username);
 
 		//--- if the user was not found --> add it
 
@@ -214,9 +218,9 @@ public class ShibLogin extends NotInReadOnlyModeService
                 String count = ((Element) list.get(0)).getChildText("numr");
 
                  if (count.equals("0")) {
-                     query = "INSERT INTO UserGroups(userId, groupId) "+
-                             "VALUES(?,?)";
-                     dbms.execute(query, userId, groupId);
+                     query = "INSERT INTO UserGroups(userId, groupId, profile) "+
+                             "VALUES(?,?,?)";
+                     dbms.execute(query, userId, groupId, profile);
 
                  }
             }
