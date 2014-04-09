@@ -432,9 +432,19 @@
 											<span onclick="popEditorViewer('{/root/gui/locService}/metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}','{$metadata/geonet:info/id}')" style="cursor:hand;cursor:pointer;text-decoration:underline;"><xsl:value-of select="$metadata/title"/></span>
 										</xsl:when>
 										<xsl:otherwise>
-											<a href="metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}">
-												<xsl:value-of select="$metadata/title"/>
-											</a>
+											<!-- Update to use simple view for iso19110 -->
+											<xsl:choose>
+												<xsl:when test="string(geonet:info/schema)!='iso19110'">
+													<a href="metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}">
+														<xsl:value-of select="$metadata/title"/>
+													</a>
+												</xsl:when>
+												<xsl:otherwise>
+													<a href="metadata.show?id={$metadata/geonet:info/id}&amp;currTab=csi">
+														<xsl:value-of select="$metadata/title"/>
+													</a>
+												</xsl:otherwise>
+											</xsl:choose>	
 										</xsl:otherwise>
 									</xsl:choose>
 								</div>
@@ -562,15 +572,29 @@
 									</button>
 								</xsl:when>
 								<xsl:otherwise>
-									<button id="gn_showmd_{$metadata/geonet:info/id}"  class="content" onclick="gn_showMetadata({$metadata/geonet:info/id}, '{/root/gui/env/metadata/defaultView}')" title="{/root/gui/strings/show}">
-										<img src="{/root/gui/url}/images/plus.gif" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/show"/>
-									</button>
+									
+									<xsl:choose>
+										<xsl:when test="string(geonet:info/schema)!='iso19110'">
+											<!-- Update to use the defined default view on metadata show -->
+											<button id="gn_showmd_{$metadata/geonet:info/id}"  class="content" onclick="gn_showMetadata({$metadata/geonet:info/id}, '{/root/gui/env/metadata/defaultView}')" title="{/root/gui/strings/show}">
+												<img src="{/root/gui/url}/images/plus.gif" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/show"/>
+											</button>
+										</xsl:when>
+										<xsl:otherwise>
+											<button id="gn_showmd_{$metadata/geonet:info/id}"  class="content" onclick="gn_showMetadata({$metadata/geonet:info/id})" title="{/root/gui/strings/show}">
+												<img src="{/root/gui/url}/images/plus.gif" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/show"/>
+											</button>
+										</xsl:otherwise>
+									</xsl:choose>										
+									
 									<button id="gn_hidemd_{$metadata/geonet:info/id}"  class="content" onclick="gn_hideMetadata({$metadata/geonet:info/id})" style="display:none;" title="{/root/gui/strings/show}">
 										<img src="{/root/gui/url}/images/minus.png" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/show"/>
 									</button>
+									
 									<button id="gn_loadmd_{$metadata/geonet:info/id}"  class="content" style="display:none;" title="{/root/gui/strings/show}">
 										<xsl:value-of select="/root/gui/strings/loading"/>
 									</button>
+									
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:if>

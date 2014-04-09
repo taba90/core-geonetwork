@@ -204,6 +204,9 @@
      <ancestorException schema="iso19139.rndt" for="CI_Date,spatialResolution"/>
      <exception schema="iso19139.rndt" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
   </rndt>
+  <csi flat="true">
+    <exception schema="iso19110" for="carrierOfCharacteristics,featureType,listedValue"/>
+  </csi>
   <xml/>
  </metadata-tab>
 

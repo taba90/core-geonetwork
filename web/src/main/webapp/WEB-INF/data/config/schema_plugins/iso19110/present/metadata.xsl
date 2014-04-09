@@ -20,7 +20,8 @@
     xmlns:geonet="http://www.fao.org/geonetwork"
     exclude-result-prefixes="gfc gmx gmd gco geonet">
 
-  <xsl:include href="metadata-fop.xsl"/>
+    <xsl:include href="metadata-fop.xsl"/>
+    <xsl:include href="metadata-ovr.xsl"/>
   
 	<!-- main template - the way into processing iso19110 -->
 	<xsl:template name="metadata-iso19110">
@@ -28,12 +29,12 @@
 		<xsl:param name="edit" select="false()"/>
 		<xsl:param name="embedded"/>
 
-    <xsl:apply-templates mode="iso19110" select="." >
-    	<xsl:with-param name="schema" select="$schema"/>
-     	<xsl:with-param name="edit"   select="$edit"/>
-     	<xsl:with-param name="embedded" select="$embedded" />
-    </xsl:apply-templates>
-  </xsl:template>
+        <xsl:apply-templates mode="iso19110" select="." >
+        	<xsl:with-param name="schema" select="$schema"/>
+         	<xsl:with-param name="edit"   select="$edit"/>
+         	<xsl:with-param name="embedded" select="$embedded" />
+        </xsl:apply-templates>
+    </xsl:template>
 
     <!-- =================================================================== -->
     <!-- default: in simple mode just a flat list -->
@@ -421,12 +422,10 @@
         </xsl:call-template>
     </xsl:template>
 
-
-
     <xsl:template mode="iso19110" match="gfc:carrierOfCharacteristics/gfc:FC_FeatureAttribute">
         <xsl:param name="schema"/>
         <xsl:param name="edit"/>
-
+        
         <xsl:variable name="content">
             <td class="padded-content" width="100%" colspan="2">
                 <table width="100%">
@@ -645,6 +644,13 @@
 	<xsl:template name="iso19110CompleteTab">
 		<xsl:param name="tabLink"/>
 
+	    <!-- CSI tab -->
+	    <xsl:call-template name="displayTab">
+	        <xsl:with-param name="tab"     select="'csi'"/>
+	        <xsl:with-param name="text"    select="/root/gui/schemas/iso19110/strings/csiTab"/>
+	        <xsl:with-param name="tabLink" select="$tabLink"/>
+	    </xsl:call-template>  
+	    
 		<xsl:call-template name="completeTab">
 			<xsl:with-param name="tabLink" select="$tabLink"/>
 		</xsl:call-template>

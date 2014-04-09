@@ -90,9 +90,15 @@
 		(/root/gui/config/harvester/enableEditing = 'true' and geonet:info/isHarvested = 'y' and geonet:info/edit='true')
 		or (geonet:info/isHarvested = 'n' and geonet:info/edit='true')">
 			&#160;
-				<!--button class="content" onclick="load('{/root/gui/locService}/metadata.edit?id={$metadata/geonet:info/id}')"><xsl:value-of select="/root/gui/strings/edit"/></button-->
-		    	<!-- Update to use the defined default view on metadata show -->
-				<button class="content" onclick="load('{/root/gui/locService}/metadata.edit?currTab={/root/gui/env/metadata/defaultView}&amp;id={$metadata/geonet:info/id}')"><xsl:value-of select="/root/gui/strings/edit"/></button>
+		    	<!-- Update to use the defined default view on metadata show -->			
+				<xsl:choose>
+					<xsl:when test="string(geonet:info/schema)!='iso19110'">
+						<button class="content" onclick="load('{/root/gui/locService}/metadata.edit?currTab={/root/gui/env/metadata/defaultView}&amp;id={$metadata/geonet:info/id}')"><xsl:value-of select="/root/gui/strings/edit"/></button>
+					</xsl:when>
+					<xsl:otherwise>
+						<button class="content" onclick="load('{/root/gui/locService}/metadata.edit?currTab=csi&amp;id={$metadata/geonet:info/id}')"><xsl:value-of select="/root/gui/strings/edit"/></button>
+					</xsl:otherwise>
+				</xsl:choose>	
 			</xsl:if>			
 		</xsl:if>
 		

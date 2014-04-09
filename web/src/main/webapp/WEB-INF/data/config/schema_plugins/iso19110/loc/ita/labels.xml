@@ -6,154 +6,154 @@
     xmlns:gmd="http://www.isotc211.org/2005/gmd">
 	
 	<element name="gfc:FC_FeatureCatalogue">
-		<label>Feature Catalogue description</label>
+		<label>Descrizione Feature Catalogue</label>
 	    <description></description>
 	</element>
     <element name="gfc:FC_FeatureAttribute">
-        <label>Attribute</label>
+        <label>Attributo</label>
     </element>
     <element name="gfc:name">
-        <label>Name</label>
-        <description>Feature catalogue name</description>
+        <label>Nome</label>
+        <description>Nome Feature Catalogue</description>
     </element>
     <element name="gfc:scope">
-        <label>Scope</label>
-        <description>Scope definition</description>
+        <label>Scopo</label>
+        <description>Definizione Scope</description>
     </element>
     <element name="gfc:versionNumber">
-        <label>Version</label>
-        <description>Catalogue version</description>
+        <label>Versione</label>
+        <description>Versione Catalogo</description>
     </element>
     <element name="gfc:versionDate">
-        <label>Date</label>
-        <description>Catalogue date</description>
+        <label>Data</label>
+        <description>Data Catalogo</description>
     </element>
     <element name="gfc:producer">
-        <label>Catalogue producer</label>
-        <description>Catalogue responsible</description>
+        <label>Produttore Catalogo</label>
+        <description>Responsabile del Catalogo</description>
     </element>
     <element name="gfc:featureType">
-        <label>Property description</label>
-        <description>Property description</description>
+        <label>Descrizione Proprietà</label>
+        <description>Descrizione della proprietà</description>
     </element>
     <element name="gfc:isAbstract">
-        <label>Abstract</label>
-        <description>Is this element an abstract element ?</description>
+        <label>Sommario</label>
+        <description>E' questo un elemento di sommario ?</description>
     </element>
     <element name="gfc:FC_FeatureType">
-        <label>Attribute table description</label>
-        <description>Attribute table description</description>
+		<label>Descrizione Attributo</label>
+        <description>Descrizione dell'Attributo della Tabella</description>
     </element>
     <element name="gfc:typeName">
-        <label>Property name</label>
-        <description></description>
+        <label>Nome Proprietà</label>
+        <description>Nome della proprietà</description>
     </element>
     <element name="gfc:carrierOfCharacteristics">
-        <label>Elements</label>
-        <description>Association, attribute, operation, ...</description>
+        <label>Elementi</label>
+        <description>Associazione, attributo, operazione, ...</description>
     </element>
     <element name="gfc:definition">
-        <label>Definition</label>
-        <description>Property definition</description>
+        <label>Definizione</label>
+        <description>Definizione della proprietà</description>
     </element>
     <element name="gfc:fieldOfApplication">
-        <label>Field of application</label>
-        <description>Field of application</description>
+        <label>Campo di applicazione</label>
+        <description>Campo di applicazione</description>
     </element>
     <element name="gmd:responsibleParty">
-        <label>Responsible party</label>
-        <description>Responsible party</description>
+        <label>Responsabile</label>
+        <description>Responsabile</description>
     </element>
     <element name="gmd:CI_ResponsibleParty">
-        <label>Responsible party</label>
-        <description>Responsible party</description>
+        <label>Responsabile</label>
+        <description>Responsabile</description>
     </element>
     <element name="gco:lower">
-        <label>Lower cardinality</label>
-        <description>Lower cardinality</description>
+        <label>Cardinalita inferiore</label>
+        <description>Cardinalita inferiore</description>
     </element>
     <element name="gco:upper">
-        <label>Upper cardinality</label>
-        <description>Upper cardinality</description>
+        <label>Cardinalita superiore</label>
+        <description>Cardinalita superiore</description>
     </element>
     <element name="gfc:cardinality">
-        <label>Cardinalities</label>
-        <description>Cardinalities</description>
+        <label>Cardinalità</label>
+        <description>Cardinalità</description>
     </element>
     <element name="gfc:label">
-        <label>Label</label>
+        <label>Etichetta</label>
         <description/>
     </element>
     <element name="gfc:listedValue">
         <label>Codelist</label>
-        <description>List of values for this element.</description>
+        <description>Lista dei valori per questo elemento</description>
     </element>
     <element name="gfc:constrainedBy">
-        <label>Constrained by</label>
+        <label>Vincolato da</label>
         <description></description>
     </element>
     <element name="gfc:definitionReference">
-        <label>Definition reference</label>
+        <label>Riferimento definizione</label>
         <description></description>
     </element>
     <element name="gfc:code">
-        <label>Code</label>
+        <label>Codice</label>
         <description></description>
     </element>
     <element name="gfc:isOrdered">
-        <label>Is ordered</label>
+        <label>Ordinato</label>
         <description></description>
     </element>
     <element name="gfc:isNavigable">
-        <label>Is navigable</label>
+        <label>Navigabile</label>
         <description></description>
     </element>
     <element name="gfc:roleType">
-        <label>Role type</label>
+        <label>Tipo di ruolo</label>
         <description></description>
     </element>
     <element name="gfc:inheritsFrom">
-        <label>Inherits from</label>
+        <label>Eredita da</label>
         <description></description>
     </element>
     <element name="gfc:inheritsTo">
-        <label>Inherits to</label>
+        <label>Eredita a</label>
         <description></description>
     </element>
     <element name="gfc:FC_InheritanceRelation">
-        <label>Heritance relation</label>
+        <label>Relazione eredità</label>
         <description></description>
     </element>
     <element name="gfc:functionalLanguage">
-        <label>Functional language</label>
+        <label>Linguaggio funzionale</label>
         <description></description>
     </element>
     <element name="gfc:definitionSource">
-        <label>Definition source</label>
+        <label>Sorgente definizione</label>
         <description></description>
     </element>
     <element name="gfc:FC_FeatureOperation">
-        <label>Feature operation</label>
+        <label>Funzionamento caratteristica</label>
         <description></description>
     </element>
     <element name="gfc:FC_FeatureAssociation">
-        <label>Feature association</label>
+        <label>Associazione caratteristica</label>
         <description></description>
     </element>
     <element name="gfc:FC_AssociationRole">
-        <label>Association role</label>
+        <label>Ruolo associazione</label>
         <description></description>
     </element>
     <element name="gfc:FC_RoleType">
-        <label>Role type</label>
+        <label>Tipo ruolo</label>
         <description></description>
     </element>
     <element name="gfc:description">
-        <label>Description</label>
+        <label>Descrizione</label>
         <description></description>
     </element>
     <element name="gfc:aliases">
-        <label>Aliases</label>
+        <label>Pseudonimi</label>
         <description></description>
     </element>
     <element name="gfc:FC_ListedValue">
@@ -161,27 +161,27 @@
         <description></description>
     </element>
     <element name="gfc:valueType">
-        <label>Value type</label>
+        <label>Tipo Valore</label>
         <description></description>
     </element>
     <element name="gfc:memberName">
-        <label>Member name</label>
+        <label>Nome membro</label>
         <description></description>
     </element>
     <element name="gfc:FC_Constraint">
-        <label>Constraint</label>
+        <label>Vincolo</label>
         <description></description>
     </element>
     <element name="gfc:uniqueInstance">
-        <label>Unique instance</label>
+        <label>Unica istanza</label>
         <description></description>
     </element>
     <element name="gfc:type">
-        <label>Type</label>
+        <label>Tipo</label>
         <description></description>
     </element>
     <element name="gfc:relation">
-        <label>Relation</label>
+        <label>Relazione</label>
         <description></description>
     </element>
     <element name="gfc:featureCatalogue">
@@ -189,57 +189,57 @@
         <description></description>
     </element>
     <element name="gfc:roleName">
-        <label>Role name</label>
+        <label>Nome Ruolo</label>
         <description></description>
     </element>
     <element name="gfc:signature">
-        <label>Signature</label>
+        <label>Firma</label>
         <description></description>
     </element>
     <element name="gfc:formalDefinition">
-        <label>Formal definition</label>
+        <label>Definizione formale</label>
         <description></description>
     </element>
     <element name="gfc:triggeredByValueOf">
-        <label>Triggered by value of</label>
+        <label>Innescato dal valore di</label>
         <description></description>
     </element>
     <element name="gfc:affectsValueOf">
-        <label>Affects value of</label>
+        <label>Influenza valore di</label>
     </element>
     <element name="gfc:observesValueOf">
-        <label>Observes value of</label>
+        <label>Osserva valore di</label>
     </element>
     <element name="gfc:valueMeasurementUnit">
-        <label>Value measurement unit</label>
+        <label>Unità di misura valore</label>
     </element>
     <element name="gco:CharacterString">
-        <label>Text</label>
+        <label>Testo</label>
         <description></description>
     </element>    
     <element name="gmx:FileName">
-        <label>File name</label>
+        <label>Nome file</label>
         <description></description>
     </element>
     <!-- ==================================================== -->
     <element name="gmx:name"> 
-        <label>Name</label> 
-        <description>Feature catalogue name</description> 
+        <label>Nome</label> 
+        <description>Nome Feature catalogue</description> 
     </element> 
     <element name="gmx:scope"> 
-        <label>Scope</label> 
-        <description>Scope definition</description> 
+        <label>Scopo</label> 
+        <description>Definizione scopo</description> 
     </element> 
     <element name="gmx:versionNumber"> 
-        <label>Version</label> 
-        <description>Catalogue version</description> 
+        <label>Versione</label> 
+        <description>Versione Catalogo</description> 
     </element> 
     <element name="gmx:versionDate"> 
-        <label>Date</label> 
-        <description>Catalogue date</description> 
+        <label>Data</label> 
+        <description>Data Catalogo</description> 
     </element> 
     <element name="gmx:fieldOfApplication"> 
-        <label>Field of application</label> 
-        <description>Field of application</description> 
+        <label>Campo di applicazione</label> 
+        <description>Campo di applicazione</description> 
     </element> 
 </labels>
