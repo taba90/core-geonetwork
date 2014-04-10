@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<codelists/>
+<codelists xmlns:gfc="http://www.isotc211.org/2005/gfc">
+    <codelist name="gfc:FC_RoleType">
+        <entry>
+            <code>ordinary</code>
+            <label>Ordinary</label>
+            <description></description>
+        </entry>
+        <entry>
+            <code>aggregation</code>
+            <label>Aggregation</label>
+            <description></description>
+        </entry>
+        <entry>
+            <code>composition</code>
+            <label>Composition</label>
+            <description></description>
+        </entry>
+    </codelist>    
+</codelists>
 
 

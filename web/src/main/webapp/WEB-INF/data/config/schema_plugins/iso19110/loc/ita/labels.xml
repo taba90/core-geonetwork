@@ -141,7 +141,7 @@
         <description></description>
     </element>
     <element name="gfc:FC_AssociationRole">
-        <label>Ruolo associazione</label>
+        <label>Ruolo associato</label>
         <description></description>
     </element>
     <element name="gfc:FC_RoleType">

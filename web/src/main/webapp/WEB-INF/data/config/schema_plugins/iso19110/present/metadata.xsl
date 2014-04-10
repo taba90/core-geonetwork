@@ -248,18 +248,16 @@
     -->
     <xsl:template mode="iso19110" match="gfc:featureType[ancestor::gfc:featureType]|
         gfc:definitionReference|
-        gfc:valueMeasurementunit|
+        gfc:valueMeasurementUnit|
         gfc:featureCatalogue|
-        gfc:FC_InheritanceRelation/gfc:featureCatalogue|
-        @gco:isoType" priority="100"/>
+        gfc:FC_InheritanceRelation/gfc:featureCatalogue|@gco:isoType" priority="100"/>
     
     <xsl:template mode="elementEP" match="
         geonet:child[@name='definitionReference']|
         geonet:child[@name='featureCatalogue']|
-        geonet:child[@name='valueMeasurementunit']|
+        geonet:child[@name='valueMeasurementUnit']|
         gfc:FC_InheritanceRelation/geonet:child[@name='subtype']|
-        gfc:FC_InheritanceRelation/geonet:child[@name='supertype']
-        " priority="100"/>
+        gfc:FC_InheritanceRelation/geonet:child[@name='supertype']" priority="100"/>
     
     <!-- ==================================================================== -->
     <!-- Metadata -->

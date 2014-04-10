@@ -27,6 +27,8 @@
     
 	<field name="gfc:FC_FeatureType">
 		<suggest name="gfc:typeName"/>
+	    <suggest name="gfc:code"/>
+	    <suggest name="gfc:definition"/>
 	</field>
 	
     <field name="gfc:listedValue">
@@ -35,10 +37,7 @@
     
     <field name="gfc:FC_ListedValue">
         <suggest name="gfc:code"/>
-    </field>
-    
-    <field name="gfc:FC_AssociationRole">
-        <suggest name="gfc:definition"/>
+        <suggest name="gfc:definition"/> 
     </field>
     
     <field name="gfc:constrainedBy">
@@ -59,4 +58,31 @@
     <field name="gfc:inheritsFrom">
         <suggest name="gfc:FC_InheritanceRelation"/>
     </field>
+    
+    <field name="gfc:carrierOfCharacteristics">
+        <suggest name="gfc:FC_AssociationRole"/>
+        <suggest name="gfc:FC_FeatureAttribute"/>
+    </field>
+    
+    <field name="gfc:FC_FeatureAssociation">
+        <suggest name="gfc:typeName"/>
+        <suggest name="gfc:code"/>
+        <suggest name="gfc:isAbstract"/>
+    </field>
+    
+     
+    <field name="gfc:FC_AssociationRole">
+        <suggest name="gfc:featureType"/>
+        <suggest name="gfc:memberName"/>
+        <suggest name="gfc:cardinality"/>
+        <suggest name="gfc:type"/>
+        <suggest name="gfc:isOrdered"/>
+        <suggest name="gfc:isNavigable"/>
+    </field>
+    
+    <field name="gfc:type">
+        <suggest name="gfc:FC_RoleType"/>
+    </field>
+    
+
 </fields>
