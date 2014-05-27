@@ -69,12 +69,12 @@
         <description>Responsabile</description>
     </element>
     <element name="gco:lower">
-        <label>Cardinalita inferiore</label>
-        <description>Cardinalita inferiore</description>
+        <label>Cardinalità inferiore</label>
+        <description>Cardinalità inferiore</description>
     </element>
     <element name="gco:upper">
-        <label>Cardinalita superiore</label>
-        <description>Cardinalita superiore</description>
+        <label>Cardinalità superiore</label>
+        <description>Cardinalità superiore</description>
     </element>
     <element name="gfc:cardinality">
         <label>Cardinalità</label>

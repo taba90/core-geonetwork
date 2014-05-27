@@ -654,6 +654,37 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template name="iso19110-javascript"/>
+	<!--<xsl:template name="iso19110-javascript"/>-->
+    
+    <!-- =================================================================== -->
+    <!-- === Javascript used by functions in this presentation XSLT          -->
+    <!-- =================================================================== -->
+    <!-- Javascript used by functions in this XSLT -->
+    <xsl:template name="iso19110-javascript">
+        <!-- original iso19110-javascript is empty as well -->
+        <!--
+		<xsl:call-template name="iso19110-javascript" />
+		-->
+        
+        <script type="text/javascript">
+            <![CDATA[
+				/**
+				 * JavaScript Functions to support the ISO19110 Profile 
+				 */
+				 				 
+				/**
+				 * CSI: customizations in order to perform a class name setting 
+				 * and manage links between associations and featuretype
+				 */
+				function setFCName(elem, hrefId){
+					var selectEl = elem;
+					var input = document.getElementById(hrefId);
+					var v = input.value;	
+				   
+					input.value = selectEl.value;
+				}
+			 ]]>
+        </script>
+    </xsl:template>
 
 </xsl:stylesheet>

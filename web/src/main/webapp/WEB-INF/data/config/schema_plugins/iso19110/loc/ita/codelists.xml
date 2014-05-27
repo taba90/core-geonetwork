@@ -3,18 +3,18 @@
     <codelist name="gfc:FC_RoleType">
         <entry>
             <code>ordinary</code>
-            <label>Ordinary</label>
-            <description></description>
+            <label>Ordinadrio</label>
+            <description>Indica una associazione ordinaria</description>
         </entry>
         <entry>
             <code>aggregation</code>
-            <label>Aggregation</label>
-            <description></description>
+            <label>Aggragazione</label>
+            <description>Indica una aggregazione UML (part role).</description>
         </entry>
         <entry>
             <code>composition</code>
-            <label>Composition</label>
-            <description></description>
+            <label>Composizione</label>
+            <description>Indica una composizione UML (part role).</description>
         </entry>
     </codelist>    
 </codelists>

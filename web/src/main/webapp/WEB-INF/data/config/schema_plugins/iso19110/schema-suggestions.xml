@@ -4,6 +4,7 @@
         <suggest name="gco:CharacterString"/>
         <suggest name="gmx:FileName"/>
     </field>
+    
     <field name="gmx:FileName">
         <suggest name="src"/>
     </field> 
@@ -69,10 +70,9 @@
         <suggest name="gfc:code"/>
         <suggest name="gfc:isAbstract"/>
     </field>
-    
      
     <field name="gfc:FC_AssociationRole">
-        <suggest name="gfc:featureType"/>
+        <!--suggest name="gfc:featureType"/-->
         <suggest name="gfc:memberName"/>
         <suggest name="gfc:cardinality"/>
         <suggest name="gfc:type"/>
@@ -82,7 +82,6 @@
     
     <field name="gfc:type">
         <suggest name="gfc:FC_RoleType"/>
-    </field>
-    
+    </field>    
 
 </fields>

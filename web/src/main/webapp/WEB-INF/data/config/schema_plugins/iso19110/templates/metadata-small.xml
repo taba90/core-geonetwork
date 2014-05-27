@@ -46,7 +46,7 @@
     <gfc:featureType>
         <gfc:FC_FeatureType>
             <gfc:typeName>
-                <gco:LocalName>Class name</gco:LocalName>
+                <gco:LocalName></gco:LocalName>
             </gfc:typeName>
             <gfc:definition>
                 <gco:CharacterString/>
