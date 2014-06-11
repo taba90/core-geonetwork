@@ -509,6 +509,7 @@ public class Dbms
 		if(this.conn == null) {
 			try {
 				this.conn = this.dataSource.getConnection();
+				this.conn.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				this.conn = null;
@@ -517,6 +518,7 @@ public class Dbms
             Log.debug(Log.RESOURCES, "Connection was closed! "+ conn.hashCode());
 			try {
 				this.conn = this.dataSource.getConnection();
+				this.conn.setAutoCommit(false);
 				//If we have to empty the full datasource, we will:
 				checkConnection();
 			} catch (SQLException e) {
