@@ -29,6 +29,7 @@ import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.csw.common.util.Xml;
 import org.jdom.Element;
 
 //=============================================================================
@@ -60,8 +61,10 @@ public class Get implements Service
 
         Element result = gc.getHarvestManager().get(id, context, sortField);
 
-		if (result != null)
+		if (result != null){
 			return result;
+		}
+		
 
 		//--- we get here only if the 'id' is present and the node was not found
 

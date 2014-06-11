@@ -113,6 +113,13 @@ class Setting
 	private Setting parent;
 
 	private List<Setting> children = new ArrayList<Setting>();
+
+    @Override
+    public String toString() {
+        return "Setting[" + id + " " + name + " *"+children.size()+']';
+    }
+
+
 }
 
 //=============================================================================

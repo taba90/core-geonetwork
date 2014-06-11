@@ -36,11 +36,11 @@
 		<xsl:for-each select="/root/search/*">
 			<tr>
 				<td/>
-				<td class="padded"><xsl:value-of select="local-name()"/></td>
+				<td class="padded"><xsl:value-of select="name()"/></td>
 				 <td class="padded">
 		<input type="text" >
 			<xsl:attribute name="id">
-				<xsl:value-of select="concat('csw.',local-name())" />
+				<xsl:value-of select="concat('csw.', name())" />
 			</xsl:attribute>
 			<xsl:attribute name="class">content</xsl:attribute>
 			<xsl:attribute name="value"></xsl:attribute>

@@ -111,7 +111,7 @@ function getUpdateRequest(data)
 //=====================================================================================
 
 var updateTemp = 
-' <node id="{ID}" type="{TYPE}">'+ 
+' <node id="{ID}" type="{TYPE}" xmlns:apiso="http://www.opengis.net/cat/csw/apiso/1.0">'+ 
 '    <ownerGroup><id>{OWNERGROUP}</id></ownerGroup>'+
 '    <site>'+
 '      <name>{NAME}</name>'+

@@ -31,11 +31,13 @@ import jeeves.utils.Log;
 
 import org.fao.geonet.constants.Geonet;
 import org.jdom.Element;
+import org.jdom.Namespace;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -107,6 +109,8 @@ public class SettingManager
 
 		root = new Setting(0, null, null);
 		createSubTree(root, list);
+        System.out.println(" Setting tree created: ");
+        System.out.println(toStringTree(root));
 	}
 
 	//---------------------------------------------------------------------------
@@ -118,7 +122,12 @@ public class SettingManager
 	//---------------------------------------------------------------------------
 	//--- Getters
 	//---------------------------------------------------------------------------
-	public Element get(String path, int level)
+	public Element get(String path, int level) {
+        return get(path, level, null);
+    }
+
+
+	public Element get(String path, int level, Map<String, Namespace> nsMapping)
 	{
 		lock.readLock().lock();
 
@@ -126,7 +135,10 @@ public class SettingManager
 		{
 			Setting s = resolve(path);
 
-			return (s == null) ? null : build(s, level);
+            System.out.println("Looking for setting " + path);
+            System.out.println("Found " + toStringTree(s));
+
+			return (s == null) ? null : build(s, level, nsMapping);
 		}
 		finally
 		{
@@ -449,6 +461,7 @@ public class SettingManager
 				String value  = elem.getChildText("value");
 
 				Setting child = new Setting(Integer.parseInt(id), name, value);
+                System.out.println("Creating setting element " + child + " from name:"+name+" val:"+value);
 
 				s.addChild(child);
 				i.remove();
@@ -502,7 +515,7 @@ public class SettingManager
      */
 	private Setting find(Setting s, int id)
 	{
-		ArrayList<Setting> stack = new ArrayList<Setting>();
+		List<Setting> stack = new LinkedList<Setting>();
 
 		for (Setting child : s.getChildren())
 			stack.add(child);
@@ -561,11 +574,11 @@ public class SettingManager
      * @param level
      * @return
      */
-	private Element build(Setting s, int level)
+	private Element build(Setting s, int level, Map<String, Namespace> nsMapping)
 	{
-		Element el = new Element(s.getName());
+        Element el = resolveName(s.getName(), nsMapping);
 		el.setAttribute("id", Integer.toString(s.getId()));
-
+			
 		if (s.getValue() != null)
 		{
 			Element value = new Element("value");
@@ -579,7 +592,7 @@ public class SettingManager
 			Element children = new Element("children");
 
 			for (Setting child : s.getChildren())
-				children.addContent(build(child, level -1));
+				children.addContent(build(child, level -1, nsMapping));
 
 			if (children.getContentSize() != 0)
 				el.addContent(children);
@@ -675,6 +688,43 @@ public class SettingManager
 		public void close(Object resource) { flush(resource, true);  }
 		public void abort(Object resource) { flush(resource, false); }
 	};
+
+    public static String toStringTree(Setting s) {
+        if(s == null)
+            return "Empty setting tree";
+
+        StringBuilder sb = new StringBuilder("Setting dump tree, root: "+s.getName()+" \n");
+        toStringTreeAux(s, "   ", sb);
+        return sb.toString();
+    }
+
+    private static void toStringTreeAux(Setting s, String tab, StringBuilder sb) {
+        sb.append(tab).append(s.toString()).append("\n");
+        for (Setting setting : s.getChildren()) {
+            toStringTreeAux(setting, tab+"   ", sb);
+        }
+    }
+
+    private Element resolveName(String name, Map<String, Namespace> nsMapping) {
+        if(name == null) {
+            return null;
+        }
+        if(! name.contains(":") ) {
+            return new Element(name);
+        }
+
+        String s[] = name.split(":");
+
+        String prefix = s[0];
+        name = s[1];
+
+        if(nsMapping != null && nsMapping.containsKey(prefix)) {
+            return new Element(name, nsMapping.get(prefix));
+        } else {
+            Log.warning(Geonet.SETTINGS, "Unable to find namespace for prefix: " + prefix + ". Check settings table.");
+            return new Element(name);
+        }
+    }
 }
 
 //=============================================================================

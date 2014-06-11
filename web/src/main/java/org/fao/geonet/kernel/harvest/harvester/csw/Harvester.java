@@ -96,7 +96,8 @@ class Harvester
 					s.addAttribute(element.getName(), element.getChildText("value").trim());
 				}
 			} else if (element.getText()!=null) {
-				s.addAttribute(element.getName(), element.getText().trim());
+//				s.addAttribute(element.getName(), element.getText().trim());
+				s.addAttribute(element.getQualifiedName(), element.getText().trim());				
 			}
 		}
 			
@@ -358,8 +359,13 @@ class Harvester
 		if (!s.attributesMap.isEmpty()){
 			for(Entry<String, String> entry : s.attributesMap.entrySet()) {
 			    if (entry.getValue()!=null){
-			    	buildFilterQueryable(queriables, "csw:"+entry.getKey(), entry.getValue());
+			    	if(entry.getKey().contains(":")){
+			    		buildFilterQueryable(queriables, entry.getKey(), entry.getValue());
+			    	}else{
+			    		buildFilterQueryable(queriables, "csw:"+entry.getKey(), entry.getValue());	
+			    	}
 		    	}
+			    
 			}
 		} else {
 		    log.debug("no search criterion specified, harvesting all ... ");
@@ -436,7 +442,11 @@ class Harvester
 		if (!s.attributesMap.isEmpty()){
 			for(Entry<String, String> entry : s.attributesMap.entrySet()) {
 			    if (entry.getValue()!=null){
-			    	buildCqlQueryable(queryables, "csw:"+entry.getKey(), entry.getValue());
+			    	if(entry.getKey().contains(":")){
+			    		buildCqlQueryable(queryables, entry.getKey(), entry.getValue());
+			    	}else{
+			    		buildCqlQueryable(queryables, "csw:"+entry.getKey(), entry.getValue());	
+			    	}
 		    	}
 			}
 		} else {

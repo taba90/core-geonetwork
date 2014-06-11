@@ -35,17 +35,27 @@ import org.fao.geonet.lib.Lib;
 import org.fao.geonet.resources.Resources;
 import org.jdom.Element;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import org.jdom.Namespace;
 
 //=============================================================================
 
 public class CswHarvester extends AbstractHarvester
 {
+
+    private final static Map<String, Namespace> PREFIX_MAPPING;
+    static {
+        Map<String, Namespace> tmp = new HashMap<String, Namespace>();
+        tmp.put("apiso", Namespace.getNamespace("apiso", "http://www.opengis.net/cat/csw/apiso/1.0"));
+
+        PREFIX_MAPPING = Collections.unmodifiableMap(tmp);
+    }
+
 	//--------------------------------------------------------------------------
 	//---
 	//--- Static init
@@ -53,6 +63,11 @@ public class CswHarvester extends AbstractHarvester
 	//--------------------------------------------------------------------------
 
 	public static void init(ServiceContext context) throws Exception {}
+
+    @Override
+    public Map<String, Namespace> getNamespaceMapping() {
+        return PREFIX_MAPPING;
+    }
 
 	//--------------------------------------------------------------------------
 	//---
@@ -151,17 +166,16 @@ public class CswHarvester extends AbstractHarvester
 		
 		settingMan.add(dbms, "id:"+siteId, "capabUrl", params.capabUrl);
 		settingMan.add(dbms, "id:"+siteId, "icon",     params.icon);
-                settingMan.add(dbms, "id:"+siteId, "rejectDuplicateResource", params.rejectDuplicateResource);
+        settingMan.add(dbms, "id:"+siteId, "rejectDuplicateResource", params.rejectDuplicateResource);
 		
 		//--- store dynamic search nodes
-		
-		
+				
 		String  searchID = settingMan.add(dbms, path, "search", "");	
 		
 		if (params.eltSearches!=null){
 			for (Element element : params.eltSearches) {
 				if (!element.getName().startsWith("parser")){
-					settingMan.add(dbms, "id:"+searchID, element.getName(), element.getText());
+					settingMan.add(dbms, "id:"+searchID, element.getQualifiedName(), element.getText());
 				}
 			}
 		}

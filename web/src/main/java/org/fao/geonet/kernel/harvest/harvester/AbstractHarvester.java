@@ -69,6 +69,7 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import org.jdom.Namespace;
 
 import static org.quartz.JobKey.jobKey;
 
@@ -548,6 +549,10 @@ public abstract class AbstractHarvester extends BaseAligner
 	protected abstract void doAddInfo(Element node);
 	protected abstract void doHarvest(Logger l, ResourceManager rm) throws Exception;
 
+
+    /** default implementation returns null */
+    public Map<String, Namespace> getNamespaceMapping() {return null;}
+
 	//---------------------------------------------------------------------------
 	//---
 	//--- Protected storage methods
@@ -675,6 +680,12 @@ public abstract class AbstractHarvester extends BaseAligner
     protected Logger log = Log.createLogger(Geonet.HARVESTER);
 
 	private static Map<String, Class> hsHarvesters = new HashMap<String, Class>();
+
+    public static Map<String, Class> getHarvesterTypes() {
+        return hsHarvesters;
+    }
+
+
 }
 
 //=============================================================================

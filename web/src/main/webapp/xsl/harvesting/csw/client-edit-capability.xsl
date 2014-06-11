@@ -41,11 +41,11 @@
 			<xsl:for-each select="/root/search/*">
 				<xsl:sort select="local-name()"/>
 				
-				<xsl:variable name="fieldId" select="concat('csw.',local-name())"/>
+				<xsl:variable name="fieldId" select="concat('csw.',name())"/>
 				<tr>
 					<td/>
 					<td class="padded">
-						<label for="{$fieldId}"><xsl:value-of select="local-name()"/></label>
+						<label for="{$fieldId}"><xsl:value-of select="name()"/></label>
 					</td>
 					<td class="padded">
 						<input type="text">

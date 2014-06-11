@@ -48,6 +48,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.jdom.Namespace;
 
 import static org.quartz.impl.matchers.GroupMatcher.jobGroupEquals;
 
@@ -61,6 +62,8 @@ public class HarvestManager
 	//---
 	//---------------------------------------------------------------------------
 
+    private final Map<String, Namespace> prefixMapping;
+
 	public HarvestManager(ServiceContext context, GeonetContext gc, SettingManager sm, DataManager dm) throws Exception
 	{
 		this.context = context;
@@ -72,8 +75,24 @@ public class HarvestManager
 
 		AbstractHarvester.staticInit(context);
 		AbstractHarvester.getScheduler().getListenerManager().addJobListener(new HarversterJobListener(this), jobGroupEquals(AbstractHarvester.HARVESTER_GROUP_NAME));
-		
-		Element entries = settingMan.get("harvesting", -1).getChild("children");
+
+        prefixMapping = new HashMap<String, Namespace>();
+        
+        for (Map.Entry<String, Class> entry : AbstractHarvester.getHarvesterTypes().entrySet()) {
+            Class h = entry.getValue();
+            if(AbstractHarvester.class.isAssignableFrom(h)) { // yes it should
+                AbstractHarvester ah = (AbstractHarvester) h.newInstance();
+                Map<String, Namespace> map = ah.getNamespaceMapping();
+                if(map != null) {
+                    Log.debug(Geonet.HARVEST_MAN, "Adding " + map.size()+  " namespace prefixes for harvester " + ah.getType());
+                    prefixMapping.putAll(map);
+                }
+            }
+        }
+
+        Log.debug(Geonet.HARVEST_MAN, "HARVESTING registered " + prefixMapping.size() + " namespace prefixes");
+
+		Element entries = settingMan.get("harvesting", -1, prefixMapping).getChild("children");
 
 		if (entries != null)
 			for (Object o : entries.getChildren())
@@ -144,8 +163,8 @@ public class HarvestManager
      */
     public Element get(String id, ServiceContext context, String sort) throws Exception {
 		Element result = (id == null)
-									? settingMan.get("harvesting", -1)
-									: settingMan.get("harvesting/id:"+id, -1);
+									? settingMan.get("harvesting", -1, prefixMapping)
+									: settingMan.get("harvesting/id:"+id, -1, prefixMapping);
 
         if (result == null) {
             return null;

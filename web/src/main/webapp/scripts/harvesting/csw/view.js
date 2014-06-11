@@ -162,7 +162,7 @@ function getData()
 	}
 	
 		
-	if(typeof(searchtemp)=='undefined'){ 
+	//if(typeof(searchtemp)=='undefined'){ 
 	
 		var doc    = Sarissa.getDomDocument();
 		var searchtmp = doc.createElement('search');
@@ -175,7 +175,7 @@ function getData()
 		}
 			
 		addSearchTemp(searchtmp);
-	} 
+	//} 
 	
 
 	
@@ -257,8 +257,11 @@ function addEmptySearch()
    		success: function(response) {
    			
    			var doc    = Sarissa.getDomDocument();	
+			
+			
    			var search = doc.createElement('search');
    			var searchtmp = doc.createElement('search');
+			searchtmp.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:apiso", "http://www.opengis.net/cat/csw/apiso/1.0");
    			
     		var format = new OpenLayers.Format.XML();
     		var doc = format.read(response.responseText);

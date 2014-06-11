@@ -23,10 +23,10 @@
 		
 		<capability>
 			<xsl:attribute name="name">
-				<xsl:value-of select="local-name()" />
+				<xsl:value-of select=" name()" />
 			</xsl:attribute>
 		
-				<xsl:value-of select="concat('csw.',local-name())" />
+				<xsl:value-of select="concat('csw.', name())" />
 		
 		</capability>
 		</xsl:for-each>

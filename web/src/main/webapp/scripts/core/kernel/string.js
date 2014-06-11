@@ -45,7 +45,14 @@ str.substitute = function(template, map)
 		else if (typeof value == 'number')
 			value = '' + value;
 		
-		template = str.replace(template, '{'+name+'}', xml.escape(value));
+		var pattern = '{'+name+'}';
+		if(template.indexOf('{'+name+'}') != -1){
+			pattern = '{'+name+'}';
+		}else if(template.indexOf('{apiso:'+name+'}') != -1){
+			pattern = '{apiso:'+name+'}';
+		}
+		
+		template = str.replace(template, pattern, xml.escape(value));
 	}
 	
 	return template;
