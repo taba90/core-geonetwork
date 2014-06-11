@@ -535,7 +535,8 @@
 			</div>
 			
 			<!-- some ownership info -->
-			<xsl:if test="$remote=false() and $metadata/geonet:info/isHarvested = 'n' and /root/gui/session/userId!=''">
+			<!--<xsl:if test="$remote=false() and $metadata/geonet:info/isHarvested = 'n' and /root/gui/session/userId!=''">-->
+			<xsl:if test="$remote=false() and /root/gui/session/userId!=''">
 				<div class="ownership">
                 	<!-- Modification to allow also the name and surname instead only ownername visualizzation -->
 					<!--span class="owner"><xsl:value-of select="concat(/root/gui/strings/owner,': ',$metadata/geonet:info/ownername)"/></span-->
