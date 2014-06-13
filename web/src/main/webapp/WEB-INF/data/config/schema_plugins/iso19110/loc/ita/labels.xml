@@ -37,11 +37,12 @@
         <description>Descrizione della proprietà</description>
     </element>
     <element name="gfc:isAbstract">
-        <label>Sommario</label>
+        <label>Astratta</label>
         <description>E' questo un elemento di sommario ?</description>
     </element>
     <element name="gfc:FC_FeatureType">
-		<label>Descrizione Attributo</label>
+		<!--<label>Descrizione Attributo</label>-->
+        <label>Classe</label>
         <description>Descrizione dell'Attributo della Tabella</description>
     </element>
     <element name="gfc:typeName">
@@ -137,7 +138,8 @@
         <description></description>
     </element>
     <element name="gfc:FC_FeatureAssociation">
-        <label>Associazione caratteristica</label>
+        <!--<label>Associazione caratteristica</label>-->
+        <label>Relazione</label>
         <description></description>
     </element>
     <element name="gfc:FC_AssociationRole">
@@ -153,7 +155,8 @@
         <description></description>
     </element>
     <element name="gfc:aliases">
-        <label>Pseudonimi</label>
+        <!--<label>Pseudonimo</label>-->
+        <label>Aliases</label>
         <description></description>
     </element>
     <element name="gfc:FC_ListedValue">
@@ -190,6 +193,14 @@
     </element>
     <element name="gfc:roleName">
         <label>Nome Ruolo</label>
+        <description></description>
+    </element>
+    <element name="gfc:rolePlayer">
+        <label>Classe associata</label>
+        <description></description>
+    </element>
+    <element name="gco:LocalName">
+        <label>Nome</label>
         <description></description>
     </element>
     <element name="gfc:signature">

@@ -74,77 +74,86 @@
             </xsl:call-template>
         </xsl:variable>
         
-        <span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
-            <xsl:value-of select=" concat(/root/gui/schemas/iso19110/labels/element[@name = 'gfc:FC_AssociationRole']/label, ':')"/>
-        </span>
-       
-        <xsl:variable name="ref" select="gfc:memberName/gco:LocalName/geonet:element/@ref"/>
-        
-        <xsl:choose>
-            <xsl:when test="$edit = true()">
-                <span id="space_{$ref}" class="content">
-                    <xsl:value-of select="'         '"/>
+        <fieldset class="metadata-block">
+            <legend class="block-legend">
+                <span id="{$helpLink}|{$id}" class="content">
+                    <xsl:value-of select="/root/gui/schemas/iso19110/strings/associationRoleFieldSetLabel"/>
                 </span>
-                <input type="text" class="md" name="_{$ref}" id="_{$ref}"
-                    onkeyup="validateNonEmpty(this);"
-                    value="{gfc:memberName/gco:LocalName}" size="30"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <span id="space_{$ref}" class="content">
-                    <xsl:value-of select="'         '"/>
-                </span>
-                <span id="_{$ref}" class="content">
-                    <xsl:value-of select="gfc:memberName/gco:LocalName"/>
-                </span>
-            </xsl:otherwise>
-        </xsl:choose>
-        
-        <xsl:if test="$edit = true()">
-            <xsl:variable name="classNames">
+            </legend>
+            
+            <span id="stip.{$helpLink}|{$id}" onclick="toolTip(this.id);" class="content" style="cursor:help;">
+                <xsl:value-of select=" concat(/root/gui/schemas/iso19110/labels/element[@name = 'gfc:FC_AssociationRole']/label, ':')"/>
+            </span>
+            
+            <xsl:variable name="ref" select="gfc:memberName/gco:LocalName/geonet:element/@ref"/>
+            
+            <xsl:choose>
+                <xsl:when test="$edit = true()">
+                    <span id="space_{$ref}" class="content">
+                        <xsl:value-of select="'         '"/>
+                    </span>
+                    <input type="text" class="md" name="_{$ref}" id="_{$ref}"
+                        onkeyup="validateNonEmpty(this);"
+                        value="{gfc:memberName/gco:LocalName}" size="30"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span id="space_{$ref}" class="content">
+                        <xsl:value-of select="'         '"/>
+                    </span>
+                    <span id="_{$ref}" class="content">
+                        <xsl:value-of select="gfc:memberName/gco:LocalName"/>
+                    </span>
+                </xsl:otherwise>
+            </xsl:choose>
+            
+            <xsl:if test="$edit = true()">
+                <xsl:variable name="classNames">
+                    <xsl:call-template name="getFCFALinkDefID">
+                        <xsl:with-param name="name"   select="gfc:memberName/gco:LocalName"/>
+                        <xsl:with-param name="schema" select="$schema"/>
+                        <xsl:with-param name="edit" select="$edit"/>
+                        <xsl:with-param name="getNameList" select="true()"/>
+                    </xsl:call-template>
+                </xsl:variable>
+                
+                <span>
+                    ( <xsl:value-of select="/root/gui/schemas/iso19139.rndt/strings/geoloc/suggestionsLabel"/> : 
+                    <select  id="roleTypeNames" class="md" onchange="javascript:setFCName(this, '_{$ref}');" oncontextmenu="javascript:setFCName(this, '_{$ref}');">	
+                        <option value=""><xsl:value-of select="''"/></option>
+                        <xsl:call-template name="splitString">
+                            <xsl:with-param name="input" select="$classNames"/>
+                        </xsl:call-template>
+                    </select>
+                    )
+                </span>   
+            </xsl:if>   
+            
+            <xsl:variable name="roleRef">
                 <xsl:call-template name="getFCFALinkDefID">
                     <xsl:with-param name="name"   select="gfc:memberName/gco:LocalName"/>
                     <xsl:with-param name="schema" select="$schema"/>
                     <xsl:with-param name="edit" select="$edit"/>
-                    <xsl:with-param name="getNameList" select="true()"/>
                 </xsl:call-template>
             </xsl:variable>
             
-            <span>
-                ( <xsl:value-of select="/root/gui/schemas/iso19139.rndt/strings/geoloc/suggestionsLabel"/> : 
-                <select  id="roleTypeNames" class="md" onchange="javascript:setFCName(this, '_{$ref}');" oncontextmenu="javascript:setFCName(this, '_{$ref}');">	
-                    <option value=""><xsl:value-of select="''"/></option>
-                    <xsl:call-template name="splitString">
-                        <xsl:with-param name="input" select="$classNames"/>
-                    </xsl:call-template>
-                </select>
-                )
+            <span class="content" style="cursor:help;">
+                <xsl:choose>
+                    <xsl:when test="$edit = true()">
+                        <span id="space_{$roleRef}" class="content">
+                            <xsl:value-of select="'         '"/>
+                        </span>
+                        (<a href="#_{$roleRef}"><xsl:value-of select="/root/gui/schemas/iso19110/strings/linkToRole"/></a>)
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <span id="space{$roleRef}" class="content">
+                            <xsl:value-of select="'         '"/>
+                        </span>
+                        (<a href="#{$roleRef}"><xsl:value-of select="/root/gui/schemas/iso19110/strings/linkToRole"/></a>)
+                    </xsl:otherwise>
+                </xsl:choose>            
             </span>   
-        </xsl:if>   
+        </fieldset>
         
-        <xsl:variable name="roleRef">
-            <xsl:call-template name="getFCFALinkDefID">
-                <xsl:with-param name="name"   select="gfc:memberName/gco:LocalName"/>
-                <xsl:with-param name="schema" select="$schema"/>
-                <xsl:with-param name="edit" select="$edit"/>
-            </xsl:call-template>
-        </xsl:variable>
-        
-        <span class="content" style="cursor:help;">
-            <xsl:choose>
-                <xsl:when test="$edit = true()">
-                    <span id="space_{$roleRef}" class="content">
-                        <xsl:value-of select="'         '"/>
-                    </span>
-                    (<a href="#_{$roleRef}"><xsl:value-of select="/root/gui/schemas/iso19110/strings/linkToRole"/></a>)
-                </xsl:when>
-                <xsl:otherwise>
-                    <span id="space{$roleRef}" class="content">
-                        <xsl:value-of select="'         '"/>
-                    </span>
-                    (<a href="#{$roleRef}"><xsl:value-of select="/root/gui/schemas/iso19110/strings/linkToRole"/></a>)
-                </xsl:otherwise>
-            </xsl:choose>            
-        </span>        
     </xsl:template>
     
     <xsl:template name="getFCFALinkDefID">

@@ -2601,7 +2601,8 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
 		<description />
 	</element>
 	<element name="gco:aName" context="gco:TypeName">
-		<label>Nome del tipo</label>
+	    <!--label>Nome del tipo</label-->
+		<label>Formato</label>
 		<description />
 		<helper>
 			<option value="BOOLEAN">BOOLEANO</option>
@@ -2628,7 +2629,8 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
 		<description />
 	</element>
 	<element name="gco:LocalName">
-		<label>Nome locale</label>
+		<!--label>Nome locale</label-->
+		<label>Nome</label>
 		<description />
 	</element>
 	<element name="gco:ScopedName">

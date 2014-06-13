@@ -5,4 +5,5 @@
   <csiTab>Vista Intermedia</csiTab>
   <linkToRole>Collegamento al Ruolo</linkToRole>
   <linkToClass>Collegamento alla Classe</linkToClass>
+  <associationRoleFieldSetLabel>Relazione</associationRoleFieldSetLabel>
 </strings>
