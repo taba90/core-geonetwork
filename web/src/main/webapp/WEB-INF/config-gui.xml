@@ -204,7 +204,7 @@
   </inspire>
   <rndt flat="true">
      <ancestorException schema="iso19139.rndt" for="CI_Date,spatialResolution"/>
-     <exception schema="iso19139.rndt" for="invocationName,result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
+     <exception schema="iso19139.rndt" for="invocationName,result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
   </rndt>
   <csi flat="true">
     <ancestorException schema="iso19110" for="definition,roleName"/>
