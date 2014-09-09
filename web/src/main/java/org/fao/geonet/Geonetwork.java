@@ -166,6 +166,10 @@ public class Geonetwork implements ApplicationHandler {
 		// Get config handler properties
 		String systemDataDir = handlerConfig.getMandatoryValue(Geonet.Config.SYSTEM_DATA_DIR);
 		String thesauriDir = handlerConfig.getMandatoryValue(Geonet.Config.CODELIST_DIR);
+		if(thesauriDir != null){
+			thesauriDir = thesauriDir.replace("\\", "/");			
+		}
+		
 		String luceneDir =  handlerConfig.getMandatoryValue(Geonet.Config.LUCENE_DIR);
 		String dataDir =  handlerConfig.getMandatoryValue(Geonet.Config.DATA_DIR);
 		String luceneConfigXmlFile = handlerConfig.getMandatoryValue(Geonet.Config.LUCENE_CONFIG);
