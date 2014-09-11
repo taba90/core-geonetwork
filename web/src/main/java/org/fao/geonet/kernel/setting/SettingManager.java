@@ -109,8 +109,8 @@ public class SettingManager
 
 		root = new Setting(0, null, null);
 		createSubTree(root, list);
-        System.out.println(" Setting tree created: ");
-        System.out.println(toStringTree(root));
+//        System.out.println(" Setting tree created: ");
+//        System.out.println(toStringTree(root));
 	}
 
 	//---------------------------------------------------------------------------
@@ -134,9 +134,6 @@ public class SettingManager
 		try
 		{
 			Setting s = resolve(path);
-
-            System.out.println("Looking for setting " + path);
-            System.out.println("Found " + toStringTree(s));
 
 			return (s == null) ? null : build(s, level, nsMapping);
 		}
