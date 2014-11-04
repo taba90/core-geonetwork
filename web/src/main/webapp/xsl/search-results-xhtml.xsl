@@ -610,6 +610,12 @@
 								<xsl:with-param name="remote" select="$remote"/>
 							</xsl:call-template>
 						</xsl:when>
+						<xsl:when test="$metadata/geonet:info/download='true' and count($metadata/link[@type='customdownload'])>0">
+							<xsl:call-template name="download-button">
+								<xsl:with-param name="metadata" select="$metadata"/>
+								<xsl:with-param name="remote" select="$remote"/>
+							</xsl:call-template>
+						</xsl:when>
 						<!-- or when the metadata has associated data url's -->
 						<xsl:when test="count($metadata/link[@type='dataurl'])>0">
 							<xsl:call-template name="download-button">
@@ -742,7 +748,7 @@
 		
 		<!--	Use the old approach	-->
 		<xsl:choose>
-			<xsl:when test="count($metadata/link[@type='download'])>1">
+			<xsl:when test="count($metadata/link[@type='download'])>1 or count($metadata/link[@type='customdownload'])>1">
 				<xsl:choose>
 					<xsl:when test="$remote=true()">
 						<button class="content" onclick="window.open('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=distribution2')" title="{/root/gui/strings/download}">
@@ -756,10 +762,20 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="count($metadata/link[@type='download'])=1 and $metadata/link[@type='download'] != ''">
-				<button class="content" onclick="window.open('{$metadata/link[@type='download']}')" title="{/root/gui/strings/download}">
-					<xsl:value-of select="/root/gui/strings/download"/>
-				</button>
+			<xsl:when test="(count($metadata/link[@type='download'])=1 or count($metadata/link[@type='customdownload'])=1) 
+				and ($metadata/link[@type='download'] != '' or $metadata/link[@type='customdownload'] != '')">
+				<xsl:choose>
+					<xsl:when test="count($metadata/link[@type='customdownload'])=1">
+						<button class="content" onclick="{$metadata/link[@type='customdownload']}" title="{/root/gui/strings/download}">
+							<xsl:value-of select="/root/gui/strings/download"/>
+						</button>
+					</xsl:when>
+					<xsl:otherwise>
+						<button class="content" onclick="window.open('{$metadata/link[@type='download']}')" title="{/root/gui/strings/download}">
+							<xsl:value-of select="/root/gui/strings/download"/>
+						</button>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 		</xsl:choose>
 		

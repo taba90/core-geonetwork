@@ -2691,6 +2691,25 @@
 								</a>
 								<br/>(External-Link: <xsl:value-of select="$linkage"/>)
 							</xsl:when>
+							<xsl:when test="contains(gmd:protocol/gco:CharacterString,'http--custom')">									
+								<xsl:variable name="metadata_id" select="/root/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/geonet:info/id" />
+								<xsl:variable name="metadata_uuid" select="/root/*[name(.)='gmd:MD_Metadata' or @gco:isoType='gmd:MD_Metadata']/geonet:info/uuid" />
+								<xsl:variable name="linkage" select="gmd:linkage/gmd:URL" />
+								<xsl:variable name="name" select="normalize-space(gmd:name/gco:CharacterString|gmd:name/gmx:MimeFileType)" />
+								<xsl:variable name="description" select="normalize-space(gmd:description/gco:CharacterString)" />
+								
+								<a href="javascript:customDownload('{$linkage}','{$name}','{$metadata_id}','{$metadata_uuid}')">
+									<xsl:choose>
+										<xsl:when test="string($description)!=''">
+											<xsl:value-of select="$description"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$name"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</a>
+								<br/>(WWW:DOWNLOAD: <xsl:value-of select="$linkage"/> )
+							</xsl:when>
 							<xsl:otherwise>
 								<a href="{$linkage}" target="_new">
 									<xsl:choose>
@@ -3330,6 +3349,12 @@
 				<!-- New: Added in order to manage externals download enabling the download button in result-list -->
 				<xsl:when test="starts-with($protocol,'WWW:DOWNLOAD-') and contains($protocol,'http--external') and string($linkage)!=''">
 					<link type="download"><xsl:value-of select="$linkage"/></link>
+				</xsl:when>
+				<!-- New: Added in order to manage externals 'custom' download enabling the download button in result-list -->
+				<xsl:when test="starts-with($protocol,'WWW:DOWNLOAD-') and contains($protocol,'http--custom') and string($linkage)!=''">
+					<link type="customdownload">
+						<xsl:value-of select="concat('javascript:customDownload(&#34;' ,  $linkage  ,  '&#34;, &#34;', $name  ,'&#34;,&#34;',$id,'&#34;,&#34;', $uuid, '&#34;)')"/>
+					</link>
 				</xsl:when>
 				<xsl:when test="matches($protocol,'^WWW:DOWNLOAD-.*-http--download.*') and not(contains($linkage,$download_check))">
 					<link type="download"><xsl:value-of select="$linkage"/></link>

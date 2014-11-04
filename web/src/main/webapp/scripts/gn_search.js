@@ -17,6 +17,10 @@
 
 var mainViewport;
 
+function customDownload(url, name, id, uuid){
+    parent.downloadData(name, url, id, uuid);
+}
+
 function initSimpleSearch(wmc)
 {
 }
