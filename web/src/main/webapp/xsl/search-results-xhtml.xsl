@@ -748,7 +748,9 @@
 		
 		<!--	Use the old approach	-->
 		<xsl:choose>
-			<xsl:when test="count($metadata/link[@type='download'])>1 or count($metadata/link[@type='customdownload'])>1">
+			<xsl:when test="(count($metadata/link[@type='download'])>1 or count($metadata/link[@type='customdownload'])>1)
+				or
+				((count($metadata/link[@type='download']) + count($metadata/link[@type='customdownload']))>1)">
 				<xsl:choose>
 					<xsl:when test="$remote=true()">
 						<button class="content" onclick="window.open('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=distribution2')" title="{/root/gui/strings/download}">
