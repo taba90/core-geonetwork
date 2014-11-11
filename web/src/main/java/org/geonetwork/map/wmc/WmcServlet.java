@@ -1,23 +1,33 @@
 package org.geonetwork.map.wmc;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.geonetwork.http.proxy.util.RequestUtil;
-import org.pvalsecc.misc.FileUtilities;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Logger;
+import org.geonetwork.http.proxy.util.RequestUtil;
+import org.pvalsecc.misc.FileUtilities;
 
 
 public class WmcServlet extends HttpServlet {
@@ -253,6 +263,11 @@ public class WmcServlet extends HttpServlet {
             httpServletResponse.setStatus(code);
             PrintWriter out = httpServletResponse.getWriter();
             out.println("Error while generating WMC:");
+            
+//            message = URLEncoder.encode(message, "UTF-8");
+            
+            message = StringEscapeUtils.escapeHtml(message);
+            
             out.println(message);
             out.close();
             LOGGER.error("Error while generating WMC: " + message);
