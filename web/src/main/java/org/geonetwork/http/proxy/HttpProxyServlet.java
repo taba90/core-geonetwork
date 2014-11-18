@@ -2,11 +2,17 @@ package org.geonetwork.http.proxy;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -46,6 +52,9 @@ public class HttpProxyServlet extends HttpServlet {
     // Servlet init parameters set in servlet definition in web.xml
     private static final String INIT_PARAM_ALLOWED_HOSTS = "AllowedHosts";
     private static final String INIT_PARAM_ALLOWED_CONTENT_TYPES = "AllowedContentTypes";
+    private static final String INIT_PARAM_ALLOWED_OGC_SERVICES = "AllowedOGCServices";
+    private static final String INIT_PARAM_ALLOWED_OGC_REQUESTS = "AllowedOGCRequests";
+    private static final String INIT_PARAM_ALLOWED_HTTP_METHODS = "AllowedHTTPMethods";
     private static final String INIT_PARAM_DEFAULT_PROXY_URL = "DefaultProxyUrl";
 
     // Default URL for proxy
@@ -56,7 +65,15 @@ public class HttpProxyServlet extends HttpServlet {
 
     // List of valid content types for request
     private String[] validContentTypes;
-
+    
+    // List of valid OGC services for request
+    private String[] validOGCServices;
+    
+    // List of valid OGC requests
+    private String[] validOGCRequests;
+    
+    // List of valid HTTP methods
+    private String[] validHTTPMethods;    
 
     /**
      * Initializes servlet Content Types allowed and the host to use in the proxy
@@ -70,6 +87,9 @@ public class HttpProxyServlet extends HttpServlet {
 
         String allowedHostsValues = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_ALLOWED_HOSTS);
         String validContentTypesValues = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_ALLOWED_CONTENT_TYPES);
+        String allowedOGCServices = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_ALLOWED_OGC_SERVICES);
+        String allowedOGCRequests = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_ALLOWED_OGC_REQUESTS);
+        String allowedHTTPMethods = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_ALLOWED_HTTP_METHODS);
 
         // Default proxy url when url parameter is not provided in request
         defaultProxyUrl = ServletConfigUtil.getInitParamValue(servletConfig, INIT_PARAM_DEFAULT_PROXY_URL);
@@ -96,6 +116,21 @@ public class HttpProxyServlet extends HttpServlet {
         // List of allowed content types for request
         if (validContentTypesValues != null)
             validContentTypes = validContentTypesValues.split(",");
+        
+        // List of allowed OGC services
+        if(allowedOGCServices != null && StringUtils.isNotEmpty(allowedOGCServices)){
+        	validOGCServices = allowedOGCServices.split(",");
+        }
+        
+        // List of allowed OGC requests
+        if(allowedOGCRequests != null && StringUtils.isNotEmpty(allowedOGCRequests)){
+        	validOGCRequests = allowedOGCRequests.split(",");
+        }
+        
+        // List of allowed OGC requests
+        if(allowedHTTPMethods != null && StringUtils.isNotEmpty(allowedHTTPMethods)){
+        	validHTTPMethods = allowedHTTPMethods.split(",");
+        }
     }
 
     @Override
@@ -123,12 +158,26 @@ public class HttpProxyServlet extends HttpServlet {
                 }
             }
 
+            // Checks if allowed HTTP method
+        	if(!isAllowedHTTPMethod(request)){
+                returnExceptionMessage(response, "This proxy does not allow you to perform" +
+                		" the request with a " + request.getMethod() + " HTTP method.");
+                return;
+        	}
+            
             // Checks if allowed host
             if (!isAllowedHost(host)) {
                 //throw new ServletException("This proxy does not allow you to access that location.");
                 returnExceptionMessage(response, "This proxy does not allow you to access that location.");
                 return;
             }
+            
+            // Checks if allowed OGC Service
+        	if(!isAllowedOGC(url)){
+                returnExceptionMessage(response, "This proxy does not allow you to perform this " +
+                		"request, only OGC request types are allowed at this moment.");
+                return;
+        	}
 
             if (url.startsWith("http://") || url.startsWith("https://")) {
                 HttpClient client = new HttpClient();
@@ -183,7 +232,7 @@ public class HttpProxyServlet extends HttpServlet {
 
     }
 
-    @Override
+	@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PostMethod httpPost = null;
 
@@ -208,6 +257,13 @@ public class HttpProxyServlet extends HttpServlet {
                 }
             }
 
+            // Checks if allowed HTTP method
+        	if(!isAllowedHTTPMethod(request)){
+                returnExceptionMessage(response, "This proxy does not allow you to perform" +
+                		" the request with a " + request.getMethod() + " HTTP method.");
+                return;
+        	}
+        	
             // Checks if allowed host
             if (!isAllowedHost(host)) {
                 //throw new ServletException("This proxy does not allow you to access that location.");
@@ -296,6 +352,110 @@ public class HttpProxyServlet extends HttpServlet {
 
         else
             return "" + ct + charset;
+    }
+    
+    /**
+     * @param request
+     * @return boolean
+     */
+    private boolean isAllowedHTTPMethod(HttpServletRequest request) {
+    	boolean allowed = false;
+    	
+    	if(validHTTPMethods != null && validHTTPMethods.length > 0){
+    		String method = request.getMethod();
+    		for(String m : validHTTPMethods){
+    			if(method.equals(m)){
+    				allowed = true;
+    				break;
+    			}
+    		}
+    	}else{
+    		allowed = true;
+    	}
+		
+		return allowed;
+	}
+    
+    /**
+     * @param url
+     * @return Map<String, String>
+     * @throws UnsupportedEncodingException
+     */
+    private static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
+        Map<String, String> query_pairs = new HashMap<String, String>();
+        String query = url.getQuery();
+        
+        if(query != null && query.indexOf("&") != -1){
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                int idx = pair.indexOf("=");
+                if(idx != -1){
+                	query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), 
+                			URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                }
+            }
+        }
+
+        return query_pairs;
+    }
+    
+    /**
+     * @param url
+     * @return boolean
+     * @throws MalformedURLException 
+     * @throws UnsupportedEncodingException 
+     */
+    private boolean isAllowedOGC(String url) 
+    		throws UnsupportedEncodingException, MalformedURLException{
+    	Map<String, String> params = splitQuery(new URL(url));
+    	
+    	// Checks for OGC service type if needed
+    	if(validOGCServices != null && validOGCServices.length > 0){
+    		String service = params.containsKey("SERVICE") ? 
+    				params.get("SERVICE") : (params.containsKey("service") ? params.get("service") : null);
+    				
+    		if(service != null){
+        		// Checks if the service exists in the allowed list of OGC services
+        		boolean allowed = false;
+        		for(String s : validOGCServices){
+        			if(s.equalsIgnoreCase(service)){
+        				allowed = true;
+        				break;
+        			}
+        		}
+        		
+        		if(!allowed){
+        			return false;
+        		}
+    		}else{
+    			return false;
+    		} 
+    	}
+    	
+		// Checks for OGC request type if needed
+		if(validOGCRequests != null && validOGCRequests.length > 0){
+    		String req = params.containsKey("REQUEST") ? 
+    				params.get("REQUEST") : (params.containsKey("request") ? params.get("request") : null);
+
+			if(req != null){
+				// Checks if the request exists in the allowed list of OGC requests
+				boolean allowed = false;
+				for(String r : validOGCRequests){
+					if(r.equalsIgnoreCase(req)){
+						allowed = true;
+						break;
+					}
+				}
+				
+				if(!allowed){
+					return false;
+				}
+			}else{
+				return false;
+			}
+		} 
+    	
+		return true;
     }
 
     /**
