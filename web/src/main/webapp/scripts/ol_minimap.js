@@ -204,6 +204,21 @@ GeoNetwork.miniapp = function() {
         }
     }
 
+    var osm_getTileURL = function(bounds) {
+        var res = this.miniMap.getResolution();
+        var x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+        var y = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+        var z = this.map.getZoom();
+        var limit = Math.pow(2, z);
+
+        if (y < 0 || y >= limit) {
+          return OpenLayers.Util.getImagesLocation() + "404.png";
+        } else {
+          x = ((x % limit) + limit) % limit;
+          return this.url + z + "/" + x + "/" + y + "." + this.type;
+        }
+      }
+
     // public space:
     return {
         init: function(miniMapDiv, regionControl, layers, mapOptions, extentBoxIds) {
@@ -215,9 +230,73 @@ GeoNetwork.miniapp = function() {
             createMap(mapOptions);
 
             for (var i=0; i<layers.length; i++) {                
-                createWmsLayer(layers[i][0],layers[i][1],layers[i][2],layers[i][3]);
-            }           
-           
+//                createWmsLayer(layers[i][0],layers[i][1],layers[i][2],layers[i][3]);
+            }
+
+//    var createWmsLayer = function(name, url, params, options) {
+//        miniMap.addLayer(new OpenLayers.Layer.WMS(name, url, params, options));
+//    };
+//        miniMap.addLayer(new OpenLayers.Layer.WMS(name, url, params, options));
+//
+//          http://undefined.tile.openweathermap.org/map/precipitation/2/3/3.png
+//            miniMap.addLayer(new OpenLayers.Layer.TMS(name, url, params, options));
+
+
+//            miniMap.addLayer(new OpenLayers.Layer.TMS(
+//                "Precipitazioni",
+//                "http://undefined.tile.openweathermap.org/map/",
+//                {layername: 'precipitation', type: 'png', visibility: true,  isBaseLayer: true, serviceVersion:''}));
+
+
+/****
+ * BASELAYER
+ */
+    var topo_waterarea_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "topo_waterarea-epsg31287-TMS",
+        "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+        { layername: 'topo_waterarea@epsg31287', type: "jpg", serviceVersion:"1.0.0",
+          gutter:0,buffer:0,isBaseLayer:true,transitionEffect:'resize',
+          tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+          resolutions:[2000.0,1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+          zoomOffset:0,
+          units:"m",
+          maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+          projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+          sphericalMercator: false,
+          visibility: true
+        }
+    );
+    miniMap.addLayer(topo_waterarea_epsg31287_tms_layer);
+
+/****
+ * OVERLAYS OSM
+ */
+
+    var osm_overlay_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "osm_overlay-epsg31287-TMS",
+        "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+        { layername: 'osm_overlay@epsg31287', type: "png", serviceVersion:"1.0.0",
+          gutter:0,buffer:0,transitionEffect:'resize',
+          tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+          resolutions:[2000.0,1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+          zoomOffset:0,
+          units:"m",
+          maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+          projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+          sphericalMercator: false,
+          visibility: true,
+          isBaseLayer: false
+        }
+    );
+    miniMap.addLayer(osm_overlay_epsg31287_tms_layer);
+
+
+//- you can find the layer configuration for our
+//   TMS service in the source code of the following
+//   HTML page
+//   http://wmsx.zamg.ac.at/mapcache201409.html
+//   the two relevant layers are
+//     + topo_waterarea@epsg31287 as BaseLayer and
+//     + osm_overlay@epsg31287    as Overlay
+
             createViewport(miniMapDiv, extentBoxIds);
             addMapControls();
             miniMap.zoomToMaxExtent();

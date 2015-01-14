@@ -15,9 +15,33 @@
   </skos:ConceptScheme>
 
   <!-- Main Concept-->
+<!--  <skos:Concept rdf:about="http://geonetwork-opensource.org/ATregions#main">
+    <skos:prefLabel xml:lang="en">Main</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">MainDE</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:upperCorner>49.020710 17.160749</gml:upperCorner>
+        <gml:lowerCorner>46.372299 9.530790</gml:lowerCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+
+    <skos:inScheme rdf:resource="http://geonetwork-opensource.org/ATregions" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#1" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#2" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#3" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#4" />
+  </skos:Concept>-->
+
   <skos:Concept rdf:about="http://geonetwork-opensource.org/ATregions#austria">
     <skos:prefLabel xml:lang="en">Austria</skos:prefLabel>
     <skos:prefLabel xml:lang="de">Österreich</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:upperCorner>49.020710 17.160749</gml:upperCorner>
+        <gml:lowerCorner>46.372299 9.530790</gml:lowerCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+
     <skos:inScheme rdf:resource="http://geonetwork-opensource.org/ATregions" />
     <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#1" />
     <skos:narrower rdf:resource="http://geonetwork-opensource.org/regions#2" />

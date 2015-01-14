@@ -49,12 +49,20 @@ GeoNetwork.app = function() {    // private vars:
      *
      */
     var createMap = function(mapOptions, scales) {
-        var options = mapOptions || {
-            projection: "EPSG:4326",
-            units: "degrees",
-            maxExtent: new OpenLayers.Bounds(-180,-90,180,90),
-            restrictedExtent: new OpenLayers.Bounds(-180,-90,180,90),
-            controls: []
+//        var options = mapOptions || {
+//            projection: "EPSG:4326",
+//            units: "degrees",
+//            maxExtent: new OpenLayers.Bounds(-180,-90,180,90),
+//            restrictedExtent: new OpenLayers.Bounds(-180,-90,180,90),
+//            controls: []
+//        };
+
+        var options = {
+            projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+            displayProjection: new OpenLayers.Projection("EPSG:4326"),
+            tileSize: new OpenLayers.Size(512,512),
+            maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+            resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0]
         };
         map = new OpenLayers.Map('ol_map', options);
 
@@ -1170,10 +1178,48 @@ GeoNetwork.app = function() {    // private vars:
             //createDummyBaseLayer(mapOptions.maxExtent);
 
            // default layers in the map
-            for (var i=0; i<layers.length; i++) {                
-                createWmsLayer(layers[i][0],layers[i][1],layers[i][2],layers[i][3]);
-            }       
-                       
+//            for (var i=0; i<layers.length; i++) {
+//                createWmsLayer(layers[i][0],layers[i][1],layers[i][2],layers[i][3]);
+//            }
+
+        var topo_waterarea_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "topo_waterarea-epsg31287-TMS",
+            "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+            { layername: 'topo_waterarea@epsg31287', type: "jpg", serviceVersion:"1.0.0",
+              gutter:0,buffer:0,isBaseLayer:true,transitionEffect:'resize',
+              tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+              resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+              zoomOffset:0,
+              units:"m",
+              maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+              projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+              sphericalMercator: false,
+              visibility: true,
+              isBaseLayer: true
+            }
+        );
+        map.addLayer(topo_waterarea_epsg31287_tms_layer);
+
+    /****
+     * OVERLAYS OSM
+     */
+
+        var osm_overlay_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "osm_overlay-epsg31287-TMS",
+            "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+            { layername: 'osm_overlay@epsg31287', type: "png", serviceVersion:"1.0.0",
+              gutter:0,buffer:0,transitionEffect:'resize',
+              tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+              resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+              zoomOffset:0,
+              units:"m",
+              maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+              projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+              sphericalMercator: false,
+              visibility: true,
+              isBaseLayer: false
+            }
+        );
+        map.addLayer(osm_overlay_epsg31287_tms_layer);
+
             // Fix for the toctree to get the correct mappanel (i
             /*GeoExt.MapPanel.guess = function() {
                 return Ext.getCmp('mappanel');

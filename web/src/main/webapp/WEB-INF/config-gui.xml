@@ -56,6 +56,7 @@
    <width>100%</width>
    <height>300px</height>
   </metadata>
+
   <proj>
    <!-- List all needed projections for view and editing maps.
     If more than one projection is available, bounding box
@@ -65,8 +66,10 @@
     not define more than one default projection.
     
    -->
-   <crs code="EPSG:4326" default="1" edit="1"/><!-- WGS84 is mandatory because ISO store it by default in LatLong-->
+      <crs code="EPSG:4326" default="1" edit="1"/><!-- WGS84 is mandatory because ISO store it by default in LatLong-->
       <crs code="EPSG:900913" def="+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs "/>
+
+      <crs code="EPSG:31287"  def="+proj=lcc +lat_1=49 +lat_2=46 +lat_0=47.5 +lon_0=13.33333333333333 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs"/>
       <!--
        <crs code="EPSG:4258" def="+proj=longlat +ellps=GRS80 +no_defs"/>
        <crs code="EPSG:3786" edit="1" def="+proj=eqc +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +a=6371007 +b=6371007 +units=m +no_defs "></crs>
@@ -93,9 +96,17 @@
         params      OpenLayers params hash as expected in new OpenLayers.Layer.WMS(name, url, params, options)
         options     OpenLayers options hash as expected in new OpenLayers.Layer.WMS(name, url, params, options)
  -->
-  <mapSearch options="{projection: 'EPSG:4326', maxExtent: new OpenLayers.Bounds(-180,-90,180,90), units: 'degrees', restrictedExtent: new OpenLayers.Bounds(-180,-90,180,90)}">
+  <!--<mapSearch options="{projection: 'EPSG:4326', maxExtent: new OpenLayers.Bounds(-180,-90,180,90), units: 'degrees', restrictedExtent: new OpenLayers.Bounds(-180,-90,180,90)}">-->
+  <mapSearch options="{
+        projection: new OpenLayers.Projection('EPSG:31287'.toUpperCase()),
+        displayProjection: new OpenLayers.Projection('EPSG:4326'),
+        tileSize: new OpenLayers.Size(512,512),
+        maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+        resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0]
+    }">
+
   <layers>
-    <layer server="http://localhost:8080/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+    <!--<layer server="http://localhost:8080/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />-->
     <layer server="http://localhost:8080/geoserver/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
   </layers>
  </mapSearch>
@@ -115,7 +126,7 @@
  -->
   <mapViewer options="{projection: 'EPSG:4326', maxExtent: new OpenLayers.Bounds(-180,-90,180,90), units: 'degrees', restrictedExtent: new OpenLayers.Bounds(-180,-90,180,90)}">
   <layers>
-    <layer server="http://localhost:8080/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+    <!--<layer server="http://localhost:8080/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />-->
     <layer server="http://localhost:8080/geoserver/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
   </layers>
   <scales values="[7500000, 5000000, 2500000,  1000000, 750000, 500000, 250000, 100000, 75000, 50000, 25000, 10000, 7500, 5000, 2500, 1000]" />

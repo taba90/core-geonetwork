@@ -57,7 +57,7 @@
         <xsl:param name="tabLink"/>
         <xsl:param name="schema"/>
 
-         Let the original ISO19139 template do the work 
+         Let the original ISO19139 template do the work
         <xsl:call-template name="iso19139CompleteTab">
             <xsl:with-param name="tabLink" select="$tabLink"/>
             <xsl:with-param name="schema" select="$schema"/>
@@ -479,7 +479,7 @@
                             <xsl:with-param name="text"   select="$zamg-thesaurus-uom"/>
                         </xsl:apply-templates>-->
 
-                    
+
         			</xsl:with-param>
                 </xsl:call-template>
 
@@ -569,6 +569,7 @@
                     <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage"/>
                     <xsl:with-param name="schema" select="$schema"/>
                     <xsl:with-param name="id" select="generate-id(/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage)"/>
+                    <xsl:with-param name="addLink" select="'addFormat();'"/>
 
                     <xsl:with-param name="helpLink">
                       <xsl:call-template name="getHelpLink">
@@ -580,17 +581,27 @@
                     <xsl:with-param name="edit" select="$edit"/>
                     <xsl:with-param name="content">
 
-                        <xsl:call-template name="zamg.box.storage">
-                            <xsl:with-param name="schema" select="$schema"/>
-                            <xsl:with-param name="edit" select="$edit"/>
-                            <xsl:with-param name="index" select="1"/>
-                        </xsl:call-template>
+                        <xsl:variable name="formatCount" select="count(gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format)"/>
 
-                        <xsl:call-template name="zamg.box.storage">
+                        <!--<xsl:for-each select="for $i in 1 to $formatCount return $i">-->
+                        <xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format">
+
+                            <xsl:message>LOOP: <xsl:value-of select="position()"/></xsl:message>
+
+                            <xsl:call-template name="zamg.box.storage">
+                                <xsl:with-param name="schema" select="$schema"/>
+                                <xsl:with-param name="edit" select="$edit"/>
+                                <xsl:with-param name="index" select="position()"/>
+                                <!--<xsl:with-param name="root" select="/"/>-->
+                            </xsl:call-template>
+
+                        </xsl:for-each>
+
+<!--                        <xsl:call-template name="zamg.box.storage">
                             <xsl:with-param name="schema" select="$schema"/>
                             <xsl:with-param name="edit" select="$edit"/>
                             <xsl:with-param name="index" select="2"/>
-                        </xsl:call-template>
+                        </xsl:call-template>-->
 
 <!--
                         <xsl:call-template name="complexElementGui">
@@ -809,25 +820,28 @@
         <xsl:param name="schema"/>
         <xsl:param name="edit"/>
         <xsl:param name="index"/>
+        <!--<xsl:param name="root"/>-->
 
         <xsl:call-template name="complexElementGui">
             <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgtabstoragebox"/>
             <xsl:with-param name="schema" select="$schema"/>
             <xsl:with-param name="id" select="concat(generate-id(/root/gui/schemas/iso19139.zamg/strings/zamgtabstoragebox), $index)"/>
             <xsl:with-param name="edit" select="$edit"/>
+            <!--<xsl:with-param name="addLink" select="'addFormat();'"/>-->
+            <xsl:with-param name="removeLink" select="concat('removeFormat(',$index,');')"/>
             <xsl:with-param name="content">
 
-                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[$index]/gmd:MD_Format/gmd:name">
+                <xsl:apply-templates mode="elementEP" select="/root/gmd:MD_Metadata//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[$index]/gmd:MD_Format/gmd:name">
                     <xsl:with-param name="schema" select="$schema"/>
                     <xsl:with-param name="edit"   select="$edit"/>
                 </xsl:apply-templates>
 
-                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[$index]/gmd:MD_Format/gmd:version">
+                <xsl:apply-templates mode="elementEP" select="/root/gmd:MD_Metadata//gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[$index]/gmd:MD_Format/gmd:version">
                     <xsl:with-param name="schema" select="$schema"/>
                     <xsl:with-param name="edit"   select="$edit"/>
                 </xsl:apply-templates>
 
-                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions[$index]/gmd:MD_DigitalTransferOptions/gmd:transferSize">
+                <xsl:apply-templates mode="elementEP" select="/root/gmd:MD_Metadata//gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions[$index]/gmd:MD_DigitalTransferOptions/gmd:transferSize">
                     <xsl:with-param name="schema" select="$schema"/>
                     <xsl:with-param name="edit"   select="$edit"/>
                 </xsl:apply-templates>
@@ -852,6 +866,141 @@
 
         <!--<xsl:variable name="ref" select="concat('_', geonet:element/@ref, '_ZAMG')"/>-->
         <xsl:variable name="codenode"  select="/root/gmd:MD_Metadata//gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:RS_Identifier/gmd:code"/>
+        <!--<xsl:variable name="coderef" select="concat('_', $codenode/gco:CharacterString/geonet:element/@ref)"/>-->
+        <xsl:variable name="coderef" select="$codenode/gco:CharacterString/geonet:element/@ref"/>
+        <xsl:variable name="currentcode" select="normalize-space(string($codenode))"/>
+
+        <xsl:variable name="bboxnode"  select="/root/gmd:MD_Metadata//gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox"/>
+        <xsl:variable name="bboxref" select="concat('_', $bboxnode/geonet:element/@ref)"/>
+
+        <xsl:variable name="descnode" select="$bboxnode/../../gmd:description/gco:CharacterString"/>
+        <!--<xsl:variable name="descref" select="concat('_', $descnode/geonet:element/@ref)"/>-->
+        <xsl:variable name="descref" select="$descnode/geonet:element/@ref"/>
+        <xsl:variable name="currentdesc" select="normalize-space($descnode/text())"/>
+
+        <xsl:variable name="lang" select="/root/gui/language"/>
+
+        <xsl:choose>
+            <xsl:when test="$edit=true()">
+
+               	<xsl:call-template name="simpleElementGui">
+                    <xsl:with-param name="schema" select="$schema"/>
+                    <xsl:with-param name="edit"   select="$edit"/>
+                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions.label"/>
+                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
+                    <xsl:with-param name="text">
+
+                        <!-- The main dropdown -->
+
+                        <!--<select class="md" name="{$coderef}" size="1"-->
+                        <select class="md" size="1"
+                            onChange="javascript:setRegionZAMG(
+                                    '{$bboxnode/gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}',
+                                    '{$bboxnode/gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}',
+                                    '{$bboxnode/gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}',
+                                    '{$bboxnode/gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}',
+                                    this.options[this.selectedIndex],
+                                    {$bboxnode/geonet:element/@ref},
+                                    '{$descref}', '{$coderef}')">
+
+                            <!--<xsl:for-each select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option">-->
+                            <xsl:for-each select="/root/gui/regions/record">
+                                <xsl:variable name="id" select="substring-after(id[1],'#')"/>
+                                <xsl:variable name="value" select="concat($id,'|',west,'|',east,'|',south,'|',north)"/>
+
+                                <!--<option value="{@value}">-->
+                                <option value="{$value}">
+                                    <xsl:if test="$id = $currentcode">
+                                        <xsl:attribute name="selected"/>
+                                    </xsl:if>
+                                    <!--<xsl:value-of select="."/>-->
+                                    <xsl:value-of select="label/child::*[name() = $lang]"/>
+                                </option>
+                            </xsl:for-each>
+                        </select>
+
+                        <!-- The hidden bbox coords that will be set by javascript -->
+
+                        <input class="md" type="hidden" id="_{$coderef}" name="_{$coderef}" value="{$currentcode}" size="5" readonly="true"/>
+                        <input class="md" type="hidden" id="_{$descref}" name="_{$descref}" value="{$currentdesc}" readonly="true"/>
+
+                        <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:westBoundLongitude/gco:Decimal">
+                          <xsl:with-param name="schema" select="$schema" />
+                          <xsl:with-param name="name" select="'gmd:westBoundLongitude'" />
+                        </xsl:apply-templates>
+
+                        <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:eastBoundLongitude/gco:Decimal">
+                          <xsl:with-param name="schema" select="$schema" />
+                          <xsl:with-param name="name" select="'gmd:eastBoundLongitude'" />
+                        </xsl:apply-templates>
+
+                        <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:southBoundLatitude/gco:Decimal">
+                          <xsl:with-param name="schema" select="$schema" />
+                          <xsl:with-param name="name" select="'gmd:southBoundLatitude'" />
+                        </xsl:apply-templates>
+
+                        <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:northBoundLatitude/gco:Decimal">
+                          <xsl:with-param name="schema" select="$schema" />
+                          <xsl:with-param name="name" select="'gmd:northBoundLatitude'" />
+                        </xsl:apply-templates>
+
+                    </xsl:with-param>
+
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+
+               	<xsl:call-template name="simpleElementGui">
+                    <xsl:with-param name="schema" select="$schema"/>
+                    <xsl:with-param name="edit"   select="$edit"/>
+                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions.label"/>
+                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
+                    <xsl:with-param name="text">
+                        <!-- This entry is localized according to the language selected while editing -->
+                        <xsl:value-of select="$currentdesc"/>
+
+                        <!-- In order to have a localized region, we'd need to add the region element in input
+                             and select it with something like this
+                        -->
+<!--                        <xsl:value-of
+                            select="/root/gui/regions/record[substring-after(id[1],'#')=$currentcode]/label/child::*[name() = $lang]"/>-->
+                        <!-- Anyway current solution may suffice. -->
+
+                    </xsl:with-param>
+                    <xsl:with-param name="showAttributes" select="false()"/>
+                </xsl:call-template>
+
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
+  <xsl:template mode="zamgCoordinateElementGUI" match="*">
+    <xsl:param name="schema" />
+    <xsl:param name="name" />
+
+    <xsl:variable name="ref" select="./geonet:element/@ref"/>
+
+    <input class="md" type="hidden" id="_{$ref}" name="_{$ref}" value="{normalize-space(./text())}" size="12" readonly="true"/>
+
+<!--    <xsl:variable name="title">
+      <xsl:call-template name="getTitle">
+        <xsl:with-param name="schema" select="$schema" />
+        <xsl:with-param name="name" select="$name" />
+      </xsl:call-template>
+    </xsl:variable>
+
+    <span><xsl:value-of select="$title"/></span>-->
+
+  </xsl:template>
+
+    <!-- ===================== -->
+
+<!--    <xsl:template name="zamg.regions.choice__OLD">
+        <xsl:param name="edit"/>
+        <xsl:param name="schema"/>
+
+        <xsl:variable name="codenode"  select="/root/gmd:MD_Metadata//gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:RS_Identifier/gmd:code"/>
         <xsl:variable name="ref" select="concat('_', $codenode/gco:CharacterString/geonet:element/@ref)"/>
         <xsl:variable name="currentcode" select="normalize-space(string($codenode))"/>
 
@@ -864,8 +1013,6 @@
                     <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
                     <xsl:with-param name="text">
                         <select class="md" name="{$ref}" size="1">
-                            <!--<option name=""/>-->
-                            <!--root/gui/schemas/iso19139.zamg/strings/zamgRegions/option[@value='AT']-->
                             <xsl:for-each select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option">
                                 <option value="{@value}">
                                     <xsl:if test="@value = string($codenode)">
@@ -888,10 +1035,10 @@
                     <xsl:with-param name="text"><xsl:value-of select="normalize-space(string(/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option[@value=$currentcode]))"/> (<xsl:value-of select="$currentcode"/>)</xsl:with-param>
                     <xsl:with-param name="showAttributes" select="false()"/>
                 </xsl:call-template>
-                
+
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
+    </xsl:template>-->
 
     <!-- ============================================================================= -->
     <!-- Renders the CRS choice	-->
@@ -1019,9 +1166,9 @@
                                         </xsl:if>
                                         <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
                                     </option>
-                                    
+
                                 </xsl:if>
-                                
+
                             </xsl:for-each>
                         </select>
                     </xsl:with-param>
@@ -1052,7 +1199,7 @@
             <xsl:when test="$lang3='eng'">en</xsl:when>
             <xsl:when test="$lang3='ger'">de</xsl:when>
             <xsl:when test="$lang3='deu'">de</xsl:when>
-            <xsl:otherwise>en</xsl:otherwise>                 
+            <xsl:otherwise>en</xsl:otherwise>
         </xsl:choose>
 
     </xsl:template>

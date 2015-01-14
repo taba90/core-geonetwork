@@ -8,11 +8,11 @@
     <zamg2dc>Export this metadata as an AOI Dublin Core XML file</zamg2dc>
 
     <zamg_tab_zamg>ZAMG</zamg_tab_zamg>
-    <zamg_tab_simple1>Simple editor</zamg_tab_simple1>
-    <zamg_tab_simple2>Simple editor +</zamg_tab_simple2>
+    <zamg_tab_simple1>Simple view</zamg_tab_simple1>
+    <zamg_tab_simple2>Extended view</zamg_tab_simple2>
 
-    <zamg_title_simple1>Simplified editor</zamg_title_simple1>
-    <zamg_title_simple2>Simplified editor plus</zamg_title_simple2>
+    <zamg_title_simple1>Simplified view</zamg_title_simple1>
+    <zamg_title_simple2>Extended view</zamg_title_simple2>
 
     <zamgtabdata>Data Information</zamgtabdata>
     <zamgtabvar>Variable info</zamgtabvar>
@@ -28,7 +28,7 @@
 
     <zamgRegions.label>Region</zamgRegions.label>
 
-    <zamgRegions>
+<!--    <zamgRegions>
         <option value="none">No area</option>
         <option value="AT">Österreich</option>
         <option value="AT-1">Burgenland</option>
@@ -40,7 +40,7 @@
         <option value="AT-7">Tirol</option>
         <option value="AT-8">Vorarlberg</option>
         <option value="AT-9">Wien</option>
-    </zamgRegions>
+    </zamgRegions>-->
 
     <zamgCrs.label>CRS</zamgCrs.label>
     <zamgTimeResolution.label>Time resolution</zamgTimeResolution.label>

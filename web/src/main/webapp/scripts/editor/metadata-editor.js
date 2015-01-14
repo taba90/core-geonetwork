@@ -738,6 +738,49 @@ function setRegion(westField, eastField, southField, northField, region, eltRef,
 	}
 }
 
+function setRegionZAMG(westField, eastField, southField, northField, region, eltRef, descriptionRef, codeRef)
+{
+	var choice = region.value;
+	var id = "";
+	var w = "";
+	var e = "";
+	var s = "";
+	var n = "";
+
+	if (choice != undefined && choice != "") {
+		coords = choice.split("|");
+		id = coords[0];
+		w = coords[1];
+		e = coords[2];
+		s = coords[3];
+		n = coords[4];
+		$("_" + westField).value  = w;
+		$("_" + eastField).value  = e;
+		$("_" + southField).value = s;
+		$("_" + northField).value = n;
+
+		if ($("_" + descriptionRef) != null)
+			$("_" + descriptionRef).value = region.text;
+
+        if ($("_" + codeRef) != null)
+			$("_" + codeRef).value = id;
+
+	} else {
+		$("_" + westField).value  = "";
+		$("_" + eastField).value  = "";
+		$("_" + southField).value = "";
+		$("_" + northField).value = "";
+	}
+
+	var viewers = Ext.DomQuery.select('.extentViewer');
+	for (var idx = 0; idx < viewers.length; ++idx) {
+	     var viewer = viewers[idx];
+	     if (eltRef == viewer.getAttribute("elt_ref")) {
+	    	 extentMap.updateBboxForRegion(extentMap.maps[eltRef], westField + "," + southField + "," + eastField + "," + northField, eltRef, true); // Region are in WGS84
+	     }
+	}
+}
+
 function clearRef(ref) 
 {
 	setBunload(false);
@@ -1791,4 +1834,17 @@ function computeExtentFromKeywords(mode) {
             + "&gurl=" + Env.host + Env.url 
             + "&lang=" + Env.lang 
             + "&replace=" + mode);
+}
+
+function addFormat() {
+    doSaveThen("metadata.processing?id="
+            + document.mainForm.id.value
+            + "&process=zamg-storage-add");
+}
+
+function removeFormat(index) {
+    doSaveThen("metadata.processing?id="
+            + document.mainForm.id.value
+            + "&process=zamg-storage-remove"
+            + "&index=" + index);
 }
