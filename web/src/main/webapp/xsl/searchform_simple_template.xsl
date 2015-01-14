@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:geonet="http://www.fao.org/geonetwork"
-	exclude-result-prefixes="xsl geonet">
+<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               	xmlns:geonet="http://www.fao.org/geonetwork"
+                xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                exclude-result-prefixes="xsl geonet">
 
 
 	<xsl:template name="simple_search_panel">
@@ -67,6 +70,75 @@
 					</select>			
 				</div>
 			</div>
+
+            <fieldset style="padding:4px; margin-top:8px;">
+                <legend><b>Data Type</b></legend>
+                
+                <table width="100%">
+                    <tr width="100%">
+                        <td width="50%">
+                            <input id="datatype_gridded" type="checkbox" onchange="javascript:setZAMGDatatype();">
+                                <label for="datatype_gridded"><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/datatype_gridded"/></label>
+                            </input>
+                        </td>
+                        <td width="50%">
+                            <input id="datatype_station" type="checkbox" onchange="javascript:setZAMGDatatype();">
+                                <label for="datatype_station"><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/datatype_station"/></label>
+                            </input>
+                        </td>
+                    </tr>
+                </table>
+
+                <input name="zamg_datatype" id="datatype_param" type="hidden"/>
+
+            </fieldset>
+
+            <fieldset style="padding:4px; margin-top:8px;">
+                <legend><b>Source Type</b></legend>
+                
+                <table width="100%">
+                    <tr width="100%" padding="5px">
+                        <td width="50%">
+                            <div padding="5px">
+                            <input id="sourcetype_observation" type="checkbox" onchange="javascript:setZAMGSourcetype();">
+                                <label for="sourcetype_observation"><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/sourcetype_observation"/></label>
+                            </input>
+                            </div>
+                        </td>
+                        <td width="50%">
+                            <input id="sourcetype_model" type="checkbox" onchange="javascript:setZAMGSourcetype();">
+                                <label for="sourcetype_model"><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/sourcetype_model"/></label>
+                            </input>
+                        </td>
+                    </tr>
+                </table>
+
+                <input name="zamg_sourcetype" id="sourcetype_param" type="hidden"/>
+
+            </fieldset>
+
+
+            <xsl:variable name="zamg-thesaurus-variable"
+                select="document(concat('file:///', replace(system-property('geonetwork.codeList.dir'), '\\', '/'), '/external/thesauri/theme/zamg-variable.rdf'))"/>
+
+
+<!--            <xsl:call-template name="zamg.thesaurus.filter">
+                <xsl:with-param name="thesaurus"   select="$zamg-thesaurus-variable"/>
+                <xsl:with-param name="thesaurusName"   select="'geonetwork.thesaurus.external.theme.zamg-variable'"/>
+
+                <xsl:with-param name="searchParamName" select="'zamg_variable'"/>
+
+            </xsl:call-template>-->
+
+
+        <xsl:call-template name="zamg.facet.filter">
+            <xsl:with-param name="name" select="'zamg_variable'"/>
+        </xsl:call-template>
+
+<!--        <xsl:call-template name="zamg.facet.filter">
+            <xsl:with-param name="name" select="'zamg_datatype'"/>
+        </xsl:call-template>-->
+
 			
 			<!-- Search button -->
 			<div>
@@ -195,5 +267,90 @@
 			Event.observe('any', 		'keypress',	gn_anyKeyObserver);
 	 </script>
 	</xsl:template>
+
+
+    <xsl:template name="zamg.thesaurus.filter">
+        <xsl:param name="thesaurus"/>
+        <xsl:param name="thesaurusName"/>
+        <xsl:param name="searchParamName"/>
+
+        <xsl:variable name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>
+
+        <xsl:variable name="shortname" select="substring-after($thesaurusName,'.theme.')"/>
+
+        <xsl:choose>
+            <xsl:when test="not(string($thesaurus))">
+                <h3>WARNING: can't find thesaurus <xsl:value-of select="$thesaurusName"/></h3>
+            </xsl:when>
+            <xsl:otherwise>
+
+                <div class="row">  <!-- div row-->
+
+					<!--<span class="labelField"><xsl:value-of select="/root/gui/strings/sortBy"/></span>-->
+					<span class="labelField">Variable name</span>
+
+                    <!--<h1 class="labelFieldSmall"><xsl:value-of select="/root/gui/strings/what"/></h1>-->
+                    <!--<h1 class="labelFieldSmall">Variable name</h1>-->
+
+				<!--<div style="margin-left: 60px; margin-top:5px">-->
+					<!-- Region -->
+					<select class="content" name="{$searchParamName}" id="{$searchParamName}">
+							<option value="">
+                                <xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="/root/gui/strings/any"/>
+    						</option>
+
+                            <!-- Add all of other Concepts -->
+                            <xsl:for-each select="$thesaurus/rdf:RDF/skos:Concept">
+							<!--<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                                <xsl:if test="not(./skos:altLabel='none')">
+
+                                    <option value="{./skos:altLabel/text()}">
+                                        <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
+                                    </option>
+
+                                </xsl:if>
+
+                            </xsl:for-each>
+
+					</select>
+
+				</div>
+
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
+    <xsl:template name="zamg.facet.filter">
+        <xsl:param name="name"/>
+
+        <div class="row" style="padding-top:8px;">  <!-- div row-->
+            <span class="labelField"><b><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/*[name()=$name]"/></b></span>
+            <!--<span class="labelField">INDEX <xsl:value-of select="$name"/></span>-->
+            <!--<xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>-->
+            <!--<span class="labelField">Variable name</span>-->
+            <span title="{/root/gui/strings/searchhelp/keywords}">
+                <input id="{$name}_input" name="{$name}"
+                       onClick="popSelector(this,'{$name}_SelectorFrame','{$name}_Selector','zamg.search.keywords?mode={$name}&amp;keyword','{$name}_input');"
+                       class="content" size="31" value=""/>
+            </span>
+
+            <!--<xsl:if test="/root/gui/config/search/keyword-selection-panel and not($remote)">-->
+    <!--			<a style="cursor:pointer;" onclick="javascript:showSearchKeywordSelectionPanel();">
+                    <img src="{/root/gui/url}/images/find.png" alt="{/root/gui/strings/searchhelp/thesaurus}" title="{/root/gui/strings/searchhelp/thesaurus}"/>
+                </a>-->
+            <!--</xsl:if>-->
+
+            <div id="{$name}_SelectorFrame" class="keywordSelectorFrame" style="display:none;z-index:1000;position:fixed;top:auto;">
+                <div id="{$name}_Selector" class="keywordSelector"/>
+            </div>
+
+            <div id="keywordList" class="keywordList"/>
+        </div>
+        
+    </xsl:template>
 
 </xsl:stylesheet>

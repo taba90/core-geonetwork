@@ -1017,6 +1017,24 @@ function setBoolParam(p, val)
        }
   }
 
+  function zamgKeywordCheck(k, check, elementId){
+       // FIXME k = '"'+ k + '"';
+       if (check){     // add the keyword to the list
+               if ($(elementId).value !== '') { // add the "or" keyword
+                $(elementId).value += ' or ' + k;
+            } else {
+                $(elementId).value = k;
+            }
+       } else { // Remove that keyword
+               $(elementId).value = $(elementId).value.replace(' or '+ k, '');
+               $(elementId).value = $(elementId).value.replace(k, '');
+               pos = $(elementId).value.indexOf(" or ");
+               if (pos === 0){
+                       $(elementId).value = $(elementId).value.substring (4, $(elementId).value.length);
+               }
+       }
+  }
+
   /**
    * Used for fields other than themekey that would like to pop up a 
 	 * selector of values retrieved from the index
@@ -1346,4 +1364,41 @@ function inspireSourceTypeChanged(sourceType) {
         $("classificationDataServiceLabel").className = "labelField";
     }
 }
+
+function setZAMGDatatype() {
+    if( $("datatype_gridded").checked && $("datatype_station").checked ) {
+        $("datatype_param").value = "gridded or station"
+    }
+    else
+    if( $("datatype_gridded").checked) {
+        $("datatype_param").value = "gridded"
+    }
+    else
+    if( $("datatype_station").checked ) {
+        $("datatype_param").value = "station"
+    }
+    else
+    {
+        $("datatype_param").value = ""
+    }
+}
+
+function setZAMGSourcetype() {
+    if( $("sourcetype_observation").checked && $("sourcetype_model").checked ) {
+        $("sourcetype_param").value = "observation or model"
+    }
+    else
+    if( $("sourcetype_observation").checked) {
+        $("sourcetype_param").value = "observation"
+    }
+    else
+    if( $("sourcetype_model").checked ) {
+        $("sourcetype_param").value = "model"
+    }
+    else
+    {
+        $("sourcetype_param").value = ""
+    }
+}
+
 /*** EOF ***********************************************************/

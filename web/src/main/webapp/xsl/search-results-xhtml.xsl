@@ -488,6 +488,18 @@
 						</div>
 					</xsl:if>
 
+                    <!-- schema specific info -->
+                    <xsl:for-each select="$metadata/extra">
+
+                        <div class="hittext_keywords">
+
+                            <div class="caption"><xsl:value-of select="./title"/></div>
+                            <div class="keywords">
+                                <xsl:value-of select="./content"/>
+                            </div>
+                        </div>
+                    </xsl:for-each>
+
 				  <xsl:if test="/root/gui/searchDefaults/output = 'full'">
 					<!-- schema -->
 					<xsl:if test="$metadata/geonet:info/schema">

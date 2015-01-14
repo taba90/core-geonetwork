@@ -31,21 +31,21 @@
  <!-- Comment out languages to hide them
  from language selector. -->
  <languages>
-     <ara/>
+<!--     <ara/>
      <cat/>
      <chi/>
-     <dut/>
+     <dut/>-->
      <eng/>
-     <fin/>
-     <fre/>
+<!--     <fin/>
+     <fre/>-->
      <ger/>
-     <ita/>
+<!--     <ita/>
      <nor/>
      <pol/>
      <por/>
      <rus/>
      <spa/>
-     <tur/>
+     <tur/>-->
  </languages>
  
  
@@ -286,9 +286,9 @@
  <rating/>
 
  <search>
-  <!-- Display or not keyword selection panel in advanced search panel 
-   <keyword-selection-panel/> 
-  -->
+   <!--Display or not keyword selection panel in advanced search panel-->
+   <!--<keyword-selection-panel/>--> 
+  
 	<!-- Optional user interface mechanism for editor - not ready yet
 		<use-separate-window-for-editor-viewer/>
 	-->

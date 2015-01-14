@@ -26,6 +26,9 @@
 			<item name="type" plural="types" indexKey="type" translator="codelist:gmd:MD_ScopeCode"/>
 			<item name="createDateYear" plural="createDateYears" indexKey="createDateYear"
 				sortBy="value" sortOrder="desc" max="40"/>
+
+			<item name="zamg_variable" plural="zamg_variable_list" indexKey="zamg_variable" max="40"/>
+			<item name="zamg_datatype" plural="zamg_datatype_list" indexKey="zamg_datatype" max="40"/>
 		</hits>
 		<titles>
 			<item name="title" plural="titles" indexKey="title" sortBy="freq" sortOrder="desc" max="100"
@@ -45,6 +48,10 @@
 			<item name="type" plural="types" indexKey="type" translator="codelist:gmd:MD_ScopeCode"/>
 			<item name="createDateYear" plural="createDateYears" indexKey="createDateYear"
 				sortOrder="asc" max="40"/>
+
+			<item name="zamg_variable" plural="zamg_variable_list" indexKey="zamg_variable" max="40"/>
+			<item name="zamg_datatype" plural="zamg_datatype_list" indexKey="zamg_datatype" max="40"/>
+
 		</results_with_summary>
 	</def>
 </summary>

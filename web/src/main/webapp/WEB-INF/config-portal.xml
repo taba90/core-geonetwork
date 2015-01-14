@@ -31,6 +31,14 @@
 			<output sheet="thesaurus/thesaurus-keywordlist.xsl" contentType="text/xml; charset=UTF-8"/>
 		</service>
 
+		<service name="zamg.search.keywords">
+			<class name=".services.main.Search">
+				<param name="maxSummaryKeys" value="1000" />
+				<param name="maxHitsInSummary" value="10000" />
+			</class>
+			<output sheet="zamg-keywordlist.xsl" contentType="text/xml; charset=UTF-8"/>
+		</service>
+
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 		<service name="portal.present">

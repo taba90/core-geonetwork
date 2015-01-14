@@ -923,7 +923,7 @@ public class LuceneConfig {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Lucene configuration:\n");
-		sb.append(" * Version: " + getLuceneVersion().toString() + "\n");
+		sb.append(" * Version: ").append(getLuceneVersion().toString()).append("\n");
         sb.append(" * RAMBufferSize: " + getRAMBufferSize() + "\n");
 		sb.append(" * MergeFactor: " + getMergeFactor() + "\n");
 		sb.append(" * Default analyzer: " + getDefaultAnalyzerClass() + "\n");
@@ -944,13 +944,12 @@ public class LuceneConfig {
 		sb.append(" * Score: \n");
 		sb.append("  * trackDocScores: " + isTrackDocScores() + " \n");
 		sb.append("  * trackMaxScore: " + isTrackMaxScore() + " \n");
-		sb.append("  * docsScoredInOrder: " + isDocsScoredInOrder() + " \n");
-		sb.append("Taxonomy configuration: "
-				+ getTaxonomy().keySet().toString() + "\n");
+		sb.append("  * docsScoredInOrder: ").append(isDocsScoredInOrder()).append(" \n");
+		sb.append("Taxonomy configuration: ").append(getTaxonomy().keySet().toString()).append("\n");
 		for (String key : getTaxonomy().keySet()) {
-			sb.append("  * type: " + key + "\n");
+			sb.append("  * type: ").append(key).append("\n");
 			Map<String, FacetConfig> facetsConfig = getTaxonomy().get(key);
-			sb.append(facetsConfig.toString());
+			sb.append(facetsConfig.toString()).append("\n");
 		}
 		return sb.toString();
 	}
