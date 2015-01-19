@@ -29,6 +29,7 @@
 
 			<item name="zamg_variable" plural="zamg_variable_list" indexKey="zamg_variable" max="40"/>
 			<item name="zamg_datatype" plural="zamg_datatype_list" indexKey="zamg_datatype" max="40"/>
+			<item name="zamg_sourcetype" plural="zamg_sourcetype_list" indexKey="zamg_sourcetype" max="40"/>
 		</hits>
 		<titles>
 			<item name="title" plural="titles" indexKey="title" sortBy="freq" sortOrder="desc" max="100"
@@ -51,6 +52,7 @@
 
 			<item name="zamg_variable" plural="zamg_variable_list" indexKey="zamg_variable" max="40"/>
 			<item name="zamg_datatype" plural="zamg_datatype_list" indexKey="zamg_datatype" max="40"/>
+			<item name="zamg_sourcetype" plural="zamg_sourcetype_list" indexKey="zamg_sourcetype" max="40"/>
 
 		</results_with_summary>
 	</def>

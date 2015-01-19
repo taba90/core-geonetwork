@@ -71,7 +71,7 @@
 				</div>
 			</div>
 
-            <fieldset style="padding:4px; margin-top:8px;">
+<!--            <fieldset style="padding:4px; margin-top:8px;">
                 <legend><b>Data Type</b></legend>
                 
                 <table width="100%">
@@ -91,9 +91,9 @@
 
                 <input name="zamg_datatype" id="datatype_param" type="hidden"/>
 
-            </fieldset>
+            </fieldset>-->
 
-            <fieldset style="padding:4px; margin-top:8px;">
+<!--            <fieldset style="padding:4px; margin-top:8px;">
                 <legend><b>Source Type</b></legend>
                 
                 <table width="100%">
@@ -115,7 +115,7 @@
 
                 <input name="zamg_sourcetype" id="sourcetype_param" type="hidden"/>
 
-            </fieldset>
+            </fieldset>-->
 
 
             <xsl:variable name="zamg-thesaurus-variable"
@@ -135,9 +135,13 @@
             <xsl:with-param name="name" select="'zamg_variable'"/>
         </xsl:call-template>
 
-<!--        <xsl:call-template name="zamg.facet.filter">
+        <xsl:call-template name="zamg.facet.filter">
             <xsl:with-param name="name" select="'zamg_datatype'"/>
-        </xsl:call-template>-->
+        </xsl:call-template>
+
+        <xsl:call-template name="zamg.facet.filter">
+            <xsl:with-param name="name" select="'zamg_sourcetype'"/>
+        </xsl:call-template>
 
 			
 			<!-- Search button -->
@@ -286,38 +290,38 @@
 
                 <div class="row">  <!-- div row-->
 
-					<!--<span class="labelField"><xsl:value-of select="/root/gui/strings/sortBy"/></span>-->
-					<span class="labelField">Variable name</span>
+                    <!--<span class="labelField"><xsl:value-of select="/root/gui/strings/sortBy"/></span>-->
+                    <span class="labelField">Variable name</span>
 
                     <!--<h1 class="labelFieldSmall"><xsl:value-of select="/root/gui/strings/what"/></h1>-->
                     <!--<h1 class="labelFieldSmall">Variable name</h1>-->
 
-				<!--<div style="margin-left: 60px; margin-top:5px">-->
-					<!-- Region -->
-					<select class="content" name="{$searchParamName}" id="{$searchParamName}">
-							<option value="">
-                                <xsl:if test="/root/gui/searchDefaults/theme='_any_'">
-                                    <xsl:attribute name="selected">selected</xsl:attribute>
-                                </xsl:if>
-                                <xsl:value-of select="/root/gui/strings/any"/>
-    						</option>
+                    <!--<div style="margin-left: 60px; margin-top:5px">-->
+                    <!-- Region -->
+                    <select class="content" name="{$searchParamName}" id="{$searchParamName}">
+                        <option value="">
+                            <xsl:if test="/root/gui/searchDefaults/theme='_any_'">
+                                <xsl:attribute name="selected">selected</xsl:attribute>
+                            </xsl:if>
+                            <xsl:value-of select="/root/gui/strings/any"/>
+                        </option>
 
-                            <!-- Add all of other Concepts -->
-                            <xsl:for-each select="$thesaurus/rdf:RDF/skos:Concept">
-							<!--<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
-                                <xsl:if test="not(./skos:altLabel='none')">
+                        <!-- Add all of other Concepts -->
+                        <xsl:for-each select="$thesaurus/rdf:RDF/skos:Concept">
+                            <!--<xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
+                            <xsl:if test="not(./skos:altLabel='none')">
 
-                                    <option value="{./skos:altLabel/text()}">
-                                        <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
-                                    </option>
+                                <option value="{./skos:altLabel/text()}">
+                                    <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
+                                </option>
 
-                                </xsl:if>
+                            </xsl:if>
 
-                            </xsl:for-each>
+                        </xsl:for-each>
 
-					</select>
+                    </select>
 
-				</div>
+                </div>
 
             </xsl:otherwise>
         </xsl:choose>
