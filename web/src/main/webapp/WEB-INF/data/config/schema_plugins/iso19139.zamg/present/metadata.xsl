@@ -422,6 +422,11 @@
                             </xsl:apply-templates>
                         </xsl:if>
 
+                        <xsl:call-template name="zamg.restriction">
+                            <xsl:with-param name="schema" select="$schema"/>
+                            <xsl:with-param name="edit"   select="$edit and $advanced"/>
+                        </xsl:call-template>
+
         			</xsl:with-param>
                 </xsl:call-template>
 
@@ -1476,5 +1481,67 @@
 		</xsl:for-each-group>
 	</xsl:template>
 
+
+    <xsl:template name="zamg.restriction">
+        <xsl:param name="edit"/>
+        <xsl:param name="schema"/>
+
+        <!--<xsl:variable name="ref" select="concat('_', geonet:element/@ref, '_ZAMG')"/>-->
+        <xsl:variable name="codenode"  select="/root/gmd:MD_Metadata//gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode"/>
+        <xsl:variable name="coderef" select="$codenode/geonet:element/@ref"/>
+        <xsl:variable name="currentcode" select="normalize-space($codenode/@codeListValue)"/>
+
+        <xsl:variable name="lang" select="/root/gui/language"/>
+
+        <xsl:choose>
+            <xsl:when test="$edit=true()">
+
+               	<xsl:call-template name="simpleElementGui">
+                    <xsl:with-param name="schema" select="$schema"/>
+                    <xsl:with-param name="edit"   select="$edit"/>
+                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamg_restriction/title"/>
+                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamg-restriction'"/>
+                    <xsl:with-param name="text">
+
+                        <!-- The choices -->
+                        <input type="radio" name="zamg_restriction" id="zamg_restriction_license" onchange="setRestrictionZAMG({$coderef});">
+                            <xsl:if test="$currentcode='license'">
+                                <xsl:attribute name="checked"/>
+                            </xsl:if>
+                        </input>
+                        <xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/zamg_restriction/license"/><br/>
+
+                        <input type="radio" name="zamg_restriction" id="zamg_restriction_restricted" onchange="setRestrictionZAMG({$coderef});">
+                            <xsl:if test="$currentcode='restricted'">
+                                <xsl:attribute name="checked"/>
+                            </xsl:if>
+                        </input>
+                        <xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/zamg_restriction/restricted"/>
+
+                        <!-- The hidden codeListValue that will be set by javascript -->
+                        <input class="md" type="hidden" id="_{$coderef}_codeListValue" name="_{$coderef}_codeListValue" value="{$currentcode}" readonly="true"/>
+
+                    </xsl:with-param>
+
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+
+               	<xsl:call-template name="simpleElementGui">
+                    <xsl:with-param name="schema" select="$schema"/>
+                    <xsl:with-param name="edit"   select="$edit"/>
+                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamg_restriction/title"/>
+                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamg-restriction'"/>
+                    <xsl:with-param name="text">
+                        <!-- This entry is localized according to the language selected while editing -->
+                        <xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/zamg_restriction/*[name()=$currentcode]"/>
+
+                    </xsl:with-param>
+                    <xsl:with-param name="showAttributes" select="false()"/>
+                </xsl:call-template>
+
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
 </xsl:stylesheet>

@@ -1848,3 +1848,14 @@ function removeFormat(index) {
             + "&process=zamg-storage-remove"
             + "&index=" + index);
 }
+
+function setRestrictionZAMG(coderef)
+{
+	var hidden = $("_" + coderef + "_codeListValue");
+
+    if($("zamg_restriction_license").checked)
+        hidden.value = "license";
+    if($("zamg_restriction_restricted").checked)
+        hidden.value = "restricted";
+
+}

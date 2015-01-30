@@ -137,7 +137,7 @@
 			<gmd:citation>
 				<gmd:CI_Citation>
 					<gmd:title>
-						<gco:CharacterString>ZAMG template 201412330</gco:CharacterString>
+						<gco:CharacterString>ZAMG template 20150130</gco:CharacterString>
 					</gmd:title>
 					<gmd:date>
 						<gmd:CI_Date>
@@ -451,7 +451,7 @@
 			<gmd:resourceConstraints>
 				<gmd:MD_LegalConstraints>
 					<gmd:accessConstraints>
-						<gmd:MD_RestrictionCode codeListValue="copyright" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode">copyright</gmd:MD_RestrictionCode>
+						<gmd:MD_RestrictionCode codeListValue="restricted" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode">restricted</gmd:MD_RestrictionCode>
 					</gmd:accessConstraints>
 					<gmd:useConstraints>
 						<gmd:MD_RestrictionCode codeListValue="otherRestrictions" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode">otherRestrictions</gmd:MD_RestrictionCode>
