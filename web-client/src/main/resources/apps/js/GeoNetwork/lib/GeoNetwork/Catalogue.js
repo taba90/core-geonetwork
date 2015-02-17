@@ -412,6 +412,7 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
      *  Return true if current user is an admin
      */
     isAdmin: function(){
+				if (!this.identifiedUser) return false;
         return this.identifiedUser.role === "Administrator";
     },
     /** api: method[isReadOnly]
@@ -1271,7 +1272,8 @@ GeoNetwork.Catalogue = Ext.extend(Ext.util.Observable, {
      *  Open the administration interface according to adminAppUrl properties.
      */
     admin: function(){
-        location.href = this.adminAppUrl;
+      var win = window.open(this.adminAppUrl, '_blank');
+      win.focus();
     },
     /** api: method[admin]
     *

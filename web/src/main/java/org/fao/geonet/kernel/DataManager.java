@@ -93,7 +93,6 @@ import java.util.concurrent.Executors;
  */
 public class DataManager {
 
-
     //--------------------------------------------------------------------------
     //---
     //--- Constructor
@@ -148,7 +147,6 @@ public class DataManager {
      *
      **/
     public synchronized void init(ServiceContext context, Dbms dbms, Boolean force) throws Exception {
-
 
         // get all metadata from DB
         Element result = dbms.select("SELECT id, changeDate FROM Metadata ORDER BY id ASC");
@@ -452,7 +450,8 @@ public class DataManager {
                         sb.append(xlink.getValue()); sb.append(" ");
                     }
                     moreFields.add(SearchManager.makeField("_xlink", sb.toString(), true, true));
-                    Processor.detachXLink(md);
+										// ok to use servContext here
+                    Processor.detachXLink(md, servContext);
                 }
                 else {
                     moreFields.add(SearchManager.makeField("_hasxlinks", "0", true, true));
@@ -1593,6 +1592,41 @@ public class DataManager {
     }
 
     /**
+     * Retrieves a metadata (in xml) given its id. Use this method when you must
+		 * retrieve a metadata in the same transaction and you dont't care about
+		 * permissions eg. for extracting a metadata record at startup for indexing
+		 *  
+     * @param dbms
+     * @param id
+     * @return
+     * @throws Exception
+		 */
+    public Element getMetadataIgnorePermissions(Dbms dbms, String id) throws Exception {
+				return getMetadata(dbms, id, true);
+		}
+
+    /**
+     * Retrieves a metadata (in xml) given its id. Use this method when you must
+		 * retrieve a metadata in the same transaction. Note you can ask to ignore
+		 * permissions eg. for extracting a metadata record at startup for indexing
+		 * Private access to avoid misuse by external classes.
+		 *  
+     * @param dbms
+     * @param id
+		 * @param ignorePermissions If true then extract metadata regardless of
+		 * permissions, false is the usual path
+     * @return
+     * @throws Exception
+		 */
+		private Element getMetadata(Dbms dbms, String id, boolean ignorePermissions) throws Exception {
+        boolean doXLinks = xmlSerializer.resolveXLinks();
+        Element md = xmlSerializer.selectNoXLinkResolver(dbms, "Metadata", id, ignorePermissions);
+        if (md == null) return null;
+        md.detach();
+        return md;
+    }
+
+    /**
      * Retrieves a metadata (in xml) given its id. Use this method when you must retrieve a metadata in the same
      * transaction.
      * @param dbms
@@ -1601,11 +1635,7 @@ public class DataManager {
      * @throws Exception
      */
     public Element getMetadata(Dbms dbms, String id) throws Exception {
-        boolean doXLinks = xmlSerializer.resolveXLinks();
-        Element md = xmlSerializer.selectNoXLinkResolver(dbms, "Metadata", id, false);
-        if (md == null) return null;
-        md.detach();
-        return md;
+				return getMetadata(dbms, id, false);
     }
 
     /**
@@ -1663,7 +1693,7 @@ public class DataManager {
                 if (keepXlinkAttributes) {
                     Processor.processXLink(md, srvContext);
                 } else {
-                    Processor.detachXLink(md);
+                    Processor.detachXLink(md, srvContext);
                 }
             }
         }
@@ -2154,8 +2184,8 @@ public class DataManager {
      * @return
      * @throws Exception
      */
-    public Element getThumbnails(Dbms dbms, String id) throws Exception {
-        Element md = xmlSerializer.select(dbms, "Metadata", id);
+    public Element getThumbnails(Dbms dbms, String id, ServiceContext context) throws Exception {
+        Element md = xmlSerializer.select(dbms, "Metadata", id, context);
 
         if (md == null)
             return null;
@@ -2189,10 +2219,12 @@ public class DataManager {
         env.addContent(new Element("file").setText(file));
         env.addContent(new Element("ext").setText(ext));
 
+        String protocol    = settingMan.getValue(Geonet.Settings.SERVER_PROTOCOL);
         String host    = settingMan.getValue(Geonet.Settings.SERVER_HOST);
         String port    = settingMan.getValue(Geonet.Settings.SERVER_PORT);
         String baseUrl = context.getBaseUrl();
 
+        env.addContent(new Element("protocol").setText(protocol));
         env.addContent(new Element("host").setText(host));
         env.addContent(new Element("port").setText(port));
         env.addContent(new Element("baseUrl").setText(baseUrl));
@@ -2344,7 +2376,7 @@ public class DataManager {
      */
     private void manageCommons(Dbms dbms, ServiceContext context, String id, Element env, String styleSheet) throws Exception {
         Lib.resource.checkEditPrivilege(context, id);
-        Element md = xmlSerializer.select(dbms, "Metadata", id);
+        Element md = xmlSerializer.select(dbms, "Metadata", id, context);
 
         if (md == null) return;
 
@@ -2747,7 +2779,12 @@ public class DataManager {
                 env.addContent(new Element("id").setText(id));
                 env.addContent(new Element("uuid").setText(uuid));
                 Element schemaLoc = new Element("schemaLocation");
-                schemaLoc.setAttribute(schemaMan.getSchemaLocation(schema,context));
+								Attribute schemaLocAttr = schemaMan.getSchemaLocation(schema,context);
+								if (schemaLocAttr != null) {
+                	schemaLoc.setAttribute(schemaLocAttr);
+								} else {
+									Log.error(Geonet.DATA_MANAGER, "No schemaLocation attribute defined for schema "+schema);
+								}
                 env.addContent(schemaLoc);
 
                 if (updateDatestamp == UpdateDatestamp.yes) {
@@ -3436,6 +3473,8 @@ public class DataManager {
     private HarvestManager harvestMan;
     private String dataDir;
     private String thesaurusDir;
+		// Note: servContext is logged in as administrator so use with care
+		// eg. notifyMetadata service
     private ServiceContext servContext;
     private String appPath;
     private String stylePath;
