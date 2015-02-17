@@ -58,5 +58,14 @@
     <skos:prefLabel xml:lang="de">Mass: g</skos:prefLabel>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/mass#kg" />
   </skos:Concept>
+  
+  <!-- Item not set or known -->
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom#none">
+    <skos:altLabel>none</skos:altLabel>
+    
+    <skos:prefLabel xml:lang="de">Not set (DE)</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">Not set</skos:prefLabel>    
+  </skos:Concept>  
+  
 </rdf:RDF>
 
