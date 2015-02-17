@@ -33,5 +33,14 @@
     <skos:prefLabel xml:lang="de">Dew point (DE)</skos:prefLabel>
     <skos:prefLabel xml:lang="en">Dew point</skos:prefLabel>
   </skos:Concept>
+  
+  <!-- No datatype set or known -->
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/variable#none">
+    <skos:altLabel>none</skos:altLabel>
+    
+    <skos:prefLabel xml:lang="de">Not set (DE)</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">Not set</skos:prefLabel>    
+  </skos:Concept>
+  
 </rdf:RDF>
 

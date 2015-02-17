@@ -1859,3 +1859,9 @@ function setRestrictionZAMG(coderef)
         hidden.value = "restricted";
 
 }
+
+function addVariableName() {
+    doSaveThen("metadata.processing?id="
+            + document.mainForm.id.value
+            + "&process=zamg-variable-add");
+}

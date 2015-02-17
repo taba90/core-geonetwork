@@ -454,6 +454,7 @@
                             <xsl:with-param name="edit"   select="$edit"/>
                             <xsl:with-param name="thesaurus"   select="$zamg-thesaurus-variable"/>
                             <xsl:with-param name="thesaurusName"   select="'geonetwork.thesaurus.external.theme.zamg-variable'"/>
+                            <xsl:with-param name="multi"   select="true()"/>
                         </xsl:call-template>
 
                         <xsl:call-template name="zamg.thesaurus.choice">
@@ -476,14 +477,6 @@
                             <xsl:with-param name="thesaurus"   select="$zamg-thesaurus-datatype"/>
                             <xsl:with-param name="thesaurusName"   select="'geonetwork.thesaurus.external.theme.zamg-datatype'"/>
                         </xsl:call-template>
-
-
-<!--                        <xsl:apply-templates mode="simpleElement" select=".">
-                            <xsl:with-param name="schema" select="$schema"/>
-                            <xsl:with-param name="edit"   select="$edit"/>
-                            <xsl:with-param name="text"   select="$zamg-thesaurus-uom"/>
-                        </xsl:apply-templates>-->
-
 
         			</xsl:with-param>
                 </xsl:call-template>
@@ -597,66 +590,9 @@
                                 <xsl:with-param name="schema" select="$schema"/>
                                 <xsl:with-param name="edit" select="$edit"/>
                                 <xsl:with-param name="index" select="position()"/>
-                                <!--<xsl:with-param name="root" select="/"/>-->
                             </xsl:call-template>
 
                         </xsl:for-each>
-
-<!--                        <xsl:call-template name="zamg.box.storage">
-                            <xsl:with-param name="schema" select="$schema"/>
-                            <xsl:with-param name="edit" select="$edit"/>
-                            <xsl:with-param name="index" select="2"/>
-                        </xsl:call-template>-->
-
-<!--
-                        <xsl:call-template name="complexElementGui">
-                            <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage"/>
-                            <xsl:with-param name="schema" select="$schema"/>
-                            <xsl:with-param name="id" select="generate-id(/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage)"/>
-                            <xsl:with-param name="edit" select="true()"/>
-                            <xsl:with-param name="content">
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[1]/gmd:MD_Format/gmd:name">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[1]/gmd:MD_Format/gmd:version">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions[1]/gmd:MD_DigitalTransferOptions/gmd:transferSize">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-                            </xsl:with-param>
-                        </xsl:call-template>
-
-                        <xsl:call-template name="complexElementGui">
-                            <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage"/>
-                            <xsl:with-param name="schema" select="$schema"/>
-                            <xsl:with-param name="id" select="generate-id(/root/gui/schemas/iso19139.zamg/strings/zamgtabstorage)"/>
-                            <xsl:with-param name="edit" select="true()"/>
-                            <xsl:with-param name="content">
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[2]/gmd:MD_Format/gmd:name">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat[2]/gmd:MD_Format/gmd:version">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-
-                                <xsl:apply-templates mode="elementEP" select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions[2]/gmd:MD_DigitalTransferOptions/gmd:transferSize">
-                                    <xsl:with-param name="schema" select="$schema"/>
-                                    <xsl:with-param name="edit"   select="$edit"/>
-                                </xsl:apply-templates>
-
-                            </xsl:with-param>
-                        </xsl:call-template>-->
 
                     </xsl:with-param>
                 </xsl:call-template>
@@ -897,7 +833,6 @@
 
                         <!-- The main dropdown -->
 
-                        <!--<select class="md" name="{$coderef}" size="1"-->
                         <select class="md" size="1"
                             onChange="javascript:setRegionZAMG(
                                     '{$bboxnode/gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}',
@@ -908,7 +843,6 @@
                                     {$bboxnode/geonet:element/@ref},
                                     '{$descref}', '{$coderef}')">
 
-                            <!--<xsl:for-each select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option">-->
                             <xsl:for-each select="/root/gui/regions/record">
                                 <xsl:variable name="id" select="substring-after(id[1],'#')"/>
                                 <xsl:variable name="value" select="concat($id,'|',west,'|',east,'|',south,'|',north)"/>
@@ -988,62 +922,8 @@
 
     <input class="md" type="hidden" id="_{$ref}" name="_{$ref}" value="{normalize-space(./text())}" size="12" readonly="true"/>
 
-<!--    <xsl:variable name="title">
-      <xsl:call-template name="getTitle">
-        <xsl:with-param name="schema" select="$schema" />
-        <xsl:with-param name="name" select="$name" />
-      </xsl:call-template>
-    </xsl:variable>
-
-    <span><xsl:value-of select="$title"/></span>-->
-
   </xsl:template>
 
-    <!-- ===================== -->
-
-<!--    <xsl:template name="zamg.regions.choice__OLD">
-        <xsl:param name="edit"/>
-        <xsl:param name="schema"/>
-
-        <xsl:variable name="codenode"  select="/root/gmd:MD_Metadata//gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:RS_Identifier/gmd:code"/>
-        <xsl:variable name="ref" select="concat('_', $codenode/gco:CharacterString/geonet:element/@ref)"/>
-        <xsl:variable name="currentcode" select="normalize-space(string($codenode))"/>
-
-        <xsl:choose>
-            <xsl:when test="$edit=true()">
-               	<xsl:call-template name="simpleElementGui">
-                    <xsl:with-param name="schema" select="$schema"/>
-                    <xsl:with-param name="edit"   select="$edit"/>
-                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions.label"/>
-                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
-                    <xsl:with-param name="text">
-                        <select class="md" name="{$ref}" size="1">
-                            <xsl:for-each select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option">
-                                <option value="{@value}">
-                                    <xsl:if test="@value = string($codenode)">
-                                        <xsl:attribute name="selected"/>
-                                    </xsl:if>
-                                    <xsl:value-of select="."/>
-                                </option>
-                            </xsl:for-each>
-                        </select>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-
-               	<xsl:call-template name="simpleElementGui">
-                    <xsl:with-param name="schema" select="$schema"/>
-                    <xsl:with-param name="edit"   select="$edit"/>
-                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions.label"/>
-                    <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
-                    <xsl:with-param name="text"><xsl:value-of select="normalize-space(string(/root/gui/schemas/iso19139.zamg/strings/zamgRegions/option[@value=$currentcode]))"/> (<xsl:value-of select="$currentcode"/>)</xsl:with-param>
-                    <xsl:with-param name="showAttributes" select="false()"/>
-                </xsl:call-template>
-
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>-->
 
     <!-- ============================================================================= -->
     <!-- Renders the CRS choice	-->
@@ -1069,8 +949,6 @@
                     <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgCrs'"/>
                     <xsl:with-param name="text">
                         <select class="md" name="{$ref}" size="1">
-                            <!--<option name=""/>-->
-                            <!--root/gui/schemas/iso19139.zamg/strings/zamgRegions/option[@value='AT']-->
                             <xsl:for-each select="/root/gui/schemas/iso19139.zamg/strings/zamgCrs/option">
                                 <option value="{@value}">
                                     <xsl:if test="@value = string($codenode)">
@@ -1121,80 +999,96 @@
         <xsl:param name="thesaurusName"/>
         <xsl:param name="edit"/>
         <xsl:param name="schema"/>
-        <!--<xsl:param name="value"/>-->
-        <!--<xsl:param name="ref"/>-->
+        <xsl:param name="multi" select="false()"/>
 
-        <!--<xsl:variable name="ref" select="concat('_', geonet:element/@ref, '_ZAMG')"/>-->
         <xsl:variable name="node"  select="/root/gmd:MD_Metadata//gmd:descriptiveKeywords[gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()=$thesaurusName]"/>
-        <xsl:variable name="ref" select="concat('_', $node/gmd:MD_Keywords/gmd:keyword/gco:CharacterString/geonet:element/@ref)"/>
-        <xsl:variable name="value" select="$node/gmd:MD_Keywords/gmd:keyword/gco:CharacterString/text()"/>
 
-        <xsl:variable name="shortname" select="substring-after($thesaurusName,'.theme.')"/>
+        <xsl:variable name="single" select="count($node/gmd:MD_Keywords/gmd:keyword)=1"/>
 
-<!--        <h3><xsl:value-of select="$shortname"/></h3>
-        <h3><xsl:value-of select="$lang2"/></h3>-->
+        <xsl:for-each select="$node/gmd:MD_Keywords/gmd:keyword">
 
-        <xsl:choose>
-            <xsl:when test="not(string($thesaurus))">
-                <h3>WARNING: can't find thesaurus <xsl:value-of select="$thesaurusName"/></h3>
-            </xsl:when>
-            <xsl:when test="not($node)">
-                <h3>WARNING: can't find keyword in template for thesaurus <xsl:value-of select="$thesaurusName"/></h3>
-            </xsl:when>
-            <xsl:when test="$edit=true()">
-               	<xsl:call-template name="simpleElementGui">
-                    <xsl:with-param name="schema" select="$schema"/>
-                    <xsl:with-param name="edit"   select="$edit"/>
-                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>
-                    <xsl:with-param name="helpLink" select="concat('iso19139.zamg|',$shortname)"/>
-                    <!--<xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>-->
-                    <xsl:with-param name="text">
-                        <select class="md" name="{$ref}" size="1">
+            <xsl:variable name="ref" select="concat('_', ./gco:CharacterString/geonet:element/@ref)"/>
+            <xsl:variable name="value" select="./gco:CharacterString/text()"/>
+            <xsl:variable name="shortname" select="substring-after($thesaurusName,'.theme.')"/>
 
-                            <!-- Set "none" as first item, if exists -->
-                            <xsl:variable name="none"  select="$thesaurus/rdf:RDF/skos:Concept[string(skos:altLabel)='none']"/>
+            <xsl:choose>
+                <xsl:when test="not(string($thesaurus))">
+                    <h3>WARNING: can't find thesaurus <xsl:value-of select="$thesaurusName"/> for value <xsl:value-of select="$value"/></h3>
+                </xsl:when>
+                <xsl:when test="not($node)">
+                    <h3>WARNING: can't find keyword in template for thesaurus <xsl:value-of select="$thesaurusName"/></h3>
+                </xsl:when>
+                <xsl:when test="$edit=true()">
 
-                            <xsl:if test="$none">
-                                <option value="{$none/skos:altLabel/text()}">
-                                    <xsl:value-of select="$none/skos:prefLabel[@xml:lang=$lang2]"/>
-                                </option>
-                            </xsl:if>
+                    <xsl:variable name="id" select="generate-id(.)"/>
 
-                            <!-- Add all of other Concepts -->
-                            <xsl:for-each select="$thesaurus/rdf:RDF/skos:Concept">
+                    <xsl:variable name="keywordref" select="concat('_', ./geonet:element/@ref)"/>
+                    
+                    <xsl:variable name="removeLink">
+                        <xsl:if test="$multi and not($single)">
+                            doRemoveElementAction('/metadata.elem.delete',<xsl:value-of select="geonet:element/@ref"/>,<xsl:value-of select="geonet:element/@parent"/>,'<xsl:value-of select="$id"/>', 1);
+                        </xsl:if>
+                    </xsl:variable>
+                    <xsl:variable name="addLink">
+                        <xsl:if test="$multi and position() = last()">
+                            addVariableName();
+                        </xsl:if>
+                    </xsl:variable>
 
-                                <xsl:if test="not(./skos:altLabel='none')">
+                    <xsl:call-template name="simpleElementGui">
+                        <xsl:with-param name="id" select="$id"/>
+                        <xsl:with-param name="schema" select="$schema"/>
+                        <xsl:with-param name="edit"   select="$edit"/>
+                        <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>
+                        <xsl:with-param name="helpLink" select="concat('iso19139.zamg|',$shortname)"/>
+                        <xsl:with-param name="removeLink"   select="$removeLink"/>
+                        <xsl:with-param name="addLink"   select="$addLink"/>
 
-                                    <option value="{./skos:altLabel/text()}">
-                                        <xsl:if test="$value = ./skos:altLabel/text()">
-                                            <xsl:attribute name="selected"/>
-                                        </xsl:if>
-                                        <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
+                        <xsl:with-param name="text">
+
+                            <select class="md" name="{$ref}" size="1">
+
+                                <!-- Set "none" as first item, if exists -->
+                                <xsl:variable name="none"  select="$thesaurus/rdf:RDF/skos:Concept[string(skos:altLabel)='none']"/>
+
+                                <xsl:if test="$none">
+                                    <option value="{$none/skos:altLabel/text()}">
+                                        <xsl:value-of select="$none/skos:prefLabel[@xml:lang=$lang2]"/>
                                     </option>
-
                                 </xsl:if>
 
-                            </xsl:for-each>
-                        </select>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:when>
-            <xsl:otherwise>
-               	<xsl:call-template name="simpleElementGui">
-                    <xsl:with-param name="schema" select="$schema"/>
-                    <xsl:with-param name="edit"   select="$edit"/>
-                    <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>
-                    <xsl:with-param name="helpLink" select="concat('iso19139.zamg|',$shortname)"/>
-                    <!--<xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>-->
-                    <xsl:with-param name="text">
-                        <xsl:value-of select="normalize-space($thesaurus/rdf:RDF/skos:Concept[skos:altLabel/text()=$value]/skos:prefLabel[@xml:lang=$lang2])"/> (<xsl:value-of select="$value"/>)</xsl:with-param>
-                    <xsl:with-param name="showAttributes" select="false()"/>
-                </xsl:call-template>
+                                <!-- Add all of other Concepts -->
+                                <xsl:for-each select="$thesaurus/rdf:RDF/skos:Concept">
 
+                                    <xsl:if test="not(./skos:altLabel='none')">
 
+                                        <option value="{./skos:altLabel/text()}">
+                                            <xsl:if test="$value = ./skos:altLabel/text()">
+                                                <xsl:attribute name="selected"/>
+                                            </xsl:if>
+                                            <xsl:value-of select="./skos:prefLabel[@xml:lang=$lang2]"/>
+                                        </option>
 
-            </xsl:otherwise>
-        </xsl:choose>
+                                    </xsl:if>
+
+                                </xsl:for-each>
+                            </select>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="simpleElementGui">
+                        <xsl:with-param name="schema" select="$schema"/>
+                        <xsl:with-param name="edit"   select="$edit"/>
+                        <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgThesaurus/label[@name=$thesaurusName]"/>
+                        <xsl:with-param name="helpLink" select="concat('iso19139.zamg|',$shortname)"/>
+                        <xsl:with-param name="text">
+                            <xsl:value-of select="normalize-space($thesaurus/rdf:RDF/skos:Concept[skos:altLabel/text()=$value]/skos:prefLabel[@xml:lang=$lang2])"/> (<xsl:value-of select="$value"/>)</xsl:with-param>
+                        <xsl:with-param name="showAttributes" select="false()"/>
+                    </xsl:call-template>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="lang3to2">
@@ -1209,29 +1103,7 @@
 
     </xsl:template>
 
-	<!-- Measure widget copyed from
-        Distance widget with value + uom attribute in one line.
-		 Suggestion (from label files) update the value element.
-	-->
-<!-- distance
-			<gmd:spatialResolution>
-				<gmd:MD_Resolution>
-					<gmd:distance>
-						<gco:Distance uom="m"/>
-					</gmd:distance>
-				</gmd:MD_Resolution>
-			</gmd:spatialResolution>
-    -->
-<!-- measure
-					</gmd:dimensionSize>
-					<gmd:resolution>
-						<gco:Measure uom="day">1</gco:Measure>
-					</gmd:resolution>
-				</gmd:MD_Dimension>
-			</gmd:axisDimensionProperties>
-    -->
 
-	<!--<xsl:template mode="iso19139" match="gmd:distance" priority="2">-->
 	<xsl:template mode="iso19139" match="gmd:resolution" priority="2">
 		<xsl:param name="schema"/>
 		<xsl:param name="edit"/>
