@@ -137,7 +137,7 @@
 	-->
 
 	<resources>
-	  <resource enabled="true">
+	  <resource enabled="false">
 	    <name>main-db</name>
 	    <provider>jeeves.resources.dbms.ApacheDBCPool</provider>
 	    <config>
@@ -272,15 +272,15 @@
 		<!-- postgresql -->
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		
-		<resource enabled="false">
+		<resource enabled="true">
 			<name>main-db</name>
 			<provider>jeeves.resources.dbms.ApacheDBCPool</provider>
 			<config>
-				<user>www-data</user>
-				<password>www-data</password>
+				<user>postgres</user>
+				<password>postgres</password>
 				<!-- we use org.postgis.DriverWrapper in place of
 				org.postgresql.Driver to support both postgresql and postgis -->
-				<driver>org.postgresql.Driver</driver>
+				<driver>org.postgis.DriverWrapper</driver>
 				<!--
 					jdbc:postgresql:database
 					jdbc:postgresql://host/database
@@ -292,8 +292,8 @@
 					jdbc:postgresql_postGIS://host:port/database
 					
 				-->
-				<url>jdbc:postgresql://localhost:5432/geonetwork</url>
-				<poolSize>10</poolSize>
+				<url>jdbc:postgresql_postGIS://localhost:5432/geonetwork</url>
+				<poolSize>30</poolSize>
 				<validationQuery>SELECT 1</validationQuery>
 			</config>
 		</resource>

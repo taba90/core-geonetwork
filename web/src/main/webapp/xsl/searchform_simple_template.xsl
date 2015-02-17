@@ -42,7 +42,8 @@
 							
 				<div style="margin-top:5px">
 					<!-- Region -->
-					<span class="labelField">Ambito</span>
+					<span class="labelField">Provincia</span>
+					<br/>
 					<select class="content" id="region_simple" onchange="javascript:doRegionSearchSimple();">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
@@ -77,7 +78,8 @@
 				<xsl:if test="$municipalitySearch = 'true'">
 					<div style="margin-top:5px">
 						<!-- Comuni -->						
-					    <span class="labelField">Sottoambito</span>
+					    <span class="labelField">Comune</span>
+						<br/>
 						<select disabled="disabled" class="content" style="width: 163px;" id="comune_simple" onchange="javascript:comuneSimpleSelected();">
 								<option value="">
 									<xsl:if test="/root/gui/searchDefaults/theme='_any_'">
