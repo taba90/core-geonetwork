@@ -11,11 +11,13 @@ UPDATE CswServerCapabilitiesInfo SET langid='vie' WHERE langid='vi';
 DELETE FROM Languages WHERE id='vi';
 
 -- Take care to table ID (related to other loc files)
-INSERT INTO CswServerCapabilitiesInfo VALUES (45, 'vie', 'title', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (46, 'vie', 'abstract', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (47, 'vie', 'fees', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (48, 'vie', 'accessConstraints', '');
+DELETE FROM CswServerCapabilitiesInfo WHERE langid='vie' AND idfield IN (49,50,51,52);
+INSERT INTO CswServerCapabilitiesInfo VALUES (49, 'vie', 'title', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (50, 'vie', 'abstract', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (51, 'vie', 'fees', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (52, 'vie', 'accessConstraints', '');
 
+DELETE FROM CategoriesDes WHERE langid='vie' AND iddes IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 INSERT INTO CategoriesDes VALUES (1,'vie','Maps & graphics');
 INSERT INTO CategoriesDes VALUES (2,'vie','Datasets');
 INSERT INTO CategoriesDes VALUES (3,'vie','Interactive resources');
@@ -30,11 +32,13 @@ INSERT INTO CategoriesDes VALUES (11,'vie','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'vie','Registers');
 INSERT INTO CategoriesDes VALUES (13,'vie','Physical Samples');
 
+DELETE FROM GroupsDes WHERE langid='vie' AND iddes IN (-1, 0, 1, 2);
 INSERT INTO GroupsDes VALUES (-1,'vie','Guest');
 INSERT INTO GroupsDes VALUES (0,'vie','Intranet');
 INSERT INTO GroupsDes VALUES (1,'vie','All');
 INSERT INTO GroupsDes VALUES (2,'vie','Sample group');
 
+DELETE FROM IsoLanguagesDes WHERE langid='vie' AND iddes>=1 AND iddes<=484;
 INSERT INTO IsoLanguagesDes VALUES (1,'vie','Afar');
 INSERT INTO IsoLanguagesDes VALUES (2,'vie','Abkhazian');
 INSERT INTO IsoLanguagesDes VALUES (3,'vie','Achinese');
@@ -520,6 +524,7 @@ INSERT INTO IsoLanguagesDes VALUES (482,'vie','No linguistic content');
 INSERT INTO IsoLanguagesDes VALUES (483,'vie','N''Ko');
 INSERT INTO IsoLanguagesDes VALUES (484,'vie','Zaza; Dimili; Dimli; Kirdki; Kirmanjki');
 
+DELETE FROM OperationsDes WHERE langid='vie' AND iddes IN (0, 1, 2, 3, 5, 6);
 INSERT INTO OperationsDes VALUES (0,'vie','Publish');
 INSERT INTO OperationsDes VALUES (1,'vie','Download');
 INSERT INTO OperationsDes VALUES (2,'vie','Editing');
@@ -527,6 +532,7 @@ INSERT INTO OperationsDes VALUES (3,'vie','Notify');
 INSERT INTO OperationsDes VALUES (5,'vie','Interactive Map');
 INSERT INTO OperationsDes VALUES (6,'vie','Featured');
 
+DELETE FROM StatusValuesDes WHERE langid='vie' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'vie','Unknown');
 INSERT INTO StatusValuesDes VALUES (1,'vie','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'vie','Approved');
@@ -534,6 +540,7 @@ INSERT INTO StatusValuesDes VALUES (3,'vie','Retired');
 INSERT INTO StatusValuesDes VALUES (4,'vie','Submitted');
 INSERT INTO StatusValuesDes VALUES (5,'vie','Rejected');
 
+DELETE FROM RegionsDes WHERE langid='vie' AND iddes>=1 AND iddes<=9999;
 INSERT INTO RegionsDes VALUES (1,'vie','Armenia');
 INSERT INTO RegionsDes VALUES (2,'vie','Afghanistan');
 INSERT INTO RegionsDes VALUES (3,'vie','Albania');

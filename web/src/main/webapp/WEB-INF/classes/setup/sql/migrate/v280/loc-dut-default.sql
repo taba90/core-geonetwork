@@ -11,10 +11,12 @@ UPDATE CswServerCapabilitiesInfo SET langid='dut' WHERE langid='nl';
 DELETE FROM Languages WHERE id='nl';
 
 -- Take care to table ID (related to other loc files)
+DELETE FROM CategoriesDes WHERE langid='dut' AND iddes IN (11, 12, 13);
 INSERT INTO CategoriesDes VALUES (11,'dut','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'dut','Registers');
 INSERT INTO CategoriesDes VALUES (13,'dut','Physical Samples');
 
+DELETE FROM StatusValuesDes WHERE langid='dut' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'dut','Unknown');
 INSERT INTO StatusValuesDes VALUES (1,'dut','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'dut','Approved');

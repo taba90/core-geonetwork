@@ -11,6 +11,7 @@ UPDATE CswServerCapabilitiesInfo SET langid='fin' WHERE langid='fi';
 DELETE FROM Languages WHERE id='fi';
 
 -- Take care to table ID (related to other loc files)
+DELETE FROM CategoriesDes WHERE langid='fin' AND iddes IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 INSERT INTO CategoriesDes VALUES (1,'fin','Kartat & kuvat');
 INSERT INTO CategoriesDes VALUES (2,'fin','Tietoaineistot');
 INSERT INTO CategoriesDes VALUES (3,'fin','Vuorovaikutteiset resurssit');
@@ -25,11 +26,13 @@ INSERT INTO CategoriesDes VALUES (11,'fin','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'fin','Registers');
 INSERT INTO CategoriesDes VALUES (13,'fin','Fyysisiä näytteitä');
 
+DELETE FROM GroupsDes WHERE langid='fin' AND iddes IN (-1, 0, 1, 2);
 INSERT INTO GroupsDes VALUES (-1,'fin','Vierailija');
 INSERT INTO GroupsDes VALUES (0,'fin','Intranet');
 INSERT INTO GroupsDes VALUES (1,'fin','Kaikki');
 INSERT INTO GroupsDes VALUES (2,'fin','Ryhmä');
 
+DELETE FROM IsoLanguagesDes WHERE langid='fin' AND iddes>=1 AND iddes<=484;
 INSERT INTO IsoLanguagesDes VALUES (1,'fin','Afar');
 INSERT INTO IsoLanguagesDes VALUES (2,'fin','Abkhazian');
 INSERT INTO IsoLanguagesDes VALUES (3,'fin','Achinese');
@@ -515,6 +518,7 @@ INSERT INTO IsoLanguagesDes VALUES (482,'fin','No linguistic content');
 INSERT INTO IsoLanguagesDes VALUES (483,'fin','N''Ko');
 INSERT INTO IsoLanguagesDes VALUES (484,'fin','Zaza; Dimili; Dimli; Kirdki; Kirmanjki');
 
+DELETE FROM OperationsDes WHERE langid='fin' AND iddes IN (0, 1, 2, 3, 5, 6);
 INSERT INTO OperationsDes VALUES (0,'fin','Publish');
 INSERT INTO OperationsDes VALUES (1,'fin','Download');
 INSERT INTO OperationsDes VALUES (2,'fin','Editing');
@@ -522,6 +526,7 @@ INSERT INTO OperationsDes VALUES (3,'fin','Notify');
 INSERT INTO OperationsDes VALUES (5,'fin','Interactive Map');
 INSERT INTO OperationsDes VALUES (6,'fin','Featured');
 
+DELETE FROM StatusValuesDes WHERE langid='fin' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'fin','Unknown');
 INSERT INTO StatusValuesDes VALUES (1,'fin','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'fin','Approved');
@@ -529,6 +534,7 @@ INSERT INTO StatusValuesDes VALUES (3,'fin','Retired');
 INSERT INTO StatusValuesDes VALUES (4,'fin','Submitted');
 INSERT INTO StatusValuesDes VALUES (5,'fin','Rejected');
 
+DELETE FROM RegionsDes WHERE langid='fin' AND iddes>=1 AND iddes<=9999;
 INSERT INTO RegionsDes VALUES (1,'fin','Armenia');
 INSERT INTO RegionsDes VALUES (2,'fin','Afghanistan');
 INSERT INTO RegionsDes VALUES (3,'fin','Albania');

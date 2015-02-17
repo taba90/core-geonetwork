@@ -11,11 +11,13 @@ UPDATE CswServerCapabilitiesInfo SET langid='ara' WHERE langid='ar';
 DELETE FROM Languages WHERE id='ar';
 
 -- Take care to table ID (related to other loc files)
+DELETE FROM CswServerCapabilitiesInfo WHERE langid='ara' AND idfield IN (41, 42, 43, 44);
 INSERT INTO CswServerCapabilitiesInfo VALUES (41, 'ara', 'title', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (42, 'ara', 'abstract', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (43, 'ara', 'fees', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (44, 'ara', 'accessConstraints', '');
 
+DELETE FROM CategoriesDes WHERE langid='ara' AND iddes IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 INSERT INTO CategoriesDes VALUES (1,'ara','Maps & graphics');
 INSERT INTO CategoriesDes VALUES (2,'ara','Datasets');
 INSERT INTO CategoriesDes VALUES (3,'ara','Interactive resources');
@@ -30,11 +32,13 @@ INSERT INTO CategoriesDes VALUES (11,'ara','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'ara','Registers');
 INSERT INTO CategoriesDes VALUES (13,'ara','Physical Samples');
 
+DELETE FROM GroupsDes WHERE langid='ara' AND iddes IN (-1, 0, 1, 2);
 INSERT INTO GroupsDes VALUES (-1,'ara','Guest');
 INSERT INTO GroupsDes VALUES (0,'ara','Intranet');
 INSERT INTO GroupsDes VALUES (1,'ara','All');
 INSERT INTO GroupsDes VALUES (2,'ara','Sample group');
 
+DELETE FROM IsoLanguagesDes WHERE langid='ara' AND iddes>=1 AND iddes<=484;
 INSERT INTO IsoLanguagesDes VALUES (1,'ara','Afar');
 INSERT INTO IsoLanguagesDes VALUES (2,'ara','Abkhazian');
 INSERT INTO IsoLanguagesDes VALUES (3,'ara','Achinese');
@@ -520,6 +524,7 @@ INSERT INTO IsoLanguagesDes VALUES (482,'ara','No linguistic content');
 INSERT INTO IsoLanguagesDes VALUES (483,'ara','N''Ko');
 INSERT INTO IsoLanguagesDes VALUES (484,'ara','Zaza; Dimili; Dimli; Kirdki; Kirmanjki');
 
+DELETE FROM OperationsDes WHERE langid='ara' AND iddes IN (0, 1, 2, 3, 5, 6);
 INSERT INTO OperationsDes VALUES (0,'ara','Publish');
 INSERT INTO OperationsDes VALUES (1,'ara','Download');
 INSERT INTO OperationsDes VALUES (2,'ara','Editing');
@@ -527,6 +532,7 @@ INSERT INTO OperationsDes VALUES (3,'ara','Notify');
 INSERT INTO OperationsDes VALUES (5,'ara','Interactive Map');
 INSERT INTO OperationsDes VALUES (6,'ara','Featured');
 
+DELETE FROM StatusValuesDes WHERE langid='ara' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'ara','Unknown');
 INSERT INTO StatusValuesDes VALUES (1,'ara','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'ara','Approved');
@@ -534,6 +540,7 @@ INSERT INTO StatusValuesDes VALUES (3,'ara','Retired');
 INSERT INTO StatusValuesDes VALUES (4,'ara','Submitted');
 INSERT INTO StatusValuesDes VALUES (5,'ara','Rejected');
 
+DELETE FROM RegionsDes WHERE langid='ara' AND iddes>=1 AND iddes<=9999;
 INSERT INTO RegionsDes VALUES (1,'ara','Armenia');
 INSERT INTO RegionsDes VALUES (2,'ara','Afghanistan');
 INSERT INTO RegionsDes VALUES (3,'ara','Albania');

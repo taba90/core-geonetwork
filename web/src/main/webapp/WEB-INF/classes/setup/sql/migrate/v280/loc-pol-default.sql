@@ -2,11 +2,13 @@
 INSERT INTO Languages VALUES ('pol','Polski', 'n', 'n');
 
 -- Take care to table ID (related to other loc files)
+DELETE FROM CswServerCapabilitiesInfo WHERE langid='pol' AND idfield IN (61, 62, 63, 64);
 INSERT INTO CswServerCapabilitiesInfo VALUES (61, 'pol', 'title', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (62, 'pol', 'abstract', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (63, 'pol', 'fees', '');
 INSERT INTO CswServerCapabilitiesInfo VALUES (64, 'pol', 'accessConstraints', '');
 
+DELETE FROM CategoriesDes WHERE langid='pol' AND iddes IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 INSERT INTO CategoriesDes VALUES (1,'pol','Mapy i grafika');
 INSERT INTO CategoriesDes VALUES (2,'pol','Zbiory danych');
 INSERT INTO CategoriesDes VALUES (3,'pol','Źródła interaktywne');
@@ -21,11 +23,13 @@ INSERT INTO CategoriesDes VALUES (11,'pol','Serwery Z3950');
 INSERT INTO CategoriesDes VALUES (12,'pol','Rejestry');
 INSERT INTO CategoriesDes VALUES (13,'pol','Physical Samples');
 
+DELETE FROM GroupsDes WHERE langid='pol' AND iddes IN (-1, 0, 1, 2);
 INSERT INTO GroupsDes VALUES (-1,'pol','Gość');
 INSERT INTO GroupsDes VALUES (0,'pol','Intranet');
 INSERT INTO GroupsDes VALUES (1,'pol','Wszyscy');
 INSERT INTO GroupsDes VALUES (2,'pol','Przykładowa grupa');
 
+DELETE FROM IsoLanguagesDes WHERE langid='pol' AND iddes>=1 AND iddes<=484;
 INSERT INTO IsoLanguagesDes VALUES (1,'pol','Afar');
 INSERT INTO IsoLanguagesDes VALUES (2,'pol','Abkhazian');
 INSERT INTO IsoLanguagesDes VALUES (3,'pol','Achinese');
@@ -511,6 +515,7 @@ INSERT INTO IsoLanguagesDes VALUES (482,'pol','No linguistic content');
 INSERT INTO IsoLanguagesDes VALUES (483,'pol','N''Ko');
 INSERT INTO IsoLanguagesDes VALUES (484,'pol','Zaza; Dimili; Dimli; Kirdki; Kirmanjki');
 
+DELETE FROM OperationsDes WHERE langid='pol' AND iddes IN (0, 1, 2, 3, 5, 6);
 INSERT INTO OperationsDes VALUES (0,'pol','Publikacja');
 INSERT INTO OperationsDes VALUES (1,'pol','Pobieranie');
 INSERT INTO OperationsDes VALUES (2,'pol','Edycja');
@@ -518,6 +523,7 @@ INSERT INTO OperationsDes VALUES (3,'pol','Powiadamianie');
 INSERT INTO OperationsDes VALUES (5,'pol','Mapy interaktywne');
 INSERT INTO OperationsDes VALUES (6,'pol','Wyróżnione');
 
+DELETE FROM StatusValuesDes WHERE langid='pol' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'pol','Nieznany');
 INSERT INTO StatusValuesDes VALUES (1,'pol','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'pol','Zaaprobowana');
@@ -525,6 +531,7 @@ INSERT INTO StatusValuesDes VALUES (3,'pol','Porzucone');
 INSERT INTO StatusValuesDes VALUES (4,'pol','Załadowane');
 INSERT INTO StatusValuesDes VALUES (5,'pol','Odrzucone');
 
+DELETE FROM RegionsDes WHERE langid='pol' AND iddes>=1 AND iddes<=9999;
 INSERT INTO RegionsDes VALUES (1,'pol','Armenia');
 INSERT INTO RegionsDes VALUES (2,'pol','Afghanistan');
 INSERT INTO RegionsDes VALUES (3,'pol','Albania');

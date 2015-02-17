@@ -1,4 +1,12 @@
+DELETE FROM Settings WHERE id=911 AND parentid=910;
+DELETE FROM Settings WHERE id=912 AND parentid=910;
+DELETE FROM Settings WHERE id=913 AND parentid=910;
+DELETE FROM Settings WHERE id=914 AND parentid=910;
+DELETE FROM Settings WHERE id=915 AND parentid=910;
+
+DELETE FROM Settings WHERE id=910 AND parentid=1;
 INSERT INTO Settings VALUES (910,1,'metadata',NULL);
+
 INSERT INTO Settings VALUES (911,910,'enableSimpleView','true');
 INSERT INTO Settings VALUES (912,910,'enableIsoView','true');
 INSERT INTO Settings VALUES (913,910,'enableInspireView','false');
@@ -271,6 +279,7 @@ INSERT INTO Categories VALUES (11,'z3950Servers');
 INSERT INTO Categories VALUES (12,'registers');
 INSERT INTO Categories VALUES (13,'physicalSamples');
 
+DELETE FROM Settings WHERE id=722 AND parentid=720 AND name='enableSearchPanel';
 INSERT INTO Settings VALUES (722,720,'enableSearchPanel','false');
 INSERT INTO Settings VALUES (900,1,'harvester',NULL);
 INSERT INTO Settings VALUES (901,900,'enableEditing','false');

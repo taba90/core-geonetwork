@@ -10,11 +10,12 @@ UPDATE StatusValuesDes           SET langid='eng' WHERE langid='en';
 UPDATE CswServerCapabilitiesInfo SET langid='eng' WHERE langid='en';
 DELETE FROM Languages WHERE id='en';
 
+DELETE FROM CategoriesDes WHERE langid='eng' AND iddes IN (11, 12, 13);
 INSERT INTO CategoriesDes VALUES (11,'eng','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'eng','Registers');
 INSERT INTO CategoriesDes VALUES (13,'eng','Physical Samples');
 
-
+DELETE FROM StatusValuesDes WHERE langid='eng' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'eng','Unknown');
 INSERT INTO StatusValuesDes VALUES (1,'eng','Draft');
 INSERT INTO StatusValuesDes VALUES (2,'eng','Approved');

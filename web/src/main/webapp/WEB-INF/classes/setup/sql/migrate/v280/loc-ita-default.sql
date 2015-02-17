@@ -11,11 +11,13 @@ UPDATE CswServerCapabilitiesInfo SET langid='ita' WHERE langid='it';
 DELETE FROM Languages WHERE id='it';
 
 -- Take care to table ID (related to other loc files)
-INSERT INTO CswServerCapabilitiesInfo VALUES (49, 'ita', 'title', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (50, 'ita', 'abstract', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (51, 'ita', 'fees', '');
-INSERT INTO CswServerCapabilitiesInfo VALUES (52, 'ita', 'accessConstraints', '');
+DELETE FROM CswServerCapabilitiesInfo WHERE langid='ita' AND idfield IN (45,46,47,48);
+INSERT INTO CswServerCapabilitiesInfo VALUES (45, 'ita', 'title', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (46, 'ita', 'abstract', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (47, 'ita', 'fees', '');
+INSERT INTO CswServerCapabilitiesInfo VALUES (48, 'ita', 'accessConstraints', '');
 
+DELETE FROM CategoriesDes WHERE langid='ita' AND iddes IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
 INSERT INTO CategoriesDes VALUES (1,'ita','Mappe e grafici');
 INSERT INTO CategoriesDes VALUES (2,'ita','Datasets');
 INSERT INTO CategoriesDes VALUES (3,'ita','Risorse interattive');
@@ -30,11 +32,13 @@ INSERT INTO CategoriesDes VALUES (11,'ita','Z3950 Servers');
 INSERT INTO CategoriesDes VALUES (12,'ita','Registri');
 INSERT INTO CategoriesDes VALUES (13,'ita','campioni fisici');
 
+DELETE FROM GroupsDes WHERE langid='ita' AND iddes IN (-1, 0, 1, 2);
 INSERT INTO GroupsDes VALUES (-1,'ita','Visitatore');
 INSERT INTO GroupsDes VALUES (0,'ita','Intranet');
 INSERT INTO GroupsDes VALUES (1,'ita','Tutti');
 INSERT INTO GroupsDes VALUES (2,'ita','Gruppo di esempio');
 
+DELETE FROM IsoLanguagesDes WHERE langid='ita' AND iddes>=1 AND iddes<=484;
 INSERT INTO IsoLanguagesDes VALUES (1,'ita','Afar');
 INSERT INTO IsoLanguagesDes VALUES (2,'ita','Abkhazian');
 INSERT INTO IsoLanguagesDes VALUES (3,'ita','Achinese');
@@ -520,6 +524,7 @@ INSERT INTO IsoLanguagesDes VALUES (482,'ita','Nessun contenuto linguistico; non
 INSERT INTO IsoLanguagesDes VALUES (483,'ita','N''Ko');
 INSERT INTO IsoLanguagesDes VALUES (484,'ita','Zaza; Dimili; Dimli; Kirdki; Kirmanjki');
 
+DELETE FROM OperationsDes WHERE langid='ita' AND iddes IN (0, 1, 2, 3, 5, 6);
 INSERT INTO OperationsDes VALUES (0,'ita','Pubblica');
 INSERT INTO OperationsDes VALUES (1,'ita','Scarica');
 INSERT INTO OperationsDes VALUES (2,'ita','Modifica');
@@ -527,6 +532,7 @@ INSERT INTO OperationsDes VALUES (3,'ita','Notifica');
 INSERT INTO OperationsDes VALUES (5,'ita','Mappa interattiva');
 INSERT INTO OperationsDes VALUES (6,'ita','In rilievo');
 
+DELETE FROM StatusValuesDes WHERE langid='ita' AND iddes IN (0, 1, 2, 3, 4, 5);
 INSERT INTO StatusValuesDes VALUES (0,'ita','Sconosciuto');
 INSERT INTO StatusValuesDes VALUES (1,'ita','Bozza');
 INSERT INTO StatusValuesDes VALUES (2,'ita','Approvato');
@@ -534,6 +540,7 @@ INSERT INTO StatusValuesDes VALUES (3,'ita','Ritirato');
 INSERT INTO StatusValuesDes VALUES (4,'ita','Proposto');
 INSERT INTO StatusValuesDes VALUES (5,'ita','Respinto');
 
+DELETE FROM RegionsDes WHERE langid='ita' AND iddes>=1 AND iddes<=9999;
 INSERT INTO RegionsDes VALUES (1,'ita','Armenia');
 INSERT INTO RegionsDes VALUES (2,'ita','Afghanistan');
 INSERT INTO RegionsDes VALUES (3,'ita','Albania');
