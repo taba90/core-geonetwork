@@ -193,7 +193,11 @@
     -->
   <simple flat="true">
 		<exception schema="sensorML" for="component,input,onlineResource,electronicMailAddress,voice,facsimile,deliveryPoint,coordinate,input,date"/>
-	</simple>
+
+   	 <ancestorException schema="iso19139.zamg" for="EX_TemporalExtent,CI_Date,spatialResolution"/>
+     <exception schema="iso19139.zamg" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
+
+  </simple>
   <advanced/><!-- This view should not be removed as this is the only view to be able
   to edit all elements defined in a schema. -->
   <iso/>
@@ -202,6 +206,10 @@
   <inspire flat="true">
    	 <ancestorException schema="iso19139" for="EX_TemporalExtent,CI_Date,spatialResolution"/>
      <exception schema="iso19139" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
+
+     <ancestorException schema="iso19139.zamg" for="EX_TemporalExtent,CI_Date,spatialResolution"/>
+     <exception schema="iso19139.zamg" for="result,resourceConstraints,pointOfContact,hierarchyLevel,couplingType,operatesOn,distributionInfo,distributionFormat,onLine,identifier,language,characterSet,topicCategory,serviceType,descriptiveKeywords,extent,temporalElement,geographicElement,lineage"/>
+
   </inspire>
   <xml/>
  </metadata-tab>
