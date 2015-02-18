@@ -23,6 +23,12 @@
 
 package org.fao.geonet.services.metadata;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import jeeves.exceptions.NotFoundEx;
+import jeeves.exceptions.ResourceNotFoundEx;
 import jeeves.interfaces.Service;
 import jeeves.resources.dbms.Dbms;
 import jeeves.server.ServiceConfig;
@@ -52,7 +58,9 @@ import jeeves.utils.Xml;
 
 public class Show implements Service
 {
-    //--------------------------------------------------------------------------
+    private String appPath;
+
+	//--------------------------------------------------------------------------
 	//---
 	//--- Init
 	//---
@@ -60,6 +68,8 @@ public class Show implements Service
 
 	public void init(String appPath, ServiceConfig params) throws Exception
 	{
+        this.appPath = appPath;
+
 		String skip;
 		
 		skip = params.getValue("skipPopularity", "n");
@@ -157,6 +167,12 @@ public class Show implements Service
 		if (!skipPopularity)
 			dm.increasePopularity(context, id);
 
+        // process metadata if requested
+		String process = Util.getParam(params, Params.PROCESS, null);
+        if(process != null) {
+			elMd = process(dm, dbms, id, process, context, params, elMd);
+        }
+		
 		if(cache) {
 		    cache(context.getUserSession(), elMd, id);
 		}
@@ -189,6 +205,26 @@ public class Show implements Service
 	private boolean skipInfo;
 	private boolean addRefs;
     private boolean cache;
+    
+    protected Element process(DataManager dm, Dbms dbms, String id, String process, ServiceContext context, Element params, Element metadata) throws ResourceNotFoundEx, Exception {
+        // --- check processing exist for current schema
+        String schema = dm.getMetadataSchema(dbms, id);
+        String filePath = appPath + "WEB-INF/data/config/schema_plugins/" + schema + "/process/"
+                + process + ".xsl";
+        File xslProcessing = new File(filePath);
+        if (!xslProcessing.exists()) {
+            context.info("  Processing instruction not found for " + schema
+                    + " schema.");
+            throw new ResourceNotFoundEx(process);
+        }
+        // collect query params should be needed in the transformation
+        Map<String, String> xslParams = new HashMap<String, String>();
+        for (Element param : (List<Element>)params.getChildren()) {
+            xslParams.put(param.getName(), param.getTextTrim());
+        }
+
+        return Xml.transform(metadata, filePath, xslParams);
+    }
     
 }
 //=============================================================================
