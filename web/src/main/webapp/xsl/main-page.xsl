@@ -114,6 +114,8 @@
 		<xsl:variable name="tab"><xsl:copy-of select="/root/request/tab"/></xsl:variable>
 		<xsl:variable name="search"><xsl:copy-of select="/root/request/search"/></xsl:variable>
 
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
+		
 		<script type="text/javascript">
 
 			function init() {};

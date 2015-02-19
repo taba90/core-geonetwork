@@ -59,6 +59,7 @@
 			}
 		</script>
 		
+		<link rel="stylesheet" type="text/css" href="{/root/gui/url}/scripts/ext/resources/css/xtheme-gray.css"/>
 		
 		<!-- =================================
 				Google translation API demo (Load the API in version 1).

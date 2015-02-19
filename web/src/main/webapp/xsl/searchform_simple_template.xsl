@@ -132,15 +132,15 @@
 						<td style="padding:0px; margin:0px;" width="36px">
 							<img width="36px" style="padding:0px; margin:0px;"  src="{/root/gui/url}/images/arrow-right.gif" alt=""/>
 						</td>
-						<td style="padding:0px; margin:0px;" width="13px">
+						<!--td style="padding:0px; margin:0px;" width="13px">
 							<img width="13px" style="padding:0px; margin:0px;"  src="{/root/gui/url}/images/search-left.gif" alt=""/>
-						</td>
-						<td align="center" style="background: url({/root/gui/url}/images/search-bg.gif) repeat-x; width: auto; white-space: nowrap; padding-bottom: 8px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runSimpleSearch();" >
+						</td-->
+						<td align="center" style="background-color:#ea5d10; width: auto; white-space: nowrap; padding-bottom: 8px; vertical-align: bottom; cursor:hand;  cursor:pointer;" onclick="runSimpleSearch();" >
 							<font color="#FFFFFF"><strong><xsl:value-of select="/root/gui/strings/search"/></strong></font>
 						</td>
-						<td style="padding:0px; margin:0px;" width="12px">
+						<!--td style="padding:0px; margin:0px;" width="12px">
 							<img width="12px" style="padding:0px; margin:0px;"  src="{/root/gui/url}/images/search-right.gif" alt=""/>
-						</td>
+						</td-->
 					</tr>
 				</table>		
 			</div>

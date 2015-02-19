@@ -160,8 +160,8 @@
 	    <td>
 	      <xsl:attribute name="class">
 	        <xsl:choose>
-	          <xsl:when test="$currTab=$tab">banner-login banner-active</xsl:when>
-	          <xsl:otherwise>banner-login banner-passive</xsl:otherwise>
+	          <xsl:when test="$currTab=$tab">banner-menu banner-active</xsl:when>
+	          <xsl:otherwise>banner-menu banner-passive</xsl:otherwise>
 	        </xsl:choose>
 	      </xsl:attribute>
   			<xsl:value-of select="$indent"/>
