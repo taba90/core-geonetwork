@@ -36,6 +36,14 @@
                <param name="filter" value="+spatialRepresentationType:vector"/>
            </class>
         </service>
+
+        <!-- Enable an INSPIRE-only endpoint for ZAMG -->
+
+        <service name="csw-inspire">
+           <class name=".services.main.CswDiscoveryDispatcher" >
+              <param name="filter" value="+inspirerelated:on"/>
+           </class>
+        </service>
         
     </services>
 </geonet>
