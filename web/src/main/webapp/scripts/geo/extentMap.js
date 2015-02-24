@@ -390,11 +390,19 @@ var extentMap = {
     	var options = mapOptions;
     	options.theme = null;
     	
+/*
         var map = extentMap.map = new OpenLayers.Map(
         		options
         );
-        
-        
+*/
+        var zamg_options = {
+            projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+            displayProjection: new OpenLayers.Projection("EPSG:4326"),
+            tileSize: new OpenLayers.Size(512,512),
+            maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+            resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0]
+        };
+        var map = extentMap.map = new OpenLayers.Map(zamg_options);
         
         // Disable mouse wheel and navigation toolbar in view mode.
         // User can still pan the map.
@@ -413,14 +421,47 @@ var extentMap = {
         // to define map layers. Currently using the same
         // WMS as Intermap.
         
-        for (var i=0; i<backgroundLayers.length; i++) {
-            var layer = new OpenLayers.Layer.WMS(backgroundLayers[i][0],
-                    backgroundLayers[i][1],
-                    backgroundLayers[i][2],
-                    backgroundLayers[i][3])
-            map.addLayer(layer);    
-        }
-        
+//        for (var i=0; i<backgroundLayers.length; i++) {
+//            var layer = new OpenLayers.Layer.WMS(backgroundLayers[i][0],
+//                    backgroundLayers[i][1],
+//                    backgroundLayers[i][2],
+//                    backgroundLayers[i][3])
+//            map.addLayer(layer);
+//        }
+
+        var topo_waterarea_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "topo_waterarea-epsg31287-TMS",
+            "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+            { layername: 'topo_waterarea@epsg31287', type: "jpg", serviceVersion:"1.0.0",
+              gutter:0,buffer:0,transitionEffect:'resize',
+              tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+              resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+              zoomOffset:0,
+              units:"m",
+              maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+              projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+              sphericalMercator: false,
+              visibility: true,
+              isBaseLayer: true
+            }
+        );
+        map.addLayer(topo_waterarea_epsg31287_tms_layer);
+
+        var osm_overlay_epsg31287_tms_layer = new OpenLayers.Layer.TMS( "osm_overlay-epsg31287-TMS",
+            "http://wmsx.zamg.ac.at/mapcache201409/tms/",
+            { layername: 'osm_overlay@epsg31287', type: "png", serviceVersion:"1.0.0",
+              gutter:0,buffer:0,transitionEffect:'resize',
+              tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
+              resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+              zoomOffset:0,
+              units:"m",
+              maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
+              projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
+              sphericalMercator: false,
+              visibility: true,
+              isBaseLayer: false
+            }
+        );
+        map.addLayer(osm_overlay_epsg31287_tms_layer);
         
         // Add vector layer to draw features (ie. bbox or polygon)
         extentMap.vectorLayer = new OpenLayers.Layer.Vector(
