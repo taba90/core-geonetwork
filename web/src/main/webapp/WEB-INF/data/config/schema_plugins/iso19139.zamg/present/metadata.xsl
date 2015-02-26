@@ -712,44 +712,60 @@
         <xsl:param name="schema"/>
         <xsl:param name="edit"/>
 
-        <xsl:apply-templates mode="simpleElement" select="./gml:beginPosition">
-            <xsl:with-param name="schema"  select="$schema"/>
-            <xsl:with-param name="edit"   select="$edit"/>
-            <xsl:with-param name="editAttributes" select="false()"/>
-            <xsl:with-param name="showAttributes" select="false()"/>
-            <xsl:with-param name="text">
-                <xsl:variable name="ref" select="geonet:element/@ref"/>
-                <xsl:variable name="format">
-                    <xsl:text>%Y-%m-%dT%H:%M:00</xsl:text>
-                </xsl:variable>
-                <xsl:call-template name="calendar">
-                    <xsl:with-param name="ref" select="$ref"/>
-                    <xsl:with-param name="date" select="text()"/>
-                    <xsl:with-param name="format" select="$format"/>
-                </xsl:call-template>
+        <xsl:choose>
+            <xsl:when test="$edit">
+                <xsl:for-each select="*">
+                    <xsl:choose>
+                        <xsl:when test="(name(.)='gml:beginPosition' or name(.)='gml:endPosition' or name(.)='gml:timePosition')">
 
-            </xsl:with-param>
-        </xsl:apply-templates>
+                            <xsl:apply-templates mode="simpleElement" select=".">
+                                <xsl:with-param name="schema"  select="$schema"/>
+                                <xsl:with-param name="edit"   select="$edit"/>
+                                <xsl:with-param name="editAttributes" select="false()"/>
+                                <xsl:with-param name="showAttributes" select="false()"/>
+                                <xsl:with-param name="text">
+                                    <xsl:variable name="ref" select="geonet:element/@ref"/>
+                                    <xsl:variable name="format">
+                                        <xsl:text>%Y-%m-%dT%H:%M:00</xsl:text>
+                                    </xsl:variable>
+                                    <xsl:call-template name="calendar">
+                                        <xsl:with-param name="ref" select="$ref"/>
+                                        <xsl:with-param name="date" select="text()"/>
+                                        <xsl:with-param name="format" select="$format"/>
+                                    </xsl:call-template>
 
-        <xsl:apply-templates mode="simpleElement" select="./gml:endPosition">
-            <xsl:with-param name="schema"  select="$schema"/>
-            <xsl:with-param name="edit"   select="$edit"/>
-            <xsl:with-param name="editAttributes" select="false()"/>
-            <xsl:with-param name="showAttributes" select="false()"/>
-            <xsl:with-param name="text">
-                <xsl:variable name="ref" select="geonet:element/@ref"/>
-                <xsl:variable name="format">
-                    <xsl:text>%Y-%m-%dT%H:%M:00</xsl:text>
-                </xsl:variable>
+                                </xsl:with-param>
+                            </xsl:apply-templates>
+                        </xsl:when>
+                        <xsl:otherwise>
+                              <xsl:apply-templates mode="simpleElement" select=".">
+                                <xsl:with-param name="schema"  select="$schema"/>
+                                <xsl:with-param name="text">
+                                  <xsl:value-of select="text()"/>
+                                </xsl:with-param>
+                              </xsl:apply-templates>
+                            </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:when>
 
-                <xsl:call-template name="calendar">
-                    <xsl:with-param name="ref" select="$ref"/>
-                    <xsl:with-param name="date" select="text()"/>
-                    <xsl:with-param name="format" select="$format"/>
-                </xsl:call-template>
+            <xsl:otherwise> <!-- not editing -->
+                <xsl:apply-templates mode="simpleElement" select="./gml:beginPosition">
+                  <xsl:with-param name="schema"  select="$schema"/>
+                  <xsl:with-param name="text">
+                    <xsl:value-of select="translate(./gml:beginPosition/text(), 'T', ' ')"/>
+                  </xsl:with-param>
+                </xsl:apply-templates>
 
-            </xsl:with-param>
-        </xsl:apply-templates>
+                <xsl:apply-templates mode="simpleElement" select="./gml:endPosition">
+                  <xsl:with-param name="schema"  select="$schema"/>
+                  <xsl:with-param name="text">
+                    <xsl:value-of select="translate(./gml:endPosition/text(), 'T', ' ')"/>
+                  </xsl:with-param>
+                </xsl:apply-templates>
+
+            </xsl:otherwise>
+        </xsl:choose>
 
     </xsl:template>
 
