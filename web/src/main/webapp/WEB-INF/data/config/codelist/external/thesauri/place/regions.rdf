@@ -37,8 +37,8 @@
     <skos:prefLabel xml:lang="de">Österreich</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:upperCorner>49.020710 17.160749</gml:upperCorner>
-        <gml:lowerCorner>46.372299 9.530790</gml:lowerCorner>
+        <gml:upperCorner>17.160749 49.020710</gml:upperCorner>
+        <gml:lowerCorner>9.530790 46.372299</gml:lowerCorner>
       </gml:Envelope>
     </gml:BoundedBy>
 
@@ -59,8 +59,8 @@
     <skos:prefLabel xml:lang="de">Burgenland</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.8330612182617 15.9973392486572</gml:lowerCorner>
-        <gml:upperCorner>48.1178245544434 17.1623611450195</gml:upperCorner>
+        <gml:lowerCorner>15.9973392486572 46.8330612182617</gml:lowerCorner>
+        <gml:upperCorner>17.1623611450195 48.1178245544434</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -71,8 +71,8 @@
     <skos:prefLabel xml:lang="de">Kärnten</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.3748168945312 12.6544761657715</gml:lowerCorner>
-        <gml:upperCorner>47.1382942199707 15.0624256134033</gml:upperCorner>
+        <gml:lowerCorner>12.6544761657715 46.3748168945312</gml:lowerCorner>
+        <gml:upperCorner>15.0624256134033 47.1382942199707</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -83,8 +83,8 @@
     <skos:prefLabel xml:lang="de">Niederösterreich</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>47.4228477478027 14.4332628250122</gml:lowerCorner>
-        <gml:upperCorner>49.0170440673828 17.0792694091797</gml:upperCorner>
+        <gml:lowerCorner>14.4332628250122 47.4228477478027</gml:lowerCorner>
+        <gml:upperCorner>17.0792694091797 49.0170440673828</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -95,8 +95,8 @@
     <skos:prefLabel xml:lang="de">Oberösterreich</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>47.4480056762695 12.7530288696289</gml:lowerCorner>
-        <gml:upperCorner>48.772834777832 14.9763269424438</gml:upperCorner>
+        <gml:lowerCorner>12.7530288696289 47.4480056762695</gml:lowerCorner>
+        <gml:upperCorner>14.9763269424438 48.772834777832</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -107,8 +107,8 @@
     <skos:prefLabel xml:lang="de">Salzburg</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.9386749267578 12.0782012939453</gml:lowerCorner>
-        <gml:upperCorner>48.0393867492676 13.9739017486572</gml:upperCorner>
+        <gml:lowerCorner>12.0782012939453 46.9386749267578</gml:lowerCorner>
+        <gml:upperCorner>13.9739017486572 48.0393867492676</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -119,8 +119,8 @@
     <skos:prefLabel xml:lang="de">Steiermark</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.6119117736816 13.5405797958374</gml:lowerCorner>
-        <gml:upperCorner>47.8237190246582 16.1783847808838</gml:upperCorner>
+        <gml:lowerCorner>13.5405797958374 46.6119117736816</gml:lowerCorner>
+        <gml:upperCorner>16.1783847808838 47.8237190246582</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -131,8 +131,8 @@
     <skos:prefLabel xml:lang="de">Tirol</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.6543388366699 10.0993928909302</gml:lowerCorner>
-        <gml:upperCorner>47.739990234375 12.9607315063477</gml:upperCorner>
+        <gml:lowerCorner>10.0993928909302 46.6543388366699</gml:lowerCorner>
+        <gml:upperCorner>12.9607315063477 47.739990234375</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -143,8 +143,8 @@
     <skos:prefLabel xml:lang="de">Vorarlberg</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>46.8432922363281 9.53158760070801</gml:lowerCorner>
-        <gml:upperCorner>47.5971603393555 10.2317790985107</gml:upperCorner>
+        <gml:lowerCorner>9.53158760070801 46.8432922363281</gml:lowerCorner>
+        <gml:upperCorner>10.2317790985107 47.5971603393555</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -155,8 +155,8 @@
     <skos:prefLabel xml:lang="de">Wien</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>48.1260719299316 16.1848163604736</gml:lowerCorner>
-        <gml:upperCorner>48.3318672180176 16.58447265625</gml:upperCorner>
+        <gml:lowerCorner>16.1848163604736 48.1260719299316</gml:lowerCorner>
+        <gml:upperCorner>16.58447265625 48.3318672180176</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
@@ -167,8 +167,8 @@
     <skos:prefLabel xml:lang="de">GAR (Größere Alpine Region)</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>43 4</gml:lowerCorner>
-        <gml:upperCorner>49 19</gml:upperCorner>
+        <gml:lowerCorner>4 43</gml:lowerCorner>
+        <gml:upperCorner>19 49</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#europe" />
@@ -180,8 +180,8 @@
     <skos:prefLabel xml:lang="de">Europa</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>27.636 -31.266</gml:lowerCorner>
-        <gml:upperCorner>81.009 39.869</gml:upperCorner>
+        <gml:lowerCorner>-31.266 27.636</gml:lowerCorner>
+        <gml:upperCorner>39.869 81.009</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#world" />
@@ -193,8 +193,8 @@
     <skos:prefLabel xml:lang="de">Welt</skos:prefLabel>
     <gml:BoundedBy>
       <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
-        <gml:lowerCorner>-90 -180</gml:lowerCorner>
-        <gml:upperCorner>90 180</gml:upperCorner>
+        <gml:lowerCorner>-180 -90</gml:lowerCorner>
+        <gml:upperCorner>180 90</gml:upperCorner>
       </gml:Envelope>
     </gml:BoundedBy>
     <skos:narrower rdf:resource="http://geonetwork-opensource.org/ATregions#europe" />
