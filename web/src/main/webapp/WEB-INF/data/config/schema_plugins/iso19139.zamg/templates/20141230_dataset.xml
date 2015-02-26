@@ -304,7 +304,7 @@
 							<gmd:identifier>
 								<gmd:MD_Identifier>
 									<gmd:code>
-										<gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/en/thesaurus.download?ref=external.place.AT_regions">geonetwork.thesaurus.external.place.AT_regions</gmx:Anchor>
+										<gmx:Anchor xlink:href="http://vmetad1/geonetwork/srv/ger/thesaurus.download?ref=external.place.regions">geonetwork.thesaurus.external.place.regions</gmx:Anchor>
 									</gmd:code>
 								</gmd:MD_Identifier>
 							</gmd:identifier>
@@ -338,7 +338,7 @@
 							<gmd:identifier>
 								<gmd:MD_Identifier>
 									<gmd:code>
-										<gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/en/thesaurus.download?ref=external.theme.zamg-sourcetype">geonetwork.thesaurus.external.theme.zamg-sourcetype</gmx:Anchor>
+										<gmx:Anchor xlink:href="http://vmetad1/geonetwork/srv/ger/thesaurus.download?ref=external.theme.zamg-sourcetype">geonetwork.thesaurus.external.theme.zamg-sourcetype</gmx:Anchor>
 									</gmd:code>
 								</gmd:MD_Identifier>
 							</gmd:identifier>
@@ -372,7 +372,7 @@
 							<gmd:identifier>
 								<gmd:MD_Identifier>
 									<gmd:code>
-										<gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/en/thesaurus.download?ref=external.theme.zamg-datatype">geonetwork.thesaurus.external.theme.zamg-datatype</gmx:Anchor>
+										<gmx:Anchor xlink:href="http://vmetad1/geonetwork/srv/ger/thesaurus.download?ref=external.theme.zamg-datatype">geonetwork.thesaurus.external.theme.zamg-datatype</gmx:Anchor>
 									</gmd:code>
 								</gmd:MD_Identifier>
 							</gmd:identifier>
@@ -406,7 +406,7 @@
 							<gmd:identifier>
 								<gmd:MD_Identifier>
 									<gmd:code>
-										<gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/en/thesaurus.download?ref=external.theme.zamg-uom">geonetwork.thesaurus.external.theme.zamg-uom</gmx:Anchor>
+										<gmx:Anchor xlink:href="http://vmetad1/geonetwork/srv/ger/thesaurus.download?ref=external.theme.zamg-uom">geonetwork.thesaurus.external.theme.zamg-uom</gmx:Anchor>
 									</gmd:code>
 								</gmd:MD_Identifier>
 							</gmd:identifier>
@@ -440,7 +440,7 @@
 							<gmd:identifier>
 								<gmd:MD_Identifier>
 									<gmd:code>
-										<gmx:Anchor xlink:href="http://localhost:8080/geonetwork/srv/en/thesaurus.download?ref=external.theme.zamg-variable">geonetwork.thesaurus.external.theme.zamg-variable</gmx:Anchor>
+										<gmx:Anchor xlink:href="http://vmetad1/geonetwork/srv/ger/thesaurus.download?ref=external.theme.zamg-variable">geonetwork.thesaurus.external.theme.zamg-variable</gmx:Anchor>
 									</gmd:code>
 								</gmd:MD_Identifier>
 							</gmd:identifier>
@@ -499,16 +499,16 @@
 					<gmd:geographicElement>
 						<gmd:EX_GeographicBoundingBox>
 							<gmd:westBoundLongitude>
-								<gco:Decimal>46.372299</gco:Decimal>
+								<gco:Decimal>9.53079</gco:Decimal>
 							</gmd:westBoundLongitude>
 							<gmd:eastBoundLongitude>
-								<gco:Decimal>49.02071</gco:Decimal>
+								<gco:Decimal>17.160749</gco:Decimal>
 							</gmd:eastBoundLongitude>
 							<gmd:southBoundLatitude>
-								<gco:Decimal>9.53079</gco:Decimal>
+								<gco:Decimal>46.372299</gco:Decimal>
 							</gmd:southBoundLatitude>
 							<gmd:northBoundLatitude>
-								<gco:Decimal>17.160749</gco:Decimal>
+								<gco:Decimal>49.02071</gco:Decimal>
 							</gmd:northBoundLatitude>
 						</gmd:EX_GeographicBoundingBox>
 					</gmd:geographicElement>
