@@ -366,6 +366,49 @@
 							</xsl:call-template>
 						</div>
 					</xsl:if>
+					
+					<!-- Social Network Link declaration -->
+					<xsl:variable name="protocol" select="/root/gui/env/server/protocol" />
+					<xsl:variable name="gnhost" select="/root/gui/env/server/host" />
+					<xsl:variable name="gnport" select="/root/gui/env/server/port" />
+					<xsl:variable name="baseURL" select="concat($protocol,'://',$gnhost,':',$gnport,/root/gui/url)" />
+					<xsl:variable name="mdURL" select="normalize-space(concat($baseURL, '?uuid=', geonet:info/uuid))"/>
+
+
+					<xsl:if test="not(contains($mdURL,'localhost')) and not(contains($mdURL,'127.0.0.1'))">
+						<xsl:variable name="twitterLinkHashTags">
+							<xsl:value-of select="/root/gui/config/socialLinks/twitter/hashTags"/>
+						</xsl:variable>
+						<xsl:variable name="twitterLinkText">
+							<xsl:value-of select="/root/gui/config/socialLinks/twitter/text"/>
+						</xsl:variable>	
+						<xsl:variable name="geonetworkEndPoint">
+								<xsl:value-of select="/root/gui/config/socialLinks/geonetworkEndPoint"/>
+						</xsl:variable>
+						<xsl:variable name="mapstoreEndPoint">
+								<xsl:value-of select="/root/gui/config/socialLinks/mapstoreEndPoint"/>
+						</xsl:variable>
+						
+						<a href="javascript:var url='{$mdURL}'; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('https://twitter.com/intent/tweet?text={$twitterLinkText}&amp;button_hashtag={$twitterLinkHashTags}&amp;url='+encodeURIComponent(mdURL),'ShareTotwitter','width=600,height=460,menubar=no,location=no,status=no'));">
+							<img src="{$baseURL}/images/tweet.gif"
+								alt="Tiwtter Share" title="Tiwtter Share"
+								style="border: 0px solid;padding:2px;"/>
+						</a>
+						
+						<a href="javascript:var time=new Date().getTime(); var url='{$mdURL}'+'&amp;dc='+time; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('https://plus.google.com/share?url='+encodeURIComponent(mdURL),'ShareToGooglePlus','width=600,height=460,menubar=no,location=no,status=no'))">
+								<img src="{$baseURL}/images/gplus-16.png"
+										alt="Share on Google+"
+										title="Share on Google+"
+										style="border: 0px solid;padding:2px;"/>
+						</a>
+
+						<a href="javascript:var url='{$mdURL}'; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(mdURL),'ShareToFacebook','width=600,height=460,menubar=no,location=no,status=no'));">
+							<img src="{$baseURL}/images/facebook.gif"
+								alt="{/root/gui/strings/bookmarkFacebook}" title="{/root/gui/strings/bookmarkFacebook}"
+								style="border: 0px solid;padding:2px;"/>
+						</a>
+					</xsl:if>					
+					
 					<div class="hittext_top">
 						<xsl:choose>
 							<xsl:when test="$remote=true()">

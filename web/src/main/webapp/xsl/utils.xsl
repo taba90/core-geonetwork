@@ -132,12 +132,27 @@
 			</xsl:call-template>
 		</xsl:variable>
 		
+		<xsl:variable name="twitterLinkHashTags">
+			<xsl:value-of select="/root/gui/config/socialLinks/twitter/hashTags"/>
+		</xsl:variable>
+		<xsl:variable name="twitterLinkText">
+			<xsl:value-of select="/root/gui/config/socialLinks/twitter/text"/>
+		</xsl:variable>	
+		<xsl:variable name="geonetworkEndPoint">
+				<xsl:value-of select="/root/gui/config/socialLinks/geonetworkEndPoint"/>
+		</xsl:variable>
+		<xsl:variable name="mapstoreEndPoint">
+				<xsl:value-of select="/root/gui/config/socialLinks/mapstoreEndPoint"/>
+		</xsl:variable>
+
+		
+		<!-- Social Network Link declaration -->
 		<xsl:if test="not(contains($mdURL,'localhost')) and not(contains($mdURL,'127.0.0.1'))">
-			<a href="mailto:?subject={$t}&amp;body=%0ALink:%0A{$mdURL}%0A%0AAbstract:%0A{$a}">
+			<!--a href="mailto:?subject={$t}&amp;body=%0ALink:%0A{$mdURL}%0A%0AAbstract:%0A{$a}">
 				<img src="{$baseURL}/images/mail.png" 
 					alt="{/root/gui/strings/bookmarkEmail}" title="{/root/gui/strings/bookmarkEmail}" 
 					style="border: 0px solid;padding:2px;padding-right:10px;"/>
-			</a>
+			</a-->
 				
 				<!-- Not browser independent, thus commented out -->
 <!--			<a href="javascript:window.external.AddFavorite('{$mdURL}', '{$t}');">
@@ -146,13 +161,13 @@
 					style="border: 0px solid;padding:2px;"/>
 			</a> -->
 
-			<!-- Instead of a bookmark, a permanent link to the record is useful anyway -->
+			<!-- Instead of a bookmark, a permanent link to the record is useful anyway 
 			<a href="{$mdURL}">
 				<img src="{$baseURL}/images/bookmark.png" 
 					alt="{/root/gui/strings/bookmarkPermanent}" title="{/root/gui/strings/bookmarkPermanent}" style="border: 0px solid;padding:2px;"/>
-			</a>
+			</a>-->
 			
-			<!-- add first sentence of abstract to the delicious notes -->
+			<!-- add first sentence of abstract to the delicious notes 
 			<a href="http://del.icio.us/post?url={$mdURL}&amp;title={$t}&amp;notes={substring-before($a,'. ')}. " target="_blank">
 				<img src="{$baseURL}/images/delicious.gif" 
 					alt="{/root/gui/strings/bookmarkDelicious}" title="{/root/gui/strings/bookmarkDelicious}" 
@@ -172,7 +187,27 @@
 				<img src="{$baseURL}/images/stumbleupon.gif" 
 					alt="{/root/gui/strings/bookmarkStumbleUpon}" title="{/root/gui/strings/bookmarkStumbleUpon}" 
 					style="border: 0px solid;padding:2px;"/>
-			</a> 
+			</a> -->
+			
+		    <a href="javascript:var url='{$mdURL}'; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('https://twitter.com/intent/tweet?text={$twitterLinkText}&amp;button_hashtag={$twitterLinkHashTags}&amp;url='+encodeURIComponent(mdURL),'ShareTotwitter','width=600,height=460,menubar=no,location=no,status=no'));">
+				<img src="{$baseURL}/images/tweet.gif"
+					alt="Tiwtter Share" title="Tiwtter Share"
+					style="border: 0px solid;padding:2px;"/>
+			</a>
+			
+			<a href="javascript:var time=new Date().getTime(); var url='{$mdURL}'+'&amp;dc='+time; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('https://plus.google.com/share?url='+encodeURIComponent(mdURL),'ShareToGooglePlus','width=600,height=460,menubar=no,location=no,status=no'))">
+					<img src="{$baseURL}/images/gplus-16.png"
+							alt="Share on Google+"
+							title="Share on Google+"
+							style="border: 0px solid;padding:2px;"/>
+			</a>
+
+			<a href="javascript:var url='{$mdURL}'; var mdURL=url.replace('{$geonetworkEndPoint}', '{$mapstoreEndPoint}'); void(window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(mdURL),'ShareToFacebook','width=600,height=460,menubar=no,location=no,status=no'));">
+				<img src="{$baseURL}/images/facebook.gif"
+					alt="{/root/gui/strings/bookmarkFacebook}" title="{/root/gui/strings/bookmarkFacebook}"
+					style="border: 0px solid;padding:2px;"/>
+			</a>
+			
 		</xsl:if>
 	</xsl:template>
 	

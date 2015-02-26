@@ -38,11 +38,19 @@
 	<enabled>true</enabled>
  </municipalitySearch>
  
-  <psrOpts>
+  <!--psrOpts>
     <enabled>true</enabled>
-  </psrOpts>
+  </psrOpts-->
  
- 
+ <socialLinks>
+	<mapstoreEndPoint>MapStore/</mapstoreEndPoint>
+	<geonetworkEndPoint>geonetwork</geonetworkEndPoint>
+	<twitter>
+		<hashTags>OpenData</hashTags>
+		<text>Metadato%20del%20Comune%20di%20Firenze</text>
+	</twitter>
+ </socialLinks>
+  
  <map>
   <!-- Configuration for map displayed in metadata sheet
   (view or edit mode). -->
