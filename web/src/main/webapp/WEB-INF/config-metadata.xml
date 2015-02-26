@@ -41,6 +41,7 @@
 				<call name="sources"  class=".guiservices.util.Sources"/>
 				<call name="isoLang"  class=".guiservices.isolanguages.Get"/>
 				<call name="clear"  class=".services.metadata.ClearCachedShowMetadata"/>
+				<call name="regions"       class =".guiservices.regions.Get"/>
 			</output>
 
 			<error id="operation-not-allowed" sheet="error.xsl" statusCode="403">
@@ -63,6 +64,7 @@
 				<call name="sources"  class=".guiservices.util.Sources"/>
 				<call name="isoLang"  class=".guiservices.isolanguages.Get"/>
 				<call name="clear"  class=".services.metadata.ClearCachedShowMetadata"/>
+				<call name="regions"       class =".guiservices.regions.Get"/>
 			</output>
 
 			<error id="operation-not-allowed" sheet="error-embedded.xsl" statusCode="403">

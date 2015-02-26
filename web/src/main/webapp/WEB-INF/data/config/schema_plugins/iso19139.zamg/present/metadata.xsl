@@ -19,7 +19,7 @@
 
 	<!--<xsl:include href="../../iso19139/present/metadata.xsl"/>-->
 
-  <xsl:param name="guiLang" select="/root/gui/lang"/>
+  <xsl:param name="guiLang" select="/root/gui/language"/>
   <xsl:param name="baseUrl" select="''"/>
 
   <xsl:variable name="lang2">
@@ -911,16 +911,7 @@
                     <xsl:with-param name="title" select="/root/gui/schemas/iso19139.zamg/strings/zamgRegions.label"/>
                     <xsl:with-param name="helpLink" select="'iso19139.zamg|zamgRegions'"/>
                     <xsl:with-param name="text">
-                        <!-- This entry is localized according to the language selected while editing -->
-                        <xsl:value-of select="$currentdesc"/>
-
-                        <!-- In order to have a localized region, we'd need to add the region element in input
-                             and select it with something like this
-                        -->
-<!--                        <xsl:value-of
-                            select="/root/gui/regions/record[substring-after(id[1],'#')=$currentcode]/label/child::*[name() = $lang]"/>-->
-                        <!-- Anyway current solution may suffice. -->
-
+                        <xsl:value-of select="normalize-space(/root/gui/regions/record[substring-after(@id,'#')=$currentcode]/label/*[name() = $lang]/text())"/>
                     </xsl:with-param>
                     <xsl:with-param name="showAttributes" select="false()"/>
                 </xsl:call-template>
