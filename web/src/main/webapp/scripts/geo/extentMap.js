@@ -58,7 +58,8 @@ var extentMap = {
      * Define the map projection. Bounding box are stored in WGS84 in metadata records
      * and polygon also.
      */
-    mainProjCode: "EPSG:4326",
+    mainProjCode: "EPSG:31287", // ZAMG 
+//    mainProjCode: "EPSG:4326",
     wgsProj: new OpenLayers.Projection("EPSG:4326"),
     mainProj: null,
     units: 'm', //degrees
@@ -378,7 +379,8 @@ var extentMap = {
     	OpenLayers.ImgPath = "../../scripts/openlayers/img/";
     	
 		// Set main projection same as map viewer projection
-    	extentMap.mainProj = new OpenLayers.Projection(mapOptions.projection);
+//    	extentMap.mainProj = new OpenLayers.Projection(mapOptions.projection);
+        extentMap.mainProj = new OpenLayers.Projection(extentMap.mainProjCode);
 
     	// TODO : how to define one common map with background in config file.
     	/*var options = {
