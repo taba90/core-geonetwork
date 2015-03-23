@@ -1805,6 +1805,8 @@ elementi quali il software, il sistema operativo del computer, nome del file, e 
 			<option show="-" value="OGC:WPS">OGC-WPS Web Processing Service</option>
 			<option show="-" value="WWW:DOWNLOAD-1.0-ftp--download">File scaricabile (FTP)</option>
 			<option show="-" value="WWW:DOWNLOAD-1.0-http--download">File scaricabile (HTTP)</option>
+			<option show="-" value="WWW:DOWNLOAD-1.0-http--external-hidden">Download riservato (HTTP)</option>
+			<option show="-" value="WWW:DOWNLOAD-1.0-http--external-public">Download pubblico  (HTTP)</option>
 			<option show="-" value="FILE:GEO">GIS file</option>
 			<option show="-" value="FILE:RASTER">GIS RASTER file</option>
 			<option show="y" value="WWW:LINK-1.0-http--ical">iCalendar (URL)</option>

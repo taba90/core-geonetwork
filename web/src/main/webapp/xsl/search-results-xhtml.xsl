@@ -724,7 +724,7 @@
 		<xsl:param name="remote"/>
 		
 		&#160;
-		<xsl:choose>
+<!--		<xsl:choose>
 			<xsl:when test="$remote=false()">
 			    <xsl:variable name="dataDownloads" select="count($metadata/link[@type='download' and not(ends-with(@protocol,'downloadother'))]|$metadata/link[@type='dataurl'])"/>
 			    <xsl:choose>
@@ -754,6 +754,29 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>
+		</xsl:choose>-->
+		
+		<!--	Use the old approach	-->
+		<xsl:choose>
+			<xsl:when test="count($metadata/link[@type='download'])>1">
+				<xsl:choose>
+					<xsl:when test="$remote=true()">
+						<button class="content" onclick="window.open('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=distribution2')" title="{/root/gui/strings/download}">
+							<xsl:value-of select="/root/gui/strings/dataDownload"/>
+						</button>
+					</xsl:when>
+					<xsl:otherwise>
+						<button class="content" onclick="window.open('{/root/gui/locService}/metadata.show?id={$metadata/geonet:info/id}&amp;currTab=distribution2')" title="{/root/gui/strings/download}">
+							<xsl:value-of select="/root/gui/strings/dataDownload"/>
+						</button>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="count($metadata/link[@type='download'])=1 and $metadata/link[@type='download'] != ''">
+				<button class="content" onclick="window.open('{$metadata/link[@type='download']}')" title="{/root/gui/strings/download}">
+					<xsl:value-of select="/root/gui/strings/download"/>
+				</button>
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 	
