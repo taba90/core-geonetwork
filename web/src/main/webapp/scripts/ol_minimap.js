@@ -256,13 +256,14 @@ GeoNetwork.miniapp = function() {
         { layername: 'topo_waterarea@epsg31287', type: "jpg", serviceVersion:"1.0.0",
           gutter:0,buffer:0,isBaseLayer:true,transitionEffect:'resize',
           tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
-          resolutions:[2000.0,1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+          resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
           zoomOffset:0,
           units:"m",
           maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
           projection: new OpenLayers.Projection("EPSG:31287".toUpperCase()),
           sphericalMercator: false,
-          visibility: true
+          visibility: true,
+          isBaseLayer: true
         }
     );
     miniMap.addLayer(topo_waterarea_epsg31287_tms_layer);
@@ -276,7 +277,7 @@ GeoNetwork.miniapp = function() {
         { layername: 'osm_overlay@epsg31287', type: "png", serviceVersion:"1.0.0",
           gutter:0,buffer:0,transitionEffect:'resize',
           tileOrigin: new OpenLayers.LonLat(20085.090168,219828.777960),
-          resolutions:[2000.0,1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
+          resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
           zoomOffset:0,
           units:"m",
           maxExtent: new OpenLayers.Bounds(20085.090168,219828.777960,720025.090168,620300.777960),
