@@ -422,12 +422,20 @@
                             </xsl:apply-templates>
                         </xsl:if>
 
+                        <!-- Date, Time and DateType -->
+                        <xsl:if test="$advanced">
+                            <xsl:apply-templates mode="elementEP" select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:date/*[1]">
+                                <xsl:with-param name="schema" select="$schema"/>
+                                <xsl:with-param name="edit"   select="$edit"/>
+                            </xsl:apply-templates>
+                        </xsl:if>
+
                         <xsl:call-template name="zamg.restriction">
                             <xsl:with-param name="schema" select="$schema"/>
                             <xsl:with-param name="edit"   select="$edit and $advanced"/>
                         </xsl:call-template>
 
-        			</xsl:with-param>
+                    </xsl:with-param>
                 </xsl:call-template>
 
 
