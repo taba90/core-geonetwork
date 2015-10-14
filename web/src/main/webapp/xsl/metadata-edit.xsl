@@ -120,6 +120,9 @@
 								<tr><td class="padded-content" height="100%" align="center" valign="top">
 									<xsl:call-template name="editButtons"/>
 								</td></tr>
+								<tr><td class="padded-content" height="100%" align="center" valign="top">
+									<xsl:call-template name="templateChoice"/>
+								</td></tr>
 								<tr><td class="padded-content">
 									<table class="md" width="100%">
 										<xsl:choose>
@@ -135,9 +138,6 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</table>
-								</td></tr>
-								<tr><td class="padded-content" height="100%" align="center" valign="top">
-									<xsl:call-template name="templateChoice"/>
 								</td></tr>
 								<tr><td class="padded-content" height="100%" align="center" valign="top">
 									<xsl:call-template name="editButtons">
