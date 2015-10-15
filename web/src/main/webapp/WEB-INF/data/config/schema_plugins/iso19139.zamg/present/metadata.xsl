@@ -455,7 +455,9 @@
                     <xsl:with-param name="edit" select="true()"/>
                     <xsl:with-param name="content">
 
-
+                    <xsl:variable name="link">
+                          &#160;&#160;&#160;<a href="http://vmetad1/mdparams" target="_blank" title="http://vmetad1/mdparams">http://vmetad1/mdparams</a>
+                    </xsl:variable>
 
                         <xsl:call-template name="zamg.thesaurus.choice">
                             <xsl:with-param name="schema" select="$schema"/>
@@ -463,6 +465,7 @@
                             <xsl:with-param name="thesaurus"   select="$zamg-thesaurus-variable"/>
                             <xsl:with-param name="thesaurusName"   select="'geonetwork.thesaurus.external.theme.zamg-variable'"/>
                             <xsl:with-param name="multi"   select="true()"/>
+                            <xsl:with-param name="link"   select="$link"/>
                         </xsl:call-template>
 
                         <xsl:call-template name="zamg.thesaurus.choice">
@@ -1015,6 +1018,7 @@
         <xsl:param name="edit"/>
         <xsl:param name="schema"/>
         <xsl:param name="multi" select="false()"/>
+        <xsl:param name="link"/>
 
         <xsl:variable name="node"  select="/root/gmd:MD_Metadata//gmd:descriptiveKeywords[gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()=$thesaurusName]"/>
 
@@ -1025,7 +1029,6 @@
             <xsl:variable name="ref" select="concat('_', ./gco:CharacterString/geonet:element/@ref)"/>
             <xsl:variable name="value" select="./gco:CharacterString/text()"/>
             <xsl:variable name="shortname" select="substring-after($thesaurusName,'.theme.')"/>
-
             <xsl:choose>
                 <xsl:when test="not(string($thesaurus))">
                     <h3>WARNING: can't find thesaurus <xsl:value-of select="$thesaurusName"/> for value <xsl:value-of select="$value"/></h3>
@@ -1088,6 +1091,7 @@
 
                                 </xsl:for-each>
                             </select>
+                            <xsl:copy-of select="$link"/>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
