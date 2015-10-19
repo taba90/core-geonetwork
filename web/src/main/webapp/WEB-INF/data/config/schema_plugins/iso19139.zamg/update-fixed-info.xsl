@@ -55,6 +55,24 @@
     <xsl:template match="gmd:MD_Metadata/gmd:fileIdentifier|gmd:MD_Metadata/gmd:parentIdentifier" priority="10"/>
 
     <!-- ================================================================= -->
+
+    <xsl:template match="gmd:dateStamp">
+        <xsl:choose>
+            <xsl:when test="/root/env/changeDate">
+                <xsl:copy>
+                        <gco:DateTime>
+                            <!-- <xsl:value-of select="fn:translate(/root/env/changeDate,'T','dd')"/> -->
+                            <!-- <xsl:value-of select="/root/env/changeDate"/> -->
+                            <xsl:value-of select="translate(/root/env/changeDate,'T',' ')"/>
+                        </gco:DateTime>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose>
+	</xsl:template>
+
     <!-- Insert resource id if it does not exist -->
 
     <!--<xsl:template match="gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code" >-->
