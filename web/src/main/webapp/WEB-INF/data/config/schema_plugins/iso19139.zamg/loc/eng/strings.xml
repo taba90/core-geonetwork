@@ -64,6 +64,12 @@
         <restricted>For internal use only</restricted>
     </zamg_restriction>
 
+  <zamg_short_north>N:</zamg_short_north>
+  <zamg_short_south>S:</zamg_short_south>
+  <zamg_short_east>E:</zamg_short_east>
+  <zamg_short_west>W:</zamg_short_west>
+  <zamg_custom>Custom</zamg_custom>
+
   <understandResource>Information about the dataset</understandResource>
   <relatedResources>Related services and linked data</relatedResources>
   <techInfo>Technical information</techInfo>

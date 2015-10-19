@@ -883,6 +883,7 @@
                                     <xsl:value-of select="label/child::*[name() = $lang]"/>
                                 </option>
                             </xsl:for-each>
+                            <option id="customOption" value="custom"><xsl:value-of select="/root/gui/schemas/iso19139.zamg/strings/zamg_custom"/></option>
                         </select>
 
                         <!-- The hidden bbox coords that will be set by javascript -->
@@ -893,21 +894,25 @@
                         <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:westBoundLongitude/gco:Decimal">
                           <xsl:with-param name="schema" select="$schema" />
                           <xsl:with-param name="name" select="'gmd:westBoundLongitude'" />
+                          <xsl:with-param name="label" select="/root/gui/schemas/iso19139.zamg/strings/zamg_short_west" />
                         </xsl:apply-templates>
 
                         <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:eastBoundLongitude/gco:Decimal">
                           <xsl:with-param name="schema" select="$schema" />
                           <xsl:with-param name="name" select="'gmd:eastBoundLongitude'" />
+                          <xsl:with-param name="label" select="/root/gui/schemas/iso19139.zamg/strings/zamg_short_east" />
                         </xsl:apply-templates>
 
                         <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:southBoundLatitude/gco:Decimal">
                           <xsl:with-param name="schema" select="$schema" />
                           <xsl:with-param name="name" select="'gmd:southBoundLatitude'" />
+                          <xsl:with-param name="label" select="/root/gui/schemas/iso19139.zamg/strings/zamg_short_south" />
                         </xsl:apply-templates>
 
                         <xsl:apply-templates mode="zamgCoordinateElementGUI" select="$bboxnode/gmd:northBoundLatitude/gco:Decimal">
                           <xsl:with-param name="schema" select="$schema" />
                           <xsl:with-param name="name" select="'gmd:northBoundLatitude'" />
+                          <xsl:with-param name="label" select="/root/gui/schemas/iso19139.zamg/strings/zamg_short_north" />
                         </xsl:apply-templates>
 
                     </xsl:with-param>
@@ -935,10 +940,11 @@
   <xsl:template mode="zamgCoordinateElementGUI" match="*">
     <xsl:param name="schema" />
     <xsl:param name="name" />
-
+    <xsl:param name="label" />
+    &#160;
+    <xsl:copy-of select="$label"/>
     <xsl:variable name="ref" select="./geonet:element/@ref"/>
-
-    <input class="md" type="hidden" id="_{$ref}" name="_{$ref}" value="{normalize-space(./text())}" size="12" readonly="true"/>
+    <input class="md" type="number" max="180" min="-180" step="0.000000000001" id="_{$ref}" name="_{$ref}" value="{normalize-space(./text())}" maxlength="18" size="18" onchange="setZAMGCustomArea()"/>
 
   </xsl:template>
 

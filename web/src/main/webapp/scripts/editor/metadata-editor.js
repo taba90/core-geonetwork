@@ -781,6 +781,14 @@ function setRegionZAMG(westField, eastField, southField, northField, region, elt
 	}
 }
 
+/**
+ * When the user manually change the vaule of the bbox coordinates in the text box Region will be set to "custom" 
+ */
+function setZAMGCustomArea()
+{
+	$("customOption").selected=true;
+}
+
 function clearRef(ref) 
 {
 	setBunload(false);

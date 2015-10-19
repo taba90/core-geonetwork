@@ -64,6 +64,12 @@
         <restricted>nur intern</restricted>
     </zamg_restriction>
 
+  <zamg_short_north>N:</zamg_short_north>
+  <zamg_short_south>S:</zamg_short_south>
+  <zamg_short_east>O:</zamg_short_east>
+  <zamg_short_west>W:</zamg_short_west>
+  <zamg_custom>Manuell</zamg_custom>
+
   <understandResource>Informationen über den Datensatz</understandResource>
   <relatedResources>verwandte Dienste und verbundene Daten</relatedResources>
   <techInfo>Technische Information</techInfo>
