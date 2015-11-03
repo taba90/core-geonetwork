@@ -144,7 +144,7 @@
 	      <user>admin</user>
 	      <password>gnos</password>
 	      <driver>org.h2.Driver</driver>
-	    	<url>jdbc:h2:geonetwork;LOCK_TIMEOUT=20000;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE</url>
+	      <url>jdbc:h2:geonetwork;LOCK_TIMEOUT=20000;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE</url>
 	      <poolSize>33</poolSize>
 	      <validationQuery>SELECT 1</validationQuery>
 	    </config>
@@ -374,6 +374,7 @@
 		<!-- Define the class to use when metadata status change
 		-->
         <param name="statusActionsClass" value="org.fao.geonet.services.metadata.DefaultStatusActions"/>
+		<param name="useHtml5ui" value="true"/>
 	</appHandler>
 
 	<!-- ====================================================================== -->
@@ -401,8 +402,11 @@
 				<call name="regions" class="jeeves.services.db.Select">
 		                    <param name="db" value="main-db" />
 		                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
-		                </call>
-				<call name="sources" class=".guiservices.util.Sources" />
+				</call>
+				<call name="sources" class=".guiservices.util.Sources">
+					<param name="onlyLinkedSources" value="true" />
+				</call>
+
 				<call name="repositories" class=".services.main.Info">
 					<param name="type" value="z3950repositories" />
 				</call>
@@ -524,10 +528,10 @@
 				<call name="groups" class=".guiservices.groups.GetMine" />
 				<call name="categories" class=".services.category.List" />
 				<!--<call name="regions" class=".guiservices.regions.Get" /> -->
-		                <call name="regions" class="jeeves.services.db.Select">
+				<call name="regions" class="jeeves.services.db.Select">
 		                    <param name="db" value="main-db" />
 		                    <param name="query" value="SELECT * FROM Province ORDER BY label" />
-		                </call>
+				</call>
 				<call name="sources" class=".guiservices.util.Sources" />
 				<call name="repositories" class=".services.main.Info">
 					<param name="type" value="z3950repositories" />
@@ -1543,8 +1547,8 @@
 	<include>config-sru.xml</include>
 	<include>config-csw-servers.xml</include>
 	<include>config-monitoring.xml</include>
-    <include>config-dcat-rdf.xml</include>
-
+  <include>config-dcat-rdf.xml</include>
+  <include>config-xml-metadata-services.xml</include>	
 	<!-- ====================================================================== -->
 
 </geonet>

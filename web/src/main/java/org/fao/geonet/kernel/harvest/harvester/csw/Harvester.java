@@ -97,8 +97,15 @@ class Harvester
 				}
 			} else if (element.getText()!=null) {
 //				s.addAttribute(element.getName(), element.getText().trim());
-				s.addAttribute(element.getQualifiedName(), element.getText().trim());				
-			}
+				s.addAttribute(element.getQualifiedName(), element.getText().trim());
+                // Queryables with a namespace are stored in the Settings replacing : with __
+                // Otherwise SettingsManager causes issues
+                // When building the filter replacing __ with :
+
+                //// ETJ: next line is used in official 2.10.x to fix the namespace problem.
+                //// for CSI a different approach has been used
+                // s.addAttribute(element.getName().replace("__", ":"), element.getText().trim());
+            }
 		}
 			
 		records.addAll(search(server,s));
@@ -366,6 +373,15 @@ class Harvester
 			    	}
 		    	}
 			    
+
+//                    // If the queriable has the namespace, use it
+//                    String queryableName = entry.getKey();
+//                    if (!queryableName.contains(":")) {
+//                        queryableName = "csw:"+queryableName;
+//                    }
+
+//                    buildFilterQueryable(queriables, queryableName, entry.getValue());
+//                }
 			}
 		} else {
 		    log.debug("no search criterion specified, harvesting all ... ");
