@@ -1460,6 +1460,7 @@
 		<service name="csv.search">
 			<class name=".services.main.SelectionSearch">
 				<param name="fast" value="false" />
+				<param name="restoreLastSearch" value="yes" />
 			</class>
 			<output forward="csv.present" />
 		</service>

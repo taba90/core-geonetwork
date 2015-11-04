@@ -36,8 +36,8 @@ function runCsvSearch() {
     if ($("advanced_search_pnl").visible()) {
         serviceUrl = serviceUrl + "?" + fetchParam('template');
 	}
-    window.open(serviceUrl, 'csv')
-    metadataselect(0, 'remove-all');
+    window.open(serviceUrl, 'csv');
+    /*metadataselect(0, 'remove-all');*/
 }
 
 
