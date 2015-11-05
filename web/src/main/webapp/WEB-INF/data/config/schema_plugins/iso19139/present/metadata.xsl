@@ -3083,6 +3083,7 @@
 			      		</xsl:variable>
 			            
 			            <input type="text" id="_{$ref}" name="_{$ref}" value="{$value}"/>
+			            <input type="hidden" id="previous_{$ref}" name="previous_{$ref}" value="{$value}"/>
 			            <xsl:for-each select="gco:CharacterString">
 			             <xsl:call-template name="helper">
 			               <xsl:with-param name="schema" select="$schema"/>
