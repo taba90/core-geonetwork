@@ -944,22 +944,8 @@
 	
 	<div id="whensearchfields" style="display:none">
 		<div class="row">
-			<input onclick="setDates(0);" value="" name="radfrom" id="radfrom0" type="radio">
-					<xsl:if test="string(/root/gui/searchDefaults/dateFrom)='' and string(/root/gui/searchDefaults/dateTo)=''
-							and string(/root/gui/searchDefaults/extFrom)='' and string(/root/gui/searchDefaults/extTo)=''">
-						<xsl:attribute name="checked">CHECKED</xsl:attribute>
- 					</xsl:if>
-					<label for="radfrom0"><xsl:value-of select="/root/gui/strings/anytime"/></label>
-			</input>
-		</div>
-		
-		<div class="row">
-			<input value="" name="radfrom" id="radfrom1" type="radio" disabled="disabled">
-					<xsl:if test="string(/root/gui/searchDefaults/dateFrom)!='' and string(/root/gui/searchDefaults/dateTo)!=''">
-						<xsl:attribute name="checked">CHECKED</xsl:attribute>
-					</xsl:if>
-					<label for="radfrom1"><xsl:value-of select="/root/gui/strings/changeDate"/></label>
-			</input>
+			<br />
+			<p><xsl:value-of select="/root/gui/strings/changeDate"/></p>
 		</div>
 		
 	      <!-- Change format to %Y-%m-%dT%H:%M:00 in order to have DateTime field instead of DateField -->
@@ -967,7 +953,7 @@
 		      <tr>
 		          <td><xsl:value-of select="/root/gui/strings/from"/></td>
 		          <td>
-		            <div class="cal" id="dateFrom" onclick="$('radfrom1').checked=true;$('radfrom1').disabled='';$('radfromext1').disabled='disabled';"></div>
+		            <div class="cal" id="dateFrom"></div>
 		            <input type="hidden" id="dateFrom_format" value="%Y-%m-%d"/>
 		            <input type="hidden" id="dateFrom_cal" value=""/>
 		          </td>
@@ -975,7 +961,7 @@
 		      <tr>
 		          <td><xsl:value-of select="/root/gui/strings/to"/></td>
 		          <td>
-			        <div class="cal" id="dateTo" onclick="$('radfrom1').checked=true;$('radfrom1').disabled='';$('radfromext1').disabled='disabled';"></div>
+			        <div class="cal" id="dateTo"></div>
 		            <input type="hidden" id="dateTo_format" value="%Y-%m-%d"/>
 		            <input type="hidden" id="dateTo_cal" value=""/>
 		          </td>
@@ -984,12 +970,8 @@
 	         
 		
 		<div class="row">
-			<input value="" name="radfrom" id="radfromext1" type="radio" disabled="disabled">
-					<xsl:if test="string(/root/gui/searchDefaults/extFrom)!='' and string(/root/gui/searchDefaults/extTo)!=''">
-						<xsl:attribute name="checked" />
-					</xsl:if>
-					<label for="radfromext1"><xsl:value-of select="/root/gui/strings/datasetIssued"/></label>
-			</input>
+			<br />
+			<p><xsl:value-of select="/root/gui/strings/datasetIssued"/></p>
 		</div>
 		
 		 <!-- Change format to %Y-%m-%dT%H:%M:00 in order to have DateTime field instead of DateField -->
@@ -1011,6 +993,13 @@
                   </td>
               </tr>
           </table>
+          
+          <br />
+          <div class="row">
+			<button type="button" name="radfrom" id="radfrom0" onclick="setDates(0);"><xsl:value-of select="/root/gui/strings/clear"/></button> 
+			<label for="radfrom0"><xsl:value-of select="/root/gui/strings/anytime"/></label>
+		</div>
+		<br />
 		
 	</div>
 

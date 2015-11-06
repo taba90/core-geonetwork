@@ -809,9 +809,16 @@ function getRegion_error() {
 }
 
 function AoIrefresh() {
-	$('region_simple').value="userdefined";
-	$('region_remote').value="userdefined";
-  $('region').value="userdefined";
+	if($('region_simple')){
+		$('region_simple').value="userdefined";
+	}
+	if($('region_remote')){
+		$('region_remote').value="userdefined";
+	}
+	if($('region')){
+		$('region').value="userdefined";
+	}
+
 }
 
 function runRssSearch()
