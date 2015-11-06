@@ -634,13 +634,15 @@ function checkForFileUpload(fref, pref) {
 	//protocol object
 	var protoSelect = $('s_'+pref); // the protocol <select>
 	var protoIn = $('_'+pref);        // the protocol input field to be submitted
+	var protoInPrevious = $('previous_'+pref);
 	//protocol value
 	var protocolSelect = protoSelect.value;
 	var protocolIn = protoIn.value;
+	var protocolInPrevious = protoInPrevious.value;
 	//Can protocol be a file
 	var regex = new RegExp( '^WWW:DOWNLOAD-.*-http--download.*');
 	var protocolDownloadSelect = (regex.test(protocolSelect));
-	var protocolDownloadIn = (regex.test(protocolIn));
+	var protocolDownloadIn = (regex.test(protocolInPrevious));
 
 	// This is just the input field that may contain the filename - it is not a guaranteed filename
 	// The input field is assumed to be one of 2 fields. 
@@ -655,7 +657,8 @@ function checkForFileUpload(fref, pref) {
 		if (protocolDownloadIn && !protocolDownloadSelect) {
 			alert(translate("errorChangeProtocol"));
 			// protocol change is not ok so reset the protocol value
-			protoSelect.value = protoIn.value; 
+			protoSelect.value = protoInPrevious.value; 
+			protoIn.value = protoInPrevious.value;
 		} else { 
 			// protocol change is ok so set the protocol value to that selected
 			protoIn.value = protoSelect.value;
