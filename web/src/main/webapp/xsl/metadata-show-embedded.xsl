@@ -13,6 +13,7 @@
 	
 	<xsl:include href="main.xsl"/>
 	<xsl:include href="metadata.xsl"/>
+	<xsl:include href="advancedButtons.xsl"/>
 
     <xsl:variable name="protocol" select="/root/gui/env/server/protocol" />
 	<xsl:variable name="host" select="/root/gui/env/server/host" />
@@ -48,6 +49,7 @@
 						</xsl:variable>
 						<xsl:variable name="metadata" select="exslt:node-set($md)/*[1]"/>
 						<xsl:variable name="mdURL" select="normalize-space(concat($baseURL, '?uuid=', geonet:info/uuid))"/>
+						<xsl:variable name="remote" select="/root/response/summary/@type='remote'"/>
 						
 						<!-- Add social bookmark icons here -->
 						<xsl:call-template name="socialBookmarks">
@@ -73,7 +75,19 @@
 									<b><xsl:value-of select="geonet:info/title"/></b>
 								</td></tr>
 							</xsl:if>
-
+							
+							<xsl:variable name="advancedButtons">
+								<tr><td class="padded-content" height="100%" align="center" valign="top">
+									<xsl:call-template name="advancedButtons">
+										<xsl:with-param name="metadata" select="$metadata"/>
+										<xsl:with-param name="remote" select="$remote"/>
+									</xsl:call-template>
+								</td></tr>
+							</xsl:variable>
+							<xsl:if test="$advancedButtons!=''">
+								<xsl:copy-of select="$advancedButtons"/>
+							</xsl:if>
+							
 							<tr>
 								<td class="padded-content">
 								<table class="md" width="100%">
@@ -89,6 +103,11 @@
 										</xsl:choose>
 								</table>
 							</td></tr>
+							
+							<xsl:if test="$advancedButtons!=''">
+								<xsl:copy-of select="$advancedButtons"/>
+							</xsl:if>
+							
 						</table>
 					</td>
 				</tr>
