@@ -25,6 +25,9 @@
  
   <xsl:template mode="schema" match="*">
     <xsl:choose>
+      <xsl:when test="//geonet:info/schema = 'iso19139.rndt'">
+        <xsl:value-of select="'iso19139.rndt'"/>
+      </xsl:when>
       <xsl:when test="starts-with(//geonet:info/schema, 'iso19139')">
         <xsl:value-of select="'iso19139'"/>
       </xsl:when>
