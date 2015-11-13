@@ -76,6 +76,10 @@
 								</td></tr>
 							</xsl:if>
 							
+							<xsl:variable name="showAdvancedButton">
+								<xsl:value-of select="/root/request/showAdvancedButton"/>
+							</xsl:variable>
+							
 							<xsl:variable name="advancedButtons">
 								<tr><td class="padded-content" height="100%" align="center" valign="top">
 									<xsl:call-template name="advancedButtons">
@@ -84,7 +88,7 @@
 									</xsl:call-template>
 								</td></tr>
 							</xsl:variable>
-							<xsl:if test="$advancedButtons!=''">
+							<xsl:if test="$advancedButtons!='' and $showAdvancedButton!='false'">
 								<xsl:copy-of select="$advancedButtons"/>
 							</xsl:if>
 							
@@ -104,7 +108,7 @@
 								</table>
 							</td></tr>
 							
-							<xsl:if test="$advancedButtons!=''">
+							<xsl:if test="$advancedButtons!='' and $showAdvancedButton!='false'">
 								<xsl:copy-of select="$advancedButtons"/>
 							</xsl:if>
 							

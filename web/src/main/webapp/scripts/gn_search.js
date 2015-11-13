@@ -966,6 +966,51 @@ function gn_showSingleMet(pars)
             onFailure: gn_search_error// FIXME
         });
 }
+
+function gn_showMetadataSimple(id, tab) {
+	gn_showMetadataTabSimple(id, (tab ? tab : 'simple'));
+}
+function gn_showMetadataTabSimple(id, currTab)
+{
+    var pars = 'id=' + id + '&currTab=' + currTab + '&showAdvancedButton=false';
+
+    $('gn_showmd_' + id) .hide();
+    $('gn_loadmd_' + id) .show();
+
+    var myAjax = new Ajax.Request(
+        getGNServiceURL('metadata.show.embedded'),
+        {
+            method: 'get',
+            parameters: pars,
+            onSuccess: function (req) {
+                var parent = $('mdwhiteboard_' + id);
+                clearNode(parent);
+
+                $('gn_loadmd_' + id) .hide();
+                $('gn_hidemd_' + id) .show();
+
+                // create new element
+                var div = document.createElement('div');
+                div.className = 'metadata_current';
+                div.style.display = 'none';
+                div.style.width = '100%';
+                parent.appendChild(div);
+
+                div.innerHTML = req.responseText;
+
+                Effect.BlindDown(div);
+
+                var tipman = new TooltipManager();
+                ker.loadMan.wait(tipman);
+
+                // Init maps contained in search results
+                extentMap.initMapDiv();
+            },
+            onFailure: gn_search_error// FIXME
+        });
+}
+
+
 function gn_showMetadata(id, tab) {
 	gn_showMetadataTab(id, (tab ? tab : 'simple'));
 }
