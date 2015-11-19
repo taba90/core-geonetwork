@@ -297,6 +297,10 @@
 		<xsl:param name="schema">
 			<xsl:apply-templates mode="schema" select="."/>
 		</xsl:param>
+		
+		<xsl:variable name="showAdvancedButton">
+			<xsl:value-of select="/root/request/showAdvancedButton"/>
+		</xsl:variable>
 
 		<table  width="100%" height="100%">
 			<xsl:for-each select="/root/*[name(.)!='gui' and name(.)!='request']"> <!-- just one -->
@@ -344,7 +348,7 @@
 									</xsl:call-template>
 								</td></tr>
 							</xsl:variable>
-							<xsl:if test="$advancedButtons!=''">
+							<xsl:if test="$advancedButtons!='' and $showAdvancedButton!='false'">
 								<xsl:copy-of select="$advancedButtons"/>
 							</xsl:if>
 							
@@ -412,7 +416,7 @@
 							<xsl:if test="$advancedButtons!=''">
 								<xsl:copy-of select="$advancedButtons"/>
 							</xsl:if>
-							<xsl:if test="$buttons!=''">
+							<xsl:if test="$buttons!='' and $showAdvancedButton!='false'">
 								<tr><td class="padded-content" height="100%" align="center" valign="top">
 									<xsl:call-template name="buttons">
 										<xsl:with-param name="metadata" select="$metadata"/>

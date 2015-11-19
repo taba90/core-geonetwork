@@ -1468,7 +1468,7 @@ function addSelectedWMSLayers(metadataIdForm) {
  */
 function gn_showInterList(id) 
 {
-    var pars = 'id=' + id + "&currTab=distribution";
+    var pars = 'id=' + id + "&currTab=distribution&showAdvancedButton=false";
     
     // Change button appearance
     $('gn_showinterlist_' + id) .hide();
