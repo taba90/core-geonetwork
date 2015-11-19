@@ -95,6 +95,7 @@
 					</xsl:if>
 
 				</div>
+				<div id="ilwhiteboard_{$metadata/geonet:info/id}" width="100%" style="display:none;">---</div>
     </xsl:template>
     
     <xsl:template name="download-button">
