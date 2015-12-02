@@ -932,6 +932,12 @@ function gn_showSingleMetadata(id)
    gn_showSingleMet(pars);
 }
 
+function gn_showSingleMetadataRNDT(id)
+{
+   var pars = 'id=' + id + '&currTab=rndt';
+   gn_showSingleMet(pars);
+}
+
 function gn_showSingleMet(pars)
 {
    if ($("loadingMD")) $("loadingMD").show();
