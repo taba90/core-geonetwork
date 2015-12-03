@@ -1140,8 +1140,10 @@
 		<searchAllText>Enter free text here</searchAllText>
 		<rtitle>Enter title here</rtitle>
 		<abstract>Enter abstract here</abstract>
+		<contact>Point of Contact</contact>
 		<keywords>Pick keywords from existing metadata records</keywords>
 		<thesaurus>Pick keywords from thesauri</thesaurus>
+		<contact>Insert the name (or a word which compose it) of the Point of Contact related to the metadata record</contact>
 	</searchhelp>
 
 	<inspire>

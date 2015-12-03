@@ -278,7 +278,7 @@
     <Field name="title"/>
     <Field name="altTitle"/>
     <Field name="keywordType"/>
-    <!--<Field name="orgName"/>-->
+    <Field name="orgName"/>
     <Field name="specificationTitle"/>
     <Field name="levelName"/>
     <Field name="subject"/>

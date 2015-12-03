@@ -557,6 +557,14 @@
 		<div id="keywordList" class="keywordList"/>
 	</div>
 
+    <!-- Point of contact -->	
+	<div class="row">  <!-- div row-->
+		<span class="labelField"><xsl:value-of select="/root/gui/strings/contact"/></span>
+		<span title="{/root/gui/strings/searchhelp/contact}">
+			<input name="orgName" id="orgName" class="content"  size="31" value="{/root/gui/searchDefaults/orgName}"/>
+		</span>
+	</div>
+
 	<xsl:if test="not($remote)">
 		<!-- MCP fields -->
 		<xsl:call-template name="adv_mcp"/>
