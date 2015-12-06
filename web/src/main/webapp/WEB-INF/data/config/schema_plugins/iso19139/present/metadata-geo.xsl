@@ -120,14 +120,15 @@
                 <xsl:variable name="lang" select="/root/gui/language"/>
     	
                 <span class="labelField">Ambito</span>
-                    <select name="place" size="1" onChange="javascript:getMunicipality(this.options[this.selectedIndex].text); javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}');" class="md">
+                    <select name="place" size="1" onChange="javascript:getMunicipalityById(this.options[this.selectedIndex].id); javascript:setRegion('{gmd:westBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:eastBoundLongitude/gco:Decimal/geonet:element/@ref}', '{gmd:southBoundLatitude/gco:Decimal/geonet:element/@ref}', '{gmd:northBoundLatitude/gco:Decimal/geonet:element/@ref}', this.options[this.selectedIndex], {$eltRef}, '{../../gmd:description/gco:CharacterString/geonet:element/@ref}');" class="md">
                     <option value=""/>
                     <xsl:for-each select="/root/gui/regions/record">
 <!--                        <xsl:sort select="label/child::*[name() = $lang]" order="ascending"/>-->
                         <xsl:sort select="label" order="ascending"/>
                         
                         <xsl:variable name="value" select="concat(west,',',east,',',south,',',north)"/>
-                        <option value="{$value}">
+                        <xsl:variable name="id" select="id"/>
+                        <option id="{$id}" value="{$value}">
                             <xsl:if test="$value=$selection">
                                 <xsl:attribute name="selected"/>
                             </xsl:if>

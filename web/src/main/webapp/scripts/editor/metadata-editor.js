@@ -765,10 +765,21 @@ function handleCheckboxAsBoolean (input, ref) {
 
 function getMunicipality(provLabel){    
     if(provLabel && provLabel != "" && provLabel != 'userdefined' && $('comune-medatata')){
-		
 		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provName=" + provLabel;
-		
-		Ext.Ajax.request({
+		doAjaxGetMunicipality(serviceURL);
+	}
+}
+
+function getMunicipalityById(id){    
+    if(id && id != "" && $('comune-medatata')){
+		var serviceURL = Env.locService + "/xml.csi.comuni.getByProv?provId=" + id;
+		doAjaxGetMunicipality(serviceURL);
+	}
+}
+
+function doAjaxGetMunicipality(serviceURL){
+
+	Ext.Ajax.request({
 		   url: serviceURL,
 		   method: 'GET',
 		   timeout: 60000,
@@ -829,8 +840,9 @@ function getMunicipality(provLabel){
 				});
 		   }
 		});
-	}
+
 }
+
 
 /**
  * Update bounding box form element.
