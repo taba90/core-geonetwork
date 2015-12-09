@@ -28,6 +28,7 @@ import static org.fao.geonet.kernel.mef.MEFConstants.DIR_PUBLIC;
 import static org.fao.geonet.kernel.mef.MEFConstants.FILE_INFO;
 import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA;
 import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA_19139;
+import static org.fao.geonet.kernel.mef.MEFConstants.FILE_METADATA_19139_RNDT;
 import static org.fao.geonet.kernel.mef.MEFConstants.FS;
 import static org.fao.geonet.kernel.mef.MEFConstants.MD_DIR;
 import static org.fao.geonet.kernel.mef.MEFConstants.SCHEMA;
@@ -147,6 +148,23 @@ class MEF2Exporter {
 			MEFLib.addFile(zos, uuid + FS + MD_DIR + FILE_METADATA_19139,
 					data19139);
 		}
+		
+                // Always save metadata in iso 19139
+                if (schema.equals("iso19139.rndt")) {
+                    // ie. this is an ISO profil.
+                    GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
+                    DataManager dm = gc.getDataManager();
+                    MetadataSchema metadataSchema = dm.getSchema(schema);
+                    String path = metadataSchema.getSchemaDir() + "/convert/xml_rndt2rndt.xsl";
+        
+                    // Element record needs to be cloned due to transform method in
+                    // formatData,
+                    // performing a detach() method this element.
+                    Element profilMetadata = (Element) record.clone();
+        
+                    ByteArrayInputStream data19139 = formatData(profilMetadata, true, path);
+                    MEFLib.addFile(zos, uuid + FS + MD_DIR + FILE_METADATA_19139_RNDT, data19139);
+                }
 
 		// --- save native metadata
 		ByteArrayInputStream data = formatData(record);

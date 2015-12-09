@@ -37,4 +37,5 @@ class MEFConstants {
 	static final String SCHEMA = "applschema/";
 	static final String FS = "/";
 	static final String FILE_METADATA_19139 = "metadata.iso19139.xml";
+	static final String FILE_METADATA_19139_RNDT = "metadata.iso19139rndt.xml";
 }
