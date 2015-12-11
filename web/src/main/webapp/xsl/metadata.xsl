@@ -1336,8 +1336,13 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="$edit=true()">
-				<textarea class="md" name="_{geonet:element/@ref}" id="_{geonet:element/@ref}" rows="{$rows}" cols="{$cols}">
+			<xsl:when test="$edit=true()"><textarea class="md" name="_{geonet:element/@ref}" id="_{geonet:element/@ref}" rows="{$rows}" cols="{$cols}">
+					<xsl:variable name="jsCheck" >
+						<xsl:choose>
+							<xsl:when test="name(../.)='gmd:otherConstraints'">validateNonEmptyForLegalConstraints(this);</xsl:when>
+							<xsl:otherwise>validateNonEmpty(this);</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:if test="$isXLinked">
 						<xsl:attribute name="disabled">disabled</xsl:attribute>
 					</xsl:if>
@@ -1348,7 +1353,7 @@
 						(name(.)='gmd:LocalisedCharacterString' and ../../geonet:element/@min='1')
 						or ../geonet:element/@min='1'
 						) and $edit">
-						<xsl:attribute name="onkeyup">validateNonEmpty(this);</xsl:attribute>
+						<xsl:attribute name="onkeyup"><xsl:value-of select="$jsCheck" /></xsl:attribute>
 					</xsl:if>
 					<xsl:value-of select="text()"/>
 				</textarea>

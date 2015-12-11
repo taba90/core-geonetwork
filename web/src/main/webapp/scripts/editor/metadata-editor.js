@@ -1002,12 +1002,53 @@ function validateNumber(input, nullValue, decimals) {
 function validateNonEmpty(input) {
     if (input.value.length < 1) {
         input.addClassName('error');
+        checkLegalConstraints(input);
         return false;
     } else {
         input.removeClassName('error');
+        checkLegalConstraints(input);
         return true;
     }
 }
+
+function checkLegalConstraints(input){
+	var ancestor = $(input).up().up();
+	if(ancestor && (ancestor.id.search("gmd:accessConstraints_") >= 0 || ancestor.id.search("gmd:useConstraints_") >= 0)){
+		var otherCostraint = ancestor.siblings();
+		if(otherCostraint){
+			otherCostraint.each(function(element){
+				if(element.id.search("gmd:otherConstraints_") >= 0){
+					validateNonEmptyForLegalConstraints(element.down("textarea"));
+				}
+			});
+		}
+	}  
+}
+
+function validateNonEmptyForLegalConstraints(element){
+	var other = $(element).closest("tr[id*='gmd:otherConstraints']");
+	var isAltriVincoliPresent=false;
+	other.siblings().each(function(el){
+		if(el.id.search("gmd:use") >= 0 || el.id.search("gmd:access") >= 0){
+			if($(el).down("option[selected]").innerText=='Altri vincoli'){
+				isAltriVincoliPresent=true;
+			}
+		}
+	});
+	if(isAltriVincoliPresent){
+	    if (element.value.length < 1) {
+	        element.addClassName('error');
+	        return false;
+	    } else {
+	        element.removeClassName('error');
+	        return true;
+	    }
+	}else{
+		element.removeClassName('error');
+	    return true;
+	}
+}
+
 
 /**
 * Validate email input form element.
