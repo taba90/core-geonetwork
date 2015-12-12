@@ -1462,23 +1462,38 @@ function addSelectedWMSLayers(metadataIdForm) {
 
 /********************************************************************
 * 
-*  Show list of addable interactive maps
+*  Show list of addable interactive maps or downloads
 *
 ********************************************************************/
 
 /**
  * This method is called by the "Interactive map [+]" button in a displayed metadata.
+ * This method supports also the "Download [+]" button passing a proper value for the parameter selectedCurrTab 
  * It will display the metadata distribution info in a div .
  *  
  * @param {int} id   		The Geonetwork metadata id
+ * @param {string} selectedCurrTab        The tab we want to display () 
  */
-function gn_showInterList(id) 
+function gn_showInterList(id, selectedCurrTab) 
 {
-    var pars = 'id=' + id + "&currTab=distribution&showAdvancedButton=false";
+
+    //HACK this method has been wrote to support only interactive maps, we use it also to display downloads
+    //default tab: distribution -> to support old calls with just one parameter
+    // used to show/hide the buttons
+    var idTab="distribution2";
+    var idTabOther="";
+    // used to show/hide the content
+    if(!selectedCurrTab){ 
+    	selectedCurrTab="distribution";
+    	idTab="";
+    	idTabOther="distribution2";
+    }
+    
+    var pars = 'id=' + id + "&currTab=" + selectedCurrTab + "&showAdvancedButton=false";
     
     // Change button appearance
-    $('gn_showinterlist_' + id) .hide();
-    $('gn_loadinterlist_' + id) .show();
+    $('gn_showinterlist_' + id + idTab) .hide();
+    $('gn_loadinterlist_' + id + idTab) .show();
     
     var myAjax = new Ajax.Request(
         getGNServiceURL('metadata.show.embedded'), 
@@ -1491,12 +1506,25 @@ function gn_showInterList(id)
                 clearNode(parent);
                 parent.show();
                 
-                $('gn_loadinterlist_' + id) .hide();
-                $('gn_hideinterlist_' + id) .show();
+                $('gn_loadinterlist_' + id + idTab) .hide();
+                $('gn_hideinterlist_' + id + idTab) .show();
+                
+                var ldOther = $('gn_loadinterlist_' + id + idTabOther);
+                var hdOther = $('gn_hideinterlist_' + id + idTabOther);
+                var swOther = $('gn_showinterlist_' + id + idTabOther);
+                if(ldOther){
+                	 ldOther.hide()
+                }
+                if(hdOther){
+                	hdOther.hide()
+                }
+                if(swOther){
+                	swOther.show()
+                }
                 
                 // create new element
                 var div = document.createElement('div');
-                div.className = 'metadata_current';
+                div.className = "metadata_current_" + selectedCurrTab;
 				div.style.width = '100%'; 
                 $(div).hide();
                 parent.appendChild(div);
@@ -1513,18 +1541,26 @@ function gn_showInterList(id)
 
 /**
  * This method is called by the "Interactive map [-]" button in a displayed metadata.
+ * This method supports also the "Download [-]" button passing a proper value for the parameter selectedCurrTab
  * It will hide and delete the div displaying the metadata distribution info.
  *  
  * @param {int} id   		The Geonetwork metadata id
+ * @param {string} selectedCurrTab        The tab we want to display ()  
  */
-function gn_hideInterList(id) 
+function gn_hideInterList(id, selectedCurrTab) 
 {
+    
+    //default tab: empty -> to support old calls with just one parameter
+    if(!selectedCurrTab){
+    	selectedCurrTab="";
+    }
+    
     var parent = $('ilwhiteboard_' + id);
     var div = parent.firstChild;
     Effect.BlindUp(div, { afterFinish: function (obj) {
-            clearNode(parent);
-            $('gn_showinterlist_' + id) .show();
-            $('gn_hideinterlist_' + id) .hide();
+            clearEmbeddedData(parent);
+            $('gn_showinterlist_' + id + selectedCurrTab) .show();
+            $('gn_hideinterlist_' + id + selectedCurrTab) .hide();
         }
     });
 }
@@ -1573,6 +1609,15 @@ function taggleVisibility(elementId) {
 }
 
 function clearNode(node)
+{
+	var enode = $(node);
+	while (enode.firstChild) 
+	{
+		enode.removeChild(enode.firstChild);
+	}			
+}
+
+function clearEmbeddedData(node)
 {
 	var enode = $(node);
 	while (enode.firstChild) 
