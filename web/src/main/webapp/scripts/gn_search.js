@@ -1480,13 +1480,13 @@ function gn_showInterList(id, selectedCurrTab)
     //HACK this method has been wrote to support only interactive maps, we use it also to display downloads
     //default tab: distribution -> to support old calls with just one parameter
     // used to show/hide the buttons
-    var idTab="distribution2";
+    var idTab="downloadData";
     var idTabOther="";
     // used to show/hide the content
     if(!selectedCurrTab){ 
-    	selectedCurrTab="distribution";
+    	selectedCurrTab="InteractiveMap";
     	idTab="";
-    	idTabOther="distribution2";
+    	idTabOther="downloadData";
     }
     
     var pars = 'id=' + id + "&currTab=" + selectedCurrTab + "&showAdvancedButton=false";

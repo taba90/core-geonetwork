@@ -648,7 +648,7 @@
 							<xsl:when test="$count>1">
 								<xsl:choose>
 									<xsl:when test="$remote=true()">
-										<button class="content" onclick="load('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=distribution')" title="{/root/gui/strings/interactiveMap}"><xsl:value-of select="/root/gui/strings/interactiveMap"/></button>
+										<button class="content" onclick="load('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=InteractiveMap')" title="{/root/gui/strings/interactiveMap}"><xsl:value-of select="/root/gui/strings/interactiveMap"/></button>
 									</xsl:when>
 									<xsl:otherwise>
 										<button id="gn_showinterlist_{$metadata/geonet:info/id}"  class="content" onclick="gn_showInterList({$metadata/geonet:info/id})" title="{/root/gui/strings/interactiveMap}">
@@ -721,18 +721,18 @@
 				((count($metadata/link[@type='download']) + count($metadata/link[@type='customdownload']))>1)">
 				<xsl:choose>
 					<xsl:when test="$remote=true()">
-						<button class="content" onclick="window.open('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=distribution2&amp;showAdvancedButton=false')" title="{/root/gui/strings/download}">
+						<button class="content" onclick="window.open('{/root/gui/locService}/remote.show?id={$metadata/geonet:info[server]/id}&amp;currTab=downloadData&amp;showAdvancedButton=false')" title="{/root/gui/strings/download}">
 							<xsl:value-of select="/root/gui/strings/dataDownload"/>
 						</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<button id="gn_showinterlist_{$metadata/geonet:info/id}distribution2" class="content" onclick="gn_showInterList({$metadata/geonet:info/id}, 'distribution2')" title="{/root/gui/strings/dataDownload}">
+						<button id="gn_showinterlist_{$metadata/geonet:info/id}downloadData" class="content" onclick="gn_showInterList({$metadata/geonet:info/id}, 'downloadData')" title="{/root/gui/strings/dataDownload}">
 							<img src="{/root/gui/url}/images/plus.gif" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/dataDownload"/>
 						</button>
-						<button id="gn_hideinterlist_{$metadata/geonet:info/id}distribution2" class="content" onclick="gn_hideInterList({$metadata/geonet:info/id}, 'distribution2')" style="display:none;"  title="{/root/gui/strings/dataDownload}">
+						<button id="gn_hideinterlist_{$metadata/geonet:info/id}downloadData" class="content" onclick="gn_hideInterList({$metadata/geonet:info/id}, 'downloadData')" style="display:none;"  title="{/root/gui/strings/dataDownload}">
 							<img src="{/root/gui/url}/images/minus.png" style="padding-right:3px;"/><xsl:value-of select="/root/gui/strings/dataDownload"/>
 						</button>
-						<button id="gn_loadinterlist_{$metadata/geonet:info/id}distribution2"  class="content" style="display:none;" title="{/root/gui/strings/dataDownload}">
+						<button id="gn_loadinterlist_{$metadata/geonet:info/id}downloadData"  class="content" style="display:none;" title="{/root/gui/strings/dataDownload}">
 							<xsl:value-of select="/root/gui/strings/loading"/>
 						</button>
 					</xsl:otherwise>
