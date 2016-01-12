@@ -554,7 +554,7 @@
 					<tr>
 						<td>
 							
-								<div class="arrow" onClick="gn_showSingleMetadataRNDT('{geonet:info/id}');" 
+								<div class="arrow" onClick="gn_showSingleRNDTMetadataUUID('{geonet:info/uuid}');"
 				style="cursor:hand;cursor:pointer">
 									<h2><xsl:value-of select="$metadata/title"/></h2>
 								</div>
@@ -563,7 +563,7 @@
 							<xsl:choose>
 								<xsl:when test="string-length($abstract) &gt; $maxAbstract">
 									<xsl:value-of select="substring($abstract, 0, $maxAbstract)"/>
-										<div class="arrow" onClick="gn_showSingleMetadataRNDT('{geonet:info/id}');" 
+										<div class="arrow" onClick="gn_showSingleRNDTMetadataUUID('{geonet:info/uuid}');"
 				style="cursor:hand;cursor:pointer">...<xsl:value-of select="/root/gui/strings/more"/>...</div>
 								</xsl:when>
 								<xsl:otherwise>
@@ -600,7 +600,7 @@
 						<xsl:apply-templates mode="brief" select="."/>
 					</xsl:variable>
 					<xsl:variable name="metadata" select="exslt:node-set($md)/*[1]"/>
-					<div class="arrow" onClick="gn_showSingleMetadataUUID('{geonet:info/uuid}');"
+					<div class="arrow" onClick="gn_showSingleRNDTMetadataUUID('{geonet:info/uuid}');"
 						style="cursor:hand;cursor:pointer">
 						<xsl:value-of select="$metadata/title"/>
 						<br/>

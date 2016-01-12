@@ -932,9 +932,13 @@ function gn_showSingleMetadata(id)
    gn_showSingleMet(pars);
 }
 
-function gn_showSingleMetadataRNDT(id)
+function gn_showSingleRNDTMetadataUUID(uuid)
 {
-   var pars = 'id=' + id + '&currTab=rndt';
+   var tab = 'simple';
+   if(uuid.indexOf(':')>-1) {
+       tab = 'rndt';
+   }
+   var pars = 'uuid=' + uuid + '&currTab=' + tab;
    gn_showSingleMet(pars);
 }
 
