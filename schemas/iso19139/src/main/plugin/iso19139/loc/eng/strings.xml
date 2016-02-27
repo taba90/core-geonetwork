@@ -10,7 +10,7 @@
   <constraintInfo>Access constraint information</constraintInfo>
   <xml_iso19139>Save this metadata as an ISO19139 XML file</xml_iso19139>
   <xml_iso19139Tooai_dc>Save this metadata as an OAI Dublin Core XML file</xml_iso19139Tooai_dc>
-  
+
   <!-- New strings added for the AngularJS editor -->
   <!-- View and tabs -->
   <advanced>Full</advanced>
@@ -85,4 +85,91 @@
   <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
   <add-extent-from-geokeywords>Compute extent from keyword</add-extent-from-geokeywords>
   <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
+
+  <!-- ================================================== -->
+  <!-- ZAMG STRINGS (porting from 2.10) -->
+  <!-- ================================================== -->
+
+  <rules name="schematron-rules-zamg">ZAMG format recommendations</rules>
+
+  <zamg2iso19139>Export this metadata as an ISO19139 XML file</zamg2iso19139>
+  <zamg2iso19139gml32>Export this metadata as an ISO19139 XML file (with namespace gml/3.2)</zamg2iso19139gml32>
+  <zamg2dc>Export this metadata as an AOI Dublin Core XML file</zamg2dc>
+
+  <zamg_tab_zamg>ZAMG</zamg_tab_zamg>
+  <zamg_tab_simple1>Simple view</zamg_tab_simple1>
+  <zamg_tab_simple2>Extended view</zamg_tab_simple2>
+
+  <zamg_title_simple1>Simplified view</zamg_title_simple1>
+  <zamg_title_simple2>Extended view</zamg_title_simple2>
+
+  <zamgtabdata>Data Information</zamgtabdata>
+  <zamgtabvar>Variable info</zamgtabvar>
+  <zamgtabext>Extent</zamgtabext>
+  <zamgtabres>Resolution</zamgtabres>
+  <zamgtabcrs>CRS</zamgtabcrs>
+  <zamgtabstorage>Data storage</zamgtabstorage>
+  <zamgtabsrcinfo>Source information</zamgtabsrcinfo>
+  <zamgtabauthor>Data author</zamgtabauthor>
+  <zamgtabdistributor>Data distributor</zamgtabdistributor>
+
+  <zamgtabstoragebox>Format</zamgtabstoragebox>
+
+  <zamgRegions.label>Region</zamgRegions.label>
+
+  <!-- <zamgRegions> <option value="none">No area</option> <option value="AT">Österreich</option> <option value="AT-1">Burgenland</option> <option value="AT-2">Kärnten</option> <option value="AT-3">Niederösterreich</option> <option value="AT-4">Oberösterreich</option> <option value="AT-5">Salzburg</option> <option value="AT-6">Steiermark</option> <option value="AT-7">Tirol</option> <option value="AT-8">Vorarlberg</option> 
+    <option value="AT-9">Wien</option> </zamgRegions> -->
+
+  <zamgCrs.label>CRS</zamgCrs.label>
+  <zamgTimeResolution.label>Time resolution</zamgTimeResolution.label>
+
+  <zamgCrs>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/4326">WGS 84 (EPSG:4326)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/32632">WGS 84 / UTM zone 32N (EPSG:32632)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/32633">WGS 84 / UTM zone 33N (EPSG:32633)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/4258">ETRS89 (EPSG:4258)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/3034">ETRS89 / LCC Europe (EPSG:3034)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/3035">ETRS89 / LAEA Europe (EPSG:3035)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/3044">ETRS89 / TM32 (EPSG:3044)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/3045">ETRS89 / TM33 (EPSG:3045)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/3416">ETRS89 / Austria Lambert (EPSG:3416)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/31254">MGI / Austria GK West (EPSG:31254)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/31255">MGI / Austria GK Central (EPSG:31255)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/31256">MGI / Austria GK East (EPSG:31256)</option>
+    <option value="http://www.opengis.net/def/crs/EPSG/0/31287">MGI / Austria Lambert (EPSG:31287)</option>
+  </zamgCrs>
+
+  <zamgThesaurus>
+    <label name="geonetwork.thesaurus.external.theme.zamg-variable">Variable name</label>
+    <label name="geonetwork.thesaurus.external.theme.zamg-uom">UoM</label>
+    <label name="geonetwork.thesaurus.external.theme.zamg-sourcetype">Source type</label>
+    <label name="geonetwork.thesaurus.external.theme.zamg-datatype">Data type</label>
+  </zamgThesaurus>
+
+  <zamg_variable>Variable name</zamg_variable>
+  <zamg_uom>UoM</zamg_uom>
+  <zamg_sourcetype>Source type</zamg_sourcetype>
+  <zamg_datatype>Data type</zamg_datatype>
+
+  <datatype_none>Not set</datatype_none>
+  <datatype_gridded>Gridded</datatype_gridded>
+  <datatype_station>Station data</datatype_station>
+
+  <sourcetype_observation>Observation</sourcetype_observation>
+  <sourcetype_model>Model</sourcetype_model>
+
+  <zamg_restriction>
+    <title>Access</title>
+    <license>Public</license>
+    <restricted>For internal use only</restricted>
+  </zamg_restriction>
+
+  <zamg_short_north>N:</zamg_short_north>
+  <zamg_short_south>S:</zamg_short_south>
+  <zamg_short_east>E:</zamg_short_east>
+  <zamg_short_west>W:</zamg_short_west>
+  <zamg_custom>Custom</zamg_custom>
+  <!-- ================================================== -->
+  <!-- ^^^ END OF ZAMG STUFF ^^^ -->
+  <!-- ================================================== -->
 </strings>
