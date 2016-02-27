@@ -1222,7 +1222,7 @@
       </tab>
     </view>
     <view name="default">
-      <tab id="default" default="true" mode="flat">
+      <tab id="default" default="false" mode="flat">
         <section xpath="/gmd:MD_Metadata/gmd:identificationInfo"/>
         <section xpath="/gmd:MD_Metadata/gmd:referenceSystemInfo"/>
         <section xpath="/gmd:MD_Metadata/gmd:spatialRepresentationInfo"/>
@@ -1249,6 +1249,18 @@
           <field xpath="/gmd:MD_Metadata/gmd:propertyType"/>
           <field xpath="/gmd:MD_Metadata/gmd:featureType"/>
           <field xpath="/gmd:MD_Metadata/gmd:featureAttribute"/>
+        </section>
+      </tab>
+      
+      <tab id="zamg_tab_simple1" default="true" mode="flat">
+        <section name="zamg_title_simple1">
+          <p>ZAMG SIMPLIFIED VIEW: TODO</p>
+        </section>
+      </tab>
+      
+      <tab id="zamg_tab_simple2" default="false" mode="flat">
+        <section name="zamg_title_simple2">
+          <p>ZAMG SIMPLIFIED VIEW EXTENDED: TODO</p>
         </section>
       </tab>
       
