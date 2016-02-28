@@ -12,6 +12,79 @@
 
   <xsl:include href="layout-custom-fields-keywords.xsl"/>
 
+
+  <!-- **************************************** -->
+  <!-- ********** ZAMG Custom fields ********** -->
+  <!-- **************************************** -->
+  
+  <!-- ============= Section CRS ============= -->
+  <xsl:template mode="mode-iso19139" priority="2000" match="gmd:MD_Metadata/gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
+    <xsl:call-template name="render-element">
+      <xsl:with-param name="label" select="''"/>
+      <xsl:with-param name="value" select="gco:CharacterString/text()"/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+      <xsl:with-param name="type" select="'select'"/>
+      <xsl:with-param name="listOfValues" select="/root/gui/schemas/iso19139/codelists/codelist[@name='zamgCrs']"/>
+      <xsl:with-param name="name" select="gco:CharacterString/gn:element/@ref"/>
+      <xsl:with-param name="editInfo" select="gn:element"/>
+      <xsl:with-param name="isDisabled" select="false()"/>
+    </xsl:call-template>
+  </xsl:template>
+  
+  <!-- ============= Section Resolution ============= -->
+  <xsl:template mode="mode-iso19139" priority="2000" match="gmd:MD_Metadata/gmd:spatialRepresentationInfo/gmd:MD_Georeferenceable/gmd:axisDimensionProperties/gmd:MD_Dimension/gmd:resolution[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
+    <div class="row">
+      <div class="col-xs-6">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="/root/gui/schemas/iso19139/strings/zamgTimeResolution.label"/>
+          <xsl:with-param name="value" select="gco:Measure/text()"/>
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+          <xsl:with-param name="name" select="gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+      <div class="col-xs-6">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="/root/gui/schemas/iso19139/strings/zamg_uom"/>
+          <xsl:with-param name="value" select="gco:Measure/@uom"/>
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+          <xsl:with-param name="name" select="gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+    </div>
+  </xsl:template>
+  
+  <xsl:template mode="mode-iso19139" priority="2000" match="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialResolution/gmd:MD_Resolution/gmd:distance[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
+    <div class="row">
+      <div class="col-xs-6">
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </div>
+      <div class="col-xs-6">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="/root/gui/schemas/iso19139/strings/zamg_uom"/>
+          <xsl:with-param name="value" select="gco:Distance/@uom"/>
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+          <xsl:with-param name="name" select="gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+    </div>
+  </xsl:template>
+
+  <!-- **************************************** -->
+  <!-- *********** END of ZAMG stuff ********** -->
+  <!-- **************************************** -->
+
   <!-- Readonly elements -->
   <xsl:template mode="mode-iso19139" priority="2000" match="gmd:fileIdentifier|gmd:dateStamp">
 
