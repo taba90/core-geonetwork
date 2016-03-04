@@ -153,6 +153,9 @@
   <zamg_short_east>E:</zamg_short_east>
   <zamg_short_west>W:</zamg_short_west>
   <zamg_custom>Custom</zamg_custom>
+  
+  <add-dataformat>add a data storage format</add-dataformat>
+  
   <!-- ================================================== -->
   <!-- ^^^ END OF ZAMG STUFF ^^^ -->
   <!-- ================================================== -->
