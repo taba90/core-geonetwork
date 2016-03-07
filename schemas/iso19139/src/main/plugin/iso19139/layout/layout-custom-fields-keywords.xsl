@@ -365,23 +365,78 @@
             * transformations: list of transformations
             * transformation: current transformation
           -->
-        <xsl:variable name="allLanguages" select="concat($metadataLanguage, ',', $metadataOtherLanguages)"></xsl:variable>
-        <div data-gn-keyword-selector="{$widgetMode}"
-          data-metadata-id="{$metadataId}"
-          data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
-          data-thesaurus-title="{$thesaurusTitle}"
-          data-thesaurus-key="{$thesaurusKey}"
-          data-keywords="{$keywords}" data-transformations="{$transformations}"
-          data-current-transformation="{$transformation}"
-          data-max-tags="{$maxTags}"
-          data-lang="{$metadataOtherLanguagesAsJson}"
-          data-textgroup-only="false">
-        </div>
-        <xsl:if test="gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Variable names'">
-          <div class="text-center">
-            <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
-          </div>
-        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Austrian Regions'">
+              <div class="row">
+                <div class="col-xs-2" />
+                <select id="zamg_areas" class="col-xs-4">
+                  <!-- option value="custom" selected=""><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom"/></option-->
+                </select>
+                <script>
+                  $.ajax({
+                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword="
+                  }).done(function( json ) {
+                    var optionTemplate = "WEST|EAST|SOUTH|NORTH"
+                    for(id in json[0]){
+                        var el = json[0][id];
+                        var option = optionTemplate.replace("WEST",el.geo.west);
+                        option = option.replace("EAST",el.geo.east);
+                        option = option.replace("SOUTH",el.geo.south);
+                        option = option.replace("NORTH",el.geo.north);
+                        $('#zamg_areas').append($("&lt;option/&gt;", {
+                            value: option,
+                            text: el.value['#text']
+                        }));
+                    
+                    
+
+                    }
+                  });
+                
+                
+                  $( "#zamg_areas" ).change(function() {
+                    var choice = $( "#zamg_areas" ).val();
+                    var id = "";
+                    var w = "";
+                    var e = "";
+                    var s = "";
+                    var n = "";
+                  
+                    if (choice != undefined) {
+                      coords = choice.split("|");
+                      w = coords[0];
+                      e = coords[1];
+                      s = coords[2];
+                      n = coords[3];
+                    } 
+                    $("#zamg_westBoundLongitude").find("input").val(w);
+                    $("#zamg_eastBoundLongitude").find("input").val(e);
+                    $("#zamg_southBoundLatitude").find("input").val(s);
+                    $("#zamg_northBoundLatitude").find("input").val(n);
+                  });
+              </script>
+            </div>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="allLanguages" select="concat($metadataLanguage, ',', $metadataOtherLanguages)"></xsl:variable>
+            <div data-gn-keyword-selector="{$widgetMode}"
+              data-metadata-id="{$metadataId}"
+              data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
+              data-thesaurus-title="{$thesaurusTitle}"
+              data-thesaurus-key="{$thesaurusKey}"
+              data-keywords="{$keywords}" data-transformations="{$transformations}"
+              data-current-transformation="{$transformation}"
+              data-max-tags="{$maxTags}"
+              data-lang="{$metadataOtherLanguagesAsJson}"
+              data-textgroup-only="true">
+            </div>
+            <xsl:if test="gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Variable names'">
+              <div class="text-center">
+                <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
+              </div>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates mode="mode-iso19139" select="*"/>
