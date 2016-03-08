@@ -83,6 +83,12 @@
         <facet name="subTemplateType" indexKey="_root" label="subTemplateTypes"/>
         <facet name="groupOwner" indexKey="_groupOwner" label="groupOwners"/>
         <facet name="publishedForGroup" indexKey="_groupPublished" label="publishedForGroup" />
+
+        <facet name="zamg_sourcetype" indexKey="zamg_sourcetype" label="facets_zamg_sourcetype" />
+        <facet name="zamg_datatype" indexKey="zamg_datatype" label="facets_zamg_datatype" />
+        <facet name="zamg_uom" indexKey="zamg_uom" label="facets_zamg_uom" />
+        <facet name="zamg_variable" indexKey="zamg_variable" label="facets_zamg_variable" />
+
         <!--
         Example configuration for hierarchical facet based on
         the GeoNetwork region thesaurus or GEMET.
@@ -104,6 +110,11 @@
 
       <summaryTypes>
         <summaryType name="details" format="DIMENSION">
+          <item facet="zamg_sourcetype" sortBy="numValue" sortOrder="desc"/>
+          <item facet="zamg_datatype" sortBy="numValue" sortOrder="desc"/>
+          <item facet="zamg_uom" sortBy="numValue" sortOrder="desc"/>
+          <item facet="zamg_variable" sortBy="numValue" sortOrder="desc"/>
+
           <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
           <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
           <item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35" translator="term:http://geonetwork-opensource.org/inspire-theme"/>
@@ -120,6 +131,7 @@
           <item facet="serviceType"/>
           <item facet="denominator" sortBy="numValue" sortOrder="desc"/>
           <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
+
           <!--
           <item facet="region"
                 translator="term:http://geonetwork-opensource.org/thesaurus/naturalearth-and-seavox"/>
@@ -129,6 +141,11 @@
       </summaryType>
 
       <summaryType name="manager" format="DIMENSION">
+        <item facet="zamg_sourcetype" sortBy="numValue" sortOrder="desc"/>
+        <item facet="zamg_datatype" sortBy="numValue" sortOrder="desc"/>
+        <item facet="zamg_uom" sortBy="numValue" sortOrder="desc"/>
+        <item facet="zamg_variable" sortBy="numValue" sortOrder="desc"/>
+
         <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
         <item facet="category" max="99" sortBy="value"
               translator="db:org.fao.geonet.repository.MetadataCategoryRepository:findOneByName"/>

@@ -244,6 +244,19 @@
             <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
             <xsl:for-each select="//gmd:MD_Keywords">
+
+                <xsl:if test="starts-with(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()), 'geonetwork.thesaurus.external.theme.zamg')">
+                  <xsl:variable name="thesaurusAnchor" select="lower-case(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor))"/>
+                  <xsl:variable name="shortname" select="concat('zamg_', substring-after($thesaurusAnchor, 'zamg-'))"/>
+                  <xsl:for-each select="gmd:keyword/gco:CharacterString">
+                      <xsl:variable name="thesaurus_keyword_lower" select="lower-case(.)"/>
+                      <xsl:if test="$thesaurus_keyword_lower!='none'">
+                          <Field name="{$shortname}" string="{$thesaurus_keyword_lower}" store="true" index="true"/>
+                          <xsl:message>Indexing thesaurus <xsl:value-of select="$thesaurusAnchor"/> as  <xsl:value-of select="$shortname"/> = <xsl:value-of select="$thesaurus_keyword_lower"/></xsl:message>
+                      </xsl:if>
+                  </xsl:for-each>
+                </xsl:if>
+
                 <!-- Index all keywords as text or anchor -->
                 <xsl:variable name="listOfKeywords"
                                 select="gmd:keyword/gco:CharacterString|
