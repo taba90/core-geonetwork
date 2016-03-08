@@ -19,42 +19,47 @@
   
   <!-- ============= Section Extent ============= -->
   <xsl:template mode="mode-iso19139" priority="3000" match="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
-    <div class="col-xs-3" id="zamg_westBoundLongitude">
-      <xsl:call-template name="render-element">
-        <xsl:with-param name="label" select="''"/>
-        <xsl:with-param name="value" select="gmd:westBoundLongitude/gco:Decimal" />
-        <xsl:with-param name="cls" select="local-name()"/>
-        <xsl:with-param name="editInfo" select="gn:element"/>
-        <xsl:with-param name="parentEditInfo" select="gn:element"/>
-        <xsl:with-param name="isDisabled" select="false()"/>
-      </xsl:call-template>
-    </div>
-    <div class="col-xs-3" id="zamg_eastBoundLongitude">
-      <xsl:call-template name="render-element">
-        <xsl:with-param name="label" select="''"/>
-        <xsl:with-param name="value" select="gmd:eastBoundLongitude/gco:Decimal" />
-        <xsl:with-param name="cls" select="local-name()"/>
-        <xsl:with-param name="editInfo" select="gmd:eastBoundLongitude/gn:element"/>
-        <xsl:with-param name="isDisabled" select="false()"/>
-      </xsl:call-template>
-    </div>
-    <div class="col-xs-3" id="zamg_southBoundLatitude">
-      <xsl:call-template name="render-element">
-        <xsl:with-param name="label" select="''"/>
-        <xsl:with-param name="value" select="gmd:southBoundLatitude/gco:Decimal" />
-        <xsl:with-param name="cls" select="local-name()"/>
-        <xsl:with-param name="editInfo" select="gmd:southBoundLatitude/gn:element"/>
-        <xsl:with-param name="isDisabled" select="false()"/>
-      </xsl:call-template>
-    </div>
-    <div class="col-xs-3" id="zamg_northBoundLatitude">
-      <xsl:call-template name="render-element">
-        <xsl:with-param name="label" select="''"/>
-        <xsl:with-param name="value" select="gmd:northBoundLatitude/gco:Decimal" />
-        <xsl:with-param name="cls" select="local-name()"/>
-        <xsl:with-param name="editInfo" select="gmd:northBoundLatitude/gn:element"/>
-        <xsl:with-param name="isDisabled" select="false()"/>
-      </xsl:call-template>
+    <div class="row">
+      <div class="col-xs-3" id="zamg_westBoundLongitude">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="''"/>
+          <xsl:with-param name="value" select="gmd:westBoundLongitude/gco:Decimal" />
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="name" select="gmd:westBoundLongitude/gco:Decimal/gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+      <div class="col-xs-3" id="zamg_eastBoundLongitude">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="''"/>
+          <xsl:with-param name="value" select="gmd:eastBoundLongitude/gco:Decimal" />
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="name" select="gmd:eastBoundLongitude/gco:Decimal/gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gmd:eastBoundLongitude/gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+      <div class="col-xs-3" id="zamg_southBoundLatitude">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="''"/>
+          <xsl:with-param name="value" select="gmd:southBoundLatitude/gco:Decimal" />
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="name" select="gmd:southBoundLatitude/gco:Decimal/gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gmd:southBoundLatitude/gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+      <div class="col-xs-3" id="zamg_northBoundLatitude">
+        <xsl:call-template name="render-element">
+          <xsl:with-param name="label" select="''"/>
+          <xsl:with-param name="value" select="gmd:northBoundLatitude/gco:Decimal" />
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="name" select="gmd:northBoundLatitude/gco:Decimal/gn:element/@ref"/>
+          <xsl:with-param name="editInfo" select="gmd:northBoundLatitude/gn:element"/>
+          <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
     </div>
   </xsl:template>
 

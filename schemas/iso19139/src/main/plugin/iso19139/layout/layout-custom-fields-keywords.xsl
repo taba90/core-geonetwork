@@ -387,9 +387,20 @@
                             value: option,
                             text: el.value['#text']
                         }));
-                    
-                    
-
+                    }
+                    var valToSet =   $("#zamg_westBoundLongitude").find("input").val() + "|" +
+                                        $("#zamg_eastBoundLongitude").find("input").val() + "|" +
+                                        $("#zamg_southBoundLatitude").find("input").val() + "|" +
+                                        $("#zamg_northBoundLatitude").find("input").val();
+                    var exists = $('#zamg_areas option[value="' + valToSet + '"]').length;
+                    if(exists == 0){
+                      $('#zamg_areas').append($("&lt;option/&gt;", {
+                          value: "custom",
+                          text: "custom"
+                      }));
+                      $('#zamg_areas').val("custom");
+                    }else{
+                      $('#zamg_areas').val(valToSet);
                     }
                   });
                 
