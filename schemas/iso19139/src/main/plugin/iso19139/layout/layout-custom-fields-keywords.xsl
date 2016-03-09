@@ -404,6 +404,17 @@
                     }
                   });
                 
+                  var setCustom = function (){
+                      $('#zamg_areas').append($("&lt;option/&gt;", {
+                          value: "custom",
+                          text: "custom"
+                      }).prop("selected", "selected"));
+                  }
+
+                  $("#zamg_westBoundLongitude").find("input").change(setCustom);
+                  $("#zamg_eastBoundLongitude").find("input").change(setCustom);
+                  $("#zamg_southBoundLatitude").find("input").change(setCustom);
+                  $("#zamg_northBoundLatitude").find("input").change(setCustom);
                 
                   $( "#zamg_areas" ).change(function() {
                     var choice = $( "#zamg_areas" ).val();
