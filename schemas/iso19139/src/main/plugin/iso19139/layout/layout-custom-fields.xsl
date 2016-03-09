@@ -17,6 +17,20 @@
   <!-- ********** ZAMG Custom fields ********** -->
   <!-- **************************************** -->
   
+  <!-- ====== Topic catagory code ========== -->
+  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:topicCategory/gmd:MD_TopicCategoryCode[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >  
+    <xsl:call-template name="render-element">
+      <xsl:with-param name="label" select="gn-fn-metadata:getLabel($schema, name(), $labels)/label"/>
+      <xsl:with-param name="value" select="text()" />
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="name" select="gn:element/@ref"/>
+      <xsl:with-param name="type" select="'select'"/>
+      <xsl:with-param name="listOfValues" select="/root/gui/schemas/iso19139/codelists/codelist[@name='gmd:MD_TopicCategoryCode']"/>
+      <xsl:with-param name="editInfo" select="gn:element"/>
+      <xsl:with-param name="isDisabled" select="false()"/>
+    </xsl:call-template>
+  </xsl:template>
+  
   <!-- ============= Section Extent ============= -->
   <xsl:template mode="mode-iso19139" priority="3000" match="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
     <div class="row">
