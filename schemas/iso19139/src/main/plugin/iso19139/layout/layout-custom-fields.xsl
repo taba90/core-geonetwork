@@ -31,6 +31,46 @@
     </xsl:call-template>
   </xsl:template>
   
+  <!-- ======== Restrictions ======== -->
+  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
+    
+    <xsl:variable name="selected" select="gmd:MD_RestrictionCode/text()" />
+    <xsl:variable name="coderef" select="gmd:MD_RestrictionCode/gn:element/@ref" />
+    <br />
+    <div class="row">
+      <label for="zamg_restriction" class="control-label col-xs-2"><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_restriction/title"/></label>
+      <select id="zamg_restrictions" class="col-xs-4" onchange="setRestrictionZAMG()">
+        <option value="license" id="zamg_restrictions_license">
+          <xsl:if test="$selected = 'license'">
+            <xsl:attribute name="selected"/>
+          </xsl:if>
+          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_restriction/license"/>
+        </option>
+        <option value="restricted" id="zamg_restrictions_restricted">
+          <xsl:if test="$selected = 'restricted'">
+            <xsl:attribute name="selected"/>
+          </xsl:if>
+          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_restriction/restricted"/>
+        </option>
+      </select>
+    </div>
+    <br />
+    <input type="hidden" id="restrictionId" value="{$selected}" readonly="true">
+      <xsl:attribute name="name">_<xsl:value-of select="$coderef"/></xsl:attribute>
+    </input>
+    <script>
+      function setRestrictionZAMG(){
+        var hidden = $("#restrictionId");
+        if($("#zamg_restrictions_license").is(":selected")){
+          hidden.val("license");
+        }
+        if($("#zamg_restrictions_restricted").is(":selected")){
+          hidden.val("restricted");
+        }
+      }
+    </script>
+  </xsl:template>
+  
   <!-- ============= Section Extent ============= -->
   <xsl:template mode="mode-iso19139" priority="3000" match="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" >
     <div class="row">
