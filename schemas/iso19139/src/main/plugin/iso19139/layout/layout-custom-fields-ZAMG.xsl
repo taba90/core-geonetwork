@@ -234,13 +234,19 @@
     </xsl:variable>
 
 
-
-
+    <xsl:variable name="labelName" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
+    <xsl:variable name="labelThesaurus">
+      <xsl:choose>
+        <xsl:when test="$labelName = 'geonetwork.thesaurus.external.place.regions'">
+          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamgRegions.label"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamgThesaurus/label[@name=$labelName]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:call-template name="render-boxed-element-noborder">
-      <xsl:with-param name="label"
-        select="if ($thesaurusTitle) 
-                then $thesaurusTitle 
-                else gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
+      <xsl:with-param name="label" select="$labelThesaurus"/>
       <xsl:with-param name="editInfo" select="gn:element"/>
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="xpath" select="$xpath"/>
@@ -321,7 +327,7 @@
         <xsl:variable name="widgetMode" select="'tagsinput'"/>
         <xsl:variable name="maxTags"
                       as="xs:string"
-                      select="if (gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Variable names')
+                      select="if (gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text() = 'geonetwork.thesaurus.external.theme.zamg-variable')
                               then ''
                               else '1'"/>
         <!--
@@ -339,7 +345,7 @@
             * transformation: current transformation
           -->
         <xsl:choose>
-          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Austrian Regions'">
+          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.place.regions'">
               <div class="row">
                 <div class="col-xs-2" />
                 <select id="zamg_areas" class="col-xs-4">
@@ -425,7 +431,7 @@
               data-lang="{$metadataOtherLanguagesAsJson}"
               data-textgroup-only="true">
             </div>
-            <xsl:if test="gmd:thesaurusName/gmd:CI_Citation/gmd:title/gco:CharacterString/text()='Variable names'">
+            <xsl:if test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text() = 'geonetwork.thesaurus.external.theme.zamg-variable'">
               <div class="text-center">
                 <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
               </div>
