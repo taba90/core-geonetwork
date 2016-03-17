@@ -252,7 +252,6 @@
                       <xsl:variable name="thesaurus_keyword_lower" select="lower-case(.)"/>
                       <xsl:if test="$thesaurus_keyword_lower!='none'">
                           <Field name="{$shortname}" string="{$thesaurus_keyword_lower}" store="true" index="true"/>
-                          <xsl:message>Indexing thesaurus <xsl:value-of select="$thesaurusAnchor"/> as  <xsl:value-of select="$shortname"/> = <xsl:value-of select="$thesaurus_keyword_lower"/></xsl:message>
                       </xsl:if>
                   </xsl:for-each>
                 </xsl:if>
