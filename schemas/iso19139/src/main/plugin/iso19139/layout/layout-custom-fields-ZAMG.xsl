@@ -189,54 +189,26 @@
 <!-- ***************************************** -->
 
 
-  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:descriptiveKeywords[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']">
+  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:descriptiveKeywords">
     <xsl:param name="schema" select="$schema" required="no"/>
-    <xsl:param name="labels" select="$labels" required="no"/>
-    <xsl:param name="overrideLabel" select="''" required="no"/>
-
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
-    <xsl:variable name="thesaurusTitleEl" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title"/>
-    <xsl:variable name="thesaurusTitle">
-      <xsl:choose>
-        <xsl:when test="normalize-space($thesaurusTitleEl/gco:CharacterString) != ''">
-          <xsl:value-of select="if ($overrideLabel != '')
-              then $overrideLabel
-              else normalize-space($thesaurusTitleEl/gco:CharacterString)"/>
-        </xsl:when>
-        <xsl:when test="normalize-space($thesaurusTitleEl/gmd:PT_FreeText/
-                          gmd:textGroup/gmd:LocalisedCharacterString[
-                            @locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]) != ''">
-          <xsl:value-of select="$thesaurusTitleEl/gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString[@locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]"/>
-        </xsl:when>
-        <xsl:when test="$thesaurusTitleEl/gmd:PT_FreeText/
-                          gmd:textGroup/gmd:LocalisedCharacterString[
-                            normalize-space(text()) != ''][1]">
-          <xsl:value-of select="$thesaurusTitleEl/gmd:PT_FreeText/gmd:textGroup/
-                                  gmd:LocalisedCharacterString[normalize-space(text()) != ''][1]"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="gmd:MD_Keywords/gmd:thesaurusName/
-                                  gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:variable name="attributes">
-      <xsl:if test="$isEditing">
-        <!-- Create form for all existing attribute (not in gn namespace)
-        and all non existing attributes not already present. -->
-        <xsl:apply-templates mode="render-for-field-for-attribute"
-          select="
-          @*|
-          gn:attribute[not(@name = parent::node()/@*/name())]">
-          <xsl:with-param name="ref" select="gn:element/@ref"/>
-          <xsl:with-param name="insertRef" select="gn:element/@ref"/>
+
+    <xsl:call-template name="render-boxed-element-noborder">
+      <xsl:with-param name="editInfo" select="gn:element"/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="xpath" select="$xpath"/>
+      <xsl:with-param name="subTreeSnippet">
+        <xsl:apply-templates mode="mode-iso19139" select="*">
+          <xsl:with-param name="schema" select="$schema"/>
+          <xsl:with-param name="labels" select="$labels"/>
         </xsl:apply-templates>
-      </xsl:if>
-    </xsl:variable>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
 
+  <xsl:template mode="mode-iso19139" match="gmd:MD_Keywords" priority="3000">
 
-    <xsl:variable name="labelName" select="gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
+    <xsl:variable name="labelName" select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
     <xsl:variable name="labelThesaurus">
       <xsl:choose>
         <xsl:when test="$labelName = 'geonetwork.thesaurus.external.place.regions'">
@@ -247,91 +219,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:call-template name="render-boxed-element-noborder">
-      <xsl:with-param name="label" select="$labelThesaurus"/>
-      <xsl:with-param name="editInfo" select="gn:element"/>
-      <xsl:with-param name="cls" select="local-name()"/>
-      <xsl:with-param name="xpath" select="$xpath"/>
-      <xsl:with-param name="attributesSnippet" select="$attributes"/>
-      <xsl:with-param name="subTreeSnippet">
-        <xsl:apply-templates mode="mode-iso19139" select="*">
-          <xsl:with-param name="schema" select="$schema"/>
-          <xsl:with-param name="labels" select="$labels"/>
-        </xsl:apply-templates>
-      </xsl:with-param>
-    </xsl:call-template>
-  </xsl:template>
 
-  <xsl:template mode="mode-iso19139" match="gmd:MD_Keywords[/root/gui/currTab/text()='zamg_tab_simple1' or /root/gui/currTab/text()='zamg_tab_simple2']" priority="3000">
-
-
-    <xsl:variable name="thesaurusIdentifier"
-                  select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
-
-    <xsl:variable name="thesaurusTitle"
-        select="gmd:thesaurusName/gmd:CI_Citation/gmd:title/(gco:CharacterString|gmd:PT_FreeText/gmd:textGroup/gmd:LocalisedCharacterString)"/>
-
-
-    <xsl:variable name="thesaurusConfig"
-                  as="element()?"
-                  select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier/*/text(), 'geonetwork.thesaurus.')])
-                          then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier/*/text(), 'geonetwork.thesaurus.')]
-                          else $listOfThesaurus/thesaurus[title=$thesaurusTitle]"/>
-
-    <xsl:choose>
-      <xsl:when test="$thesaurusConfig">
-
-        <!-- The thesaurus key may be contained in the MD_Identifier field or 
-          get it from the list of thesaurus based on its title.
-          -->
-        <xsl:variable name="thesaurusInternalKey"
-          select="if ($thesaurusIdentifier)
-          then $thesaurusIdentifier
-          else $thesaurusConfig/key"/>
-        <xsl:variable name="thesaurusKey"
-                      select="if (starts-with($thesaurusInternalKey, 'geonetwork.thesaurus.'))
-                      then substring-after($thesaurusInternalKey, 'geonetwork.thesaurus.')
-                      else $thesaurusInternalKey"/>
-
-        <!-- if gui lang eng > #EN -->
-        <xsl:variable name="guiLangId"
-                      select="
-                      if (count($metadata/gmd:locale/gmd:PT_Locale[gmd:languageCode/gmd:LanguageCode/@codeListValue = $lang]) = 1)
-                        then $metadata/gmd:locale/gmd:PT_Locale[gmd:languageCode/gmd:LanguageCode/@codeListValue = $lang]/@id
-                        else $metadata/gmd:locale/gmd:PT_Locale[gmd:languageCode/gmd:LanguageCode/@codeListValue = $metadataLanguage]/@id"/>
-
-        <!--
-        get keyword in gui lang
-        in default language
-        -->
-        <xsl:variable name="keywords" select="string-join(
-                  if ($guiLangId and gmd:keyword//*[@locale = concat('#', $guiLangId)]) then
-                    gmd:keyword//*[@locale = concat('#', $guiLangId)]/replace(text(), ',', ',,')
-                  else gmd:keyword/*[1]/replace(text(), ',', ',,'), ',')"/>
-
-        <!-- Define the list of transformation mode available. -->
-        <xsl:variable name="transformations"
-                      as="xs:string"
-                      select="'to-iso19139-keyword'"/>
-
-        <!-- Get current transformation mode based on XML fragment analysis -->
-        <xsl:variable name="transformation"
-          select="'to-iso19139-keyword'"/>
-
-        <xsl:variable name="parentName" select="name(..)"/>
-
-        <!-- Create custom widget: 
-              * '' for item selector, 
-              * 'tagsinput' for tags
-              * 'tagsinput' and maxTags = 1 for only one tag
-              * 'multiplelist' for multiple selection list
-        -->
-        <xsl:variable name="widgetMode" select="'tagsinput'"/>
-        <xsl:variable name="maxTags"
-                      as="xs:string"
-                      select="if (gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text() = 'geonetwork.thesaurus.external.theme.zamg-variable')
-                              then ''
-                              else '1'"/>
         <!--
           Example: to restrict number of keyword to 1 for INSPIRE
           <xsl:variable name="maxTags" 
@@ -355,7 +243,7 @@
                 </select>
                 <script>
                   $.ajax({
-                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword="
+                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
                   }).done(function( json ) {
                     var optionTemplate = "WEST|EAST|SOUTH|NORTH"
                     for(id in json[0]){
@@ -420,31 +308,94 @@
               </script>
             </div>
           </xsl:when>
-          <xsl:otherwise>
-            <xsl:variable name="allLanguages" select="concat($metadataLanguage, ',', $metadataOtherLanguages)"></xsl:variable>
-            <div data-gn-keyword-selector="{$widgetMode}"
-              data-metadata-id="{$metadataId}"
-              data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
-              data-thesaurus-title="{$thesaurusTitle}"
-              data-thesaurus-key="{$thesaurusKey}"
-              data-keywords="{$keywords}" data-transformations="{$transformations}"
-              data-current-transformation="{$transformation}"
-              data-max-tags="{$maxTags}"
-              data-lang="{$metadataOtherLanguagesAsJson}"
-              data-textgroup-only="true">
+          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-datatype' or
+                          gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-sourcetype' or
+                          gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-uom'">
+              <xsl:variable name="thesaurus" select="substring-after(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text(), 'geonetwork.thesaurus.')"/>
+              <div class="row">
+                <div class="col-xs-2" />
+                <xsl:variable name="value" select="gmd:keyword/gco:CharacterString/text()"/>
+                <xsl:variable name="ref" select="concat('_',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
+                <div>
+                  <xsl:call-template name="render-element">
+                      <xsl:with-param name="label" select="$labelThesaurus"/>
+                      <xsl:with-param name="value" select="$value"/>
+                      <xsl:with-param name="cls" select="local-name()"/>
+                      <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+                      <xsl:with-param name="type" select="'select'"/>
+                      <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
+                      <xsl:with-param name="name" select="gmd:keyword/gco:CharacterString/gn:element/@ref"/>
+                      <xsl:with-param name="editInfo" select="gmd:keyword/gco:CharacterString/gn:element"/>
+                      <xsl:with-param name="parentEditInfo" select="gn:element"/>
+                      <xsl:with-param name="isDisabled" select="false()"/>
+                  </xsl:call-template>
+                </div>
+                <xsl:variable name="id" select="concat('gn-field-',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
+                <script>
+                  $.ajax({
+                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
+                  }).done(function( json ) {
+                    $('#<xsl:value-of select="$id" />').children().remove();
+                    for(id in json[0]){
+                        var el = json[0][id];
+                        $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
+                            value: el.uri.split('#')[1],
+                            text: el.value['#text']
+                        }));
+                      }
+                      $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
+                  });
+              </script>
             </div>
-            <xsl:if test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text() = 'geonetwork.thesaurus.external.theme.zamg-variable'">
-              <div class="text-center">
-                <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="thesaurus" select="substring-after(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text(), 'geonetwork.thesaurus.')"/>
+            <xsl:for-each select="gmd:keyword">
+              <div class="row">
+                <br />
+                <xsl:variable name="value" select="gco:CharacterString/text()"/>
+                <div>
+                  <xsl:call-template name="render-element">
+                    <xsl:with-param name="label" select="$labelThesaurus"/>
+                    <xsl:with-param name="value" select="$value"/>
+                    <xsl:with-param name="cls" select="local-name()"/>
+                    <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+                    <xsl:with-param name="type" select="'select'"/>
+                    <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
+                    <xsl:with-param name="name" select="gco:CharacterString/gn:element/@ref"/>
+                    <xsl:with-param name="editInfo" select="gco:CharacterString/gn:element"/>
+                    <xsl:with-param name="parentEditInfo" select="gn:element"/>
+                    <xsl:with-param name="isDisabled" select="false()"/>
+                  </xsl:call-template>
+                </div>
+                <xsl:variable name="id" select="concat('gn-field-',gco:CharacterString/gn:element/@ref)"/>
+                <script>
+                  $.ajax({
+                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
+                  }).done(function( json ) {
+                    $('#<xsl:value-of select="$id" />').children().remove();
+                    for(id in json[0]){
+                        var el = json[0][id];
+                        $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
+                            value: el.uri.split('#')[1],
+                            text: el.value['#text']
+                        }));
+                      }
+                      $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
+                  });
+                </script>
               </div>
-            </xsl:if>
+            </xsl:for-each>
+            <div>
+              <xsl:if test="position() = 1">
+                <p class="text-center">
+                  <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
+                </p>
+              </xsl:if>
+            </div>
           </xsl:otherwise>
         </xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates mode="mode-iso19139" select="*"/>
-      </xsl:otherwise>
-    </xsl:choose>
+      
 
   </xsl:template>
   
@@ -459,7 +410,6 @@
         min="1" max="10000" add="true"/>
   -->
   <xsl:template name="render-boxed-element-noborder">
-    <xsl:param name="label" as="xs:string"/>
     <xsl:param name="value"/>
     <xsl:param name="errors" required="no"/>
     <xsl:param name="editInfo" required="no"/>
@@ -478,9 +428,6 @@
     <xsl:variable name="hasXlink" select="@xlink:href"/>
 
     <div id="{concat('gn-el-', $editInfo/@ref)}" >
-      <!-- dirty dirty hack to place better the facet label without change any directive code -->
-      &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
-      <label class="control-label"><xsl:value-of select="$label" /></label>
       <xsl:if test="count($attributesSnippet/*) > 0">
         <div class="well well-sm gn-attr {if ($isDisplayingAttributes) then '' else 'hidden'}">
           <xsl:copy-of select="$attributesSnippet"/>
