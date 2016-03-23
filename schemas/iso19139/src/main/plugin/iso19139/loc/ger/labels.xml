@@ -2809,6 +2809,97 @@
     <!--<help>Metadata record will containg the related ISO3166-2:AT code.</help> -->
   </element>
 
+  <!-- ========== Labels traslated with google translate, please review =========== -->
+  <element name="gco:nilReason">
+    <label>nil Grund</label>
+    <description/>
+  </element>
+  
+  <element name="gmd:date">
+    <label>Datum</label>
+    <description>Reference date for the cited resource (YYYY-MM-DD)</description>
+  </element>
+  
+  <element name="gmd:fileName">
+    <label>Dateiname</label>
+    <description>Name of the file that contains a graphic that provides an illustration of the
+            dataset. It could be a public image document URL.</description>
+  </element>
+  
+  <element name="gmd:fileDescription">
+    <label>Dateibeschreibung</label>
+    <description>Text description of the illustration</description>
+  </element>
+  
+  <element name="gmd:useConstraints">
+    <label>Verwendungsbeschränkungen</label>
+    <description>Constraints applied to assure the protection of privacy or intellectual
+            property, and any special restrictions or limitations or warnings on using the
+            resource</description>
+  </element>
+  
+  <element name="gmd:distance">
+    <label>Entfernung</label>
+    <description>Ground sample distance</description>
+    <condition>Provide a distance if no equivalent Scale is documented</condition>
+    <helper relAtt="uom">
+      <option value="0.10" title="m">10 cm</option>
+      <option value="0.25" title="m">25 cm</option>
+      <option value="0.50" title="m">50 cm</option>
+      <option value="1" title="m">1 m</option>
+      <option value="30" title="m">30 m</option>
+      <option value="100" title="m">100 m</option>
+    </helper>
+  </element>
+  
+  <element name="gmd:MD_TopicCategoryCode">
+    <label>Thematik</label>
+    <description>High-level geographic data thematic classification to assist in the grouping
+            and search of available geographic data sets. Can be used to group keywords as well.
+            Listed examples are not exhaustive. NOTE It is understood there are overlaps between
+            general categories and the user is encouraged to select the one most
+            appropriate.</description>
+  </element>
+  
+  <element name="gml:beginPosition">
+    <label>Beginndatum</label>
+    <description>Formatted as 2007-09-12T15:00:00 (YYYY-MM-DDTHH:mm:ss)</description>
+  </element>
+  
+  <element name="gml:endPosition">
+    <label>Enddatum</label>
+    <description>Formatted as 2007-09-12T15:00:00 (YYYY-MM-DDTHH:mm:ss)</description>
+  </element>
+  
+  <element name="gmd:hierarchyLevel">
+    <label>Hierarchieebene</label>
+    <description>Scope to which the metadata applies (see annex H for more information about
+            metadata hierarchy levels)</description>
+  </element>
+  
+  <element name="gmd:hierarchyLevelName">
+    <label>Hierarchieebene Name</label>
+    <description>Name of the hierarchy levels for which the metadata is provided</description>
+  </element>
+  
+  <element name="gmd:contact">
+    <label>Kontakt</label>
+    <description>Identification of, and means of communication with, person(s) and
+            organization(s) with responsability for maintaining the metadata</description>
+  </element>
+  
+  <element name="gmd:locale">
+    <label>Andere Sprache</label>
+    <description>Use this section to define other metadata language (multilingual metadata).</description>
+  </element>
+  
+  <element name="gmd:useLimitation">
+    <label>Nutzungseinschränkung</label>
+    <description>Limitation affecting the fitness for use of the resource. Example, _not to be
+            used for navigation_</description>
+  </element>
+  <!-- ========= end MISSING ======== -->
+  
   <!-- ================================================== -->
   <!-- -->
   <!-- ================================================== -->
