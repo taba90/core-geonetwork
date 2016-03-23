@@ -37,6 +37,7 @@
     <br />
     <div class="row">
       <label for="zamg_restriction" class="control-label col-xs-2"><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_restriction/title"/></label>
+      <div class="col-xs-1"/>
       <select id="zamg_restrictions" class="col-xs-4" onchange="setRestrictionZAMG()">
         <xsl:if test="/root/gui/currTab/text()='zamg_tab_simple1'">
           <xsl:attribute name="disabled"/>
