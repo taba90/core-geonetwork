@@ -189,8 +189,7 @@
 <!-- ********* ZAMG CUSTOM keywords   ******** -->
 <!-- ***************************************** -->
 
-
-  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:descriptiveKeywords">
+  <xsl:template mode="mode-iso19139" priority="3000" match="gmd:descriptiveKeywords[$tab='zamg_tab_simple1' or $tab='zamg_tab_simple2']">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
 
@@ -207,198 +206,203 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template mode="mode-iso19139" match="gmd:MD_Keywords" priority="3000">
+
+  <xsl:template mode="mode-iso19139"  priority="3000"
+    match="gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.place.regions']">
 
     <xsl:variable name="labelName" select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
-    <xsl:variable name="labelThesaurus">
-      <xsl:choose>
-        <xsl:when test="$labelName = 'geonetwork.thesaurus.external.place.regions'">
-          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamgRegions.label"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="/root/gui/schemas/iso19139/strings/zamgThesaurus/label[@name=$labelName]"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="labelThesaurus" select="/root/gui/schemas/iso19139/strings/zamgRegions.label"/>
 
-        <!--
-          Example: to restrict number of keyword to 1 for INSPIRE
-          <xsl:variable name="maxTags" 
-          select="if ($thesaurusKey = 'external.theme.inspire-theme') then '1' else ''"/>
-        -->
-        <!-- Create a div with the directive configuration
-            * elementRef: the element ref to edit
-            * elementName: the element name
-            * thesaurusName: the thesaurus title to use
-            * thesaurusKey: the thesaurus identifier
-            * keywords: list of keywords in the element
-            * transformations: list of transformations
-            * transformation: current transformation
-          -->
-        <xsl:choose>
-          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.place.regions'">
-              <div class="row">
-                <div class="col-xs-2" />
-                <select id="zamg_areas" class="col-xs-4">
-                  <!-- option value="custom" selected=""><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom"/></option-->
-                </select>
-                <script>
-                  $.ajax({
-                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
-                  }).done(function( json ) {
-                    var optionTemplate = "WEST|EAST|SOUTH|NORTH"
-                    for(id in json[0]){
-                        var el = json[0][id];
-                        var option = optionTemplate.replace("WEST",el.geo.west);
-                        option = option.replace("EAST",el.geo.east);
-                        option = option.replace("SOUTH",el.geo.south);
-                        option = option.replace("NORTH",el.geo.north);
-                        $('#zamg_areas').append($("&lt;option/&gt;", {
-                            value: option,
-                            text: el.value['#text']
-                        }));
-                    }
-                    var valToSet =   $("#zamg_westBoundLongitude").find("input").val() + "|" +
-                                        $("#zamg_eastBoundLongitude").find("input").val() + "|" +
-                                        $("#zamg_southBoundLatitude").find("input").val() + "|" +
-                                        $("#zamg_northBoundLatitude").find("input").val();
-                    var exists = $('#zamg_areas option[value="' + valToSet + '"]').length;
-                    if(exists == 0){
-                      $('#zamg_areas').append($("&lt;option/&gt;", {
-                          value: "custom",
-                          text: "custom"
-                      }));
-                      $('#zamg_areas').val("custom");
-                    }else{
-                      $('#zamg_areas').val(valToSet);
-                    }
-                  });
-                
-                  var setCustom = function (){
-                      $('#zamg_areas').append($("&lt;option/&gt;", {
-                          value: "custom",
-                          text: "custom"
-                      }).prop("selected", "selected"));
-                  }
+    <!--
+      Example: to restrict number of keyword to 1 for INSPIRE
+      <xsl:variable name="maxTags"
+      select="if ($thesaurusKey = 'external.theme.inspire-theme') then '1' else ''"/>
+    -->
+    <!-- Create a div with the directive configuration
+        * elementRef: the element ref to edit
+        * elementName: the element name
+        * thesaurusName: the thesaurus title to use
+        * thesaurusKey: the thesaurus identifier
+        * keywords: list of keywords in the element
+        * transformations: list of transformations
+        * transformation: current transformation
+      -->
+        <div class="row">
+          <div class="col-xs-2" />
+          <select id="zamg_areas" class="col-xs-4">
+            <!-- option value="custom" selected=""><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom"/></option-->
+          </select>
+          <script>
+            $.ajax({
+              url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
+            }).done(function( json ) {
+              var optionTemplate = "WEST|EAST|SOUTH|NORTH"
+              for(id in json[0]){
+                  var el = json[0][id];
+                  var option = optionTemplate.replace("WEST",el.geo.west);
+                  option = option.replace("EAST",el.geo.east);
+                  option = option.replace("SOUTH",el.geo.south);
+                  option = option.replace("NORTH",el.geo.north);
+                  $('#zamg_areas').append($("&lt;option/&gt;", {
+                      value: option,
+                      text: el.value['#text']
+                  }));
+              }
+              var valToSet =   $("#zamg_westBoundLongitude").find("input").val() + "|" +
+                                  $("#zamg_eastBoundLongitude").find("input").val() + "|" +
+                                  $("#zamg_southBoundLatitude").find("input").val() + "|" +
+                                  $("#zamg_northBoundLatitude").find("input").val();
+              var exists = $('#zamg_areas option[value="' + valToSet + '"]').length;
+              if(exists == 0){
+                $('#zamg_areas').append($("&lt;option/&gt;", {
+                    value: "custom",
+                    text: "custom"
+                }));
+                $('#zamg_areas').val("custom");
+              }else{
+                $('#zamg_areas').val(valToSet);
+              }
+            });
 
-                  $("#zamg_westBoundLongitude").find("input").change(setCustom);
-                  $("#zamg_eastBoundLongitude").find("input").change(setCustom);
-                  $("#zamg_southBoundLatitude").find("input").change(setCustom);
-                  $("#zamg_northBoundLatitude").find("input").change(setCustom);
-                
-                  $( "#zamg_areas" ).change(function() {
-                    var choice = $( "#zamg_areas" ).val();
-                    var id = "";
-                    var w = "";
-                    var e = "";
-                    var s = "";
-                    var n = "";
-                  
-                    if (choice != undefined) {
-                      coords = choice.split("|");
-                      w = coords[0];
-                      e = coords[1];
-                      s = coords[2];
-                      n = coords[3];
-                    } 
-                    $("#zamg_westBoundLongitude").find("input").val(w);
-                    $("#zamg_eastBoundLongitude").find("input").val(e);
-                    $("#zamg_southBoundLatitude").find("input").val(s);
-                    $("#zamg_northBoundLatitude").find("input").val(n);
-                  });
-              </script>
-            </div>
-          </xsl:when>
-          <xsl:when test="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-datatype' or
-                          gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-sourcetype' or
-                          gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-uom'">
-              <xsl:variable name="thesaurus" select="substring-after(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text(), 'geonetwork.thesaurus.')"/>
-              <div class="row">
-                <div class="col-xs-2" />
-                <xsl:variable name="value" select="gmd:keyword/gco:CharacterString/text()"/>
-                <xsl:variable name="ref" select="concat('_',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
-                <div>
-                  <xsl:call-template name="render-element">
-                      <xsl:with-param name="label" select="$labelThesaurus"/>
-                      <xsl:with-param name="value" select="$value"/>
-                      <xsl:with-param name="cls" select="local-name()"/>
-                      <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-                      <xsl:with-param name="type" select="'select'"/>
-                      <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
-                      <xsl:with-param name="name" select="gmd:keyword/gco:CharacterString/gn:element/@ref"/>
-                      <xsl:with-param name="editInfo" select="gmd:keyword/gco:CharacterString/gn:element"/>
-                      <xsl:with-param name="parentEditInfo" select="gn:element"/>
-                      <xsl:with-param name="isDisabled" select="false()"/>
-                  </xsl:call-template>
-                </div>
-                <xsl:variable name="id" select="concat('gn-field-',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
-                <script>
-                  $.ajax({
-                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
-                  }).done(function( json ) {
-                    $('#<xsl:value-of select="$id" />').children().remove();
-                    for(id in json[0]){
-                        var el = json[0][id];
-                        $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
-                            value: el.uri.split('#')[1],
-                            text: el.value['#text']
-                        }));
-                      }
-                      $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
-                  });
-              </script>
-            </div>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:variable name="thesaurus" select="substring-after(gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text(), 'geonetwork.thesaurus.')"/>
-            <xsl:for-each select="gmd:keyword">
-              <div class="row">
-                <br />
-                <xsl:variable name="value" select="gco:CharacterString/text()"/>
-                <div>
-                  <xsl:call-template name="render-element">
-                    <xsl:with-param name="label" select="$labelThesaurus"/>
-                    <xsl:with-param name="value" select="$value"/>
-                    <xsl:with-param name="cls" select="local-name()"/>
-                    <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-                    <xsl:with-param name="type" select="'select'"/>
-                    <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
-                    <xsl:with-param name="name" select="gco:CharacterString/gn:element/@ref"/>
-                    <xsl:with-param name="editInfo" select="gco:CharacterString/gn:element"/>
-                    <xsl:with-param name="parentEditInfo" select="gn:element"/>
-                    <xsl:with-param name="isDisabled" select="false()"/>
-                  </xsl:call-template>
-                </div>
-                <xsl:variable name="id" select="concat('gn-field-',gco:CharacterString/gn:element/@ref)"/>
-                <script>
-                  $.ajax({
-                    url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
-                  }).done(function( json ) {
-                    $('#<xsl:value-of select="$id" />').children().remove();
-                    for(id in json[0]){
-                        var el = json[0][id];
-                        $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
-                            value: el.uri.split('#')[1],
-                            text: el.value['#text']
-                        }));
-                      }
-                      $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
-                  });
-                </script>
-              </div>
-            </xsl:for-each>
-            <div>
-              <xsl:if test="position() = 1">
-                <p class="text-center">
-                  <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
-                </p>
-              </xsl:if>
-            </div>
-          </xsl:otherwise>
-        </xsl:choose>
-      
+            var setCustom = function (){
+                $('#zamg_areas').append($("&lt;option/&gt;", {
+                    value: "custom",
+                    text: "custom"
+                }).prop("selected", "selected"));
+            }
 
+            $("#zamg_westBoundLongitude").find("input").change(setCustom);
+            $("#zamg_eastBoundLongitude").find("input").change(setCustom);
+            $("#zamg_southBoundLatitude").find("input").change(setCustom);
+            $("#zamg_northBoundLatitude").find("input").change(setCustom);
+
+            $( "#zamg_areas" ).change(function() {
+              var choice = $( "#zamg_areas" ).val();
+              var id = "";
+              var w = "";
+              var e = "";
+              var s = "";
+              var n = "";
+
+              if (choice != undefined) {
+                coords = choice.split("|");
+                w = coords[0];
+                e = coords[1];
+                s = coords[2];
+                n = coords[3];
+              }
+              $("#zamg_westBoundLongitude").find("input").val(w);
+              $("#zamg_eastBoundLongitude").find("input").val(e);
+              $("#zamg_southBoundLatitude").find("input").val(s);
+              $("#zamg_northBoundLatitude").find("input").val(n);
+            });
+        </script>
+      </div>
   </xsl:template>
+
+
+
+  <xsl:template mode="mode-iso19139"  priority="3000"
+    match="gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-datatype'] |
+           gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-sourcetype'] |
+           gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-uom']">
+
+    <xsl:variable name="labelName" select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
+    <xsl:variable name="labelThesaurus" select="/root/gui/schemas/iso19139/strings/zamgThesaurus/label[@name=$labelName]"/>
+
+    <xsl:variable name="thesaurus" select="substring-after($labelName, 'geonetwork.thesaurus.')"/>
+
+    <div class="row">
+      <div class="col-xs-2" />
+      <xsl:variable name="value" select="gmd:keyword/gco:CharacterString/text()"/>
+      <xsl:variable name="ref" select="concat('_',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
+      <div>
+        <xsl:call-template name="render-element">
+            <xsl:with-param name="label" select="$labelThesaurus"/>
+            <xsl:with-param name="value" select="$value"/>
+            <xsl:with-param name="cls" select="local-name()"/>
+            <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+            <xsl:with-param name="type" select="'select'"/>
+            <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
+            <xsl:with-param name="name" select="gmd:keyword/gco:CharacterString/gn:element/@ref"/>
+            <xsl:with-param name="editInfo" select="gmd:keyword/gco:CharacterString/gn:element"/>
+            <xsl:with-param name="parentEditInfo" select="gn:element"/>
+            <xsl:with-param name="isDisabled" select="false()"/>
+        </xsl:call-template>
+      </div>
+      <xsl:variable name="id" select="concat('gn-field-',gmd:keyword/gco:CharacterString/gn:element/@ref)"/>
+      <script>
+        $.ajax({
+          url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
+        }).done(function( json ) {
+          $('#<xsl:value-of select="$id" />').children().remove();
+          for(id in json[0]){
+              var el = json[0][id];
+              $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
+                  value: el.uri.split('#')[1],
+                  text: el.value['#text']
+              }));
+            }
+            $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
+        });
+      </script>
+    </div>
+  </xsl:template>
+
+  <xsl:template mode="mode-iso19139"  priority="3000"
+    match="gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.theme.zamg-variable']">
+
+    <xsl:variable name="labelName" select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
+    <xsl:variable name="labelThesaurus" select="/root/gui/schemas/iso19139/strings/zamgThesaurus/label[@name=$labelName]"/>
+
+    <xsl:variable name="thesaurus" select="substring-after($labelName, 'geonetwork.thesaurus.')"/>
+    <xsl:for-each select="gmd:keyword">
+      <div class="row">
+        <br />
+        <xsl:variable name="value" select="gco:CharacterString/text()"/>
+        <div>
+          <xsl:call-template name="render-element">
+            <xsl:with-param name="label" select="$labelThesaurus"/>
+            <xsl:with-param name="value" select="$value"/>
+            <xsl:with-param name="cls" select="local-name()"/>
+            <xsl:with-param name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+            <xsl:with-param name="type" select="'select'"/>
+            <xsl:with-param name="listOfValues" select="gn-fn-metadata:getCodeListValues($schema, '', $codelists, .)"/>
+            <xsl:with-param name="name" select="gco:CharacterString/gn:element/@ref"/>
+            <xsl:with-param name="editInfo" select="gco:CharacterString/gn:element"/>
+            <xsl:with-param name="parentEditInfo" select="gn:element"/>
+            <xsl:with-param name="isDisabled" select="false()"/>
+          </xsl:call-template>
+        </div>
+        <xsl:variable name="id" select="concat('gn-field-',gco:CharacterString/gn:element/@ref)"/>
+        <script>
+          $.ajax({
+            url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=<xsl:value-of select="$thesaurus" />&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
+          }).done(function( json ) {
+            $('#<xsl:value-of select="$id" />').children().remove();
+            for(id in json[0]){
+                var el = json[0][id];
+                $('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
+                    value: el.uri.split('#')[1],
+                    text: el.value['#text']
+                }));
+              }
+              $('#<xsl:value-of select="$id" />').val('<xsl:value-of select="$value" />');
+          });
+        </script>
+      </div>
+    </xsl:for-each>
+
+    <div>
+      <xsl:if test="position() = 1">
+        <p class="text-center">
+          <a href="http://vmetad1/mdparams" target="_blank">http://vmetad1/mdparams</a>
+        </p>
+      </xsl:if>
+    </div>
+  </xsl:template>
+
+
   
     <!-- 
     Render a boxed element in a fieldset with no border
