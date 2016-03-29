@@ -11,6 +11,7 @@
   xmlns:exslt="http://exslt.org/common" exclude-result-prefixes="#all">
 
   <xsl:include href="layout-custom-fields-keywords.xsl"/>
+  <xsl:include href="layout-custom-fields-sds.xsl"/>  
   <xsl:include href="layout-custom-fields-ZAMG.xsl"/>
   
   <!-- Readonly elements -->
@@ -138,4 +139,5 @@
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
+
 </xsl:stylesheet>
