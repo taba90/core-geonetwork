@@ -1776,7 +1776,6 @@
 
     <view name="zamg_tab_zamg">
       <tab id="zamg_tab_simple1" default="true" mode="flat">
-        <section name="zamg_title_simple1">
           <section name="zamgtabdata">
             <field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title" />
             <field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract" />
@@ -1887,10 +1886,9 @@
                       </template>
             </action>
           </section>
-        </section>
       </tab>
+
       <tab id="zamg_tab_simple2" mode="flat">
-        <section name="zamg_title_simple2">
           <section name="zamgtabdata">
             <field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title" />
             <field xpath="/gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:abstract" />
@@ -2005,7 +2003,7 @@
                       </template>
             </action>
           </section>
-        </section>
+
       </tab>
       
       <!-- Elements that should not use the "flat" mode --> 

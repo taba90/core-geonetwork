@@ -3118,7 +3118,7 @@
   <element name="zamgRegions">
     <label>Region</label>
     <description>Region to which data applies.</description>
-    <help>Metadata record will containg the related ISO3166-2:AT code.</help>
+    <help>Metadata record will contain the related ISO3166-2:AT code.</help>
   </element>
 
   <!-- ================================================== -->
