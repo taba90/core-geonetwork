@@ -47,12 +47,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </property>
             </bean>
         -->
-        <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
-                <constructor-arg ref="contextSource"/>
-                <property name="userDnPatterns">
+            <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+              <constructor-arg ref="contextSource"/>
+                 <!--
+                 <property name="userDnPatterns">
                     <list><value>${ldap.base.dn.pattern}</value></list>
+                 </property>
+                 -->
+                <property name="userSearch">
+                    <bean id="userSearch" class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+                        <constructor-arg index="0" value=""/>
+                        <constructor-arg index="1" value="${ldap.base.usersearchfilter}"/>
+                        <constructor-arg index="2" ref="contextSource" />
+                        <property name="searchSubtree" value="true"/>
+                    </bean>
                 </property>
-        </bean>
+            </bean>
         </constructor-arg>
         <property name="userDetailsContextMapper" ref="ldapUserContextMapper" />
     </bean>
@@ -172,22 +182,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <bean id="ldapUserDetailsService"
 		class="org.fao.geonet.kernel.security.ldap.LdapUserDetailsManager">
 		<constructor-arg ref="contextSource" />
-		<constructor-arg name="groupMemberAttributeName" 
-			value="${ldap.privilege.search.group.queryprop}" />
-		<constructor-arg name="query" 
-			value="${ldap.privilege.search.group.query}" />
-		<property name="groupSearchBase" 
-			value="${ldap.privilege.search.group.object}" />
-		<property name="usernameMapper" ref="usernameMapper" />
+		<constructor-arg name="groupMemberAttributeName" value="${ldap.privilege.search.group.queryprop}" />
+		<constructor-arg name="query"                    value="${ldap.privilege.search.group.query}" />
+		<property name="groupSearchBase"                 value="${ldap.privilege.search.group.object}" />
+		<property name="usernameMapper"    ref="usernameMapper" />
 		<property name="userDetailsMapper" ref="ldapUserContextMapper"/>
 	</bean>
 
 	<bean id="usernameMapper"
 		class="org.springframework.security.ldap.DefaultLdapUsernameToDnMapper">
-		<constructor-arg index="0" type="java.lang.String"
-			name="userDnBase" value="${ldap.base.search.base}" />
-		<constructor-arg index="1" type="java.lang.String"
-			name="usernameAttribute" value="${ldap.sync.user.search.attribute}" />
+		<constructor-arg index="0" type="java.lang.String" name="userDnBase"        value="${ldap.base.search.base}" />
+		<constructor-arg index="1" type="java.lang.String" name="usernameAttribute" value="${ldap.sync.user.search.attribute}" />
 	</bean>
 
 
