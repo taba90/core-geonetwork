@@ -483,8 +483,8 @@
 						<gmd:EX_TemporalExtent>
 							<gmd:extent>
 								<gml:TimePeriod gml:id="d212e429a1052958">
-										<gml:beginPosition>2014-10-12</gml:beginPosition>
-										<gml:endPosition/>
+										<gml:beginPosition>2014-10-12T00:00:00</gml:beginPosition>
+										<gml:endPosition>2014-10-12T00:00:00</gml:endPosition>
 								</gml:TimePeriod>
 							</gmd:extent>
 						</gmd:EX_TemporalExtent>
