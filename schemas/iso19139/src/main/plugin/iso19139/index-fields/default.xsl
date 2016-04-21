@@ -711,17 +711,23 @@
         <!-- Metadata type  -->
 
         <xsl:choose>
-          <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='restricted']">
+          <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='restricted'] or
+                          gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode/text()='restricted'">
             <Field name="zamg_public" string="false" store="false" index="true" />
             <xsl:message>PUBLIC: Metadata is restricted</xsl:message>
           </xsl:when>
-          <xsl:when test="not(gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='license'])">
-            <Field name="zamg_public" string="false" store="false" index="true" />
-            <xsl:message>PUBLIC: Access is not public</xsl:message>
+          <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode[@codeListValue='license'] or
+                          gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode/text()='license'">
+            <Field name="zamg_public" string="true" store="false" index="true" />
+            <xsl:message>PUBLIC: Access is public</xsl:message>
+          </xsl:when>
+          <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints[gmd:accessConstraints/gmd:MD_RestrictionCode/@codeListValue='otherRestrictions']/gmd:otherConstraints/gco:CharacterString/text()='keine'">
+            <Field name="zamg_public" string="true" store="false" index="true" />
+            <xsl:message>PUBLIC: Access is public (imported)</xsl:message>
           </xsl:when>
           <xsl:otherwise>
-            <Field name="zamg_public" string="true" store="false" index="true" />
-            <xsl:message>PUBLIC: Metadata is public</xsl:message>
+            <Field name="zamg_public" string="false" store="false" index="true" />
+            <xsl:message>PUBLIC: Metadata public state is unknown</xsl:message>
           </xsl:otherwise>
         </xsl:choose>
 
