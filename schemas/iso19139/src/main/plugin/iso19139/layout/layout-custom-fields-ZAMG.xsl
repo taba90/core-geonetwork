@@ -207,70 +207,74 @@
     </xsl:call-template>
   </xsl:template>
 
+    <xsl:template mode="mode-iso19139"  priority="3000"
+                match="gmd:geographicElement/gmd:EX_GeographicDescription/gmd:geographicIdentifier/gmd:RS_Identifier[$tab='zamg_tab_simple1' or $tab='zamg_tab_simple2']">
 
-  <xsl:template mode="mode-iso19139"  priority="3000"
-    match="gmd:MD_Keywords[gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()='geonetwork.thesaurus.external.place.regions']">
+        <xsl:variable name="codenode"  select="gmd:code"/>
+        <xsl:variable name="coderef" select="$codenode/gco:CharacterString/gn:element/@ref"/>
+        <xsl:variable name="currentcode" select="normalize-space(string($codenode))"/>
 
-    <xsl:variable name="labelName" select="gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()"/>
-    <xsl:variable name="labelThesaurus" select="/root/gui/schemas/iso19139/strings/zamgRegions.label"/>
+        <xsl:variable name="descnode"  select="$codenode/../../../../../gmd:description"/>
+        <xsl:variable name="descref" select="$descnode/gco:CharacterString/gn:element/@ref"/>
+        <xsl:variable name="currentdesc" select="normalize-space(string($descnode))"/>
 
-    <!--
-      Example: to restrict number of keyword to 1 for INSPIRE
-      <xsl:variable name="maxTags"
-      select="if ($thesaurusKey = 'external.theme.inspire-theme') then '1' else ''"/>
-    -->
-    <!-- Create a div with the directive configuration
-        * elementRef: the element ref to edit
-        * elementName: the element name
-        * thesaurusName: the thesaurus title to use
-        * thesaurusKey: the thesaurus identifier
-        * keywords: list of keywords in the element
-        * transformations: list of transformations
-        * transformation: current transformation
-      -->
+        <xsl:message>FOUND GEO IDENTIFIER <xsl:value-of select="$currentcode" /> on ref <xsl:value-of select="$coderef" /> at <xsl:value-of select="$currentdesc" /></xsl:message>
+
+        <xsl:variable name="labelThesaurus" select="/root/gui/schemas/iso19139/strings/zamgRegions.label"/>
+
+        <input class="md" type="hidden" id="zamg_region_code" name="_{$coderef}" value="{$currentcode}" readonly="true"/>
+        <input class="md" type="hidden" id="zamg_region_desc" name="_{$descref}" value="{$currentdesc}" readonly="true"/>
+
         <div class="row">
           <div class="col-xs-2" />
           <label for="zamg_areas" class="control-label col-xs-2"><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamgRegions.label" /></label>
-          <select id="zamg_areas" class="col-xs-4">
-            <!-- option value="custom" selected=""><xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom"/></option-->
-          </select>
+          <select id="zamg_areas" class="col-xs-4"></select>
           <script>
             $.ajax({
               url: "keywords?pNewSearch=true&amp;pTypeSearch=1&amp;pThesauri=external.place.regions&amp;pMode=searchBox&amp;maxResults=200&amp;pKeyword=&amp;_content_type=json"
-            }).done(function( json ) {
-              var optionTemplate = "WEST|EAST|SOUTH|NORTH"
-              for(id in json[0]){
-                  var el = json[0][id];
-                  var option = optionTemplate.replace("WEST",el.geo.west);
-                  option = option.replace("EAST",el.geo.east);
-                  option = option.replace("SOUTH",el.geo.south);
-                  option = option.replace("NORTH",el.geo.north);
-                  $('#zamg_areas').append($("&lt;option/&gt;", {
-                      value: option,
-                      text: el.value['#text']
-                  }));
-              }
-              var valToSet =   $("#zamg_westBoundLongitude").find("input").val() + "|" +
-                                  $("#zamg_eastBoundLongitude").find("input").val() + "|" +
-                                  $("#zamg_southBoundLatitude").find("input").val() + "|" +
-                                  $("#zamg_northBoundLatitude").find("input").val();
-              var exists = $('#zamg_areas option[value="' + valToSet + '"]').length;
-              if(exists == 0){
-                $('#zamg_areas').append($("&lt;option/&gt;", {
-                    value: "custom",
-                    text: "custom"
-                }));
-                $('#zamg_areas').val("custom");
-              }else{
-                $('#zamg_areas').val(valToSet);
-              }
-            });
+            }).done(
+                function( json ) {
+                    var optionTemplate = "WEST|EAST|SOUTH|NORTH|CODE|DESC";
+                    var sel = false;
+
+                    for(id in json[0]){
+                        var el = json[0][id];
+                        var areacode = el.uri.split("#")[1];
+                        var desc = el.value['#text'];
+
+                        var option = optionTemplate.replace("WEST",el.geo.west);
+                        option = option.replace("EAST",el.geo.east);
+                        option = option.replace("SOUTH",el.geo.south);
+                        option = option.replace("NORTH",el.geo.north);
+                        option = option.replace("CODE",areacode);
+                        option = option.replace("DESC", desc);
+
+                        $('#zamg_areas').append($("&lt;option/&gt;", {
+                            value: option,
+                            text: el.value['#text']
+                        }));
+
+                        if(areacode == $("#zamg_region_code").val()) {
+                            $('#zamg_areas').val(option);
+                            sel = true;
+                        }
+                    }
+
+                    $('#zamg_areas').append($("&lt;option/&gt;", {
+                        value: "custom",
+                        text: "<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />"
+                    }));
+
+                    if(! sel) {
+                        $('#zamg_areas').val("custom");
+                    }
+                });
 
             var setCustom = function (){
-                $('#zamg_areas').append($("&lt;option/&gt;", {
-                    value: "custom",
-                    text: "custom"
-                }).prop("selected", "selected"));
+                $('#zamg_areas').val("custom");
+
+                $("#zamg_region_code").val('custom');
+                $("#zamg_region_desc").val('<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />');
             }
 
             $("#zamg_westBoundLongitude").find("input").change(setCustom);
@@ -279,29 +283,39 @@
             $("#zamg_northBoundLatitude").find("input").change(setCustom);
 
             $( "#zamg_areas" ).change(function() {
-              var choice = $( "#zamg_areas" ).val();
-              var id = "";
-              var w = "";
-              var e = "";
-              var s = "";
-              var n = "";
+                var choice = $( "#zamg_areas" ).val();
+                var id = "";
+                var w = "";
+                var e = "";
+                var s = "";
+                var n = "";
+                var code = "custom";
+                var desc = "<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />";
 
-              if (choice != undefined) {
-                coords = choice.split("|");
-                w = coords[0];
-                e = coords[1];
-                s = coords[2];
-                n = coords[3];
-              }
-              $("#zamg_westBoundLongitude").find("input").val(w);
-              $("#zamg_eastBoundLongitude").find("input").val(e);
-              $("#zamg_southBoundLatitude").find("input").val(s);
-              $("#zamg_northBoundLatitude").find("input").val(n);
+                if (choice != undefined) {
+                    coords = choice.split("|");
+
+                    if (coords.length == 6) {
+                        w = coords[0];
+                        e = coords[1];
+                        s = coords[2];
+                        n = coords[3];
+                        code = coords[4];
+                        desc = coords[5];
+
+                        $("#zamg_westBoundLongitude").find("input").val(w);
+                        $("#zamg_eastBoundLongitude").find("input").val(e);
+                        $("#zamg_southBoundLatitude").find("input").val(s);
+                        $("#zamg_northBoundLatitude").find("input").val(n);
+                    }
+                }
+
+                $("#zamg_region_code").val(code);
+                $("#zamg_region_desc").val(desc);
             });
         </script>
       </div>
   </xsl:template>
-
 
 
   <xsl:template mode="mode-iso19139"  priority="3000"
