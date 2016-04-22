@@ -1,12 +1,35 @@
 <ows-context:OWSContext xmlns:ows-context="http://www.opengis.net/ows-context"
                         xmlns:ows="http://www.opengis.net/ows"
                         version="0.3.1" id="ows-context-ex-1-v3">
-  <ows-context:General>
-    <ows:BoundingBox crs="EPSG:31287">
-      <ows:LowerCorner>107778.5323 286080.6331</ows:LowerCorner>
-      <ows:UpperCorner>694883.9348 575953.6150</ows:UpperCorner>
-    </ows:BoundingBox>
-  </ows-context:General>
-  <ows-context:ResourceList>
-  </ows-context:ResourceList>
+    <ows-context:General>
+<!--        <ows:BoundingBox crs="EPSG:31287">
+            <ows:LowerCorner>107778.5323 286080.6331</ows:LowerCorner>
+            <ows:UpperCorner>694883.9348 575953.6150</ows:UpperCorner>
+        </ows:BoundingBox>-->
+        <ows:BoundingBox xmlns:ows="http://www.opengis.net/ows" crs="EPSG:31287">
+            <ows:LowerCorner>107634.06971 281892.502883</ows:LowerCorner>
+            <ows:UpperCorner>679895.688826 575999.148351</ows:UpperCorner>
+        </ows:BoundingBox>
+
+    </ows-context:General>
+    <ows-context:ResourceList>
+        <ows-context:Layer name="{type=osm}" hidden="true" opacity="1">
+            <ows:Title xmlns:ows="http://www.opengis.net/ows">OpenStreetMap</ows:Title>
+        </ows-context:Layer>
+
+        <ows-context:Layer name="{type=wmts,name=grey}" hidden="false" opacity="1">
+            <ows:Title xmlns:ows="http://www.opengis.net/ows">ZAMG base</ows:Title>
+            <ows-context:Server service="urn:ogc:serviceType:WMS">
+                <ows-context:OnlineResource xlink:href="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+            </ows-context:Server>
+        </ows-context:Layer>
+
+        <ows-context:Layer name="{type=wmts,name=overlay-all}" hidden="false" opacity="1">
+            <ows:Title xmlns:ows="http://www.opengis.net/ows">ZAMG overlay-all</ows:Title>
+            <ows-context:Server service="urn:ogc:serviceType:WMS">
+                <ows-context:OnlineResource xlink:href="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+            </ows-context:Server>
+        </ows-context:Layer>
+
+    </ows-context:ResourceList>
 </ows-context:OWSContext>

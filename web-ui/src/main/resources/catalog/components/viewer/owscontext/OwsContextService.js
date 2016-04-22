@@ -103,6 +103,7 @@
         var self = this;
         var re = /type\s*=\s*([^,|^}|^\s]*)/;
         var promises = [];
+        layers = layers || []; // sanitize null list
         for (i = 0; i < layers.length; i++) {
           var layer = layers[i];
           if (layer.name) {

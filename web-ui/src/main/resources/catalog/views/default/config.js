@@ -65,41 +65,76 @@
           ol.proj.get("EPSG:31287").setExtent([107778.5323, 286080.6331, 694883.9348, 575953.6150]);
           ol.proj.get("EPSG:31287").setWorldExtent([9.5300, 46.4100, 17.1700, 49.0200]);
 
-          // tile grid info here: http://wmsx.zamg.ac.at/mapcache201409/tms/1.0.0
-          var tileGrid = new ol.tilegrid.TileGrid({
-              extent: [20085.090168,219828.777960,720025.090168,620300.777960],
-              origin: [20085.090168,219828.777960],
-              resolutions:[1500.0,1400.0,1300.0,1200.0,1100.0,1000.0,886.0,800.0,700.0,600.0,500.0,450.0,400.0,350.0,300.0,250.0,200.0,150.0,100.0,50.0,25.0,10.0],
-              tileSize:[512,512]
-          });
-          var url_topo_waterarea = "http://wmsx.zamg.ac.at/mapcache201409/tms/1.0.0/topo_waterarea@epsg31287/{z}/{x}/{y}.jpg";
-          var url2_osm_overlay = "http://wmsx.zamg.ac.at/mapcache201409/tms/1.0.0/osm_overlay@epsg31287/{z}/{x}/{y}.png";
-          // we can't use the url with pattern {-y} (http://openlayers.org/en/v3.14.2/apidoc/ol.source.XYZ.html) 
-          // because seems that this ngeo/ol3 version has a bug about it.
-          // we set the origin properly in the tile grid and define a custom tileUrlFunction
-          var layers = [
-               new ol.layer.Tile({
-                   source: new ol.source.XYZ({
-                       tileGrid: tileGrid,
-                       tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-                         return url_topo_waterarea.replace('{z}',tileCoord[0]).replace('{x}',tileCoord[1]).replace('{y}',tileCoord[2]);
-                       }
-                   })
-               }),
-               new ol.layer.Tile({
-                     source: new ol.source.XYZ({
-                         tileGrid: tileGrid,
-                         tileUrlFunction: function(tileCoord, pixelRatio, projection) {
-                           return url2_osm_overlay.replace('{z}',tileCoord[0]).replace('{x}',tileCoord[1]).replace('{y}',tileCoord[2]);
-                         }
-                     })
-                 })
-             ]
+
+    var matrixIds = [];
+    for (var i = 0; i <= 13; ++i) {
+        matrixIds[i] = i;
+    }
+
+    var projectionExtent = ol.proj.get('EPSG:31287').getExtent();
+
+    var topo_base_wmts = new ol.source.WMTS({
+         attributions: "Topo Grau",
+//         url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/",
+         url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/grey/default/statmap/{TileMatrix}/{TileRow}/{TileCol}.png",
+         requestEncoding: "REST",
+         layer: "grey",
+         matrixSet: "statmap",
+         format: "image/png",
+         style: "default",
+         isBaseLayer: true,
+
+         projection: ol.proj.get("EPSG:31287"),
+
+        tileGrid: new ol.tilegrid.WMTS({
+          extent: projectionExtent,
+          origin: [-2000000.000000, 3200000.000000],
+          resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1],
+          matrixIds: matrixIds,
+          tileSize: [512, 512]
+        })
+     });
+
+    var dach_overlay_wmts = new ol.source.WMTS({
+//         name: "overlay all",
+         attributions: "Overlay all",
+//         url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/",
+         url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-all/default/statmap/{TileMatrix}/{TileRow}/{TileCol}.png",
+         requestEncoding: "REST",
+         layer: "overlay-all",
+         matrixSet: "statmap",
+         format: "image/png",
+         style: "default",
+         visibility: true,
+         isBaseLayer: false,
+
+         projection: ol.proj.get("EPSG:31287"),
+
+        tileGrid: new ol.tilegrid.WMTS({
+          extent: projectionExtent,
+          origin: [-2000000.000000, 3200000.000000],
+          resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1],
+          matrixIds: matrixIds,
+          tileSize: [512, 512]
+        })
+     });
+
+    var layers = [
+        new ol.layer.Tile({
+            source:topo_base_wmts
+        })
+        ,
+        new ol.layer.Tile({
+            source:dach_overlay_wmts
+        })
+    ];
+
+
           var viewerMap = new ol.Map({
             controls: [],
             layers: layers,
             view: new ol.View({
-              extent: [20085.090168,219828.777960,720025.090168,620300.777960],
+              extent: [107778.5323, 286080.6331, 694883.9348, 575953.6150],
               center: ol.proj.transform([14.149161, 47.510335], 'EPSG:4326', 'EPSG:31287'),
               projection: ol.proj.get("EPSG:31287"),
               minZoom: 1
@@ -110,7 +145,7 @@
             controls:[],
             layers: layers,
             view: new ol.View({
-              extent: [347778.5323, 566080.6331, 504883.9348, 505953.6150],
+              extent: [107778.5323, 286080.6331, 694883.9348, 575953.6150],
               center: ol.proj.transform([14.149161, 47.510335], 'EPSG:4326', 'EPSG:31287'),
               projection: ol.proj.get("EPSG:31287")
             })
