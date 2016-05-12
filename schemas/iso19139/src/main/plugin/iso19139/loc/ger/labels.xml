@@ -950,6 +950,15 @@
 		<condition />
 		<description>Im Objektartenkatalog genutzte Sprache</description>
 	</element>
+	<element name="gmd:lineage" id="81.0">
+		<label>Lineage</label>
+		<description>Non-quantitative quality information about the lineage of the data specified by the scope</description>
+		<_condition>Conditional / report not provided?</_condition>
+	</element>
+	<element name="gmd:keyword" id="53.0">
+		<label>Keyword</label>
+		<description>Commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject</description>
+	</element>
 	<element name="gmd:includedWithDataset" id="236">
 		<label>Im Datenbestand enthalten</label>
 		<help />
@@ -986,16 +995,40 @@
 			referenziert/zitiert werden sollen.</help>
 		<condition>Obligatorisch</condition>
 		<description>Angaben darüber, wie Bezug auf die beschriebene Ressource
-			genommen werden
-			soll</description>
+			genommen werden soll</description>
 	</element>
+	<element name="gmd:citation" id="576.0" context="gmd:MD_Authority">
+		<label>Citation</label>
+		<description>Citation which belongs to the authority</description>
+	</element>
+	<element name="gmd:citation" id="581.0" context="gmd:MD_Thesaurus">
+		<label>Citation</label>
+		<description>Citation of the thesaurus</description>
+	</element>
+	<element name="gmd:citation" id="581.0">
+		<label>Citation</label>
+		<description>Citation data for the resource(s)</description>
+	</element>
+	<element name="gmd:type" id="54.0">
+		<label>Type</label>
+		<description>Subject matter used to group similar keywords</description>
+	</element>
+	<element name="gmd:type" id="540.0" context="gmd:MD_CodeDomain">
+		<label>Type</label>
+		<description>Datatype of the code domain</description>
+	</element>
+	<element name="gmd:type" id="543.0" context="gmd:MD_Type">
+		<label>Type definition</label>
+		<description>Data type definition</description>
+		<help>Data type definition, formal of informal (i.e. Text12, Line)</help>
+	</element>
+
 	<element name="gmd:attributeDescription" id="240">
 		<label>Attributbeschreibung</label>
 		<help />
 		<condition>Obligatorisch</condition>
 		<description>Beschreibung des Attributs, welches durch den Zellwert
-			ausgeprägt
-			wird</description>
+			ausgeprägt wird</description>
 	</element>
 	<element name="gmd:contentType" id="241">
 		<label>Inhaltstyp</label>
@@ -2712,9 +2745,6 @@
     </element>
     <element name="gmd:otherConstraints">
         <label>Andere Einschränkungen</label>
-    </element>
-    <element name="gmd:MD_LegalConstraints">
-        <label>Rechtliche Einschränkungen</label>
     </element>
     <element name="gmd:MD_LegalConstraints">
         <label>Rechtliche Einschränkungen</label>
