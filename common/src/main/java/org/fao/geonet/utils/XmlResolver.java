@@ -94,23 +94,23 @@ public class XmlResolver extends XMLCatalogResolver {
         URL externalRef = null;
         try {
 
-            if (publicId != null && publicId.startsWith("http://")) {
+            if (isHttpUri(publicId)) {
                 externalRef = new URL(publicId);
-            } else if (systemId != null && systemId.startsWith("http://")) {
+            } else if (isHttpUri(systemId)) {
                 externalRef = new URL(systemId);
             } else if (systemId != null && baseURI != null) {
-                if (baseURI.startsWith("http://")) {
+                if (isHttpUri(baseURI)) {
                     URL ref = new URL(baseURI);
                     String thePath = new File(ref.getPath()).getParent().replace('\\', '/');
                     externalRef = new URI(ref.getProtocol(), null, ref.getHost(), ref.getPort(), thePath + "/" + systemId, null,
                             null).toURL();
                 }
             }
-        } catch (MalformedURLException e) { // leave this to someone else?
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            Log.warning(Log.XML_RESOLVER, "Bad URL", e);
             return result;
-        } catch (URISyntaxException e) { // leave this to someone else?
-            e.printStackTrace();
+        } catch (URISyntaxException e) { 
+            Log.warning(Log.XML_RESOLVER, "Bad URL", e);
             return result;
         }
 
@@ -121,8 +121,7 @@ public class XmlResolver extends XMLCatalogResolver {
             try {
                 elResult = isXmlInCache(externalRef.toString());
             } catch (CacheException e) {
-                Log.error(Log.XML_RESOLVER, "Request to cache for " + externalRef + " failed.");
-                e.printStackTrace();
+                Log.error(Log.XML_RESOLVER, "Request to cache for " + externalRef + " failed.", e);
             }
 
             if (elResult == null) { // use XMLRequest to get the XML
@@ -157,6 +156,10 @@ public class XmlResolver extends XMLCatalogResolver {
             }
         }
         return result;
+    }
+
+    private static boolean isHttpUri(String uri) {
+        return uri != null &&  (uri.startsWith("http://") || uri.startsWith("https://"));
     }
 
     private LSInput tryToResolveOnFs(String publicId, String systemId, String baseURI) {
