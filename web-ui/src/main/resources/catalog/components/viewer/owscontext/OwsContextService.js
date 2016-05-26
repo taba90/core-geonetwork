@@ -104,13 +104,31 @@
         var re = /type\s*=\s*([^,|^}|^\s]*)/;
         var promises = [];
         layers = layers || []; // sanitize null list
+
         for (i = 0; i < layers.length; i++) {
           var layer = layers[i];
           if (layer.name) {
-            if (layer.group == 'Background layers' &&
-                layer.name.match(re)) {
+            var isBg = layer.group == 'Background layers';
+
+            if ( layer.name.match(re)) {
               var type = re.exec(layer.name)[1];
-              if (type != 'wmts') {
+
+              if (type == 'zamg') {
+                  var tile = this.createZAMGLayer(layer);
+                  if (tile) {
+                    tile.displayInLayerManager = ! isBg;
+                    tile.background = isBg;
+                    tile.setVisible(!layer.hidden);
+                    if(isBg) {
+                        bgLayers.push({layer: tile, idx: i});
+                        tile.set('group', 'Background layers');
+                    } else {
+                        map.addLayer(tile);
+                    }
+                  }
+              }
+
+              else if (type != 'wmts') {
                 var olLayer = gnMap.createLayerForType(type);
                 if (olLayer) {
                   bgLayers.push({layer: olLayer, idx: i});
@@ -120,7 +138,9 @@
                   olLayer.setVisible(!layer.hidden);
                 }
               }
+              
               else {
+
                 promises.push(this.createLayer(layer, map, i).then(
                     function(olLayer) {
                       bgLayers.push({
@@ -131,7 +151,8 @@
                       olLayer.background = true;
                     }));
               }
-            } else {
+            } else { // no type specified in layer.name
+
               var server = layer.server[0];
               if (server.service == 'urn:ogc:serviceType:WMS') {
                 self.createLayer(layer, map);
@@ -322,13 +343,17 @@
        * @param {ol.Map} map object
        */
       this.saveToLocalStorage = function(map) {
-        if (map.getSize()[0] == 0 || map.getSize()[1] == 0) {
-          // don't save a map which has not been rendered yet
-          return;
-        }
-        var xml = this.writeContext(map);
-        var xmlString = (new XMLSerializer()).serializeToString(xml);
-        window.localStorage.setItem('owsContext', xmlString);
+// ZAMG: removing store/retrieve of localStorage since the WMTS layers are not
+// properly de/serialized.
+// Also commented out the localStorage retrieve code.
+
+//        if (map.getSize()[0] == 0 || map.getSize()[1] == 0) {
+//          // don't save a map which has not been rendered yet
+//          return;
+//        }
+//        var xml = this.writeContext(map);
+//        var xmlString = (new XMLSerializer()).serializeToString(xml);
+//        window.localStorage.setItem('owsContext', xmlString);
       };
 
       /**
@@ -390,6 +415,24 @@
                 return olL;
               });
         }
+      };
+
+      this.createZAMGLayer = function(layer) {
+
+        var server = layer.server[0];
+        var res = server.onlineResource[0];
+        var reT = /type\s*=\s*([^,|^}|^\s]*)/;
+        var reL = /name\s*=\s*([^,|^}|^\s]*)/;
+
+        if (layer.name.match(reT)) {
+            var type = reT.exec(layer.name)[1]; // this should be ZAMG
+            var name = reL.exec(layer.name)[1];
+
+            var isBg = layer.group == 'Background layers';
+
+            return gnMap.createZAMGWMTSLayer(layer.title, res.href, name, isBg);
+        }
+
       };
     }
   ]);

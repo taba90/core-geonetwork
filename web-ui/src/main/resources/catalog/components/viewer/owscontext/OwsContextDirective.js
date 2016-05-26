@@ -121,9 +121,12 @@
           if (gnViewerSettings.owsContext) {
             gnOwsContextService.loadContextFromUrl(gnViewerSettings.owsContext,
                 scope.map, true);
-          } else if (window.localStorage.getItem('owsContext')) {
-            var c = window.localStorage.getItem('owsContext');
-            gnOwsContextService.loadContext(c, scope.map);
+// ZAMG: removing store/retrieve of localStorage since the WMTS layers are not
+// properly de/serialized.
+// Also commented out the saveToLocalStorage function.
+//          } else if (window.localStorage.getItem('owsContext')) {
+//            var c = window.localStorage.getItem('owsContext');
+//            gnOwsContextService.loadContext(c, scope.map);
           } else if (gnViewerSettings.defaultContext) {
             gnOwsContextService.loadContextFromUrl(
                 gnViewerSettings.defaultContext,
@@ -133,7 +136,9 @@
           // store the current context in local storage to reload it
           // automatically on next connexion
           $(window).on('unload', function() {
-            gnOwsContextService.saveToLocalStorage(scope.map);
+// ZAMG: removing store/retrieve of localStorage
+// Also commented out the saveToLocalStorage inner code.
+//            gnOwsContextService.saveToLocalStorage(scope.map);
           });
         }
       };

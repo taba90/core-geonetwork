@@ -1377,6 +1377,42 @@
                 return layer;
               });
             }
+          },
+
+          createZAMGWMTSLayer: function(title, href, name, isBg) {
+
+            var matrixIds = [];
+            for (var i = 0; i <= 13; ++i) {
+              matrixIds[i] = i;
+            }
+
+            if(ol === null) {
+                alert("Warning: OL is null");
+            }
+            var projectionExtent = ol.proj.get('EPSG:31287').getExtent();
+
+            var wmts = new ol.source.WMTS({
+                attributions: title,
+                url: href,
+                requestEncoding: "REST",
+                layer: name,
+                matrixSet: "statmap",
+                format: "image/png",
+                style: "default",
+                isBaseLayer: isBg,
+
+                projection: ol.proj.get("EPSG:31287"),
+
+                tileGrid: new ol.tilegrid.WMTS({
+                    extent: projectionExtent,
+                    origin: [-2000000.000000, 3200000.000000],
+                    resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1],
+                    matrixIds: matrixIds,
+                    tileSize: [512, 512]
+                })
+            });
+
+            return new ol.layer.Tile({source:wmts, title:title, label:title})
           }
 
         };
