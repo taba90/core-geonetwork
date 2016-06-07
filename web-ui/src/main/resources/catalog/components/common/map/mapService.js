@@ -286,6 +286,9 @@
             if (conf.useOSM) {
               source = new ol.source.OSM();
             }
+            else if (conf.zamg) {
+                return this.createZAMGWMTSLayer(conf.zamg.title, conf.zamg.url, conf.zamg.layer, true);
+            }
             else {
               source = new ol.source.TileWMS({
                 url: conf.layer.url,
@@ -1389,10 +1392,13 @@
             if(ol === null) {
                 alert("Warning: OL is null");
             }
+
+            if(typeof ol.proj.get('EPSG:31287') === "undefined") {
+                proj4.defs("EPSG:31287","+proj=lcc +lat_1=49 +lat_2=46 +lat_0=47.5 +lon_0=13.33333333333333 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +axis=neu");
+            }
             var projectionExtent = ol.proj.get('EPSG:31287').getExtent();
 
             var wmts = new ol.source.WMTS({
-                attributions: title,
                 url: href,
                 requestEncoding: "REST",
                 layer: name,
