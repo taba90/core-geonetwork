@@ -7,61 +7,51 @@
     xmlns:gmx="http://www.isotc211.org/2005/gmx"
     xmlns:geonet="http://www.fao.org/geonetwork"
     exclude-result-prefixes="#all">
-    
-    <!-- 
-      Usage: 
+
+    <!--
+      Usage:
         zamg_anonymizer
         * remove gmd:MD_DataIdentification/gmd:pointOfContact/ with role principalInvestigator
         * remap thesauri URL
+        * add a default metadata PoC
     -->
 
     <!-- Remove all resources contact which have role principalInvestigator -->
     <xsl:template match="gmd:identificationInfo/*/gmd:pointOfContact[gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue='principalInvestigator']" priority="2"/>
 
-    <!-- Remove individual name -->
+    <!-- Remove individual names -->
     <xsl:template match="gmd:individualName" priority="2"/>
 
     <!-- Replace the metadata contact to the institutional fixed one -->
-    <xsl:template match="gmd:MD_Metadata/gmd:contact" priority="2">
+    <xsl:template match="gmd:MD_Metadata" priority="2">
         <xsl:copy>
+           <xsl:apply-templates select="@*"/>
+
+            <xsl:apply-templates select="gmd:fileIdentifier"/>
+            <xsl:apply-templates select="gmd:language"/>
+            <xsl:apply-templates select="gmd:characterSet"/>
+            <xsl:apply-templates select="gmd:parentIdentifier"/>
+            <xsl:apply-templates select="gmd:hierarchyLevel"/>
+            <xsl:apply-templates select="gmd:hierarchyLevelName"/>
+
+            <xsl:call-template name="zamg_poc_snippet"/>
+
+            <xsl:apply-templates select="child::* except (gmd:fileIdentifier|gmd:parentIdentifier|gmd:language|gmd:characterSet|gmd:hierarchyLevel|gmd:hierarchyLevelName|gmd:contact)"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template name="zamg_poc_snippet">
+          <gmd:contact>
             <gmd:CI_ResponsibleParty>
                 <gmd:organisationName>
                     <gco:CharacterString>ZAMG - Zentralanstalt für Meteorologie und Geodynamik</gco:CharacterString>
                 </gmd:organisationName>
-                <gmd:positionName gco:nilReason="missing">
-                    <gco:CharacterString/>
-                </gmd:positionName>
                 <gmd:contactInfo>
                     <gmd:CI_Contact>
-                        <gmd:phone>
-                            <gmd:CI_Telephone>
-                                <gmd:voice>
-                                    <gco:CharacterString>Fixed phone TODO</gco:CharacterString>
-                                </gmd:voice>
-                                <gmd:facsimile gco:nilReason="missing">
-                                    <gco:CharacterString/>
-                                </gmd:facsimile>
-                            </gmd:CI_Telephone>
-                        </gmd:phone>
                         <gmd:address>
                             <gmd:CI_Address>
-                                <gmd:deliveryPoint>
-                                    <gco:CharacterString>Hohe Warte 38</gco:CharacterString>
-                                </gmd:deliveryPoint>
-                                <gmd:city>
-                                    <gco:CharacterString>Wien</gco:CharacterString>
-                                </gmd:city>
-                                <gmd:administrativeArea gco:nilReason="missing">
-                                    <gco:CharacterString/>
-                                </gmd:administrativeArea>
-                                <gmd:postalCode>
-                                    <gco:CharacterString>1190</gco:CharacterString>
-                                </gmd:postalCode>
-                                <gmd:country>
-                                    <gco:CharacterString>Austria</gco:CharacterString>
-                                </gmd:country>
                                 <gmd:electronicMailAddress>
-                                    <gco:CharacterString>inspire@zamg.ac.at</gco:CharacterString>
+                                    <gco:CharacterString>inspire-md@zamg.ac.at</gco:CharacterString>
                                 </gmd:electronicMailAddress>
                             </gmd:CI_Address>
                         </gmd:address>
@@ -73,9 +63,6 @@
                                 <gmd:protocol>
                                     <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
                                 </gmd:protocol>
-                                <gmd:name gco:nilReason="missing">
-                                    <gco:CharacterString/>
-                                </gmd:name>
                             </gmd:CI_OnlineResource>
                         </gmd:onlineResource>
                     </gmd:CI_Contact>
@@ -85,7 +72,7 @@
                                      codeListValue="pointOfContact"/>
                 </gmd:role>
             </gmd:CI_ResponsibleParty>
-        </xsl:copy>
+          </gmd:contact>
     </xsl:template>
 
 
@@ -101,7 +88,7 @@
         </gmx:Anchor>
     </xsl:template>
 
-        
+
     <!-- Do a copy of every nodes and attributes -->
     <xsl:template match="@*|node()">
         <xsl:copy>
