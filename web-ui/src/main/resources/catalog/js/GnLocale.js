@@ -17,6 +17,7 @@
         if (value.indexOf('/') === 0) {
           return value.substring(1);
         } else {
+          if(lang == 'ge') { lang = 'de';}
           return prefix + lang + '-' + value + suffix;
         }
       };
