@@ -245,70 +245,119 @@
 
             <xsl:for-each select="//gmd:MD_Keywords">
 
-                <xsl:if test="starts-with(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()), 'geonetwork.thesaurus.external.theme.zamg')">
-                  <xsl:variable name="thesaurusAnchor" select="lower-case(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor))"/>
-                  <xsl:variable name="shortname" select="concat('zamg_', substring-after($thesaurusAnchor, 'zamg-'))"/>
-                  <xsl:for-each select="gmd:keyword/gco:CharacterString">
-                      <xsl:variable name="thesaurus_keyword_lower" select="lower-case(.)"/>
-                      <xsl:if test="$thesaurus_keyword_lower!='none'">
-                          <Field name="{$shortname}" string="{$thesaurus_keyword_lower}" store="true" index="true"/>
-                      </xsl:if>
-                  </xsl:for-each>
-                </xsl:if>
+                <xsl:variable name="listOfKeywords" select="gmd:keyword/gco:CharacterString|gmd:keyword/gmx:Anchor"/>
 
-                <!-- Index all keywords as text or anchor -->
-                <xsl:variable name="listOfKeywords"
-                                select="gmd:keyword/gco:CharacterString|
-                                        gmd:keyword/gmx:Anchor"/>
-                <xsl:for-each select="$listOfKeywords">
-                    <xsl:variable name="keyword" select="string(.)"/>
+                <xsl:choose>
+                    <xsl:when test="starts-with(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor/text()), 'geonetwork.thesaurus.external.theme.zamg')">
+                        <xsl:variable name="thesaurusAnchor" select="lower-case(string(./gmd:thesaurusName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code/gmx:Anchor))"/>
 
-                    <Field name="keyword" string="{$keyword}" store="true" index="true"/>
+                        <xsl:variable name="basename"  select="substring-after($thesaurusAnchor, 'zamg-')"/>
+                        <xsl:variable name="zamgname" select="concat('zamg_', $basename)"/>
 
-                    <!-- If INSPIRE is enabled, check if the keyword is one of the 34 themes
-                         and index annex, theme and theme in english. -->
-                    <xsl:if test="$inspire='true'">
-                        <xsl:if test="string-length(.) &gt; 0">
+                        <xsl:variable name="zamg-thesaurus-file" select="concat('file:///', $thesauriDir, '/external/thesauri/theme/zamg-',$basename,'.rdf')"/>
+                        <!--<xsl:message>Loading ZAMG thesaurus from <xsl:value-of select="$zamg-thesaurus-file"/></xsl:message>-->
+                        <xsl:variable name="zamg-thesaurus" select="document($zamg-thesaurus-file)"/>
+                        <xsl:choose>
+                            <xsl:when test="$zamg-thesaurus">
 
-                            <xsl:variable name="inspireannex">
-                                <xsl:call-template name="determineInspireAnnex">
-                                    <xsl:with-param name="keyword" select="$keyword"/>
-                                    <xsl:with-param name="inspireThemes" select="$inspire-theme"/>
-                                </xsl:call-template>
-                            </xsl:variable>
+                                <xsl:variable name="zamg-concepts" select="$zamg-thesaurus//skos:Concept"/>
+                                <!--<xsl:message>ZAMG thesaurus <xsl:value-of select="$basename"/> has <xsl:value-of select="count($zamg-concepts)"/> concepts</xsl:message>-->
 
-                            <xsl:variable name="inspireThemeAcronym">
-                                <xsl:call-template name="getInspireThemeAcronym">
-                                    <xsl:with-param name="keyword" select="$keyword"/>
-                                </xsl:call-template>
-                            </xsl:variable>
+                                <xsl:for-each select="gmd:keyword/gco:CharacterString">
+                                    <xsl:variable name="keyword" select="string(.)"/>
 
-                            <!-- Add the inspire field if it's one of the 34 themes -->
-                            <xsl:if test="normalize-space($inspireannex)!=''">
-                                <Field name="inspiretheme" string="{$keyword}" store="true" index="true"/>
-                                <Field name="inspirethemewithac"
-                                       string="{concat($inspireThemeAcronym, '|', $keyword)}"
-                                       store="true" index="true"/>
+                                    <xsl:variable name="uri-from-altlabel"  select="$zamg-concepts[skos:altLabel = $keyword]/@rdf:about"/>
+                                    <xsl:variable name="uri-from-about"     select="$zamg-concepts[ends-with(@rdf:about, concat('#', $keyword))]/@rdf:about"/>
+                                    <xsl:variable name="zamg-concept-uri"   select="if($uri-from-about) then $uri-from-about else $uri-from-altlabel"/>
+                                    <!--<xsl:variable name="zamg-concept-uri"  select="$zamg-concepts[skos:altLabel = $keyword]/@rdf:about"/>-->
 
-                                <!--<Field name="inspirethemeacronym" string="{$inspireThemeAcronym}" store="true" index="true"/>-->
-                                <xsl:variable name="inspireThemeURI"  select="$inspire-theme[skos:prefLabel = $keyword]/@rdf:about"/>
-                                <Field name="inspirethemeuri" string="{$inspireThemeURI}" store="true" index="true"/>
+                                    <xsl:if test="not($uri-from-about) and $uri-from-altlabel">
+                                        <xsl:message>INFO: using legacy info from altLabel: <xsl:value-of select="$keyword"/></xsl:message>
+                                    </xsl:if>
 
-                                <xsl:variable name="englishInspireTheme">
-                                    <xsl:call-template name="translateInspireThemeToEnglish">
-                                        <xsl:with-param name="keyword" select="$keyword"/>
-                                        <xsl:with-param name="inspireThemes" select="$inspire-theme"/>
-                                    </xsl:call-template>
-                                </xsl:variable>
+                                    <xsl:variable name="inspire-thesaurus" select="if ($inspire!='false') then document(concat('file:///', $thesauriDir, '/external/thesauri/theme/inspire-theme.rdf')) else ''"/>
 
-                                <Field name="inspiretheme_en" string="{$englishInspireTheme}" store="true" index="true"/>
-                                <Field name="inspireannex" string="{$inspireannex}" store="true" index="true"/>
-                                <!-- FIXME : inspirecat field will be set multiple time if one record has many themes -->
-                                <Field name="inspirecat" string="true" store="false" index="true"/>
+                                    <xsl:choose>
+                                        <xsl:when test="not($zamg-concept-uri)">
+                                            <xsl:message>WARN: no Concept named <xsl:value-of select="$keyword"/> found in thesaurus <xsl:value-of select="$zamgname"/></xsl:message>
+                                        </xsl:when>
+                                        <xsl:when test="ends-with($zamg-concept-uri, '#none')">
+                                            <xsl:message>INFO: skipping 'none' selection in thesaurus <xsl:value-of select="$zamgname"/></xsl:message>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:message>INFO: adding field <xsl:value-of select="$keyword"/>@<xsl:value-of select="$basename"/> : <xsl:value-of select="$zamg-concept-uri"/></xsl:message>
+                                            <!--<Field name="{$zamgname}"     string="{lower-case($keyword)}" store="true" index="true"/>-->
+                                            <Field name="{$zamgname}_uri" string="{$zamg-concept-uri}"    store="true" index="true"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise> <!-- thesaurus not found -->
+                                <xsl:message>WARN: ZAMG thesaurus <xsl:value-of select="$basename"/> NOT FOUND, expected at <xsl:value-of select="$zamg-thesaurus-file"/></xsl:message>
+
+                                <!-- Index all keywords as if normal keyword -->
+                                <xsl:for-each select="$listOfKeywords">
+                                    <xsl:variable name="keyword" select="string(.)"/>
+                                    <Field name="keyword" string="{$keyword}" store="true" index="true"/>
+                                </xsl:for-each>
+
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise> <!-- not a zamg keyword-->
+
+                        <!-- Index all keywords as text or anchor -->
+                        <xsl:for-each select="$listOfKeywords">
+                            <xsl:variable name="keyword" select="string(.)"/>
+
+                            <Field name="keyword" string="{$keyword}" store="true" index="true"/>
+
+                            <!-- If INSPIRE is enabled, check if the keyword is one of the 34 themes
+                            and index annex, theme and theme in english. -->
+                            <xsl:if test="$inspire='true'">
+                                <xsl:if test="string-length(.) &gt; 0">
+
+                                    <xsl:variable name="inspireannex">
+                                        <xsl:call-template name="determineInspireAnnex">
+                                            <xsl:with-param name="keyword" select="$keyword"/>
+                                            <xsl:with-param name="inspireThemes" select="$inspire-theme"/>
+                                        </xsl:call-template>
+                                    </xsl:variable>
+
+                                    <xsl:variable name="inspireThemeAcronym">
+                                        <xsl:call-template name="getInspireThemeAcronym">
+                                            <xsl:with-param name="keyword" select="$keyword"/>
+                                        </xsl:call-template>
+                                    </xsl:variable>
+
+                                    <!-- Add the inspire field if it's one of the 34 themes -->
+                                    <xsl:if test="normalize-space($inspireannex)!=''">
+                                        <Field name="inspiretheme" string="{$keyword}" store="true" index="true"/>
+                                        <Field name="inspirethemewithac"
+                                               string="{concat($inspireThemeAcronym, '|', $keyword)}"
+                                               store="true" index="true"/>
+
+                                        <!--<Field name="inspirethemeacronym" string="{$inspireThemeAcronym}" store="true" index="true"/>-->
+                                        <xsl:variable name="inspireThemeURI"  select="$inspire-theme[skos:prefLabel = $keyword]/@rdf:about"/>
+                                        <Field name="inspirethemeuri" string="{$inspireThemeURI}" store="true" index="true"/>
+
+                                        <xsl:variable name="englishInspireTheme">
+                                            <xsl:call-template name="translateInspireThemeToEnglish">
+                                                <xsl:with-param name="keyword" select="$keyword"/>
+                                                <xsl:with-param name="inspireThemes" select="$inspire-theme"/>
+                                            </xsl:call-template>
+                                        </xsl:variable>
+
+                                        <Field name="inspiretheme_en" string="{$englishInspireTheme}" store="true" index="true"/>
+                                        <Field name="inspireannex" string="{$inspireannex}" store="true" index="true"/>
+                                        <!-- FIXME : inspirecat field will be set multiple time if one record has many themes -->
+                                        <Field name="inspirecat" string="true" store="false" index="true"/>
+                                    </xsl:if>
+                                </xsl:if>
                             </xsl:if>
-                        </xsl:if>
-                    </xsl:if>
-                </xsl:for-each>
+                        </xsl:for-each>
+                    </xsl:otherwise><!-- not a zamg keyword-->
+                </xsl:choose>
 
                 <!-- Index thesaurus name to easily search for records
                 using keyword from a thesaurus. -->
@@ -318,13 +367,13 @@
 
                     <xsl:if test="$thesaurusIdentifier != ''">
                         <Field name="thesaurusIdentifier"
-                                string="{substring-after($thesaurusIdentifier,'geonetwork.thesaurus.')}"
-                                store="true" index="true"/>
+                               string="{substring-after($thesaurusIdentifier,'geonetwork.thesaurus.')}"
+                               store="true" index="true"/>
                     </xsl:if>
                     <xsl:if test="gmd:title/gco:CharacterString/text() != ''">
                         <Field name="thesaurusName"
-                                string="{gmd:title/gco:CharacterString/text()}"
-                                store="true" index="true"/>
+                               string="{gmd:title/gco:CharacterString/text()}"
+                               store="true" index="true"/>
                     </xsl:if>
 
 
@@ -350,9 +399,7 @@
                         to group all keywords of same type in a field -->
                         <xsl:variable name="currentType" select="string(.)"/>
                         <xsl:for-each select="$listOfKeywords">
-                            <Field name="keywordType-{$currentType}"
-                                   string="{string(.)}"
-                                   store="true" index="true"/>
+                            <Field name="keywordType-{$currentType}" string="{string(.)}" store="true" index="true"/>
                         </xsl:for-each>
                     </xsl:if>
                 </xsl:for-each>
