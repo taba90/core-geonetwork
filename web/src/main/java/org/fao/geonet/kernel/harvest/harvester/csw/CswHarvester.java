@@ -175,7 +175,7 @@ public class CswHarvester extends AbstractHarvester
 		if (params.eltSearches!=null){
 			for (Element element : params.eltSearches) {
 				if (!element.getName().startsWith("parser")){
-					settingMan.add(dbms, "id:"+searchID, element.getQualifiedName(), element.getText());
+					settingMan.add(dbms, "id:"+searchID, element.getName(), element.getText());
 				}
 			}
 		}
