@@ -12,7 +12,7 @@
 
 @import (less) "inspire/iti.css";
 // Import this CSS to have INSPIRE themes translations
-//@import (less) "inspire/iti-i18n.css";
+@import (less) "inspire/iti-i18n.css";
 
 @import "gn.less";
 @import "gn_viewer.less";
@@ -60,13 +60,13 @@
       min-width: 0px;
       flex-shrink: 1;
       &.gn-facet-active {
-        color: @gray-darker
-      }
+      color: @gray-darker
     }
+  }
     input {
       margin-right: 4px;
       margin-top: 3px;
-    }
+  }
     button {
       margin: 0px;
       padding: 0px;
@@ -517,7 +517,7 @@ span.gn-facet-label:first-letter {
 
 .relatedMd {
   .relatedRecord {
-    float:left;
+    float:left; 
     padding:8px;
     cursor: pointer;
   }

@@ -321,5 +321,10 @@
     "directoryManager": "Verzeichnis verwalten",
     "typeOfRecord": "Datensatz-Typ",
     "load": "Lade",
-    "solrAccessError": "Error during Solr access."
+    "solrAccessError": "Error during Solr access.",
+    
+    "facets_zamg_variable": "ZAMG - Parameter Name",
+    "facets_zamg_uom": "ZAMG - Maßeinheit",
+    "facets_zamg_sourcetype": "ZAMG - Quelltyp",
+    "facets_zamg_datatype": "ZAMG - Datentyp"   
 }

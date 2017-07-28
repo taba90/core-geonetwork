@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- Scheme -->
+  <skos:ConceptScheme rdf:about="http://geonetwork-opensource.org/zamg/uom">
+    <dc:title>Unity of Measure</dc:title>
+    <dc:description>Unity of measure used in ZAMG datasets</dc:description>
+    <dc:creator>
+      <foaf:Organization>
+        <foaf:name>ZAMG</foaf:name>
+      </foaf:Organization>
+    </dc:creator>
+    <dc:rights>Free to all for non commercial use.</dc:rights>
+    <dcterms:issued>2014-11-11 00:00:00</dcterms:issued>
+    <dcterms:modified>2014-11-11 00:00:00</dcterms:modified>
+  </skos:ConceptScheme>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/lenght#m">
+    <skos:altLabel>uom_m</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Lenght: meter</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Länge: meter</skos:prefLabel>
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/uom/lenght#cm" />
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/lenght#km" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/lenght#cm">
+    <skos:altLabel>uom_cm</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Lenght: cm</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Länge: cm</skos:prefLabel>
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/uom/lenght#mm" />
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/lenght#m" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/lenght#mm">
+    <skos:altLabel>uom_mm</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Lenght: mm</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Länge: mm</skos:prefLabel>
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/uom/lenght#um" />
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/lenght#cm" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/lenght#um">
+    <skos:altLabel>uom_um</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Lenght: micron</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Länge: micron</skos:prefLabel>
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/lenght#cm" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/lenght#km">
+    <skos:altLabel>uom_km</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Lenght: km</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Länge: km</skos:prefLabel>
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/uom/lenght#m" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/mass#kg">
+    <skos:altLabel>uom_kg</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Mass: kg</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Mass: kg</skos:prefLabel>
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/uom/mass#g" />
+  </skos:Concept>
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom/mass#g">
+    <skos:altLabel>uom_g</skos:altLabel>
+    <skos:prefLabel xml:lang="en">Mass: g</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">Mass: g</skos:prefLabel>
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/uom/mass#kg" />
+  </skos:Concept>
+  
+  <!-- Item not set or known -->
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/zamg/uom#none">
+    <skos:altLabel>none</skos:altLabel>
+    
+    <skos:prefLabel xml:lang="de">Not set (DE)</skos:prefLabel>
+    <skos:prefLabel xml:lang="en">Not set</skos:prefLabel>    
+  </skos:Concept>  
+  
+</rdf:RDF>
+

@@ -133,6 +133,7 @@
                 'towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
             if (proj4 && angular.isArray(gnConfig['map.proj4js'])) {
               angular.forEach(gnConfig['map.proj4js'], function(item) {
+                console.log("mapService::importProj4js: loading crs " + item.code);
                 proj4.defs(item.code, item.value);
               });
             }
@@ -1145,15 +1146,17 @@
                   name: name,
                   msg: 'layerNotInCap'
                 };
+                console.warn("mapService::addWmtsFromScratch: layer not in capa: " + name);
                 gnWmsQueue.error(o);
                 defer.reject(o);
               }
               else {
                 var olL = $this.createOlWMTSFromCap(map, capL, capObj);
+                console.log("mapService::addWmtsFromScratch: layer found in capa: " + name);
                 if (!createOnly) {
                   map.addLayer(olL);
                 }
-                gnWmsQueue.removeFromQueue(url, name);
+                gnWmsQueue.removeFromQueue({url: url, name: name});
                 defer.resolve(olL);
               }
             }, function() {
@@ -1279,14 +1282,28 @@
             if (getCapLayer) {
               var layer = getCapLayer;
 
-              var url, urls = capabilities.operationsMetadata.GetTile.
-                  DCP.HTTP.Get;
+              var url;
+              var urls = capabilities.operationsMetadata.GetTile.DCP.HTTP.Get;
+              var requestEncoding = "KVP";
 
+              // prefer KVP URLs
               for (var i = 0; i < urls.length; i++) {
                 if (urls[i].Constraint[0].AllowedValues.Value[0].
                     toLowerCase() == 'kvp') {
                   url = urls[i].href;
                   break;
+                }
+              }
+
+              // If no KVP, check for REST URLs
+              if(! url) {
+                console.log("mapService::createOlWMTSFromCap: No KVP URL found for " + layer);
+                for (var i = 0; i < urls.length; i++) {
+                  if (urls[i].Constraint[0].AllowedValues.Value[0].toLowerCase() == 'rest') {
+                    url = urls[i].href;
+                    requestEncoding = "REST";
+                    break;
+                  }
                 }
               }
 
@@ -1344,6 +1361,11 @@
                 style: style
               });
 
+              console.log("mapService::createOlWMTSFromCap: WMTS layer: " + layer.Identifier 
+                      + ", crs: " + projection.getCode()
+                      + ", encoding: " + requestEncoding
+                      + ", capa URL: "+urlCap);
+              
               var olLayer = new ol.layer.Tile({
                 extent: projection.getExtent(),
                 name: layer.Identifier,
@@ -1352,6 +1374,7 @@
                 source: source,
                 url: url,
                 urlCap: urlCap,
+                requestEncoding: requestEncoding,
                 cextent: gnOwsCapabilities.getLayerExtentFromGetCap(map,
                     getCapLayer)
               });
@@ -1459,11 +1482,11 @@
                 });
               case 'stamen':
                 //We make watercolor the default layer
-                var type = opt && opt.name ? opt.name : 'watercolor',
+                var stamentype = opt && opt.name ? opt.name : 'watercolor',
                     source = new ol.source.Stamen({
-                      layer: type
+                      layer: stamentype
                     });
-                source.set('type', type);
+                source.set('type', stamentype);
                 return new ol.layer.Tile({
                   source: source,
                   title: title ||  'Stamen'
@@ -1483,11 +1506,13 @@
                           l.setVisible(!layer.hidden);
                         */
                       });
+                   console.warn('mapService::createLayerForType: SHOULD NOT BE HERE! ');
                 }
                 else {
                   console.warn('cant load wmts, url or name not provided');
                 }
             }
+            console.warn('mapService::createLayerForType: Unsupported layer type: ' + type);
             $log.warn('Unsupported layer type: ', type);
           },
 

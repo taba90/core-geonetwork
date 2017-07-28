@@ -312,5 +312,10 @@
     "directoryManager": "Manage directory",
     "typeOfRecord": "Type of record",
     "load": "Load",
-    "solrAccessError": "Error during Solr access."
+    "solrAccessError": "Error during Solr access.",
+    
+    "facets_zamg_variable": "ZAMG - Variable name",
+    "facets_zamg_uom": "ZAMG - Unit of Measure",
+    "facets_zamg_sourcetype": "ZAMG - Source type",
+    "facets_zamg_datatype": "ZAMG - Data type"
 }

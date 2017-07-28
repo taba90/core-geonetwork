@@ -278,6 +278,8 @@ public final class ServiceRequestFactory {
             if (!name.equals("")) {
                 if (params.getChild(name) == null) {
                     for (String value : req.getParameterValues(name)) {
+                        name = name.replaceAll(";", "_SEMICOLON_");
+                        name = name.replaceAll("&", "_AMPERSAND_");
                         params.addContent(new Element(name).setText(value));
                     }
                 }

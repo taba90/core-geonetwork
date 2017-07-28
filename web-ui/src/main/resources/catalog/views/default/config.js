@@ -104,8 +104,105 @@
           viewerSettings.storage = 'sessionStorage';
 
           /*******************************************************************
-             * Define maps
-             */
+           * Define maps
+           */
+
+        // define Austria Lambert projection (EPSG:31287) since it seems not supported in this ngeo/ol3 relase
+        proj4.defs("EPSG:31287","+proj=lcc +lat_1=49 +lat_2=46 +lat_0=47.5 +lon_0=13.33333333333333 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +axis=neu");
+//        ol.proj.get("EPSG:31287").setExtent([107778.5323, 286080.6331, 694883.9348, 575953.6150]); // this is the real extent
+        ol.proj.get("EPSG:31287").setExtent([80000.00, 286080.6331, 694883.9348, 600000.0]);         // extent used to show the whole Austrian region
+//        ol.proj.get("EPSG:31287").setWorldExtent([9.5300, 46.4100, 17.1700, 59.0200]);
+        ol.proj.get("EPSG:31287").setWorldExtent([-180.0, 0.0, 180.0, 90.0]);
+
+        var matrixIds = [];
+        for (var i = 0; i <= 13; ++i) {
+            matrixIds[i] = i;
+        }
+
+        var projectionExtent = ol.proj.get('EPSG:31287').getExtent();
+
+        var topo_base_wmts = new ol.source.WMTS({
+            attributions: "Topo Grau",
+            url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/grey/default/statmap/{TileMatrix}/{TileRow}/{TileCol}.png",
+            requestEncoding: "REST",
+            layer: "grey",
+            matrixSet: "statmap",
+            format: "image/png",
+            style: "default",
+            isBaseLayer: true,
+
+            projection: ol.proj.get("EPSG:31287"),
+
+            tileGrid: new ol.tilegrid.WMTS({
+                extent: projectionExtent,
+                origin: [-2000000.000000, 3200000.000000],
+                resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1],
+                matrixIds: matrixIds,
+                tileSize: [512, 512]
+            })
+        });
+
+        var dach_overlay_wmts = new ol.source.WMTS({
+            attributions: "Overlay all",
+            url: "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-all/default/statmap/{TileMatrix}/{TileRow}/{TileCol}.png",
+            requestEncoding: "REST",
+            layer: "overlay-all",
+            matrixSet: "statmap",
+            format: "image/png",
+            style: "default",
+            visibility: true,
+            isBaseLayer: false,
+            projection: ol.proj.get("EPSG:31287"),
+            tileGrid: new ol.tilegrid.WMTS({
+                extent: projectionExtent,
+                origin: [-2000000.000000, 3200000.000000],
+                resolutions: [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1],
+                matrixIds: matrixIds,
+                tileSize: [512, 512]
+            })
+        });
+
+
+        var topo_base_tile = new ol.layer.Tile({source:topo_base_wmts});
+        var overlay_tile   = new ol.layer.Tile({source:dach_overlay_wmts});
+
+        [topo_base_tile, overlay_tile].forEach(function(layer, index) {
+            layer.displayInLayerManager = true;
+            layer.background = true;
+            layer.set('group', 'Background layers');
+            layer.setVisible(true);
+        });
+
+        // viewerSettings.bgLayers = [topo_base_tile];
+
+        var layers= [
+                topo_base_tile,
+                overlay_tile
+        ];
+
+        var searchMap = new ol.Map({
+            controls: [],
+            layers: layers,
+            view: new ol.View({
+                extent: [107778.5323, 286080.6331, 694883.9348, 575953.6150],
+                center: ol.proj.transform([14.149161, 47.510335], 'EPSG:4326', 'EPSG:31287'),
+                projection: ol.proj.get("EPSG:31287")
+            })
+        });
+
+        // no layers for the viewermap: it's controlled by the OwsContextService
+        var viewerMap = new ol.Map({
+            controls: [],
+            // layers: [], // temporary init
+            view: new ol.View({
+                extent: [107778.5323, 286080.6331, 694883.9348, 575953.6150],
+                center: ol.proj.transform([14.149161, 47.510335], 'EPSG:4326', 'EPSG:31287'),
+                projection: ol.proj.get("EPSG:31287"),
+                minZoom: 3
+            })
+        });
+
+/*
           var mapsConfig = {
             center: [280274.03240585705, 6053178.654789996],
             zoom: 2
@@ -124,7 +221,7 @@
             })],
             view: new ol.View(angular.extend({}, mapsConfig))
           });
-
+*/
 
           /** Facets configuration */
           searchSettings.facetsSummaryType = 'details';

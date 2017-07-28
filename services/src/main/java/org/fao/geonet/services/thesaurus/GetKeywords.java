@@ -77,7 +77,7 @@ public class GetKeywords {
     // --------------------------------------------------------------------------
     @RequestMapping(value = "/{uiLang}/xml.search.keywords")
     @ResponseBody
-    public HttpEntity<byte[]> deprecatedAPI(
+    public HttpEntity<String> deprecatedAPI(
         @PathVariable String uiLang,
         @RequestParam(value = "pNewSearch", defaultValue = "true") boolean newSearch,
         @RequestParam(value = "pMode", defaultValue = "true") String mode,
@@ -97,7 +97,7 @@ public class GetKeywords {
 
     @RequestMapping(value = "/{uiLang}/keywords")
     @ResponseBody
-    public HttpEntity<byte[]> exec(
+    public HttpEntity<String> exec(
         @PathVariable String uiLang,
         @RequestParam(value = "pNewSearch", defaultValue = "true") boolean newSearch,
         @RequestParam(value = "pMode", defaultValue = "true") String mode,
@@ -167,18 +167,18 @@ public class GetKeywords {
         final Set<String> acceptContentType = Sets.newHashSet(
             acceptHeader != null ? acceptHeader : new String[]{"text/plain"});
 
-        byte[] response;
+        String response;
         String contentType;
         if (acceptsType(acceptContentType, "json") ||
             "json".equals(webRequest.getParameter("_content_type"))) {
-            response = Xml.getJSON(responseXml).getBytes(Constants.CHARSET);
+            response = Xml.getJSON(responseXml);
             contentType = "application/json";
         } else if (acceptContentType.isEmpty() ||
             acceptsType(acceptContentType, "xml") ||
             acceptContentType.contains("*/*") ||
             acceptContentType.contains("text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2") ||
             acceptContentType.contains("text/plain")) {
-            response = Xml.getString(responseXml).getBytes(Constants.CHARSET);
+            response = Xml.getString(responseXml);
             contentType = "application/xml";
         } else {
             throw new IllegalArgumentException(acceptContentType + " is not supported");

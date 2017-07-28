@@ -114,6 +114,9 @@
         var ur = bbox.upperCorner;
         var projection = bbox.crs;
 
+        console.log("OwsContextService::loadContext: MAP  crs:" + map.getView().getProjection().getCode());
+        console.log("OwsContextService::loadContext: BBOX ll:"+ll+ " ur:"+ur + " crs:"+bbox.crs);
+
         if (projection == 'EPSG:4326') {
           ll.reverse();
           ur.reverse();
@@ -158,100 +161,213 @@
           var isFirstBgLayer = false;
           // -------
 
+          // FIRST LOOP: split bg and fg
+          var existVisibileBg = false;
+          var bglist  = [];
+          var fglist  = [];
+
           for (i = 0; i < layers.length; i++) {
-            var type, layer = layers[i];
-            if (layer.name) {
-              if (layer.group == 'Background layers') {
+            var layer = layers[i];
 
-                // {type=bing_aerial} (mapquest, osm ...)
-                var re = this.getREForPar('type');
-                if (layer.name.match(re) &&
-                    (type = re.exec(layer.name)[1]) != 'wmts') {
-                  re = this.getREForPar('name');
-                  var opt;
-                  if (layer.name.match(re)) {
-                    var lyr = re.exec(layer.name)[1];
-                    opt = {name: lyr};
-                  }
-                  var olLayer =
-                      gnMap.createLayerForType(type, opt, layer.title);
-                  if (olLayer) {
-                    olLayer.displayInLayerManager = false;
-                    olLayer.background = true;
-                    olLayer.set('group', 'Background layers');
-                    olLayer.setVisible(!layer.hidden);
-                    bgLayers.push(olLayer);
-
-                    if (!layer.hidden && !isFirstBgLayer) {
-                      isFirstBgLayer = true;
-                      map.getLayers().insertAt(0, olLayer);
-                    }
-                  }
-                }
-
-                // {type=wmts,name=Ocean_Basemap} or WMS
-                else {
-
-                  var loadingLayer = new ol.layer.Image({
-                    loading: true,
-                    label: 'loading',
-                    url: '',
-                    visible: false
-                  });
-
-                  if (!layer.hidden && !isFirstBgLayer) {
-                    isFirstBgLayer = true;
-                    loadingLayer.set('bgLayer', true);
-                  }
-
-                  var layerIndex = bgLayers.push(loadingLayer);
-                  var p = self.createLayer(layer, map, i);
-
-                  (function(idx) {
-                    p.then(function(layer) {
-                      bgLayers[idx-1] = layer;
-
-                      if(!layer) {
-                        return;
-                      }
-                      layer.displayInLayerManager = false;
-                      layer.background = true;
-
-                      if(loadingLayer.get('bgLayer')) {
-                        map.getLayers().insertAt(0, layer);
-                      }
-                    });
-                  })(layerIndex);
-                }
-              }
-              // WMS layer not in background
-              else if (layer.server) {
-                var server = layer.server[0];
-                if (server.service == 'urn:ogc:serviceType:WMS') {
-
-                  var loadingLayer = new ol.layer.Image({
-                    loading: true,
-                    label: 'loading',
-                    url: '',
-                    visible: false
-                  });
-                  loadingLayer.displayInLayerManager = true;
-
-                  var layerIndex = map.getLayers().push(loadingLayer);
-                  var p = self.createLayer(layer, map, undefined, i);
-
-                  (function(idx) {
-                    p.then(function(layer) {
-                      map.getLayers().setAt(idx-1, layer);
-                    });
-                  })(layerIndex);
-                }
-              }
+            if (! layer.name) {
+              console.warn("OwsContextService::loadContext: Placeholder: Skipping layer with no name");
+              continue;
             }
+
+            if (layer.group == 'Background layers') {
+                bglist.push(layer);
+                if(!layer.hidden) {
+                    existVisibileBg = true;
+                }
+
+            } else {
+                fglist.push(layer);
+            }
+          }
+
+          // BG LOOP
+          for (i = 0; i < bglist.length; i++) {
+            var layer = bglist[i];
+
+            console.log("OwsContextService::loadContext: BG Layer: " + layer.name + " LOOP: "+i);
+
+            var type;
+            var re = this.getREForPar('type');
+            if (layer.name.match(re)) {
+                type = re.exec(layer.name)[1];
+            }
+
+            var lname;
+            re = this.getREForPar('name');
+            if (layer.name.match(re)) {
+                lname = re.exec(layer.name)[1];
+            }
+
+//            if (layer.group == 'Background layers') {
+
+            // {type=bing_aerial} (mapquest, osm ...)
+            if (type && type != 'wmts') {
+
+              console.log("OwsContextService::loadContext: BG ["+type+"] Layer: " + layer.name);
+
+              var opt;
+              if (lname) {
+                opt = {name: lname};
+              }
+              var olLayer = gnMap.createLayerForType(type, opt, layer.title);
+
+              if (olLayer) {
+                olLayer.displayInLayerManager = false;
+                olLayer.background = true;
+                olLayer.set('group', 'Background layers');
+                olLayer.setVisible(!layer.hidden);
+
+                bgLayers.push(olLayer);
+
+                if ((!layer.hidden || !existVisibileBg) && !isFirstBgLayer ) {
+                  olLayer.setVisible(true); // force if not exists other visibile BG layer
+                  isFirstBgLayer = true;
+                  map.getLayers().push(olLayer);
+                }
+              }
+            } else { // {type=wmts,name=Ocean_Basemap} or WMS
+
+              var placeHolderLayer = new ol.layer.Image({
+                loading: true,
+                label: 'loading',
+                url: '',
+                visible: false
+              });
+
+              if ((!layer.hidden || !existVisibileBg) && !isFirstBgLayer ) {
+
+                isFirstBgLayer = true;
+                placeHolderLayer.set('bgLayer', true);
+
+                var mapidx = map.getLayers().push(placeHolderLayer); // should be 1
+                console.log("OwsContextService::loadContext: adding BG placeholder ["+type+"] map idx: "+mapidx+": " + layer.name);
+              }
+
+              var layerIndex = bgLayers.push(placeHolderLayer);
+              console.log("OwsContextService::loadContext: adding BG placeholder ["+type+"] bg index: "+layerIndex+": " + layer.name);
+
+              var p = self.createLayer(layer, map, i);
+
+              (function(idx) {
+                p.then(function(layer) {
+
+                  console.log("OwsContextService::loadContext: old BG placeholder label: " + bgLayers[idx-1].get("label"));
+                  bgLayers[idx-1] = layer;
+
+                  if(!layer) {
+                    console.log("OwsContextService::loadContext: ["+type+"] BG layer not created!");
+                    return;
+                  }
+
+                  console.log("OwsContextService::loadContext: created ["+type+"] BG layer: " + layer.get('name'));
+
+                  layer.displayInLayerManager = false;
+                  layer.background = true;
+
+                  if(placeHolderLayer.get('bgLayer')) {
+                      console.log("OwsContextService::loadContext: replacing BG placeholder ["+type+"]: " + layer.name);
+                      layer.setVisible(true); // force if not exists other visibile BG layer
+                      map.getLayers().setAt(0, layer);
+                  }
+
+                });
+              })(layerIndex);
+            }
+          } // END BG LOOP
+
+          // FG LOOP
+          for (i = 0; i < fglist.length; i++) {
+            var layer = fglist[i];
+
+            console.log("OwsContextService::loadContext: FG Layer: " + layer.name + " LOOP: "+i);
+
+            if (! layer.server) {
+                console.warn("OwsContextService::loadContext: missing server on FG Layer: " + layer.name);
+                continue;
+            }
+
+            var type;
+            var re = this.getREForPar('type');
+            if (layer.name.match(re)) {
+                type = re.exec(layer.name)[1];
+            }
+
+            var lname;
+            re = this.getREForPar('name');
+            if (layer.name.match(re)) {
+                lname = re.exec(layer.name)[1];
+            }
+
+            var server = layer.server[0];
+            if (server.service == 'urn:ogc:serviceType:WMS') {
+
+              var placeHolderLayer = new ol.layer.Image({
+                loading: true,
+                label: 'loading',
+                url: '',
+                visible: false
+              });
+              placeHolderLayer.displayInLayerManager = true;
+
+//              console.info("OwsContextService::loadContext: loading layer " +  layer.name
+//                      + " into map with " + map.getLayers().getLength() + " layers");
+
+              var mapIdx = map.getLayers().push(placeHolderLayer);
+              console.log("OwsContextService::loadContext: added FG placeholder ["+type+"] map index: "+mapIdx+": " + layer.name);
+
+              var p = self.createLayer(layer, map, undefined, mapIdx);
+
+              (function(idx) {
+                p.then(function(layer) {
+                    if(!layer) {
+                        console.warn("OwsContextService::loadContext:then: null layer: " + idx);
+                    }
+//                  console.log("OwsContextService::loadContext: created ["+type+"] layer " + idx + ": " + self.stringify(layer));
+
+                  console.log("OwsContextService::loadContext: replacing FG placeholder ["+type+"] index: "+idx+": " + layer.get('name'));
+                  map.getLayers().setAt(idx-1, layer);
+
+                  //console.log("OwsContextService::loadContext: CHECKPOINT2 " + layer.get('name'));
+
+                });
+              })(mapIdx);
+            }
+
             firstLoad = false;
           }
         }
       };
+
+
+    this.stringify = function (obj, replacer, spaces, cycleReplacer) {
+      return JSON.stringify(obj, this.serializer(replacer, cycleReplacer), spaces)
+    };
+
+   this.serializer = function (replacer, cycleReplacer) {
+        var stack = [], keys = []
+
+       if (cycleReplacer == null) cycleReplacer = function(key, value) {
+         if (stack[0] === value) return "[Circular ~]"
+         return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
+       }
+
+       return function(key, value) {
+         if (stack.length > 0) {
+           var thisPos = stack.indexOf(this)
+           ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
+           ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
+           if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
+         }
+         else stack.push(value)
+
+         return replacer == null ? value : replacer.call(this, key, value)
+       }
+     };
 
       /**
        * @ngdoc method
@@ -462,8 +578,14 @@
           var name = reL.exec(layer.name)[1];
 
           if (type == 'wmts') {
+            console.log("OwsContextService::createLayer: creating WMTS layer " + name);
             return gnMap.addWmtsFromScratch(map, res.href, name, createOnly).
                 then(function(olL) {
+                  if(!olL) {
+                    console.warn("OwsContextService::createLayer::then: created null WMTS layer " + layer.name);
+                  }
+
+                  console.log("OwsContextService::createLayer::thenWMTS: created ["+type+"] layer " + olL.get("name"));
                   olL.set('group', layer.group);
                   olL.set('groupcombo', layer.groupcombo);
                   olL.setOpacity(layer.opacity);
@@ -478,7 +600,9 @@
                     olL.set('tree_index', index);
                   }
                   return olL;
-                }).catch(function() {});
+                }).catch(function() {
+                  console.warn("OwsContextService::createLayer::catch: error creating WMTS layer");
+                });
           }
         }
         else { // we suppose it's WMS
@@ -489,6 +613,7 @@
               createOnly, null, server.version).
               then(function(olL) {
                 if (olL) {
+                  console.log("OwsContextService::createLayer::thenOther: created ["+type+"] layer " + layer.name);
                   try {
                     // Avoid double encoding
                     if (layer.group) {
@@ -508,7 +633,9 @@
                   return olL;
                 }
                 return olL;
-              }).catch(function() {});
+              }).catch(function() {
+                  console.warn("OwsContextService::createLayer::catch: error creating ["+type+"] layer");
+              });
         }
       };
 

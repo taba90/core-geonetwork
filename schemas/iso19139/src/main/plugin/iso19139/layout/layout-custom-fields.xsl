@@ -28,8 +28,8 @@
                 xmlns:gmx="http://www.isotc211.org/2005/gmx"
                 xmlns:gml="http://www.opengis.net/gml"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:gn="http://www.fao.org/geonetwork"
-                xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
+  xmlns:gn="http://www.fao.org/geonetwork"
+  xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
                 xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
                 xmlns:saxon="http://saxon.sf.net/"
                 version="2.0"
@@ -37,8 +37,9 @@
                 exclude-result-prefixes="#all">
 
   <xsl:include href="layout-custom-fields-keywords.xsl"/>
-  <xsl:include href="layout-custom-fields-sds.xsl"/>
-
+  <xsl:include href="layout-custom-fields-sds.xsl"/>  
+  <xsl:include href="layout-custom-fields-ZAMG.xsl"/>
+  
   <!-- Readonly elements -->
   <xsl:template mode="mode-iso19139" priority="2000" match="gmd:fileIdentifier|gmd:dateStamp">
 
@@ -127,11 +128,11 @@
 
 
   <!-- Duration
-
+      
        xsd:duration elements use the following format:
-
+       
        Format: PnYnMnDTnHnMnS
-
+       
        *  P indicates the period (required)
        * nY indicates the number of years
        * nM indicates the number of months
@@ -140,7 +141,7 @@
        * nH indicates the number of hours
        * nM indicates the number of minutes
        * nS indicates the number of seconds
-
+       
        A custom directive is created.
   -->
   <xsl:template mode="mode-iso19139" match="gts:TM_PeriodDuration|gml:duration" priority="200">
@@ -167,7 +168,7 @@
   <!-- ===================================================================== -->
 
   <xsl:template mode="mode-iso19139" match="gml:beginPosition|gml:endPosition|gml:timePosition"
-                priority="200">
+    priority="200">
 
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
@@ -181,7 +182,7 @@
         <!-- Create form for all existing attribute (not in gn namespace)
         and all non existing attributes not already present. -->
         <xsl:apply-templates mode="render-for-field-for-attribute"
-                             select="             @*|           gn:attribute[not(@name = parent::node()/@*/name())]">
+          select="             @*|           gn:attribute[not(@name = parent::node()/@*/name())]">
           <xsl:with-param name="ref" select="gn:element/@ref"/>
           <xsl:with-param name="insertRef" select="gn:element/@ref"/>
         </xsl:apply-templates>
@@ -196,9 +197,9 @@
       <xsl:with-param name="value" select="text()"/>
       <xsl:with-param name="cls" select="local-name()"/>
       <xsl:with-param name="xpath" select="$xpath"/>
-      <!--
+      <!-- 
           Default field type is Date.
-
+          
           TODO : Add the capability to edit those elements as:
            * xs:time
            * xs:dateTime
@@ -208,12 +209,12 @@
           See http://trac.osgeo.org/geonetwork/ticket/661
         -->
       <xsl:with-param name="type"
-                      select="if (string-length($value) = 10 or $value = '') then 'date' else 'datetime'"/>
+        select="if (string-length($value) = 10 or $value = '') then 'date' else 'datetime'"/>
       <xsl:with-param name="editInfo" select="gn:element"/>
       <xsl:with-param name="attributesSnippet" select="$attributes"/>
     </xsl:call-template>
   </xsl:template>
-
+  
   <xsl:template mode="mode-iso19139" match="gmd:EX_GeographicBoundingBox" priority="2000">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
@@ -221,7 +222,7 @@
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
     <xsl:variable name="labelConfig" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)"/>
-
+    
     <xsl:call-template name="render-boxed-element">
       <xsl:with-param name="label"
                       select="$labelConfig/label"/>
@@ -238,9 +239,9 @@
              data-hbottom="{gmd:southBoundLatitude/gco:Decimal}"
              data-htop="{gmd:northBoundLatitude/gco:Decimal}"
              data-hleft-ref="_{gmd:westBoundLongitude/gco:Decimal/gn:element/@ref}"
-             data-hright-ref="_{gmd:eastBoundLongitude/gco:Decimal/gn:element/@ref}"
-             data-hbottom-ref="_{gmd:southBoundLatitude/gco:Decimal/gn:element/@ref}"
-             data-htop-ref="_{gmd:northBoundLatitude/gco:Decimal/gn:element/@ref}"
+          data-hright-ref="_{gmd:eastBoundLongitude/gco:Decimal/gn:element/@ref}"
+          data-hbottom-ref="_{gmd:southBoundLatitude/gco:Decimal/gn:element/@ref}"
+          data-htop-ref="_{gmd:northBoundLatitude/gco:Decimal/gn:element/@ref}"
              data-lang="lang">
           <xsl:if test="$identifier and $isFlatMode">
             <xsl:attribute name="data-identifier" select="$identifier"/>

@@ -42,6 +42,11 @@
 
           function init() {
 
+            if(! scope.layer) {
+                console.log("gn_wfs_directive: Layer not defined in scope");
+                return;
+            }
+
             var source = scope.layer.getSource();
             if(!source || !(source instanceof ol.source.ImageWMS ||
               source instanceof ol.source.TileWMS)) {
