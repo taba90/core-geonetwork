@@ -42,9 +42,8 @@
 
           function init() {
 
-            if(! scope.layer) {
-                console.log("gn_wfs_directive: Layer not defined in scope");
-                return;
+            if (!scope.layer) {
+              return;
             }
 
             var source = scope.layer.getSource();
