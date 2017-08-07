@@ -238,58 +238,58 @@
           <select id="zamg_areas" class="col-xs-4"></select>
           <script>
             $.ajax({
-                url: "keywords?"+ $.param(
-                    {"pNewSearch": "true",
-                     "pTypeSearch": "1",
-                     "pThesauri": "external.place.regions",
-                     "pMode": "searchBox",
-                     "maxResults": "200",
-                     "pKeyword": "",
-                     "_content_type": "json"}
-                )
-            }).done(
-                function( json ) {
-                    // json = atob(jsonenc);
-                    var optionTemplate = "WEST|EAST|SOUTH|NORTH|CODE|DESC";
-                    var sel = false;
-                    var areas = $('#zamg_areas');
+              beforeSend: function(xhr){xhr.setRequestHeader("Accept", "application/json");},
+              url: "../api/registries/vocabularies/search?" +
+                   $.param(
+                        {"type": "CONTAINS",
+                         "thesaurus":  "external.place.regions",
+                         "rows": "200",
+                         "lang": "<xsl:value-of select="$lang" />"}
+                    )
+            }).done(function( json ) {
 
-                    for(id in json[0]){
-                        var el = json[0][id];
-                        var areacode = el.uri.split("#")[1];
-                        var desc = el.value['#text'];
+                var optionTemplate = "WEST|EAST|SOUTH|NORTH|CODE|DESC";
+                var sel = false;
+                var areas = $('#zamg_areas');
 
-                        var option = optionTemplate.replace("WEST",el.geo.west);
-                        option = option.replace("EAST",el.geo.east);
-                        option = option.replace("SOUTH",el.geo.south);
-                        option = option.replace("NORTH",el.geo.north);
-                        option = option.replace("CODE",areacode);
-                        option = option.replace("DESC", desc);
+                for(id in json){
+                    var el = json[id];
+                    var areacode = el.uri.split("#")[1];
+                    var desc = el.value;
 
-                        areas.append(new Option(el.value['#text'], option));
+                    var option = optionTemplate.replace("WEST",el.coordWest);
+                    option = option.replace("EAST",el.coordEast);
+                    option = option.replace("SOUTH",el.coordSouth);
+                    option = option.replace("NORTH",el.coordNorth);
+                    option = option.replace("CODE",areacode);
+                    option = option.replace("DESC", desc);
 
-                        //$('#zamg_areas').append($("&lt;option/&gt;", {
-                        //    value: option,
-                        //    text: el.value['#text']
-                        //}));
-
-                        if(areacode == areas.val()) {
-                            areas.val(option);
-                            sel = true;
-                        }
-                    }
-
-                    areas.append(new Option('<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />', 'custom'));
+                    areas.append(new Option(el.value, option));
 
                     //$('#zamg_areas').append($("&lt;option/&gt;", {
-                    //    value: "custom",
-                    //    text: "<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />"
+                    //    value: option,
+                    //    text: el.value['#text']
                     //}));
 
-                    if(! sel) {
-                        areas.val("custom");
+                    if(areacode == $('#zamg_region_code')[0].value) {
+                        areas.val(option);
+                        sel = true;
                     }
-                });
+                }
+
+                areas.append(new Option('<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />', 'custom'));
+
+                //$('#zamg_areas').append($("&lt;option/&gt;", {
+                //    value: "custom",
+                //    text: "<xsl:value-of select="/root/gui/schemas/iso19139/strings/zamg_custom" />"
+                //}));
+
+                if(! sel) {
+                    areas.val("custom");
+                }
+            });
+
+            // =============================================================================================================
 
             var setCustom = function (){
                 $('#zamg_areas').val("custom");
