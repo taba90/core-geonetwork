@@ -378,7 +378,7 @@
       <script>
         $.ajax({
           beforeSend: function(xhr){xhr.setRequestHeader("Accept", "application/json");},
-          url: "/geonetwork/srv/api/registries/vocabularies/search?" + // fixme: service path should be dynamic
+          url: "../api/registries/vocabularies/search?" + 
                $.param(
                     {"type": "CONTAINS",
                      "thesaurus":  "<xsl:value-of select="$thesaurus" />",
@@ -437,32 +437,24 @@
         </div>
         <xsl:variable name="id" select="concat('gn-field-',gco:CharacterString/gn:element/@ref)"/>
         <script>
-          $.ajax({
-            url: "keywords?"+ $.param(
-                      {"pNewSearch": "true",
-                       "pTypeSearch": "1",
-                       "pThesauri":  "<xsl:value-of select="$thesaurus" />",
-                       "pMode": "searchBox",
-                       "maxResults": "200",
-                       "pKeyword": "",
-                       "_content_type": "json"}
-                  )
-          }).done(function( json ) {
-
+        $.ajax({
+          beforeSend: function(xhr){xhr.setRequestHeader("Accept", "application/json");},
+          url: "../api/registries/vocabularies/search?" +
+               $.param(
+                    {"type": "CONTAINS",
+                     "thesaurus":  "<xsl:value-of select="$thesaurus" />",
+                     "rows": "200",
+                     "lang": "<xsl:value-of select="$lang" />"}
+                )
+        }).done(function( json ) {
             console.log("CLEAN elem <xsl:value-of select="$id" /> THESAURUS <xsl:value-of select="$thesaurus" />");
             var selectElem = $('#<xsl:value-of select="$id" />');
-            //$('#<xsl:value-of select="$id" />').children().remove();
             selectElem.children().remove();
-            for(id in json[0]){
-                var el = json[0][id];
-                selectElem.append(new Option(el.value['#text'], el.uri.split('#')[1]));
-
-                //$('#<xsl:value-of select="$id" />').append($("&lt;option/&gt;", {
-                //    value: el.uri.split('#')[1],
-                //    text: el.value['#text']
-                //}));
-              }
-              selectElem.val('<xsl:value-of select="$value" />');
+            for(id in json){
+                var elem = json[id];
+                selectElem.append(new Option(elem.value, elem.uri.split('#')[1]));
+            }
+            selectElem.val('<xsl:value-of select="$value" />');
           });
         </script>
       </div>
