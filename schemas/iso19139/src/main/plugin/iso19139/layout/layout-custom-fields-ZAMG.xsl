@@ -525,57 +525,46 @@
   <!-- gml:TimePeriod (format = %Y-%m-%dThh:mm:ss) -->
   <!-- ===================================================================== -->
 
-  <xsl:template mode="mode-iso19139" match="gml:beginPosition|gml:endPosition|gml:timePosition"
-    priority="3000">
+  <xsl:template mode="mode-iso19139"
+                priority="3000"
+                match="*[gml:beginPosition|gml:endPosition|gml:timePosition]">
 
+    <xsl:param name="schema" select="$schema" required="no"/>
+    <xsl:param name="labels" select="$labels" required="no"/>
 
-    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
-    <xsl:variable name="value" select="normalize-space(text())"/>
+    <xsl:variable name="timenode"           select="gml:beginPosition|gml:endPosition|gml:timePosition"/>
 
+    <xsl:variable name="xpath"              select="gn-fn-metadata:getXPath($timenode)"/>
+    <xsl:variable name="isoType"            select="''"/>
+    <xsl:variable name="labelConfig"        select="gn-fn-metadata:getLabel($schema, name($timenode), $labels, name($timenode), $isoType, $xpath)"/>
+    <xsl:variable name="dateTypeElementRef" select="gn:element/@ref"/>
 
-    <xsl:variable name="attributes">
-      <xsl:if test="$isEditing">
-        <!-- Create form for all existing attribute (not in gn namespace)
-        and all non existing attributes not already present. -->
-        <xsl:apply-templates mode="render-for-field-for-attribute"
-          select="             @*|           gn:attribute[not(@name = parent::node()/@*/name())]">
-          <xsl:with-param name="ref" select="gn:element/@ref"/>
-          <xsl:with-param name="insertRef" select="gn:element/@ref"/>
-        </xsl:apply-templates>
-      </xsl:if>
-    </xsl:variable>
+    <xsl:variable name="isRequired"         select="gn:element/@min = 1 and gn:element/@max = 1"/>
 
-<!--    <xsl:comment> TEMPORAL:
-        XPATH <xsl:value-of select="$xpath"/>
-        VALUE <xsl:value-of select="$value"/>
-        NAME. <xsl:value-of select="name(.)"/>
-        NAME.. <xsl:value-of select="name(..)"/>
-        OLD LABEL <xsl:value-of select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', $xpath)/label"/>
-        NEW LABEL <xsl:value-of select="$labels/element[@name=name(.)]/label"/>
-    </xsl:comment>-->
+    <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''}"
+         id="gn-el-{$dateTypeElementRef}"
+         data-gn-field-highlight="">
 
-    <xsl:call-template name="render-element">
-      <xsl:with-param name="label" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), '', $xpath)"/>
-      <xsl:with-param name="name" select="gn:element/@ref"/>
-      <xsl:with-param name="value" select="text()"/>
-      <xsl:with-param name="cls" select="local-name()"/>
-      <xsl:with-param name="xpath" select="$xpath"/>
-      <!--
-          Default field type is Date.
+      <label class="col-sm-2 control-label">
+        <xsl:value-of select="$labelConfig/label"/>
+      </label>
 
-          TODO : Add the capability to edit those elements as:
-           * xs:time
-           * xs:dateTime
-           * xs:anyURI
-           * xs:decimal
-           * gml:CalDate
-          See http://trac.osgeo.org/geonetwork/ticket/661
-        -->
-      <xsl:with-param name="type"
-        select="if (string-length($value) = 10 or $value = '') then 'date' else 'datetime-local'"/>
-      <xsl:with-param name="editInfo" select="gn:element"/>
-      <xsl:with-param name="attributesSnippet" select="$attributes"/>
-    </xsl:call-template>
+      <div class="col-sm-9 gn-value">
+        <div data-gn-date-picker="{$timenode}"
+             data-label=""
+             data-tag-name="{name($timenode)}"
+             data-element-name="{name($timenode)}"
+             data-element-ref="{concat('_X', gn:element/@ref)}">
+        </div>
+      </div>
+
+      <div class="col-sm-1 gn-control">
+        <xsl:call-template name="render-form-field-control-remove">
+          <xsl:with-param name="editInfo" select="../gn:element"/>
+          <xsl:with-param name="parentEditInfo" select="../../gn:element"/>
+        </xsl:call-template>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template mode="mode-iso19139" match="gmd:EX_GeographicBoundingBox" priority="2000">
