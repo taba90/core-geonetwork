@@ -1277,7 +1277,6 @@
            * @return {ol.layer.Tile} created layer
            */
           createOlWMTSFromCap: function(map, getCapLayer, capabilities) {
-
             var legend, attribution, metadata;
             if (getCapLayer) {
               var layer = getCapLayer;
@@ -1338,6 +1337,8 @@
               var projectionExtent = projection.getExtent();
               var resolutions = new Array(nbMatrix);
               var matrixIds = new Array(nbMatrix);
+              var tileSize = [256, 256];
+              var origin = ol.extent.getTopLeft(projection.getExtent());
               for (var z = 0; z < nbMatrix; ++z) {
                 var matrix = matrixSet.TileMatrix[z];
                 var size = ol.extent.getWidth(projectionExtent) /
@@ -1345,8 +1346,15 @@
                 resolutions[z] = matrix.ScaleDenominator * 0.00028 /
                     projection.getMetersPerUnit();
                 matrixIds[z] = matrix.Identifier;
+                tileSize = [matrix.TileWidth, matrix.TileWidth];
+                if (matrix.TopLeftCorner) {
+                    if (proj4.defs(projection.getCode()).axis && proj4.defs(projection.getCode()).axis.indexOf('n') === 0) {
+                        origin = [matrix.TopLeftCorner[1], matrix.TopLeftCorner[0]];
+                    } else {
+                        origin = matrix.TopLeftCorner;
+                    }
+                }
               }
-
               var source = new ol.source.WMTS({
                 url: url,
                 layer: layer.Identifier,
@@ -1354,9 +1362,10 @@
                 format: layer.Format[0] || 'image/png',
                 projection: projection,
                 tileGrid: new ol.tilegrid.WMTS({
-                  origin: ol.extent.getTopLeft(projection.getExtent()),
+                  origin: origin,
                   resolutions: resolutions,
-                  matrixIds: matrixIds
+                  matrixIds: matrixIds,
+                  tileSize: tileSize
                 }),
                 style: style
               });
