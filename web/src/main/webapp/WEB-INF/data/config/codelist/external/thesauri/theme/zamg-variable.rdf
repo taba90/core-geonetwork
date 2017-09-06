@@ -12,7 +12,7 @@
 
     <!-- Scheme -->
   <skos:ConceptScheme rdf:about="http://geonetwork-opensource.org/zamg/variable">
-    <dc:title>Variable names</dc:title>
+    <dc:title>ZAMG - Variable names</dc:title>
     <dc:description>Variable names used in ZAMG datasets</dc:description>
     <dc:creator>
       <foaf:Organization>

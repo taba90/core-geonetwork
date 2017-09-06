@@ -2,7 +2,7 @@
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:gml="http://www.opengis.net/gml#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:xdt="http://www.w3.org/2005/02/xpath-datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <!-- Scheme -->
   <skos:ConceptScheme rdf:about="http://geonetwork-opensource.org/ATregions">
-    <dc:title>Austrian Regions</dc:title>
+    <dc:title>ZAMG - Austrian Regions</dc:title>
     <dc:description>Regions related to Austria</dc:description>
     <dc:creator>
       <foaf:Organization>
@@ -173,6 +173,32 @@
     </gml:BoundedBy>
     <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#europe" />
     <skos:narrower rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/ATregions#incastd">
+    <skos:prefLabel xml:lang="en">INCA Standard</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">INCA Standard</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>9.452393 46.082310</gml:lowerCorner>
+        <gml:upperCorner>17.467042 49.235495</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#incalarge" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/ATregions#austria" />
+  </skos:Concept>
+
+  <skos:Concept rdf:about="http://geonetwork-opensource.org/ATregions#incalarge">
+    <skos:prefLabel xml:lang="en">INCA Large</skos:prefLabel>
+    <skos:prefLabel xml:lang="de">INCA Large</skos:prefLabel>
+    <gml:BoundedBy>
+      <gml:Envelope gml:srsName="http://www.opengis.net/gml/srs/epsg.xml#epsg:4326">
+        <gml:lowerCorner>8.097400742864 45.771742894364</gml:lowerCorner>
+        <gml:upperCorner>17.742997005391 49.397092859301</gml:upperCorner>
+      </gml:Envelope>
+    </gml:BoundedBy>
+    <skos:broader rdf:resource="http://geonetwork-opensource.org/ATregions#europe" />
+    <skos:narrower rdf:resource="http://geonetwork-opensource.org/ATregions#incastd" />
   </skos:Concept>
 
   <skos:Concept rdf:about="http://geonetwork-opensource.org/ATregions#europe">
