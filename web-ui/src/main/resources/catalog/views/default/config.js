@@ -110,7 +110,7 @@
         // define Austria Lambert projection (EPSG:31287) since it seems not supported in this ngeo/ol3 relase
         proj4.defs("EPSG:31287","+proj=lcc +lat_1=49 +lat_2=46 +lat_0=47.5 +lon_0=13.33333333333333 +x_0=400000 +y_0=400000 +ellps=bessel +towgs84=577.326,90.129,463.919,5.137,1.474,5.297,2.4232 +units=m +no_defs +axis=neu");
 //        ol.proj.get("EPSG:31287").setExtent([107778.5323, 286080.6331, 694883.9348, 575953.6150]); // this is the real extent
-        ol.proj.get("EPSG:31287").setExtent([80000.00, 286080.6331, 694883.9348, 600000.0]);         // extent used to show the whole Austrian region
+        ol.proj.get("EPSG:31287").setExtent([80000.00, 274080.6331, 694883.9348, 600000.0]);         // extent used to show the whole Austrian region
 //        ol.proj.get("EPSG:31287").setWorldExtent([9.5300, 46.4100, 17.1700, 59.0200]);
         ol.proj.get("EPSG:31287").setWorldExtent([-180.0, 0.0, 180.0, 90.0]);
 
@@ -195,7 +195,7 @@
             controls: [],
             // layers: [], // temporary init
             view: new ol.View({
-                extent: [107778.5323, 286080.6331, 694883.9348, 575953.6150],
+                extent: [107724.11, 274000.00, 680575.40, 575953.62],
                 center: ol.proj.transform([14.149161, 47.510335], 'EPSG:4326', 'EPSG:31287'),
                 projection: ol.proj.get("EPSG:31287"),
                 minZoom: 3
