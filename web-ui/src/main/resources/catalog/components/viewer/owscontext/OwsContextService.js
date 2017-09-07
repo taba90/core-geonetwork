@@ -114,8 +114,8 @@
         var ur = bbox.upperCorner;
         var projection = bbox.crs;
 
-        console.log("OwsContextService::loadContext: MAP  crs:" + map.getView().getProjection().getCode());
-        console.log("OwsContextService::loadContext: BBOX ll:"+ll+ " ur:"+ur + " crs:"+bbox.crs);
+        //console.log("OwsContextService::loadContext: MAP  crs:" + map.getView().getProjection().getCode());
+        //console.log("OwsContextService::loadContext: BBOX ll:"+ll+ " ur:"+ur + " crs:"+bbox.crs);
 
         if (projection == 'EPSG:4326') {
           ll.reverse();
@@ -318,7 +318,7 @@
 //                      + " into map with " + map.getLayers().getLength() + " layers");
 
               var mapIdx = map.getLayers().push(placeHolderLayer);
-              console.log("OwsContextService::loadContext: added FG placeholder ["+type+"] map index: "+mapIdx+": " + layer.name);
+              //console.log("OwsContextService::loadContext: added FG placeholder ["+type+"] map index: "+mapIdx+": " + layer.name);
 
               var p = self.createLayer(layer, map, undefined, mapIdx);
 
@@ -578,14 +578,14 @@
           var name = reL.exec(layer.name)[1];
 
           if (type == 'wmts') {
-            console.log("OwsContextService::createLayer: creating WMTS layer " + name);
+            //console.log("OwsContextService::createLayer: creating WMTS layer " + name);
             return gnMap.addWmtsFromScratch(map, res.href, name, createOnly).
                 then(function(olL) {
                   if(!olL) {
                     console.warn("OwsContextService::createLayer::then: created null WMTS layer " + layer.name);
                   }
 
-                  console.log("OwsContextService::createLayer::thenWMTS: created ["+type+"] layer " + olL.get("name"));
+                  //console.log("OwsContextService::createLayer::thenWMTS: created ["+type+"] layer " + olL.get("name"));
                   olL.set('group', layer.group);
                   olL.set('groupcombo', layer.groupcombo);
                   olL.setOpacity(layer.opacity);
@@ -613,7 +613,7 @@
               createOnly, null, server.version).
               then(function(olL) {
                 if (olL) {
-                  console.log("OwsContextService::createLayer::thenOther: created ["+type+"] layer " + layer.name);
+                  //console.log("OwsContextService::createLayer::thenOther: created ["+type+"] layer " + layer.name);
                   try {
                     // Avoid double encoding
                     if (layer.group) {
