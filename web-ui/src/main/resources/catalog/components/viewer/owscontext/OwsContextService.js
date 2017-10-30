@@ -234,7 +234,7 @@
 
               var placeHolderLayer = new ol.layer.Image({
                 loading: true,
-                label: 'loading',
+                label: 'loading ' + lname,
                 url: '',
                 visible: false
               });
@@ -272,6 +272,7 @@
                   if(placeHolderLayer.get('bgLayer')) {
                       console.log("OwsContextService::loadContext: replacing BG placeholder ["+type+"]: " + layer.name);
                       layer.setVisible(true); // force if not exists other visibile BG layer
+                      console.log("OwsContextService::loadContext: replacing BG placeholder: OLD= " + map.getLayers().get(0).label );
                       map.getLayers().setAt(0, layer);
                   }
 
@@ -309,6 +310,7 @@
               var placeHolderLayer = new ol.layer.Image({
                 loading: true,
                 label: 'loading',
+                name: layer.name,
                 url: '',
                 visible: false
               });
@@ -318,7 +320,9 @@
 //                      + " into map with " + map.getLayers().getLength() + " layers");
 
               var mapIdx = map.getLayers().push(placeHolderLayer);
-              //console.log("OwsContextService::loadContext: added FG placeholder ["+type+"] map index: "+mapIdx+": " + layer.name);
+              console.log("OwsContextService::loadContext: added FG placeholder ["+type+"] map index: "+mapIdx+": " + layer.name);
+
+              var layerIdx = self.dumpMap(map, layer.name);
 
               var p = self.createLayer(layer, map, undefined, mapIdx);
 
@@ -329,8 +333,12 @@
                     }
 //                  console.log("OwsContextService::loadContext: created ["+type+"] layer " + idx + ": " + self.stringify(layer));
 
-                  console.log("OwsContextService::loadContext: replacing FG placeholder ["+type+"] index: "+idx+": " + layer.get('name'));
-                  map.getLayers().setAt(idx-1, layer);
+                  var placeholder = map.getLayers().getArray()[idx];
+                  console.log("OwsContextService::loadContext: replacing FG placeholder ["+type+"] "
+                           + "index: "+idx
+                           + " OLD:'"+placeholder.get('label')+"'"
+                           + " NEW:'"+layer.get('name')+"'");
+                  map.getLayers().setAt(idx, layer);
 
                   //console.log("OwsContextService::loadContext: CHECKPOINT2 " + layer.get('name'));
 
@@ -343,6 +351,22 @@
         }
       };
 
+    this.dumpMap = function (map, layername) {
+        var layerIdx = -1;
+        var larr = map.getLayers().getArray();
+        for (lcnt = 0; lcnt < larr.length; lcnt++) {
+            var ll = larr[lcnt];
+            console.log("OwsContextService::loadContext: check: map["+lcnt+"] -> "
+                    + "name:"+ll.get('name')
+                    + " lbl:"+ll.get('label')
+                    +"  ld:"+ll.get('loading'));
+            if(layername &&  ll.get('name') == layername)
+                layerIdx = lcnt;
+        }
+        console.log("OwsContextService::loadContext: found FG placeholder idx = "+layerIdx+" for layer " + layername);
+
+        return layerIdx;
+    }
 
     this.stringify = function (obj, replacer, spaces, cycleReplacer) {
       return JSON.stringify(obj, this.serializer(replacer, cycleReplacer), spaces)
@@ -576,6 +600,8 @@
         if (layer.name.match(reT)) {
           var type = reT.exec(layer.name)[1];
           var name = reL.exec(layer.name)[1];
+
+          console.log("OwsContextService::createLayer: Layer: " + name + " type: "+ type);
 
           if (type == 'wmts') {
             //console.log("OwsContextService::createLayer: creating WMTS layer " + name);
