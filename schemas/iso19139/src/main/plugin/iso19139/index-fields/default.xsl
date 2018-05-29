@@ -316,12 +316,18 @@
                                     <xsl:variable name="keyword" select="string(.)"/>
 
                                     <xsl:variable name="uri-from-altlabel"  select="$zamg-concepts[skos:altLabel = $keyword]/@rdf:about"/>
+                                    <xsl:variable name="uri-from-preflabel"  select="$zamg-concepts[skos:prefLabel = $keyword]/@rdf:about"/>
                                     <xsl:variable name="uri-from-about"     select="$zamg-concepts[ends-with(@rdf:about, concat('#', $keyword))]/@rdf:about"/>
-                                    <xsl:variable name="zamg-concept-uri"   select="if($uri-from-about) then $uri-from-about else $uri-from-altlabel"/>
+                                    <xsl:variable name="zamg-concept-uri"   select="if($uri-from-about) then $uri-from-about else if($uri-from-altlabel) then $uri-from-altlabel else $uri-from-preflabel[1]"/>
                                     <!--<xsl:variable name="zamg-concept-uri"  select="$zamg-concepts[skos:altLabel = $keyword]/@rdf:about"/>-->
+
+<xsl:message>INFO: KEYWORD: <xsl:value-of select="$keyword"/> URI: <xsl:value-of select="$zamg-concept-uri"/></xsl:message>
 
                                     <xsl:if test="not($uri-from-about) and $uri-from-altlabel">
                                         <xsl:message>INFO: using legacy info from altLabel: <xsl:value-of select="$keyword"/></xsl:message>
+                                    </xsl:if>
+                                    <xsl:if test="not($uri-from-about) and not($uri-from-altlabel) and $uri-from-preflabel">
+                                        <xsl:message>INFO: using inferred info from prefLabel: <xsl:value-of select="$keyword"/></xsl:message>
                                     </xsl:if>
 
                                     <xsl:variable name="inspire-thesaurus" select="if ($inspire!='false') then document(concat('file:///', $thesauriDir, '/external/thesauri/theme/inspire-theme.rdf')) else ''"/>
@@ -334,9 +340,10 @@
                                             <xsl:message>INFO: skipping 'none' selection in thesaurus <xsl:value-of select="$zamgname"/></xsl:message>
                                         </xsl:when>
                                         <xsl:otherwise>
+                                            <xsl:variable name="zamg-concept-anchor" select="substring-after($zamg-concept-uri,'#')"/>
                                             <xsl:message>INFO: adding field <xsl:value-of select="$keyword"/>@<xsl:value-of select="$basename"/> : <xsl:value-of select="$zamg-concept-uri"/></xsl:message>
-                                            <!--<Field name="{$zamgname}"     string="{lower-case($keyword)}" store="true" index="true"/>-->
-                                            <Field name="{$zamgname}_uri" string="{$zamg-concept-uri}"    store="true" index="true"/>
+                                            <Field name="{$zamgname}"     string="{lower-case($zamg-concept-anchor)}" store="true" index="true"/>
+                                            <Field name="{$zamgname}_uri" string="{$zamg-concept-uri}"                store="true" index="true"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:for-each>
