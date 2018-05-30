@@ -114,6 +114,7 @@
         <facet name="zamg_datatype_uri"   indexKey="zamg_datatype_uri"   label="facets_zamg_datatype" />
         <facet name="zamg_uom_uri"        indexKey="zamg_uom_uri"        label="facets_zamg_uom" />
         <facet name="zamg_variable_uri"   indexKey="zamg_variable_uri"   label="facets_zamg_variable" />
+        <facet name="zamg_mdtarget_uri"   indexKey="zamg_mdtarget_uri"   label="facets_zamg_mdtarget" />
 
         <!--
         Example configuration for hierarchical facet based on
@@ -141,6 +142,8 @@
           <item facet="zamg_datatype_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/datatype"/>
           <item facet="zamg_uom_uri"        sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/uom"/>
           <item facet="zamg_variable_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/variable"/>
+          <item facet="zamg_mdtarget_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/mdtarget"/>
+
 
           <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
           <item facet="topicCat" translator="codelist:gmd:MD_TopicCategoryCode" max="20"/>
@@ -176,6 +179,7 @@
         <item facet="zamg_datatype_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/datatype"/>
         <item facet="zamg_uom_uri"        sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/uom"/>
         <item facet="zamg_variable_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/variable"/>
+        <item facet="zamg_mdtarget_uri"   sortBy="value" sortOrder="desc" translator="term:http://geonetwork-opensource.org/zamg/mdtarget"/>
 
         <item facet="type" translator="codelist:gmd:MD_ScopeCode"/>
         <item facet="category" max="99" sortBy="value"

@@ -326,5 +326,6 @@
     "facets_zamg_variable": "ZAMG - Parameter Name",
     "facets_zamg_uom": "ZAMG - Maßeinheit",
     "facets_zamg_sourcetype": "ZAMG - Quelltyp",
-    "facets_zamg_datatype": "ZAMG - Datentyp"   
+    "facets_zamg_datatype": "ZAMG - Datentyp",
+    "facets_zamg_mdtarget": "ZAMG - Target"
 }
