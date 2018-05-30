@@ -341,9 +341,12 @@
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="zamg-concept-anchor" select="substring-after($zamg-concept-uri,'#')"/>
-                                            <xsl:message>INFO: adding field <xsl:value-of select="$keyword"/>@<xsl:value-of select="$basename"/> : <xsl:value-of select="$zamg-concept-uri"/></xsl:message>
-                                            <Field name="{$zamgname}"     string="{lower-case($zamg-concept-anchor)}" store="true" index="true"/>
-                                            <Field name="{$zamgname}_uri" string="{$zamg-concept-uri}"                store="true" index="true"/>
+                                            <xsl:message>INFO: adding field zamgname[<xsl:value-of select="$zamgname"/>] keyword[<xsl:value-of select="$keyword"/>] anchor[<xsl:value-of select="$zamg-concept-anchor"/>] uri[<xsl:value-of select="$zamg-concept-uri"/>]</xsl:message>
+
+                                            <Field name="{$zamgname}"        string="{lower-case($keyword)}"             store="true" index="true"/>
+                                            <Field name="{$zamgname}_uri"    string="{$zamg-concept-uri}"                store="true" index="true"/>
+                                            <Field name="{$zamgname}_anchor" string="{lower-case($zamg-concept-anchor)}" store="true" index="true"/>
+
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:for-each>
