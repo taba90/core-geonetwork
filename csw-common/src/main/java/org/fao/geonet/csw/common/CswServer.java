@@ -43,7 +43,7 @@ import java.util.Map;
 public class CswServer {
     public static final String GET_RECORDS = "GetRecords";
     public static final String GET_RECORD_BY_ID = "GetRecordById";
-    private Map<String, CswOperation> operations = new HashMap<String, CswOperation>();
+    private Map<String, CswOperation> operations = new HashMap<>();
 
     //---------------------------------------------------------------------------
     //---

@@ -38,7 +38,7 @@ public class OutputFormatPreference {
     /**
      * List of OutputSchema in order of preference.
      */
-    private static List<String> outputFormats = new ArrayList<String>();
+    private static List<String> outputFormats = new ArrayList<>();
 
     /**
      * Populate list of OutputFormats in order of preference.

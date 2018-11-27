@@ -26,27 +26,24 @@ package org.fao.geonet.csw.common.requests;
 import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.csw.common.Csw;
-import org.fao.geonet.csw.common.Section;
+import org.fao.geonet.csw.common.TypeName;
 import org.jdom.Element;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 //=============================================================================
 
 /**
- * Params: - sections       (0..n) - updateSequence (0..1) - acceptFormats  (0..n) - acceptVersions
- * (0..n)
+ * Params: - outputFormat   (0..1) default is 'application/xml' - schemaLanguage (0..1) default is
+ * 'XMLSCHEMA' - typeName       (0..n)
  */
 
-public class GetCapabilitiesRequest extends CatalogRequest {
-    private String sequence;
+public class DescribeRecordRequest extends CatalogRequest {
+    private String outputFormat;
+    private String schemaLang;
 
-    private List<String> alVersions = new ArrayList<String>();
-    private List<String> alFormats = new ArrayList<String>();
-    private Set<Section> hsSections = new HashSet<Section>();
+    private List<TypeName> alTypeNames = new ArrayList<>();
 
     //---------------------------------------------------------------------------
     //---
@@ -54,7 +51,7 @@ public class GetCapabilitiesRequest extends CatalogRequest {
     //---
     //---------------------------------------------------------------------------
 
-    public GetCapabilitiesRequest(ServiceContext context) {
+    public DescribeRecordRequest(ServiceContext context) {
         super(context);
     }
 
@@ -64,26 +61,20 @@ public class GetCapabilitiesRequest extends CatalogRequest {
     //---
     //---------------------------------------------------------------------------
 
-    public void addVersion(String version) {
-        alVersions.add(version);
+    public void addTypeName(TypeName name) {
+        alTypeNames.add(name);
     }
 
     //---------------------------------------------------------------------------
 
-    public void addSection(Section section) {
-        hsSections.add(section);
+    public void setOutputFormat(String format) {
+        outputFormat = format;
     }
 
     //---------------------------------------------------------------------------
 
-    public void addOutputFormat(String format) {
-        alFormats.add(format);
-    }
-
-    //---------------------------------------------------------------------------
-
-    public void setUpdateSequence(String sequence) {
-        this.sequence = sequence;
+    public void setSchemaLanguage(String language) {
+        schemaLang = language;
     }
 
     //---------------------------------------------------------------------------
@@ -93,7 +84,7 @@ public class GetCapabilitiesRequest extends CatalogRequest {
     //---------------------------------------------------------------------------
 
     protected String getRequestName() {
-        return "GetCapabilities";
+        return "DescribeRecord";
     }
 
     //---------------------------------------------------------------------------
@@ -101,13 +92,17 @@ public class GetCapabilitiesRequest extends CatalogRequest {
     protected void setupGetParams() {
         addParam("request", getRequestName());
         addParam("service", Csw.SERVICE);
+        addParam("version", getServerVersion());
 
-        if (sequence != null)
-            addParam("updateSequence", sequence);
+        if (outputFormat != null)
+            addParam("outputFormat", outputFormat);
 
-        fill("acceptVersions", alVersions);
-        fill("sections", hsSections);
-        fill("acceptFormats", alFormats);
+        if (schemaLang != null)
+            addParam("schemaLanguage", schemaLang);
+
+        fill("typeName", alTypeNames, Csw.NAMESPACE_CSW.getPrefix() + ":");
+
+        addParam("namespace", Csw.NAMESPACE_CSW.getPrefix() + ":" + Csw.NAMESPACE_CSW.getURI());
     }
 
     //---------------------------------------------------------------------------
@@ -115,14 +110,26 @@ public class GetCapabilitiesRequest extends CatalogRequest {
     protected Element getPostParams() {
         Element params = new Element(getRequestName(), Csw.NAMESPACE_CSW);
 
+        //--- 'service' and 'version' are common mandatory attributes
         params.setAttribute("service", Csw.SERVICE);
+        params.setAttribute("version", getServerVersion());
 
-        if (sequence != null)
-            params.setAttribute("updateSequence", sequence);
+        if (outputFormat != null)
+            params.setAttribute("outputFormat", outputFormat);
 
-        fill(params, "AcceptVersions", "Version", alVersions, Csw.NAMESPACE_OWS);
-        fill(params, "Sections", "Section", hsSections, Csw.NAMESPACE_OWS);
-        fill(params, "AcceptFormats", "OutputFormat", alFormats, Csw.NAMESPACE_OWS);
+        if (schemaLang != null)
+            params.setAttribute("schemaLanguage", schemaLang);
+
+        //------------------------------------------------------------------------
+        //--- add 'TypeName' elements
+
+        for (TypeName typeName : alTypeNames) {
+            Element el = new Element("TypeName", Csw.NAMESPACE_CSW);
+            el.setText(typeName.toString());
+            el.setAttribute("targetNamespace", Csw.NAMESPACE_CSW.getURI());
+
+            params.addContent(el);
+        }
 
         return params;
     }

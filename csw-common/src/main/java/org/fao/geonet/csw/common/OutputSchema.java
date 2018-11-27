@@ -28,7 +28,6 @@ import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.schema.SchemaPlugin;
 import org.jdom.Namespace;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public enum OutputSchema {

@@ -67,8 +67,8 @@ public class GetRecordsRequest extends CatalogRequest {
     private ElementSetName elemSetName;
     private ConstraintLanguage constrLang;
 
-    private Set<TypeName> hsTypeNames = new HashSet<TypeName>();
-    private List<String> alSortBy = new ArrayList<String>();
+    private Set<TypeName> hsTypeNames = new HashSet<>();
+    private List<String> alSortBy = new ArrayList<>();
 
     //---------------------------------------------------------------------------
     //---

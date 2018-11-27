@@ -86,8 +86,8 @@ public abstract class CatalogException extends Exception {
         root.setAttribute("schemaLocation", Csw.NAMESPACE_OWS.getURI() + " " + Csw.OWS_SCHEMA_LOCATIONS + "/ows/1.0.0/owsExceptionReport.xsd", Csw.NAMESPACE_XSI);
 
         while (e != null) {
-            Element exc = new Element("Exception", Csw.NAMESPACE_OWS);
-            exc.setAttribute("exceptionCode", e.getCode());
+            Element exc = new Element("Exception", Csw.NAMESPACE_OWS)
+                    .setAttribute("exceptionCode", e.getCode());
 
             if (e.getMessage() != null)
                 exc.addContent(new Element("ExceptionText", Csw.NAMESPACE_OWS).setText(e.getMessage()));

@@ -42,7 +42,7 @@ import java.util.List;
 public class GetRecordByIdRequest extends CatalogRequest {
     private ElementSetName setName;
 
-    private List<String> alIds = new ArrayList<String>();
+    private List<String> alIds = new ArrayList<>();
 
     //---------------------------------------------------------------------------
     //---

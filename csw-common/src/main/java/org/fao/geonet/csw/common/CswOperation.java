@@ -45,17 +45,17 @@ public class CswOperation {
     /**
      * The OutputSchemas as advertised in the CSW server's GetCapabilities response.
      */
-    private List<String> outputSchemaList = new ArrayList<String>();
+    private List<String> outputSchemaList = new ArrayList<>();
 
     /**
      * The OutputFormats as advertised in the CSW server's GetCapabilities response.
      */
-    private List<String> outputFormatList = new ArrayList<String>();
+    private List<String> outputFormatList = new ArrayList<>();
 
     /**
      * The constraintLanguage as advertised in the CSW server's GetCapabilities response.
      */
-    private List<String> constraintLanguage = new ArrayList<String>();
+    private List<String> constraintLanguage = new ArrayList<>();
 
     /**
      * The preferred OutputSchema from the above.
@@ -69,7 +69,7 @@ public class CswOperation {
 
     private String preferredServerVersion;
 
-    private List<String> typeNamesList = new ArrayList<String>();
+    private List<String> typeNamesList = new ArrayList<>();
 
     protected void choosePreferredOutputSchema() {
         OutputSchemaPreference preference = new OutputSchemaPreference();

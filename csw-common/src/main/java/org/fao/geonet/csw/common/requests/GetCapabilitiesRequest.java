@@ -26,24 +26,27 @@ package org.fao.geonet.csw.common.requests;
 import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.csw.common.Csw;
-import org.fao.geonet.csw.common.TypeName;
+import org.fao.geonet.csw.common.Section;
 import org.jdom.Element;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //=============================================================================
 
 /**
- * Params: - outputFormat   (0..1) default is 'application/xml' - schemaLanguage (0..1) default is
- * 'XMLSCHEMA' - typeName       (0..n)
+ * Params: - sections       (0..n) - updateSequence (0..1) - acceptFormats  (0..n) - acceptVersions
+ * (0..n)
  */
 
-public class DescribeRecordRequest extends CatalogRequest {
-    private String outputFormat;
-    private String schemaLang;
+public class GetCapabilitiesRequest extends CatalogRequest {
+    private String sequence;
 
-    private List<TypeName> alTypeNames = new ArrayList<TypeName>();
+    private List<String> alVersions = new ArrayList<>();
+    private List<String> alFormats = new ArrayList<>();
+    private Set<Section> hsSections = new HashSet<>();
 
     //---------------------------------------------------------------------------
     //---
@@ -51,7 +54,7 @@ public class DescribeRecordRequest extends CatalogRequest {
     //---
     //---------------------------------------------------------------------------
 
-    public DescribeRecordRequest(ServiceContext context) {
+    public GetCapabilitiesRequest(ServiceContext context) {
         super(context);
     }
 
@@ -61,20 +64,26 @@ public class DescribeRecordRequest extends CatalogRequest {
     //---
     //---------------------------------------------------------------------------
 
-    public void addTypeName(TypeName name) {
-        alTypeNames.add(name);
+    public void addVersion(String version) {
+        alVersions.add(version);
     }
 
     //---------------------------------------------------------------------------
 
-    public void setOutputFormat(String format) {
-        outputFormat = format;
+    public void addSection(Section section) {
+        hsSections.add(section);
     }
 
     //---------------------------------------------------------------------------
 
-    public void setSchemaLanguage(String language) {
-        schemaLang = language;
+    public void addOutputFormat(String format) {
+        alFormats.add(format);
+    }
+
+    //---------------------------------------------------------------------------
+
+    public void setUpdateSequence(String sequence) {
+        this.sequence = sequence;
     }
 
     //---------------------------------------------------------------------------
@@ -84,7 +93,7 @@ public class DescribeRecordRequest extends CatalogRequest {
     //---------------------------------------------------------------------------
 
     protected String getRequestName() {
-        return "DescribeRecord";
+        return "GetCapabilities";
     }
 
     //---------------------------------------------------------------------------
@@ -92,17 +101,13 @@ public class DescribeRecordRequest extends CatalogRequest {
     protected void setupGetParams() {
         addParam("request", getRequestName());
         addParam("service", Csw.SERVICE);
-        addParam("version", getServerVersion());
 
-        if (outputFormat != null)
-            addParam("outputFormat", outputFormat);
+        if (sequence != null)
+            addParam("updateSequence", sequence);
 
-        if (schemaLang != null)
-            addParam("schemaLanguage", schemaLang);
-
-        fill("typeName", alTypeNames, Csw.NAMESPACE_CSW.getPrefix() + ":");
-
-        addParam("namespace", Csw.NAMESPACE_CSW.getPrefix() + ":" + Csw.NAMESPACE_CSW.getURI());
+        fill("acceptVersions", alVersions);
+        fill("sections", hsSections);
+        fill("acceptFormats", alFormats);
     }
 
     //---------------------------------------------------------------------------
@@ -110,26 +115,14 @@ public class DescribeRecordRequest extends CatalogRequest {
     protected Element getPostParams() {
         Element params = new Element(getRequestName(), Csw.NAMESPACE_CSW);
 
-        //--- 'service' and 'version' are common mandatory attributes
         params.setAttribute("service", Csw.SERVICE);
-        params.setAttribute("version", getServerVersion());
 
-        if (outputFormat != null)
-            params.setAttribute("outputFormat", outputFormat);
+        if (sequence != null)
+            params.setAttribute("updateSequence", sequence);
 
-        if (schemaLang != null)
-            params.setAttribute("schemaLanguage", schemaLang);
-
-        //------------------------------------------------------------------------
-        //--- add 'TypeName' elements
-
-        for (TypeName typeName : alTypeNames) {
-            Element el = new Element("TypeName", Csw.NAMESPACE_CSW);
-            el.setText(typeName.toString());
-            el.setAttribute("targetNamespace", Csw.NAMESPACE_CSW.getURI());
-
-            params.addContent(el);
-        }
+        fill(params, "AcceptVersions", "Version", alVersions, Csw.NAMESPACE_OWS);
+        fill(params, "Sections", "Section", hsSections, Csw.NAMESPACE_OWS);
+        fill(params, "AcceptFormats", "OutputFormat", alFormats, Csw.NAMESPACE_OWS);
 
         return params;
     }

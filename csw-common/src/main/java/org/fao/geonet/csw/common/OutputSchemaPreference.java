@@ -38,7 +38,7 @@ public class OutputSchemaPreference {
     /**
      * List of OutputSchema in order of preference.
      */
-    private static List<String> outputSchemas = new ArrayList<String>();
+    private static List<String> outputSchemas = new ArrayList<>();
 
     /**
      * Populate list of OutputSchemas in order of preference.

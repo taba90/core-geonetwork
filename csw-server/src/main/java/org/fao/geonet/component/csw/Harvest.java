@@ -21,7 +21,7 @@
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
 
-package org.fao.geonet.component.harvester.csw;
+package org.fao.geonet.component.csw;
 
 import com.google.common.base.Function;
 import jeeves.server.context.ServiceContext;
@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.*;
+import org.springframework.stereotype.Component;
 
 /**
  * CSW Harvest operation.
@@ -87,6 +88,7 @@ import java.util.concurrent.*;
  *
  * @author heikki doeleman
  */
+@Component(CatalogService.BEAN_PREFIX + Harvest.NAME)
 public class Harvest extends AbstractOperation implements CatalogService {
 
     static final String NAME = "Harvest";
@@ -102,6 +104,7 @@ public class Harvest extends AbstractOperation implements CatalogService {
      *
      * @return name
      */
+    @Override
     public String getName() {
         return NAME;
     }
@@ -454,16 +457,12 @@ public class Harvest extends AbstractOperation implements CatalogService {
             //   </group>
             // </privileges>
             Element privileges = new Element("privileges");
-            Element group = new Element("group");
-            group.setAttribute("id", "1");
-            Element operation1 = new Element("operation");
-            operation1.setAttribute("name", "view");
+            Element group = new Element("group").setAttribute("id", "1");
+            Element operation1 = new Element("operation").setAttribute("name", "view");
             group.addContent(operation1);
-            Element operation2 = new Element("operation");
-            operation2.setAttribute("name", "dynamic");
+            Element operation2 = new Element("operation").setAttribute("name", "dynamic");
             group.addContent(operation2);
-            Element operation3 = new Element("operation");
-            operation3.setAttribute("name", "featured");
+            Element operation3 = new Element("operation").setAttribute("name", "featured");
             group.addContent(operation3);
             privileges.addContent(group);
             node.addContent(privileges);

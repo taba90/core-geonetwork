@@ -1187,6 +1187,7 @@
     <module>events</module>
     <module>core</module>
     <module>schemas</module>
+    <module>csw-common</module>
     <module>csw-server</module>
     <module>harvesters</module>
     <module>healthmonitor</module>

@@ -1,0 +1,1 @@
+The csw-common module provides classes for CSW communications, such as DTOs and exceptions.
