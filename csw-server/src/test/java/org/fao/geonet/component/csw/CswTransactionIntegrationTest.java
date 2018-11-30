@@ -23,6 +23,7 @@
 
 package org.fao.geonet.component.csw;
 
+import org.fao.geonet.component.csw.publication.Transaction;
 import com.google.common.collect.Lists;
 
 import jeeves.server.context.ServiceContext;

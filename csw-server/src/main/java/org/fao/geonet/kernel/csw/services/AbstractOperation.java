@@ -245,7 +245,7 @@ public abstract class AbstractOperation {
      * @return
      * @throws CatalogException
      */
-    protected Element getFilterExpression(Element constr)
+    protected static Element getFilterExpression(Element constr)
         throws CatalogException {
 
         // Return an empty filter if no constraint
@@ -272,7 +272,7 @@ public abstract class AbstractOperation {
      * @return
      * @throws CatalogException
      */
-    private Element convertCQL(String cql) throws CatalogException {
+    private static Element convertCQL(String cql) throws CatalogException {
 
         if (Log.isDebugEnabled(Geonet.CSW))
             Log.debug(Geonet.CSW, "Received CQL:\n" + cql);
@@ -322,7 +322,7 @@ public abstract class AbstractOperation {
      * @return
      * @throws CatalogException
      */
-    protected String getFilterVersion(Element constr) throws CatalogException {
+    protected static String getFilterVersion(Element constr) throws CatalogException {
         if (constr == null)
             return Csw.FILTER_VERSION_1_1;
         String version = constr.getAttributeValue("version");

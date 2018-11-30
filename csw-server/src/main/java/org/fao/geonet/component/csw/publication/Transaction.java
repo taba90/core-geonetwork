@@ -21,10 +21,9 @@
 //===	Rome - Italy. email: geonetwork@osgeo.org
 //==============================================================================
 
-package org.fao.geonet.component.csw;
+package org.fao.geonet.component.csw.publication;
 
 import com.vividsolutions.jts.util.Assert;
-import java.nio.file.Path;
 import java.util.*;
 
 import jeeves.server.UserSession;
@@ -32,6 +31,8 @@ import jeeves.server.context.ServiceContext;
 
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Util;
+import org.fao.geonet.component.csw.publication.TransactionResponseHandler.InsertedMetadata;
+import org.fao.geonet.component.csw.publication.TransactionResponseHandler.TransactionSummary;
 import org.fao.geonet.constants.Edit;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.Csw;
@@ -44,6 +45,8 @@ import org.fao.geonet.domain.Pair;
 import org.fao.geonet.domain.Profile;
 import org.fao.geonet.domain.ReservedGroup;
 import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.exceptions.NoSchemaMatchesException;
+import org.fao.geonet.exceptions.SchemaMatchConflictException;
 import org.fao.geonet.kernel.*;
 import org.fao.geonet.kernel.csw.CatalogService;
 import org.fao.geonet.kernel.csw.services.AbstractOperation;
@@ -53,7 +56,6 @@ import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.kernel.setting.Settings;
 import org.fao.geonet.utils.Log;
-import org.fao.geonet.utils.Xml;
 
 import org.jdom.Element;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,30 +100,12 @@ public class Transaction extends AbstractOperation implements CatalogService {
 
     //---------------------------------------------------------------------------
 
-    static class InsertedMetadata{
-        String schema;
-        String id;
-        Element content;
-
-        public InsertedMetadata(String schema, String id, Element content) {
-            this.schema = schema;
-            this.id = id;
-            this.content = content;
-        }
-    }
-
     @Override
     public Element execute(Element request, ServiceContext context) throws CatalogException {
         checkService(request);
         checkVersion(request);
 
-        //num counter
-        int totalInserted = 0;
-        int totalUpdated = 0;
-        int totalDeleted = 0;
-
-        // Response element
-        Element response = new Element(getName() + "Response", Csw.NAMESPACE_CSW);
+        TransactionSummary summary = new TransactionSummary();//num counter
 
         List<InsertedMetadata> inserted = new ArrayList<>();
 
@@ -146,9 +130,13 @@ public class Transaction extends AbstractOperation implements CatalogService {
                     if (transactionType.equals("insert")) {
                         for (Element aMdList : mdList) {
                             Element metadata = (Element) aMdList.clone();
-                            boolean insertSuccess = insertTransaction(metadata, inserted, context, toIndex);
-                            if (insertSuccess) {
-                                totalInserted++;
+                            InsertedMetadata imd = insertTransaction(metadata, context);
+
+                            if (imd != null) {
+                                summary.added++;
+
+                                inserted.add(imd);
+                                toIndex.add(imd.id);
                             }
                         }
                     } else if (transactionType.equals("update")) {
@@ -160,10 +148,12 @@ public class Transaction extends AbstractOperation implements CatalogService {
                             }
                         }
 
-                        totalUpdated = updateTransaction(transRequest, metadata, context, toIndex);
+                        Set<String> updated = updateTransaction(transRequest, metadata, context);
+                        summary.updated += updated.size();
+                        toIndex.addAll(updated);
                     } else {
                         // Delete
-                        totalDeleted = deleteTransaction(transRequest, context);
+                        summary.deleted = deleteTransaction(transRequest, context);
                     }
                 }
             }
@@ -179,10 +169,11 @@ public class Transaction extends AbstractOperation implements CatalogService {
                 Log.error(Geonet.CSW, "cannot index");
                 Log.error(Geonet.CSW, " (C) StackTrace\n" + Util.getStackTrace(e));
             }
-            getResponseResult(context, request, response, inserted, totalInserted, totalUpdated, totalDeleted);
+
         }
 
-        return response;
+        String requestId = request.getAttributeValue("requestId");
+        return TransactionResponseHandler.createResponse(context, inserted, summary, requestId);
     }
 
     //---------------------------------------------------------------------------
@@ -213,15 +204,13 @@ public class Transaction extends AbstractOperation implements CatalogService {
      * @return
      * @throws Exception
      */
-    private boolean insertTransaction(Element xml, List<InsertedMetadata> documents, ServiceContext context, Set<String> toIndex)
+    public static InsertedMetadata insertTransaction(Element xml, ServiceContext context)
             throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
         DataManager dataMan = gc.getBean(DataManager.class);
 
         String schema = dataMan.autodetectSchema(xml);
 
-//		String category   = Util.getParam(request, Params.CATEGORY);
-        String category = null, source = null, createDate = null, changeDate = null;
 
         String uuid;
         uuid = dataMan.extractUUID(schema, xml);
@@ -258,6 +247,7 @@ public class Transaction extends AbstractOperation implements CatalogService {
         //
         // insert metadata
         //
+        String category = null, source = null, createDate = null, changeDate = null;
         String docType = null, isTemplate = null;
         boolean ufo = true, indexImmediate = false;
         String id = dataMan.insertMetadata(context, schema, xml, uuid, userId, group, source,
@@ -281,10 +271,7 @@ public class Transaction extends AbstractOperation implements CatalogService {
 
         dataMan.indexMetadata(id, true, null);
 
-        documents.add(new InsertedMetadata(schema, id, xml));
-
-        toIndex.add(id);
-        return true;
+        return new InsertedMetadata(schema, id, xml);
     }
 
 
@@ -293,10 +280,10 @@ public class Transaction extends AbstractOperation implements CatalogService {
      * @param xml
      * @param context
      * @param toIndex
-     * @return
+     * @return the set of id of the updated metadata
      * @throws Exception
      */
-    private int updateTransaction(Element request, Element xml, ServiceContext context, Set<String> toIndex) throws Exception {
+    private Set<String> updateTransaction(Element request, Element xml, ServiceContext context) throws Exception {
         GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
         DataManager dataMan = gc.getBean(DataManager.class);
 
@@ -304,54 +291,14 @@ public class Transaction extends AbstractOperation implements CatalogService {
             throw new NoApplicableCodeEx("User not authenticated.");
         }
 
-        int totalUpdated = 0;
-
-
-        // Update full metadata
         if (xml != null) {
+            //=== Update full metadata
 
-            // Retrieve schema and the related Namespaces
-            String schemaId = gc.getBean(SchemaManager.class).autodetectSchema(xml);
+            return updateFullMetadata(gc, xml, dataMan, context);
 
-            if (schemaId == null) {
-                throw new NoApplicableCodeEx("Can't identify metadata schema");
-            }
-
-            // Retrieve the metadata identifier
-
-            String uuid = gc.getBean(DataManager.class).extractUUID(schemaId, xml);
-
-            if (uuid.length() == 0) {
-                throw new NoApplicableCodeEx("Metadata identifier not provided");
-            }
-
-            // Update metadata record
-            String id = dataMan.getMetadataId(uuid);
-
-            if (id == null) {
-                return totalUpdated;
-            }
-
-            if (!gc.getBean(AccessManager.class).canEdit(context, id)) {
-                throw new NoApplicableCodeEx("User not allowed to update this metadata(" + id + ").");
-            }
-
-            String changeDate = null;
-
-            boolean validate = false;
-            boolean ufo = false;
-            boolean index = false;
-            String language = context.getLanguage();
-            dataMan.updateMetadata(context, id, xml, validate, ufo, index, language, changeDate, false);
-
-            toIndex.add(id);
-
-            totalUpdated++;
-
-            return totalUpdated;
-
-            // Update properties
         } else {
+            //=== Update properties
+
             //first, search the record in the database to get the record id
             final List<Element> constraints = request.getChildren("Constraint", Csw.NAMESPACE_CSW);
             Assert.isTrue(constraints.size() == 1, "One and only 1 constraint allowed in update query.  Found : " + constraints.size());
@@ -365,9 +312,9 @@ public class Transaction extends AbstractOperation implements CatalogService {
 
             Iterator<Element> it = results.iterator();
             if (!it.hasNext())
-                return totalUpdated;
+                return Collections.EMPTY_SET;
 
-            Set<String> updatedMd = new HashSet<String>();
+            Set<String> updatedMd = new HashSet<>();
             // Process all records selected
             while (it.hasNext()) {
                 Element result = it.next();
@@ -442,16 +389,51 @@ public class Transaction extends AbstractOperation implements CatalogService {
                     dataMan.updateMetadata(context, id, metadata, validate, ufo, index, language, changeDate, false);
 
                     updatedMd.add(id);
-
-                    totalUpdated++;
                 }
 
             }
-            toIndex.addAll(updatedMd);
 
-            return totalUpdated;
-
+            return updatedMd;
         }
+    }
+
+    public static Set<String> updateFullMetadata(GeonetContext gc, Element xml, DataManager dataMan, ServiceContext context)
+            throws NoApplicableCodeEx, SchemaMatchConflictException, Exception, NoSchemaMatchesException {
+
+        // Retrieve schema and the related Namespaces
+        String schemaId = gc.getBean(SchemaManager.class).autodetectSchema(xml);
+
+        if (schemaId == null) {
+            throw new NoApplicableCodeEx("Can't identify metadata schema");
+        }
+
+        // Retrieve the metadata identifier
+        String uuid = gc.getBean(DataManager.class).extractUUID(schemaId, xml);
+
+        if (uuid.length() == 0) {
+            throw new NoApplicableCodeEx("Metadata identifier not provided");
+        }
+
+        // Update metadata record
+        String id = dataMan.getMetadataId(uuid);
+
+        if (id == null) {
+            return Collections.EMPTY_SET;
+        }
+
+        if (!gc.getBean(AccessManager.class).canEdit(context, id)) {
+            throw new NoApplicableCodeEx("User not allowed to update this metadata(" + id + ").");
+        }
+
+        String changeDate = null;
+
+        boolean validate = false;
+        boolean ufo = false;
+        boolean index = false;
+        String language = context.getLanguage();
+        dataMan.updateMetadata(context, id, xml, validate, ufo, index, language, changeDate, false);
+
+        return Collections.singleton(id);
     }
 
     /**
@@ -519,95 +501,6 @@ public class Transaction extends AbstractOperation implements CatalogService {
         List<Element> children = results.two().getChildren();
         return children;
     }
-
-    /**
-     * @param request
-     * @param response
-     * @param fileIds
-     * @param totalInserted
-     * @param totalUpdated
-     * @param totalDeleted
-     */
-    private void getResponseResult(ServiceContext context, Element request, Element response, List<InsertedMetadata> inserted,
-                                   int totalInserted, int totalUpdated, int totalDeleted) {
-        // transactionSummary
-        Element transactionSummary = getTransactionSummary(totalInserted, totalUpdated, totalDeleted);
-
-        // requestID
-        String strRequestId = request.getAttributeValue("requestId");
-        if (strRequestId != null)
-            transactionSummary.setAttribute("requestId", strRequestId);
-
-        response.addContent(transactionSummary);
-
-        if (totalInserted > 0) {
-            Element insertResult = new Element("InsertResult", Csw.NAMESPACE_CSW);
-            insertResult.setAttribute("handleRef", "handleRefValue");
-
-            for (InsertedMetadata md : inserted) {
-                Element briefRecord;
-
-                try {
-                    briefRecord = applyCswBrief(context, _schemaManager, md.schema, md.content, md.id, context.getLanguage());
-
-                } catch(Exception e) {
-                    // let's mock a BriefRecord, it's not complete, but it may be useful anyway
-                    Log.warning(Geonet.CSW, "Error transforming metadata: " + md.id, e);
-
-                    briefRecord = new Element("BriefRecord", Csw.NAMESPACE_CSW);
-                    Element identifier = new Element("identifier", Csw.NAMESPACE_DC );
-                    // TODO: title is mandatory
-                    identifier.setText(md.id);
-                    briefRecord.addContent(identifier);
-                }
-                insertResult.addContent(briefRecord);
-            }
-
-            response.addContent(insertResult);
-        }
-    }
-
-    private static Element applyCswBrief(ServiceContext context, SchemaManager schemaManager, String schema,
-                                               Element md,
-                                               String id, String displayLanguage) throws Exception
-    {
-        return org.fao.geonet.csw.common.util.Xml.applyElementSetName(
-                context, schemaManager, schema, md,
-                "csw", ElementSetName.BRIEF, ResultType.RESULTS,
-                id, displayLanguage);
-    }
-
-    /**
-     * @param totalInserted
-     * @param totalUpdated
-     * @param totalDeleted
-     * @return
-     */
-    private Element getTransactionSummary(int totalInserted, int totalUpdated, int totalDeleted) {
-        Element transactionSummary = new Element("TransactionSummary", Csw.NAMESPACE_CSW);
-//		if( totalInserted>0 )
-//		{
-        Element insert = new Element("totalInserted", Csw.NAMESPACE_CSW);
-        insert.setText(Integer.toString(totalInserted));
-        transactionSummary.addContent(insert);
-
-//		}
-//		if( totalUpdated>0 )
-//		{
-        Element update = new Element("totalUpdated", Csw.NAMESPACE_CSW);
-        update.setText(Integer.toString(totalUpdated));
-        transactionSummary.addContent(update);
-//		}
-//		if( totalDeleted>0 )
-//		{
-        Element delete = new Element("totalDeleted", Csw.NAMESPACE_CSW);
-        delete.setText(Integer.toString(totalDeleted));
-        transactionSummary.addContent(delete);
-//		}
-
-        return transactionSummary;
-    }
-
 }
 
 //=============================================================================
