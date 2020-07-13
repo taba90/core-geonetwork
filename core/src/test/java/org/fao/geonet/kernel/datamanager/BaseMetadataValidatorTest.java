@@ -57,6 +57,8 @@ public class BaseMetadataValidatorTest extends AbstractCoreIntegrationTest {
     private Group group;
     private AbstractMetadata md;
 
+    private  AbstractMetadata md2;
+
     @Before
     public void init() {
 
@@ -68,7 +70,8 @@ public class BaseMetadataValidatorTest extends AbstractCoreIntegrationTest {
         }
 
         try {
-            md = metadataManager.save(createMetadata());
+            md = metadataManager.save(createMetadata("test-metadata", "test-faking", "iso19139"));
+            md2 = metadataManager.save(createMetadata("test-metadata2", "test-faking2","dublin-core"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,24 +87,31 @@ public class BaseMetadataValidatorTest extends AbstractCoreIntegrationTest {
         metadataValidator.doValidate(md, "eng");
     }
 
-    private AbstractMetadata createMetadata() throws IOException {
+    @Test
+    public void testCreateWithInvalidRes() throws Exception {
+        metadataValidator.doValidate(md2, "eng");
+    }
+
+    private AbstractMetadata createMetadata(String uuid, String sourceId, String schemaId) throws IOException {
         AbstractMetadata md = new Metadata();
-        md.setUuid("test-metadata");
+        md.setUuid(uuid);
         try (InputStream is = XmlSerializerIntegrationTest.class.getResourceAsStream("valid-metadata.iso19139.xml")) {
             md.setData(IOUtils.toString(is));
         }
         md.getSourceInfo().setGroupOwner(group.getId());
         md.getSourceInfo().setOwner(1);
-        md.getSourceInfo().setSourceId("test-faking");
-        md.getDataInfo().setSchemaId("iso19139");
+        md.getSourceInfo().setSourceId(sourceId);
+        md.getDataInfo().setSchemaId(schemaId);
         md.getDataInfo().setType(MetadataType.TEMPLATE);
         return md;
     }
+
 
     @After
     public void cleanup() {
 
         metadataManager.delete(md.getId());
+        metadataManager.delete(md2.getId());
 
     }
 

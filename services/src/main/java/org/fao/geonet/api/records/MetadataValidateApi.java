@@ -142,6 +142,7 @@ public class MetadataValidateApi {
                     .setId(new MetadataValidationId(metadata.getId(), "subtemplate"))
                     .setStatus(isvalid ? MetadataValidationStatus.VALID : MetadataValidationStatus.INVALID)
                     .setRequired(true).setNumTests(0).setNumFailures(0);
+
             this.metadataValidationRepository.save(metadataValidation);
             dataManager.indexMetadata(("" + metadata.getId()), true, null);
             new RecordValidationTriggeredEvent(metadata.getId(),
@@ -227,6 +228,7 @@ public class MetadataValidateApi {
                     ApiUtils.getUserSession(request.getSession()).getUserIdAsInt(), Integer.toString(value))
                             .publish(appContext);
         }
+
         return response;
     }
 
@@ -239,7 +241,7 @@ public class MetadataValidateApi {
 
     /**
      * Schematron report has an odd structure:
-     * 
+     *
      * <pre>
      * <code>
      * &lt;svrl:active-pattern  ... />
@@ -250,7 +252,7 @@ public class MetadataValidateApi {
      * </pre>
      * <p/>
      * This method restructures the xml to be:
-     * 
+     *
      * <pre>
      * <code>
      * &lt;svrl:active-pattern  ... >
