@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import org.apache.jcs.access.exception.CacheException;
@@ -195,6 +196,11 @@ public class XmlResolver extends XMLCatalogResolver {
                         Log.error(Log.JEEVES, "Error opening resource: " + resolved + " for reading", e);
                     }
                 }
+            }catch (InvalidPathException ipe){
+                // Instead of throwing an exception logging a warn message.
+                // the calling method will try to resolve it as an external resourcu
+                Log.warning(Log.JEEVES, "Unable to resolve systemId " + systemId +
+                    " locally. Trying to fetch it as an external resource");
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
