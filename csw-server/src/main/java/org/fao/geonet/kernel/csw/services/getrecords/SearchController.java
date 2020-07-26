@@ -40,16 +40,19 @@ import org.fao.geonet.csw.common.exceptions.CatalogException;
 import org.fao.geonet.csw.common.exceptions.InvalidParameterValueEx;
 import org.fao.geonet.csw.common.exceptions.NoApplicableCodeEx;
 import org.fao.geonet.domain.Pair;
+import org.fao.geonet.domain.Service;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.kernel.search.LuceneSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
 import org.fao.geonet.kernel.setting.SettingInfo;
+import org.fao.geonet.repository.ServiceRepository;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
 import org.geotools.gml2.GMLConfiguration;
 import org.jdom.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import java.nio.file.Files;
@@ -85,6 +88,14 @@ public class SearchController {
         this._applicationContext = applicationContext;
     }
 
+    public static Element retrieveMetadata(ServiceContext context, String id, ElementSetName setName, String
+        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage)
+        throws CatalogException{
+        return retrieveMetadata(context,id, setName,outSchema, elemNames, typeName, resultType, strategy,displayLanguage, null);
+    }
+
+
+
     /**
      * Retrieves metadata from the database. Conversion between metadata record and output schema
      * are defined in xml/csw/schemas/ directory.
@@ -103,7 +114,8 @@ public class SearchController {
      * to ISO).
      */
     public static Element retrieveMetadata(ServiceContext context, String id, ElementSetName setName, String
-        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage) throws CatalogException {
+        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage, String stylesheet)
+     throws CatalogException {
 
         try {
             //--- get metadata from DB
@@ -144,6 +156,10 @@ public class SearchController {
 
             if(Log.isDebugEnabled(Geonet.CSW_SEARCH))
                 Log.debug(Geonet.CSW_SEARCH, "SearchController:retrieveMetadata: before applying postprocessing on metadata Element for id " + id);
+
+            if (stylesheet!=null)
+                res = applyVirtualStyleSheet(context, stylesheet,
+                    scm, schema, res, resultType, id, displayLanguage);
 
             res = applyPostProcessing(context, scm, schema, res, outSchema, setName, resultType, id, displayLanguage);
 
@@ -431,7 +447,7 @@ public class SearchController {
                                          ResultType resultType, String outSchema, ElementSetName setName,
                                          Element filterExpr, String filterVersion, Sort sort,
                                          Set<String> elemNames, String typeName, int maxHitsFromSummary,
-                                         String cswServiceSpecificContraint, String strategy) throws CatalogException {
+                                         String cswServiceSpecificContraint, String strategy, String stylesheet) throws CatalogException {
 
         Element results = new Element("SearchResults", Csw.NAMESPACE_CSW);
 
@@ -457,7 +473,7 @@ public class SearchController {
         String displayLanguage = LuceneSearcher.determineLanguage(context, filterExpr, settingInfo).presentationLanguage;
         // retrieve actual metadata for results
         int counter = retrieveMetadataMatchingResults(context, results, summaryAndSearchResults, maxRecords, setName,
-            outSchema, elemNames, typeName, resultType, strategy, displayLanguage);
+            outSchema, elemNames, typeName, resultType, strategy, displayLanguage, stylesheet);
 
         //
         // properties of search result
@@ -502,7 +518,7 @@ public class SearchController {
                                                 Pair<Element, List<ResultItem>> summaryAndSearchResults,
                                                 int maxRecords, ElementSetName elementSetName,
                                                 String outputSchema, Set<String> elementNames,
-                                                String typeName, ResultType resultType, String strategy, String displayLanguage)
+                                                String typeName, ResultType resultType, String strategy, String displayLanguage, String stylesheet)
         throws CatalogException {
 
         List<ResultItem> resultsList = summaryAndSearchResults.two();
@@ -513,7 +529,7 @@ public class SearchController {
             Element md = null;
 
             try {
-                md = retrieveMetadata(context, id, elementSetName, outputSchema, elementNames, typeName, resultType, strategy, displayLanguage);
+                md = retrieveMetadata(context, id, elementSetName, outputSchema, elementNames, typeName, resultType, strategy, displayLanguage,stylesheet);
                 // metadata cannot be retrieved
                 if (md == null) {
                     results.addContent(new Comment(String.format("Metadata with id '%s' returned null.", id)));
@@ -572,6 +588,21 @@ public class SearchController {
             + (context.getService().equals("csw") ? nodeInfo.getId() : context.getService())
             + "-postprocessing.xsl");
 
+        return applyStylesheet(context, result, styleSheet, resultType, id, displayLanguage);
+    }
+
+
+    private static Element applyVirtualStyleSheet(ServiceContext context, String stylesheet, SchemaManager schemaManager, String schema,
+                                               Element result,
+                                               ResultType resultType, String id, String displayLanguage) throws InvalidParameterValueEx {
+        Path schemaDir  = schemaManager.getSchemaDir(schema);
+        Path xslStylesheet = schemaDir.resolve("present").resolve("csw").resolve("virtual").resolve(stylesheet);
+        return applyStylesheet(context, result, xslStylesheet, resultType, id, displayLanguage);
+    }
+
+    private static Element applyStylesheet(ServiceContext context, Element result, Path styleSheet,
+                                               ResultType resultType, String id, String displayLanguage) throws InvalidParameterValueEx {
+
         if (Files.exists(styleSheet)) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("lang", displayLanguage);
@@ -588,4 +619,10 @@ public class SearchController {
 
         return result;
     }
+
+    private Service getVirtualCsw (String serviceName){
+        ServiceRepository repository = _applicationContext.getBean(ServiceRepository.class);
+        return repository.findOneByName(serviceName);
+    }
+
 }

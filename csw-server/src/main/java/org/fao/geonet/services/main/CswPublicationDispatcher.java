@@ -50,6 +50,8 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
 
     private String cswServiceSpecificContraint;
 
+    private String stylesheetFileName;
+
     /**
      *
      * @param appPath
@@ -60,6 +62,8 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
     public void init(Path appPath, ServiceConfig config) throws Exception {
         super.init(appPath, config);
         cswServiceSpecificContraint = config.getValue(Geonet.Elem.FILTER);
+        stylesheetFileName= config.getValue(Geonet.Elem.STYLESHEET);
+
     }
 
     /**
@@ -119,7 +123,7 @@ public class CswPublicationDispatcher extends NotInReadOnlyModeService {
             Element info = new Element("info").setText("CSW is disabled");
             response.addContent(info);
         } else {
-            response = gc.getBean(CatalogDispatcher.class).dispatch(params, context, cswServiceSpecificContraint);
+            response = gc.getBean(CatalogDispatcher.class).dispatch(params, context, cswServiceSpecificContraint, stylesheetFileName);
         }
         return response;
     }

@@ -54,6 +54,7 @@ import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Constants;
 import org.fao.geonet.Logger;
 import org.fao.geonet.Util;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.Service;
 import org.fao.geonet.domain.ServiceParam;
 import org.fao.geonet.exceptions.BadInputEx;
@@ -663,10 +664,16 @@ public class JeevesEngine {
                             filter.append(serviceParam.getName()).append(":").append(serviceParam.getValue());
                         }
                     }
-                    cls.addContent(new Element("param").
+                    Element param = new Element("param").
                         setAttribute("name", "filter").
-                        setAttribute("value", filter.toString().trim()));
-
+                        setAttribute("value", filter.toString().trim());
+                    cls.addContent(param);
+                    if (service.getStylesheet()!=null) {
+                        Element xsl = new Element("param");
+                        xsl.setAttribute("name", Geonet.Elem.STYLESHEET);
+                        xsl.setAttribute("value", service.getStylesheet());
+                        cls.addContent(xsl);
+                    }
                     srv.setAttribute("name", service.getName())
                         .addContent(
                             cls.setAttribute("name",

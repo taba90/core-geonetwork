@@ -56,9 +56,11 @@ public class CswDiscoveryDispatcher implements Service {
      * value="+inspirerelated:on"/> </class> </service>
      */
     private String cswServiceSpecificContraint;
+    private String stylesheetFileName;
 
     public void init(Path appPath, ServiceConfig config) throws Exception {
         cswServiceSpecificContraint = config.getValue(Geonet.Elem.FILTER);
+        stylesheetFileName= config.getValue(Geonet.Elem.STYLESHEET);
     }
 
 
@@ -111,7 +113,7 @@ public class CswDiscoveryDispatcher implements Service {
             Element info = new Element("info").setText("CSW is disabled");
             response.addContent(info);
         } else {
-            response = gc.getBean(CatalogDispatcher.class).dispatch(params, context, cswServiceSpecificContraint);
+            response = gc.getBean(CatalogDispatcher.class).dispatch(params, context, cswServiceSpecificContraint, stylesheetFileName);
         }
         return response;
     }
