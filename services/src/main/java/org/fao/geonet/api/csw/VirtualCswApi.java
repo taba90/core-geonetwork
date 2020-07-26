@@ -29,6 +29,9 @@ import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.api.API;
 import org.fao.geonet.api.exception.ResourceNotFoundException;
 import org.fao.geonet.domain.Service;
+import org.fao.geonet.domain.ServiceParam;
+import org.fao.geonet.kernel.SchemaManager;
+import org.fao.geonet.kernel.schema.MetadataSchema;
 import org.fao.geonet.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -39,7 +42,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping(value = {
     "/{portal}/api/csw/virtuals",
@@ -57,6 +64,9 @@ public class VirtualCswApi {
 
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Autowired
+    private SchemaManager schemaManager;
 
 
     @ApiOperation(
@@ -106,6 +116,7 @@ public class VirtualCswApi {
                 identifier
             ));
         } else {
+            setSchemaName(service);
             return service;
         }
     }
@@ -149,6 +160,7 @@ public class VirtualCswApi {
         service.getParameters().forEach(p -> {
             p.setService(service);
         });
+
         serviceRepository.save(service);
 
         ApplicationContext applicationContext = ApplicationContextHolder.get();
@@ -246,5 +258,43 @@ public class VirtualCswApi {
                 identifier
             ));
         }
+    }
+
+
+    @ApiOperation(
+        value = "Get xsl from schema name ",
+        notes = "",
+        nickname = "getXslBySchema")
+    @RequestMapping(
+        path = "/xsl/{schema}",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ApiResponses(value = {
+        @ApiResponse(code = 404, message = "Resource not found.")
+    })
+    @ResponseBody
+    public String [] getXslBySchema(
+        @ApiParam(
+            value = API_PARAM_CSW_SERVICE_IDENTIFIER,
+            required = true
+        )
+        @PathVariable
+            String schema
+    ) throws Exception {
+        MetadataSchema schemaObj = schemaManager.getSchema(schema);
+        Path path = schemaObj.getSchemaDir().resolve("present").resolve("csw").resolve("virtual");
+        if (!Files.exists(path)){
+            return null;
+        }
+        File virtualXslDir= path.toFile();
+        return virtualXslDir.list();
+    }
+
+    private void setSchemaName (Service service){
+        Optional<ServiceParam> param = service.getParameters().stream().filter(f->f.getName().equals("_schema"))
+            .findFirst();
+        param.ifPresent(s-> service.setSchemaName(s.getValue()));
+
     }
 }

@@ -87,6 +87,48 @@
           </fieldset>
 
           <fieldset>
+            <legend data-translate="">xslSelection</legend>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" class="form-control"
+                         data-ng-model="virtualCSWSelected.schemaName">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown" aria-expanded="false">
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                      <li data-ng-repeat="s in schemas">
+                        <a href="" data-ng-click="virtualCSWSelected.schemaName = s.name; getXslForVirtualCsw(); addSchemaFilter(s.name)">
+                          <span>{{s.name}}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <input type="text" class="form-control"
+                       data-ng-model="virtualCSWSelected.stylesheet"/>
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle"
+                          data-toggle="dropdown" aria-expanded="false"
+                          data-ng-disabled="!schemaSelected">
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li data-ng-repeat="stylesheet in virtualCswStylesheet">
+                      <a href="" data-ng-click="virtualCSWSelected.stylesheet = stylesheet">
+                        <span>{{stylesheet}}</span>
+                      </a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
             <legend data-translate="">serviceFilter</legend>
             <div class="form-group"
                  data-ng-repeat="filter in virtualCSWSelected.parameters">
@@ -144,7 +186,7 @@
               </div>
               <div class="col-md-1">
                 <button class="btn btn-default"
-                        data-ng-click="removeFilter(key)">
+                        data-ng-click="removeFilter(filter.name)">
                   <i class="fa fa-times"></i>
                 </button>
               </div>
