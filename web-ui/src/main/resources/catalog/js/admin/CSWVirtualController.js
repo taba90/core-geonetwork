@@ -58,6 +58,9 @@
       $scope.filterHelper = ['any', 'title', 'abstract', 'keyword',
         'denominator', '_source', '_cat', '_groupPublished'];
 
+      $scope.virtualCswStylesheet = [];
+      $scope.schemaSelected = false;
+
       var operation = '';
 
       /**
@@ -85,6 +88,13 @@
             });
       }
 
+      function loadSchemas() {
+              $http.get('../api/standards').
+                  success(function(data) {
+                    $scope.schemas = data;
+                  });
+            }
+
       $scope.selectVirtualCSW = function(v) {
         operation = 'updateservice';
         $http.get('../api/csw/virtuals/' + v.id)
@@ -106,6 +116,11 @@
               //     });
               $scope.virtualCSWUpdated = false;
 
+              if($scope.virtualCSWSelected.schemaName!=null){
+                 $scope.schemaSelected=true;
+                 $scope.getXslForVirtualCsw();
+              }
+
               $timeout(function() {
                 $('#servicename').focus();
               }, 100);
@@ -119,11 +134,31 @@
             angular.copy($scope.newFilter)
         );
       };
+
+      $scope.addSchemaFilter = function(schemaName) {
+              $scope.newFilter.name='_schema';
+              $scope.newFilter.value=schemaName;
+              $scope.newFilter.occur='+';
+              $scope.virtualCSWSelected.parameters.push(
+                  angular.copy($scope.newFilter)
+              );
+              $scope.newFilter = {
+                     name: '_groupPublished',
+                     value: null,
+                     occur: '+'
+              };
+            };
+
+
       $scope.removeFilter = function(f) {
         angular.forEach($scope.virtualCSWSelected.parameters,
-            function(idx, o) {
+            function(o, idx) {
               if (o.name === f) {
-                $scope.virtualCSWSelected.parameters.splice(idx, 1);
+                  filter = $scope.virtualCSWSelected.parameters.splice(idx, 1);
+                if (o.name === '_schema' && o.value === $scope.virtualCSWSelected.schemaName){
+                  $scope.virtualCSWSelected.schemaName=null;
+                  $scope.virtualCSWSelected.stylesheet=null;
+                }
               }
             });
       };
@@ -189,6 +224,19 @@
             });
       };
 
+      $scope.getXslForVirtualCsw = function() {
+              $http.get('../api/csw/virtuals/xsl/' +
+                  $scope.virtualCSWSelected.schemaName).success(function(data) {
+                    if (data !== null && typeof data!=='undefined'
+                    && data.length != null && data.length > 0){
+                        $scope.virtualCswStylesheet=data;
+                        $scope.schemaSelected=true;
+                    } else {
+                       $scope.schemaSelected=false;
+                    }
+                  });
+            };
+
       $scope.sortByLabel = function(group) {
         return group.label[$scope.lang];
       };
@@ -203,6 +251,7 @@
       loadCSWVirtual();
       loadFilterList();
       loadCategories();
+      loadSchemas();
 
     }]);
 

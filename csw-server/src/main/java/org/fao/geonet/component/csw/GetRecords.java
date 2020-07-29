@@ -259,9 +259,9 @@ public class GetRecords extends AbstractOperation implements CatalogService {
             response.addContent(status);
 
             String cswServiceSpecificContraint = request.getChildText(Geonet.Elem.FILTER);
-
+            String stylesheet = request.getChildText(Geonet.Elem.STYLESHEET);
             Pair<Element, Element> search = _searchController.search(context, startPos, maxRecords, resultType, outSchema,
-                setName, filterExpr, filterVersion, sort, elemNames, typeName, maxHitsInSummary, cswServiceSpecificContraint, elementnameStrategy);
+                setName, filterExpr, filterVersion, sort, elemNames, typeName, maxHitsInSummary, cswServiceSpecificContraint, elementnameStrategy,stylesheet);
 
             // Only add GeoNetwork summary on results_with_summary option
             if (resultType == ResultType.RESULTS_WITH_SUMMARY) {

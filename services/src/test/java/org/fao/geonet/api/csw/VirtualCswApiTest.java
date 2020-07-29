@@ -27,6 +27,7 @@ import com.google.gson.GsonBuilder;
 import junit.framework.Assert;
 import org.fao.geonet.api.JsonFieldNamingStrategy;
 import org.fao.geonet.domain.Service;
+import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.repository.ServiceRepository;
 import org.fao.geonet.services.AbstractServiceIntegrationTest;
 import org.junit.Before;
@@ -35,18 +36,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.ContentResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
+
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Test class for VirtualCswApi.
@@ -59,6 +68,9 @@ public class VirtualCswApiTest extends AbstractServiceIntegrationTest {
 
     @Autowired
     private ServiceRepository _serviceRepo;
+
+    @Autowired
+    private SchemaManager schemaManager;
 
     private MockMvc mockMvc;
 
@@ -230,6 +242,28 @@ public class VirtualCswApiTest extends AbstractServiceIntegrationTest {
             .session(this.mockHttpSession)
             .accept(MediaType.parseMediaType("application/json")))
             .andExpect(status().is(404));
+    }
+
+    @Test
+    public void getXslBySchemaName() throws Exception {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        ResultActions result = this.mockMvc.perform(get("/srv/api/csw/virtuals/xsl/iso19139")
+            .accept(MediaType.parseMediaType("application/json")))
+            .andExpect(status().isOk());
+        ContentResultMatchers content = content();
+        result.andExpect(content.string(containsString("test-virtual-csw.xsl")));
+    }
+
+    @Override
+    protected void addTestSpecificData(GeonetworkDataDirectory geonetworkDataDirectory) throws IOException {
+        try {
+            Path csw = geonetworkDataDirectory.getSchemaPluginsDir().resolve("iso19139").resolve("present").resolve("csw");
+            Path pathToXsl = Paths.get(getClass().getResource("virtual").toURI());
+            org.fao.geonet.utils.IO.copyDirectoryOrFile(pathToXsl, csw, true);
+        } catch (URISyntaxException e) {
+            throw new IOException(e);
+        }
     }
 
     private void createTestData() {

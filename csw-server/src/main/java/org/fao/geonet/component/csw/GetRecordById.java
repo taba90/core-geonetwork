@@ -30,10 +30,13 @@ import com.google.common.base.Optional;
 
 import jeeves.server.context.ServiceContext;
 
+import org.fao.geonet.ApplicationContextHolder;
+import org.fao.geonet.domain.Service;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.search.LuceneSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
 import org.fao.geonet.kernel.setting.SettingInfo;
+import org.fao.geonet.repository.ServiceRepository;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.Util;
 
@@ -134,7 +137,7 @@ public class GetRecordById extends AbstractOperation implements CatalogService {
 
                 // Apply CSW service specific constraint
                 String cswServiceSpecificContraint = request.getChildText(Geonet.Elem.FILTER);
-
+                String xlsStylesheet = request.getChildText(Geonet.Elem.STYLESHEET);
                 if (StringUtils.isNotEmpty(cswServiceSpecificContraint)) {
                     if (Log.isDebugEnabled(Geonet.CSW_SEARCH))
                         Log.debug(Geonet.CSW_SEARCH, "GetRecordById (cswServiceSpecificContraint): " + cswServiceSpecificContraint);
@@ -146,7 +149,7 @@ public class GetRecordById extends AbstractOperation implements CatalogService {
                     Element filterExpr = new Element("Filter", Csw.NAMESPACE_OGC);
 
                     Pair<Element, Element> results = _searchController.search(context, 0, 1, ResultType.HITS, "csw",
-                        ElementSetName.BRIEF, filterExpr, Csw.FILTER_VERSION_1_1, null, null, null, 0, cswServiceSpecificContraint, null);
+                        ElementSetName.BRIEF, filterExpr, Csw.FILTER_VERSION_1_1, null, null, null, 0, cswServiceSpecificContraint, null, xlsStylesheet);
 
 
                     if (Log.isDebugEnabled(Geonet.CSW_SEARCH))
@@ -165,7 +168,7 @@ public class GetRecordById extends AbstractOperation implements CatalogService {
                 final SettingInfo settingInfo = gc.getBean(SearchManager.class).getSettingInfo();
                 final String displayLanguage = LuceneSearcher.determineLanguage(context, request, settingInfo).presentationLanguage;
                 Element md = SearchController.retrieveMetadata(context, id, setName, outSchema, null, null, ResultType.RESULTS, null,
-                    displayLanguage);
+                    displayLanguage, xlsStylesheet);
 
                 if (md != null) {
                     final Map<String, GetRecordByIdMetadataTransformer> transformers = context.getApplicationContext()

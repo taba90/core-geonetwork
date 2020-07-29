@@ -81,7 +81,7 @@ public class CatalogDispatcher {
     //---
     //---------------------------------------------------------------------------
 
-    public Element dispatch(Element request, ServiceContext context, String cswServiceSpecificContraint) {
+    public Element dispatch(Element request, ServiceContext context, String cswServiceSpecificContraint, String stylesheetFileName) {
         context.info("Received:\n" + Xml.getString(request));
 
         InputMethod im = context.getInputMethod();
@@ -96,7 +96,7 @@ public class CatalogDispatcher {
             if (inSOAP)
                 request = SOAPUtil.unembed(request);
 
-            Element response = dispatchI(request, context, cswServiceSpecificContraint);
+            Element response = dispatchI(request, context, cswServiceSpecificContraint, stylesheetFileName);
 
             if (outSOAP)
                 response = SOAPUtil.embed(response);
@@ -121,7 +121,7 @@ public class CatalogDispatcher {
         return response;
     }
 
-    private Element dispatchI(Element request, ServiceContext context, String cswServiceSpecificContraint) throws CatalogException {
+    private Element dispatchI(Element request, ServiceContext context, String cswServiceSpecificContraint, String stylesheetFileName) throws CatalogException {
         InputMethod im = context.getInputMethod();
 
         if (im == InputMethod.XML || im == InputMethod.SOAP) {
@@ -136,6 +136,10 @@ public class CatalogDispatcher {
 
             if (cswServiceSpecificContraint != null) {
                 request.addContent(new Element(Geonet.Elem.FILTER).setText(cswServiceSpecificContraint));
+            }
+
+            if (stylesheetFileName!=null){
+                request.addContent(new Element(Geonet.Elem.STYLESHEET).setText(stylesheetFileName));
             }
 
             return cs.execute(request, context);

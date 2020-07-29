@@ -717,6 +717,7 @@
     "service": "Servizio",
     "serviceDescription": "Descrizione del servizio",
     "serviceFilter": "Filtri",
+    "xslSelection" : "Selezione XSL",
     "serviceUrl": "URL del servizio",
     "set": "Imposta",
     "settingsUpdated": "Impostazioni aggiornate.",

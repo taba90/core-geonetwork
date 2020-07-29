@@ -40,6 +40,7 @@ import org.fao.geonet.csw.common.exceptions.CatalogException;
 import org.fao.geonet.csw.common.exceptions.InvalidParameterValueEx;
 import org.fao.geonet.csw.common.exceptions.NoApplicableCodeEx;
 import org.fao.geonet.domain.Pair;
+import org.fao.geonet.domain.Service;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.schema.MetadataSchema;
@@ -85,6 +86,14 @@ public class SearchController {
         this._applicationContext = applicationContext;
     }
 
+    public static Element retrieveMetadata(ServiceContext context, String id, ElementSetName setName, String
+        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage)
+        throws CatalogException{
+        return retrieveMetadata(context,id, setName,outSchema, elemNames, typeName, resultType, strategy,displayLanguage, null);
+    }
+
+
+
     /**
      * Retrieves metadata from the database. Conversion between metadata record and output schema
      * are defined in xml/csw/schemas/ directory.
@@ -103,7 +112,8 @@ public class SearchController {
      * to ISO).
      */
     public static Element retrieveMetadata(ServiceContext context, String id, ElementSetName setName, String
-        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage) throws CatalogException {
+        outSchema, Set<String> elemNames, String typeName, ResultType resultType, String strategy, String displayLanguage, String stylesheet)
+     throws CatalogException {
 
         try {
             //--- get metadata from DB
@@ -132,6 +142,12 @@ public class SearchController {
                     res.addNamespaceDeclaration(schemaLocAtt.getNamespace());
                 }
             }
+
+            // in case of a virtual csw we might have and additional stylesheet here
+            // allowing ie to filter out some informations. Applying it before the brief/full/summary
+            if (stylesheet!=null)
+                res = applyVirtualStyleSheet(context, stylesheet,
+                    scm, schema, res, resultType, id, displayLanguage);
 
             // apply stylesheet according to setName and schema
             //
@@ -431,7 +447,7 @@ public class SearchController {
                                          ResultType resultType, String outSchema, ElementSetName setName,
                                          Element filterExpr, String filterVersion, Sort sort,
                                          Set<String> elemNames, String typeName, int maxHitsFromSummary,
-                                         String cswServiceSpecificContraint, String strategy) throws CatalogException {
+                                         String cswServiceSpecificContraint, String strategy, String stylesheet) throws CatalogException {
 
         Element results = new Element("SearchResults", Csw.NAMESPACE_CSW);
 
@@ -457,7 +473,7 @@ public class SearchController {
         String displayLanguage = LuceneSearcher.determineLanguage(context, filterExpr, settingInfo).presentationLanguage;
         // retrieve actual metadata for results
         int counter = retrieveMetadataMatchingResults(context, results, summaryAndSearchResults, maxRecords, setName,
-            outSchema, elemNames, typeName, resultType, strategy, displayLanguage);
+            outSchema, elemNames, typeName, resultType, strategy, displayLanguage, stylesheet);
 
         //
         // properties of search result
@@ -502,7 +518,7 @@ public class SearchController {
                                                 Pair<Element, List<ResultItem>> summaryAndSearchResults,
                                                 int maxRecords, ElementSetName elementSetName,
                                                 String outputSchema, Set<String> elementNames,
-                                                String typeName, ResultType resultType, String strategy, String displayLanguage)
+                                                String typeName, ResultType resultType, String strategy, String displayLanguage, String stylesheet)
         throws CatalogException {
 
         List<ResultItem> resultsList = summaryAndSearchResults.two();
@@ -513,7 +529,7 @@ public class SearchController {
             Element md = null;
 
             try {
-                md = retrieveMetadata(context, id, elementSetName, outputSchema, elementNames, typeName, resultType, strategy, displayLanguage);
+                md = retrieveMetadata(context, id, elementSetName, outputSchema, elementNames, typeName, resultType, strategy, displayLanguage,stylesheet);
                 // metadata cannot be retrieved
                 if (md == null) {
                     results.addContent(new Comment(String.format("Metadata with id '%s' returned null.", id)));
@@ -571,8 +587,26 @@ public class SearchController {
         Path styleSheet = schemaDir.resolve(outputSchema + "-"
             + (context.getService().equals("csw") ? nodeInfo.getId() : context.getService())
             + "-postprocessing.xsl");
+        if (Files.exists(styleSheet))
+            result = applyStylesheet(context, result, styleSheet, resultType, id, displayLanguage);
 
-        if (Files.exists(styleSheet)) {
+        return result;
+    }
+
+
+    private static Element applyVirtualStyleSheet(ServiceContext context, String stylesheet, SchemaManager schemaManager, String schema,
+                                               Element result,
+                                               ResultType resultType, String id, String displayLanguage) throws InvalidParameterValueEx {
+        Path schemaDir  = schemaManager.getSchemaCSWPresentDir(schema);
+        Path xslStylesheet = schemaDir.resolve("virtual").resolve(stylesheet);
+        if (!Files.exists(xslStylesheet)) {
+            throw new InvalidParameterValueEx("Selected stylesheet doesn't exists","The stylesheet selected at "+xslStylesheet.toString()+" doesn't exist");
+        }
+        return applyStylesheet(context, result, xslStylesheet, resultType, id, displayLanguage);
+    }
+
+    private static Element applyStylesheet(ServiceContext context, Element result, Path styleSheet,
+                                               ResultType resultType, String id, String displayLanguage) throws InvalidParameterValueEx {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("lang", displayLanguage);
             params.put("displayInfo", resultType == ResultType.RESULTS_WITH_SUMMARY ? "true" : "false");
@@ -584,8 +618,8 @@ public class SearchController {
                 context.error("  (C) StackTrace:\n" + Util.getStackTrace(e));
                 return null;
             }
-        }
 
         return result;
     }
+
 }
