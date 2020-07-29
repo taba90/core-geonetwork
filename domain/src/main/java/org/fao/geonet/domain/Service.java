@@ -23,9 +23,11 @@
 
 package org.fao.geonet.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
-
-import net.sf.json.JSONArray;
 
 import org.fao.geonet.entitylistener.ServiceEntityListenerManager;
 
@@ -33,19 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * One of the entities responsible for dynamic service configuration. Entity representing a {@link
@@ -67,6 +57,13 @@ public class Service extends GeonetEntity {
     private String description;
     private String explicitQuery = "";
     private List<ServiceParam> _parameters = new ArrayList<>();
+
+    @Transient
+    @JsonSerialize
+    @JsonDeserialize
+    private String schemaName;
+
+    private String stylesheet;
 
     /**
      * Get the id of the service entity. This is a generated value and as such new instances should
@@ -229,5 +226,22 @@ public class Service extends GeonetEntity {
      */
     public void setExplicitQuery(String explicitQuery) {
         this.explicitQuery = explicitQuery;
+    }
+
+    public String getSchemaName() {
+        return schemaName;
+    }
+
+    public void setSchemaName(String schemaName) {
+        this.schemaName = schemaName;
+    }
+
+    @Column
+    public String getStylesheet() {
+        return stylesheet;
+    }
+
+    public void setStylesheet(String stylesheet) {
+        this.stylesheet = stylesheet;
     }
 }

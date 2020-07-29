@@ -719,6 +719,7 @@
     "service": "Service",
     "serviceDescription": "Service description",
     "serviceFilter": "Filters",
+    "xslSelection" : "XSL selection",
     "serviceUrl": "Service URL",
     "set": "Set",
     "settingsUpdated": "Settings updated.",

@@ -26,18 +26,27 @@ package org.fao.geonet.component.csw;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.AbstractCoreIntegrationTest;
 import org.fao.geonet.Assert;
+import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.csw.common.Csw;
 import org.fao.geonet.csw.common.exceptions.InvalidParameterValueEx;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.kernel.mef.MEFLibIntegrationTest;
-import org.fao.geonet.kernel.search.AbstractLanguageSearchOrderIntegrationTest;
 import org.fao.geonet.utils.Xml;
+import org.jdom.Comment;
 import org.jdom.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Test CSW Search Service.
@@ -46,7 +55,9 @@ import java.util.List;
  */
 @ContextConfiguration(inheritLocations = true, locations = "classpath:csw-integration-test-context.xml")
 public class CswGetRecords_Test extends AbstractCoreIntegrationTest {
+
     private static final String field = "title";
+
     @Autowired
     private GetRecords _getRecords;
 
@@ -203,4 +214,86 @@ public class CswGetRecords_Test extends AbstractCoreIntegrationTest {
         nextRecord = result.getChild("SearchResults", Csw.NAMESPACE_CSW).getAttributeValue("nextRecord");
         Assert.assertEquals("0", nextRecord);
     }
+
+    @Test
+    public void testPreProcessingXsl() throws Exception {
+
+        final ServiceContext serviceContext = loadMetadataForXslTests();
+
+        Element request = new Element("GetRecords", Csw.NAMESPACE_CSW)
+            .setAttribute("service", "CSW")
+            .setAttribute("version", "2.0.2")
+            .setAttribute("resultType", "results")
+            .setAttribute("startPosition", "1")
+            .setAttribute("maxRecords", "50")
+            .setAttribute("outputSchema", "csw:Record")
+            .addContent(new Element("Query", Csw.NAMESPACE_CSW)
+                .addContent(new Element("ElementSetName", Csw.NAMESPACE_CSW).setText("summary"))
+            )
+            .addContent(new Element(Geonet.Elem.FILTER).setText("+_schema:iso19139"))
+            .addContent(new Element(Geonet.Elem.STYLESHEET).setText("test-virtual-csw.xsl"));
+
+        Element result = _getRecords.execute(request, serviceContext);
+
+        final String xpath = "*//csw:SummaryRecord/dc:identifier";
+        List<Element> nodes = (List<Element>) Xml.selectNodes(result, xpath, Arrays.asList(Csw.NAMESPACE_CSW, Csw.NAMESPACE_DC));
+        // size should be three since dublin-core metadata has been filtered out
+        assertEquals(3, nodes.size());
+        for (int i = 0; i < nodes.size(); i++) {
+            assertTrue(nodes.get(i).getText().startsWith("aStringToTestVirtualCswStylesheet."));
+        }
+    }
+
+
+    @Test
+    public void testPreProcessingNotExistingXsl() throws Exception {
+        final ServiceContext serviceContext = loadMetadataForXslTests();
+
+        Element request = new Element("GetRecords", Csw.NAMESPACE_CSW)
+            .setAttribute("service", "CSW")
+            .setAttribute("version", "2.0.2")
+            .setAttribute("resultType", "results")
+            .setAttribute("startPosition", "1")
+            .setAttribute("maxRecords", "50")
+            .setAttribute("outputSchema", "csw:Record")
+            .addContent(new Element("Query", Csw.NAMESPACE_CSW)
+                .addContent(new Element("ElementSetName", Csw.NAMESPACE_CSW).setText("summary"))
+            )
+            .addContent(new Element(Geonet.Elem.FILTER).setText("+_schema:iso19139"))
+            .addContent(new Element(Geonet.Elem.STYLESHEET).setText("not-existing.xsl"));
+
+        Element result = _getRecords.execute(request, serviceContext);
+
+        final String xpath = ".[1]/csw:SearchResults";
+        List<Comment> nodes = (List<Comment>) ((Element) Xml.selectNodes(result, xpath, Arrays.asList(Csw.NAMESPACE_CSW, Csw.NAMESPACE_DC)).get(0)).getContent();
+        for (Comment c : nodes) {
+            assertTrue(c.getText()
+                .contains("The stylesheet selected at /data/config/schema_plugins/iso19139/present/csw/virtual/not-existing.xsl doesn't exist"));
+        }
+    }
+
+    private ServiceContext loadMetadataForXslTests() throws Exception {
+        ServiceContext serviceContext = createServiceContext();
+        loginAsAdmin(serviceContext);
+        final MEFLibIntegrationTest.ImportMetadata importMetadata = new MEFLibIntegrationTest.ImportMetadata(this, serviceContext);
+        //iso19139 3 metadata
+        importMetadata.getMefFilesToLoad().add("mef2-example-2md.zip");
+        // add 1 metadata dublin-core also to test schema filtering
+        importMetadata.getMefFilesToLoad().add("dublin-core.mef");
+        importMetadata.invoke();
+        serviceContext.setLanguage(null);
+        return serviceContext;
+    }
+
+    @Override
+    protected void addTestSpecificData(GeonetworkDataDirectory geonetworkDataDirectory) throws IOException {
+        try {
+            Path csw = geonetworkDataDirectory.getSchemaPluginsDir().resolve("iso19139").resolve("present").resolve("csw");
+            Path pathToXsl = Paths.get(getClass().getResource("virtual").toURI());
+            org.fao.geonet.utils.IO.copyDirectoryOrFile(pathToXsl, csw, true);
+        } catch (URISyntaxException e) {
+            throw new IOException(e);
+        }
+    }
+
 }
