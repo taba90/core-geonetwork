@@ -90,7 +90,7 @@ public class CswParams extends AbstractParams {
         xpathFilter = Util.getParam(site, "xpathFilter", "");
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
         icon = Util.getParam(site, "icon", "default.gif");
-        applyXslBeforeSchemaDetection =Util.getParam(site,"applyXslBeforeSchemaDetection", false);
+        applyXslBeforeSchemaDetection = Util.getParam(site, "applyXslBeforeSchemaDetection", false);
         if (searches != null) {
             if (searches.getChild("search") != null) {
                 @SuppressWarnings("unchecked")
@@ -119,7 +119,7 @@ public class CswParams extends AbstractParams {
         hopCount = Util.getParam(site, "hopCount", hopCount);
         xpathFilter = Util.getParam(site, "xpathFilter", "");
         xslfilter = Util.getParam(site, "xslfilter", "");
-        applyXslBeforeSchemaDetection =Util.getParam(site,"applyXslBeforeSchemaDetection", false);
+        applyXslBeforeSchemaDetection =Util.getParam(site, "applyXslBeforeSchemaDetection", false);
         outputSchema = Util.getParam(site, "outputSchema", outputSchema);
 
         icon = Util.getParam(site, "icon", icon);
@@ -155,7 +155,7 @@ public class CswParams extends AbstractParams {
         copy.outputSchema = outputSchema;
 
         copy.eltSearches = eltSearches;
-        copy.applyXslBeforeSchemaDetection=applyXslBeforeSchemaDetection;
+        copy.applyXslBeforeSchemaDetection = applyXslBeforeSchemaDetection;
         return copy;
     }
 
