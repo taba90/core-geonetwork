@@ -198,6 +198,7 @@ public class ValidateApi {
                             report.addMetadataInfos(record.getId(), "Is valid");
                             new RecordValidationTriggeredEvent(record.getId(), ApiUtils.getUserSession(request.getSession()).getUserIdAsInt(), "1").publish(applicationContext);
                         } else {
+                            report.addMetadataInfos(record.getId(), "Is invalid");
                             setReportErrorMessages(report, record);
                             new RecordValidationTriggeredEvent(record.getId(), ApiUtils.getUserSession(request.getSession()).getUserIdAsInt(), "0").publish(applicationContext);
                         }
@@ -282,28 +283,32 @@ public class ValidateApi {
         return mAnalyseProcess;
     }
 
-    private void setReportErrorMessages (SimpleMetadataProcessingReport report, AbstractMetadata record){
-        List<MetadataValidation> metadataValidations=metadataValidationRepository.findAllById_MetadataId(record.getId());
-        for (int i =0; i<metadataValidations.size(); i++){
-            StringBuilder validationMessage = new StringBuilder("");
-            MetadataValidation mv = metadataValidations.get(i);
-            int nFailures = mv.getNumFailures();
-            if (nFailures>0) {
-                String validationType = mv.getId().getValidationType();
-                validationMessage.append(" Validation ");
-                if (validationType != null) {
-                    validationMessage.append("of type ").append(validationType).append(" ");
-                }
-                validationMessage.append("failed with ")
-                    .append(nFailures).append(" error");
-                if (nFailures > 1)
-                    validationMessage.append("s");
-                validationMessage.append(".");
+   private void setReportErrorMessages(SimpleMetadataProcessingReport report, AbstractMetadata record) {
+      List<MetadataValidation> mvList = metadataValidationRepository.findAllById_MetadataId(record.getId());
+      for (MetadataValidation mv : mvList) {
+         String message = buildErrorMessage(mv);
+         if(message != null) {
+            report.addMetadataError(record.getId(), buildErrorMessage(mv));
+         }
+      }
+   }
 
-                report.addMetadataError(record.getId(), validationMessage.toString());
-                report.addMetadataInfos(record.getId(), "Is invalid");
-            }
-        }
-
-    }
+   private String buildErrorMessage(MetadataValidation mv) {
+      int nFailures = mv.getNumFailures();
+      if (nFailures > 0) {
+         String validationType = mv.getId().getValidationType();
+         validationType = validationType != null ? validationType : "UNKNOWN";
+         StringBuilder message = new StringBuilder(" Validation failed: ")
+                .append(validationType)
+                .append(" (")
+                .append(nFailures)
+                .append(" error");
+         if (nFailures > 1) {
+            message.append("s");
+         }
+         message.append(")");
+         return message.toString();
+      }
+      return null;
+   }
 }
